@@ -1,0 +1,63 @@
+// Markdown mínimo: parágrafos, listas "- " e "1.", **negrito**, `código` e blocos ``` .
+// Escapa HTML antes de formatar, então o conteúdo nunca injeta tags.
+
+export function escapeHtml(s) {
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function inline(s) {
+  return escapeHtml(s)
+    .replace(/`([^`]+)`/g, '<code>$1</code>')
+    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+}
+
+export function md(text) {
+  if (!text) return '';
+  const lines = String(text).trim().split('\n');
+  const out = [];
+  let para = [];
+  let list = null;
+  let ordered = false;
+  let fence = null;
+
+  const flushPara = () => {
+    if (para.length) out.push(`<p>${inline(para.join(' '))}</p>`);
+    para = [];
+  };
+  const flushList = () => {
+    const tag = ordered ? 'ol' : 'ul';
+    if (list) out.push(`<${tag}>${list.map((li) => `<li>${inline(li)}</li>`).join('')}</${tag}>`);
+    list = null;
+  };
+
+  for (const raw of lines) {
+    const line = raw.replace(/\s+$/, '');
+    if (fence) {
+      if (line.trim().startsWith('```')) {
+        out.push(`<pre><code>${escapeHtml(fence.join('\n'))}</code></pre>`);
+        fence = null;
+      } else fence.push(raw);
+      continue;
+    }
+    const t = line.trim();
+    if (t.startsWith('```')) { flushPara(); flushList(); fence = []; continue; }
+    if (t === '') { flushPara(); flushList(); continue; }
+    const item = t.match(/^(-|\d+\.)\s+(.*)$/);
+    if (item) {
+      const isOl = item[1] !== '-';
+      if (list && isOl !== ordered) flushList();
+      flushPara(); ordered = isOl; (list ||= []).push(item[2]); continue;
+    }
+    if (list) { list[list.length - 1] += ' ' + t; continue; }
+    para.push(t);
+  }
+  if (fence) out.push(`<pre><code>${escapeHtml(fence.join('\n'))}</code></pre>`);
+  flushPara();
+  flushList();
+  return out.join('');
+}

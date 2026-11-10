@@ -1,0 +1,9 @@
+{
+  "name": "devtechnical",
+  "private": true,
+  "type": "module",
+  "description": "Simulador de entrevista técnica sênior, bilíngue (PT/EN)",
+  "scripts": {
+    "validate": "node scripts/validate.mjs"
+  }
+}
