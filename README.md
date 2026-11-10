@@ -18,12 +18,12 @@ O progresso fica só no `localStorage` do navegador; não há back-end nem colet
 
 ## Conteúdo
 
-64 perguntas e 326 pontos de rubrica, todos em português e inglês. O lote 2 cobre as lacunas entre o meu CV e as vagas (GraphQL/Apollo, NestJS, MongoDB, Next.js, Docker/Kubernetes, Elasticsearch, OpenTelemetry), sempre indicando com honestidade o que é estudo e o que é experiência.
+69 perguntas e 354 pontos de rubrica, todos em português e inglês. O lote 2 cobre as lacunas entre o meu CV e as vagas (GraphQL/Apollo, NestJS, MongoDB, Next.js, Docker/Kubernetes, Elasticsearch, OpenTelemetry), sempre indicando com honestidade o que é estudo e o que é experiência.
 
 | Tema | Exemplos |
 | --- | --- |
 | JavaScript & TypeScript | event loop, `unknown`/`never`, generics, closures, contrato compartilhado com Zod |
-| React & Next.js | reconciliação e keys, `useEffect`, performance, estado, acessibilidade, SSR/RSC, Server Actions, cache do Apollo Client, Material UI, testes com RTL + MSW |
+| React & Next.js | reconciliação e keys, `useEffect`, performance, estado, acessibilidade, SSR/RSC, Server Actions, cache do Apollo Client, Material UI, testes com RTL + MSW, catálogo de hooks, `useReducer` + Context, Redux Toolkit vs Zustand, estado derivado, depuração com React DevTools |
 | Node.js & NestJS | event loop bloqueado, streams e backpressure, graceful shutdown, DI no Nest, guards com teste, microsserviços com RabbitMQ |
 | APIs | REST vs GraphQL, N+1 e DataLoader, schema no Apollo Server, idempotência, WebSockets e Socket.IO, paginação e compatibilidade |
 | Dados | isolamento e locks, índices e `EXPLAIN`, MongoDB vs SQL, agregação e replicação no MongoDB, padrões de cache com Redis |
@@ -80,4 +80,4 @@ A picky interviewer, as an app. It asks senior-level technical questions about t
 - **Progress**: average score and correct/partial/wrong percentages, overall and per topic, plus strongest and weakest topic.
 - **Study**: every question with search and filters by role, topic, and type.
 
-64 questions and 326 rubric points in Portuguese and English, including a second batch on the gaps between my CV and the target roles (GraphQL/Apollo, NestJS, MongoDB, Next.js, Docker/Kubernetes, Elasticsearch, OpenTelemetry). No build step, no dependencies, no backend: progress lives only in the browser's `localStorage`. Run it with any static server and validate the question bank with `node scripts/validate.mjs`.
+69 questions and 354 rubric points in Portuguese and English, including a second batch on the gaps between my CV and the target roles (GraphQL/Apollo, NestJS, MongoDB, Next.js, Docker/Kubernetes, Elasticsearch, OpenTelemetry). No build step, no dependencies, no backend: progress lives only in the browser's `localStorage`. Run it with any static server and validate the question bank with `node scripts/validate.mjs`.

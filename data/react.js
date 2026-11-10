@@ -641,4 +641,406 @@ Cover: loading, success, empty, error, and the retry action. Do not test details
       en: 'You used Jest at Sicoob and Vitest + Vue Test Utils in your portfolio, with the same philosophy (Testing Library exists for Vue too). The states tested here are GEMP\'s (loading, partial, unavailable, network failure): adding these tests to GEMP becomes direct evidence.',
     },
   },
+  {
+    id: 'react-hooks-catalog',
+    cat: 'react', type: 'concept', jobs: ['frontend', 'elastic', 'brainrocket'],
+    tags: ['hooks', 'useState', 'useReducer', 'useRef', 'useLayoutEffect', 'useId', 'useTransition', 'use', 'useOptimistic'],
+    q: {
+      pt: 'Passe pelos hooks do React e diga quando você usa cada um: useState, useReducer, useRef, useEffect, useLayoutEffect, useMemo, useCallback, useContext, useId, useTransition, useDeferredValue e os do React 19.',
+      en: 'Walk through React\'s hooks and say when you use each: useState, useReducer, useRef, useEffect, useLayoutEffect, useMemo, useCallback, useContext, useId, useTransition, useDeferredValue, and the React 19 ones.',
+    },
+    a: {
+      pt: `**Estado**
+
+- \`useState\`: valor local simples. Atualização com função (\`setX(x => x + 1)\`) quando depende do anterior.
+- \`useReducer\`: quando a próxima transição depende de várias partes do estado ou há muitas ações (formulário complexo, máquina de estados). A lógica fica numa função pura, fácil de testar.
+- \`useRef\`: valor mutável que **não dispara render** (id de timer, valor anterior, último callback) e referência a nó do DOM. Se a tela precisa mostrar o valor, é estado, não ref.
+- \`useContext\`: lê um valor da árvore sem prop drilling. Todo consumidor re-renderiza quando o valor muda.
+
+**Efeitos**
+
+- \`useEffect\`: sincronizar com algo **fora do React** (assinatura, timer, API do browser, requisição) depois da pintura. Não serve para derivar estado nem para reagir a eventos do usuário (isso vai no handler).
+- \`useLayoutEffect\`: igual, mas antes da pintura; para medir layout e evitar flicker (tooltip posicionado). Bloqueia a pintura, então com moderação.
+- \`useSyncExternalStore\`: assinar stores externos (Redux, Zustand, \`matchMedia\`) sem tearing.
+
+**Performance**
+
+- \`useMemo\`/\`useCallback\`: cálculo caro ou referência estável para filho memoizado ou dependência de effect. O React Compiler automatiza boa parte.
+- \`useTransition\`: marcar uma atualização como não urgente (\`startTransition\`) e ter \`isPending\`; a digitação continua fluida.
+- \`useDeferredValue\`: versão "atrasada" de um valor que você não controla (prop de busca), para a lista pesada renderizar depois.
+
+**Outros**: \`useId\` para ids estáveis entre servidor e cliente (\`htmlFor\`, \`aria-describedby\`); \`useImperativeHandle\` para expor métodos via ref (raro).
+
+**React 19**: \`use()\` lê uma Promise ou Context (pode ser chamado condicionalmente; integra com Suspense); \`useActionState\` para estado de formulário/ação com pending; \`useFormStatus\` lê o status do form pai; \`useOptimistic\` mostra o resultado esperado enquanto a ação roda.`,
+      en: `**State**
+
+- \`useState\`: a simple local value. Use the updater form (\`setX(x => x + 1)\`) when it depends on the previous value.
+- \`useReducer\`: when the next transition depends on several pieces of state or there are many actions (complex form, state machine). Logic lives in a pure function that is easy to test.
+- \`useRef\`: a mutable value that **does not trigger renders** (timer id, previous value, latest callback) and a reference to a DOM node. If the screen must show it, it is state, not a ref.
+- \`useContext\`: reads a value from the tree without prop drilling. Every consumer re-renders when the value changes.
+
+**Effects**
+
+- \`useEffect\`: synchronize with something **outside React** (subscription, timer, browser API, request) after paint. Not for deriving state or reacting to user events (those go in handlers).
+- \`useLayoutEffect\`: same, but before paint; for measuring layout and avoiding flicker (a positioned tooltip). It blocks paint, so use sparingly.
+- \`useSyncExternalStore\`: subscribe to external stores (Redux, Zustand, \`matchMedia\`) without tearing.
+
+**Performance**
+
+- \`useMemo\`/\`useCallback\`: an expensive calculation or a stable reference for a memoized child or effect dependency. The React Compiler automates much of this.
+- \`useTransition\`: mark an update as non-urgent (\`startTransition\`) and get \`isPending\`; typing stays smooth.
+- \`useDeferredValue\`: a "lagging" version of a value you do not control (a search prop), so the heavy list renders later.
+
+**Others**: \`useId\` for ids stable across server and client (\`htmlFor\`, \`aria-describedby\`); \`useImperativeHandle\` to expose methods through a ref (rare).
+
+**React 19**: \`use()\` reads a Promise or Context (may be called conditionally; works with Suspense); \`useActionState\` for form/action state with pending; \`useFormStatus\` reads the parent form's status; \`useOptimistic\` shows the expected result while the action runs.`,
+    },
+    follow: [
+      { pt: 'Por que mudar um `useRef` não atualiza a tela? Quando isso é exatamente o que você quer?', en: 'Why does changing a `useRef` not update the screen? When is that exactly what you want?' },
+      { pt: 'Qual a diferença prática entre `useTransition` e debounce?', en: 'What is the practical difference between `useTransition` and debouncing?' },
+    ],
+    flags: {
+      pt: 'Usar `useEffect` para tudo, inclusive para copiar props em estado ou reagir a cliques. Ou guardar em `useRef` algo que precisa aparecer na tela.',
+      en: 'Using `useEffect` for everything, including copying props into state or reacting to clicks. Or storing in `useRef` something that must appear on screen.',
+    },
+    anchor: {
+      pt: 'Você usa React com TypeScript nas interfaces da Sicoob e do Grupo Mysa, e o equivalente em Vue (ref, computed, watch, composables) no portfólio. Mapear "useState ≈ ref, useMemo ≈ computed, useEffect ≈ watch" mostra domínio do modelo mental, não só da sintaxe.',
+      en: 'You use React with TypeScript for interfaces at Sicoob and Grupo Mysa, and the Vue equivalent (ref, computed, watch, composables) in your portfolio. Mapping "useState ≈ ref, useMemo ≈ computed, useEffect ≈ watch" shows mastery of the mental model, not just syntax.',
+    },
+  },
+  {
+    id: 'react-usereducer-context',
+    cat: 'react', type: 'code', jobs: ['frontend', 'elastic', 'brainrocket'],
+    tags: ['useReducer', 'Context', 'state machine', 're-render', 'split context', 'dispatch'],
+    q: {
+      pt: 'Implemente o estado de um carrinho com `useReducer` + Context de forma que um botão "adicionar" não re-renderize a lista inteira.',
+      en: 'Implement cart state with `useReducer` + Context so that an "add" button does not re-render the whole list.',
+    },
+    code: {
+      src: `
+type Item = { id: string; name: string; priceCents: number; qty: number };
+type State = { items: Item[] };
+type Action =
+  | { type: 'added'; item: Omit<Item, 'qty'> }
+  | { type: 'removed'; id: string }
+  | { type: 'qtyChanged'; id: string; qty: number };
+
+export function cartReducer(state: State, action: Action): State {
+  switch (action.type) {
+    case 'added': {
+      const found = state.items.find((i) => i.id === action.item.id);
+      return found
+        ? { items: state.items.map((i) => (i.id === found.id ? { ...i, qty: i.qty + 1 } : i)) }
+        : { items: [...state.items, { ...action.item, qty: 1 }] };
+    }
+    case 'removed':
+      return { items: state.items.filter((i) => i.id !== action.id) };
+    case 'qtyChanged':
+      return { items: state.items.map((i) => (i.id === action.id ? { ...i, qty: Math.max(1, action.qty) } : i)) };
+  }
+}
+
+// Dois contexts: quem só despacha não re-renderiza quando o estado muda
+const CartState = createContext<State | null>(null);
+const CartDispatch = createContext<Dispatch<Action> | null>(null);
+
+export function CartProvider({ children }: { children: ReactNode }) {
+  const [state, dispatch] = useReducer(cartReducer, { items: [] });
+  return (
+    <CartDispatch.Provider value={dispatch}>{/* dispatch é estável */}
+      <CartState.Provider value={state}>{children}</CartState.Provider>
+    </CartDispatch.Provider>
+  );
+}
+
+export const useCartDispatch = () => {
+  const d = useContext(CartDispatch);
+  if (!d) throw new Error('useCartDispatch must be used inside CartProvider');
+  return d;
+};
+
+// AddButton lê só o dispatch → não re-renderiza a cada mudança do carrinho
+const AddButton = memo(({ product }: { product: Product }) => {
+  const dispatch = useCartDispatch();
+  return <button onClick={() => dispatch({ type: 'added', item: product })}>Add</button>;
+});`,
+    },
+    a: {
+      pt: `**Por que \`useReducer\`**: as transições do carrinho (adicionar existente, remover, mudar quantidade com mínimo 1) ficam numa **função pura** com ações nomeadas por evento. Ela é testável sem renderizar nada, e a union de \`Action\` faz o TypeScript checar cada caso.
+
+**O problema do Context**: quando o \`value\` muda, **todo** consumidor re-renderiza, mesmo que só use uma parte. Soluções:
+
+- **Separar estado e dispatch** em dois contexts: \`dispatch\` do \`useReducer\` tem identidade estável, então componentes que só disparam ações (botões) não re-renderizam. Com \`memo\`, o \`AddButton\` também ignora renders do pai.
+- Não criar objetos novos no \`value\` a cada render (\`value={{ state, dispatch }}\` sem \`useMemo\` re-renderiza tudo sempre).
+- Dividir contexts por domínio (carrinho ≠ usuário ≠ tema).
+- Se ainda precisar de **seleção fina** ("re-renderize só se a quantidade deste item mudar"), Context não oferece seletores: aí entram Zustand, Redux Toolkit ou \`useSyncExternalStore\`.
+
+Confiro o resultado no React DevTools com "Highlight updates" e no Profiler.`,
+      en: `**Why \`useReducer\`**: the cart transitions (add existing, remove, change quantity with a minimum of 1) live in a **pure function** with event-named actions. It is testable without rendering anything, and the \`Action\` union lets TypeScript check every case.
+
+**The Context problem**: when \`value\` changes, **every** consumer re-renders, even if it uses only part of it. Fixes:
+
+- **Split state and dispatch** into two contexts: \`useReducer\`'s \`dispatch\` has a stable identity, so components that only dispatch (buttons) do not re-render. With \`memo\`, \`AddButton\` also ignores parent renders.
+- Do not create new objects in \`value\` every render (\`value={{ state, dispatch }}\` without \`useMemo\` re-renders everything every time).
+- Split contexts by domain (cart ≠ user ≠ theme).
+- If you still need **fine-grained selection** ("re-render only if this item's quantity changes"), Context has no selectors: that is where Zustand, Redux Toolkit, or \`useSyncExternalStore\` come in.
+
+I verify the result in React DevTools with "Highlight updates" and in the Profiler.`,
+    },
+    follow: [
+      { pt: 'Como você testaria o `cartReducer`?', en: 'How would you test `cartReducer`?' },
+      { pt: 'Onde ficaria a sincronização do carrinho com o servidor?', en: 'Where would cart syncing with the server live?' },
+    ],
+    flags: {
+      pt: '`value={{ state, dispatch }}` criado a cada render. Ou um único Context gigante com o estado de toda a aplicação.',
+      en: '`value={{ state, dispatch }}` created on every render. Or one giant Context holding the whole app\'s state.',
+    },
+    anchor: {
+      pt: 'Carrinho é seu domínio: e-commerce nacional no Grupo Mysa. Se o front de lá usa algum padrão de estado (Context, Redux, Vuex/Pinia), descreva como é e o que melhoraria. Transições com estado mínimo validado também aparecem no TripFlow (máquina de estados da viagem).',
+      en: 'A cart is your domain: nationwide e-commerce at Grupo Mysa. If the frontend there uses a state pattern (Context, Redux, Vuex/Pinia), describe it and what you would improve. Validated state transitions also show up in TripFlow (the trip state machine).',
+    },
+  },
+  {
+    id: 'react-redux-zustand-code',
+    cat: 'react', type: 'code', jobs: ['brainrocket', 'frontend', 'elastic'],
+    tags: ['Redux Toolkit', 'createSlice', 'selectors', 'Zustand', 'RTK Query', 'immutability', 'Immer'],
+    q: {
+      pt: 'Mostre o mesmo estado de filtros implementado em Redux Toolkit e em Zustand. O que muda na prática e como cada um evita re-renders?',
+      en: 'Show the same filter state implemented in Redux Toolkit and in Zustand. What changes in practice and how does each avoid re-renders?',
+    },
+    code: [
+      {
+        label: { pt: 'Redux Toolkit', en: 'Redux Toolkit' },
+        src: `
+const filtersSlice = createSlice({
+  name: 'filters',
+  initialState: { service: null as string | null, level: 'all' as Level, query: '' },
+  reducers: {
+    serviceSelected(state, action: PayloadAction<string | null>) {
+      state.service = action.payload;      // parece mutação, mas o Immer gera um novo objeto
+    },
+    queryChanged(state, action: PayloadAction<string>) { state.query = action.payload; },
+    reset: () => initialState,
+  },
+});
+export const { serviceSelected, queryChanged, reset } = filtersSlice.actions;
+
+export const store = configureStore({ reducer: { filters: filtersSlice.reducer } });
+export type RootState = ReturnType<typeof store.getState>;
+
+// seletor: o componente só re-renderiza se ESTE valor mudar (comparação por ===)
+const selectService = (s: RootState) => s.filters.service;
+const service = useSelector(selectService);
+const dispatch = useDispatch();
+dispatch(serviceSelected('trips-api'));
+
+// derivação memoizada
+const selectActiveFilterCount = createSelector([(s: RootState) => s.filters],
+  (f) => [f.service, f.level !== 'all', f.query].filter(Boolean).length);`,
+      },
+      {
+        label: { pt: 'Zustand', en: 'Zustand' },
+        src: `
+type FiltersStore = {
+  service: string | null; level: Level; query: string;
+  selectService: (s: string | null) => void;
+  setQuery: (q: string) => void;
+  reset: () => void;
+};
+
+export const useFilters = create<FiltersStore>()(devtools((set) => ({
+  service: null, level: 'all', query: '',
+  selectService: (service) => set({ service }),
+  setQuery: (query) => set({ query }),
+  reset: () => set({ service: null, level: 'all', query: '' }),
+})));
+
+// mesma ideia de seletor
+const service = useFilters((s) => s.service);
+const selectService = useFilters((s) => s.selectService);
+// vários campos: useShallow evita re-render quando o objeto é novo mas os valores iguais
+const { level, query } = useFilters(useShallow((s) => ({ level: s.level, query: s.query })));`,
+      },
+    ],
+    a: {
+      pt: `Os dois resolvem **estado global de cliente** com **seletores**: o componente assina só a fatia que lê e re-renderiza apenas quando ela muda (comparação por referência). Esse é o ganho sobre Context.
+
+**Redux Toolkit**: fluxo explícito (ação → reducer puro → novo estado), \`createSlice\` com Immer (escrita "mutável" que gera estado imutável), \`createSelector\` para derivações memoizadas, middleware (thunks, listeners), **Redux DevTools** com histórico de ações e time-travel, e **RTK Query** para server state. Ótimo para times grandes e fluxos complexos que precisam de rastreabilidade. Custo: mais estrutura.
+
+**Zustand**: um hook com estado e ações juntos, sem provider, quase sem boilerplate, e com middlewares (\`devtools\`, \`persist\`, \`immer\`). Ótimo para estado global de tamanho médio. Custo: menos convenção; o time precisa de disciplina para não virar um saco de setters.
+
+Armadilhas comuns aos dois: seletor que retorna **objeto ou array novo** a cada chamada (re-render infinito ou constante; usar \`useShallow\` ou \`createSelector\`), guardar dado de servidor no store em vez de usar TanStack Query/RTK Query, e guardar estado derivado em vez de calcular.
+
+Nos dois, filtros de uma tela de logs eu provavelmente colocaria na **URL**; o store faz sentido quando o estado é compartilhado por partes distantes e não precisa ser compartilhável por link.`,
+      en: `Both solve **global client state** with **selectors**: a component subscribes only to the slice it reads and re-renders only when that slice changes (reference comparison). That is the win over Context.
+
+**Redux Toolkit**: explicit flow (action → pure reducer → new state), \`createSlice\` with Immer ("mutable" writes that produce immutable state), \`createSelector\` for memoized derivations, middleware (thunks, listeners), **Redux DevTools** with action history and time travel, and **RTK Query** for server state. Great for large teams and complex flows that need traceability. Cost: more structure.
+
+**Zustand**: one hook holding state and actions together, no provider, almost no boilerplate, with middlewares (\`devtools\`, \`persist\`, \`immer\`). Great for mid-sized global state. Cost: less convention; the team needs discipline so it does not become a bag of setters.
+
+Pitfalls shared by both: a selector returning a **new object or array** on every call (constant or infinite re-renders; use \`useShallow\` or \`createSelector\`), storing server data in the store instead of TanStack Query/RTK Query, and storing derived state instead of computing it.
+
+For a log screen's filters I would likely use the **URL** in either case; a store makes sense when state is shared by distant parts of the tree and does not need to be shareable by link.`,
+    },
+    follow: [
+      { pt: 'Por que `useSelector(s => ({ a: s.a, b: s.b }))` causa re-render a cada ação?', en: 'Why does `useSelector(s => ({ a: s.a, b: s.b }))` re-render on every action?' },
+      { pt: 'Como você testaria um slice do Redux e uma store do Zustand?', en: 'How would you test a Redux slice and a Zustand store?' },
+    ],
+    flags: {
+      pt: 'Mutar o estado fora do Immer (`state.items.push` num reducer Redux "clássico") ou selecionar o store inteiro com `useFilters()` sem seletor.',
+      en: 'Mutating state outside Immer (`state.items.push` in a "classic" Redux reducer) or selecting the whole store with `useFilters()` without a selector.',
+    },
+    anchor: {
+      pt: 'Se você usou Redux, Vuex ou Pinia em algum projeto da Sicoob ou do Grupo Mysa, diga qual e para quê. Se não, a resposta honesta é: "uso estado local e de servidor bem separados; conheço Redux Toolkit e Zustand e escolho pelo tamanho do problema". Um exemplo pequeno no GitHub (filtros do PulseOps em Zustand, por exemplo) daria evidência.',
+      en: 'If you used Redux, Vuex, or Pinia on any Sicoob or Grupo Mysa project, say which and for what. If not, the honest answer is: "I keep local and server state clearly separated; I know Redux Toolkit and Zustand and choose by the size of the problem". A small GitHub example (PulseOps filters in Zustand, say) would provide evidence.',
+    },
+  },
+  {
+    id: 'react-derived-state-antipatterns',
+    cat: 'react', type: 'code', jobs: ['frontend', 'elastic', 'brainrocket'],
+    tags: ['derived state', 'lifting state', 'useEffect anti-pattern', 'single source of truth', 'controlled components'],
+    q: {
+      pt: 'O que há de errado neste componente? Explique estado derivado, "lifting state up" e por que copiar props em estado é um anti-padrão.',
+      en: 'What is wrong with this component? Explain derived state, lifting state up, and why copying props into state is an anti-pattern.',
+    },
+    code: [
+      {
+        label: { pt: 'Código do recrutador', en: "Interviewer's code" },
+        src: `
+function TripList({ trips }: { trips: Trip[] }) {
+  const [filter, setFilter] = useState('');
+  const [visible, setVisible] = useState<Trip[]>(trips);  // cópia da prop
+  const [total, setTotal] = useState(0);                  // valor derivado
+  const [selected, setSelected] = useState<Trip | null>(null); // objeto inteiro
+
+  useEffect(() => {
+    setVisible(trips.filter((t) => t.title.includes(filter)));
+  }, [trips, filter]);
+
+  useEffect(() => {
+    setTotal(visible.reduce((s, t) => s + t.costCents, 0));
+  }, [visible]);
+  // ...
+}`,
+      },
+      {
+        label: { pt: 'Versão corrigida', en: 'Fixed version' },
+        src: `
+function TripList({ trips }: { trips: Trip[] }) {
+  const [filter, setFilter] = useState('');
+  const [selectedId, setSelectedId] = useState<string | null>(null); // guarda o ID
+
+  // derivado: calculado no render, sempre consistente
+  const visible = useMemo(
+    () => trips.filter((t) => t.title.toLowerCase().includes(filter.toLowerCase())),
+    [trips, filter],
+  );
+  const totalCents = visible.reduce((s, t) => s + t.costCents, 0);
+  const selected = trips.find((t) => t.id === selectedId) ?? null; // nunca fica desatualizado
+  // ...
+}`,
+      },
+    ],
+    a: {
+      pt: `**Regra**: se um valor pode ser **calculado** a partir de props ou de outro estado, ele não é estado. Calcule durante o render.
+
+Problemas do original:
+
+- \`visible\` e \`total\` são **derivados** guardados em estado e sincronizados com effects. Isso causa renders extras (render → effect → set → render de novo → outro effect), um frame mostrando dado velho e risco de dessincronizar se alguém esquecer uma dependência.
+- \`selected\` guarda o **objeto**: se \`trips\` for atualizado (status mudou), o selecionado continua com a cópia antiga. Guarde o **ID** e derive o objeto.
+- \`useState(trips)\` só usa a prop na **montagem**: se o pai mandar outra lista, o estado não acompanha. Copiar prop em estado só faz sentido para valor inicial explícito (\`initialValue\`), e, para reiniciar, use \`key\`.
+
+\`useMemo\` entra só se o filtro for caro (milhares de itens); a soma é barata e fica direto no render.
+
+**Lifting state up**: quando dois irmãos precisam do mesmo estado (o filtro na barra e a lista), o estado sobe para o **ancestral comum** e desce como props, mantendo uma única fonte da verdade. Se subir demais e causar prop drilling, aí sim Context, store ou URL.
+
+Relacionado: **componente controlado** (o pai é dono do valor via \`value\` + \`onChange\`) vs **não controlado** (o DOM guarda o valor, lido por ref ou \`FormData\`). Escolha um por campo; misturar gera o aviso "changing an uncontrolled input to be controlled".`,
+      en: `**Rule**: if a value can be **computed** from props or other state, it is not state. Compute it during render.
+
+Problems in the original:
+
+- \`visible\` and \`total\` are **derived** values stored in state and synced with effects. That causes extra renders (render → effect → set → render again → another effect), a frame showing stale data, and a risk of desync if someone forgets a dependency.
+- \`selected\` stores the **object**: if \`trips\` updates (a status changed), the selection keeps the old copy. Store the **ID** and derive the object.
+- \`useState(trips)\` only uses the prop on **mount**: if the parent sends another list, state does not follow. Copying a prop into state only makes sense for an explicit initial value (\`initialValue\`), and to reset it, use a \`key\`.
+
+\`useMemo\` comes in only if the filter is expensive (thousands of items); the sum is cheap and stays inline in render.
+
+**Lifting state up**: when two siblings need the same state (the filter in the toolbar and the list), the state moves to their **closest common ancestor** and flows down as props, keeping a single source of truth. If it climbs too far and causes prop drilling, then Context, a store, or the URL.
+
+Related: a **controlled component** (the parent owns the value through \`value\` + \`onChange\`) vs **uncontrolled** (the DOM holds the value, read by ref or \`FormData\`). Pick one per field; mixing them triggers the "changing an uncontrolled input to be controlled" warning.`,
+    },
+    follow: [
+      { pt: 'Como você reiniciaria o estado interno de um formulário quando o usuário selecionado muda?', en: 'How would you reset a form\'s internal state when the selected user changes?' },
+      { pt: 'Quando você guardaria um valor derivado mesmo assim?', en: 'When would you store a derived value anyway?' },
+    ],
+    flags: {
+      pt: '"Uso um useEffect para manter os dois estados em sincronia." Isso é a descrição do problema, não da solução.',
+      en: '"I use a useEffect to keep both states in sync." That describes the problem, not the solution.',
+    },
+    anchor: {
+      pt: 'No Bora você separou solicitação de atribuição e guardou referências, não cópias, para o solicitante e o trajeto não se perderem quando o motorista muda: é o mesmo princípio de "guardar o ID, derivar o resto", aplicado ao modelo de dados.',
+      en: 'In Bora you separated requests from assignments and kept references, not copies, so the requester and route are never lost when the driver changes: the same "store the ID, derive the rest" principle, applied to the data model.',
+    },
+  },
+  {
+    id: 'react-devtools-debugging',
+    cat: 'react', type: 'lib', jobs: ['frontend', 'elastic', 'brainrocket'],
+    tags: ['React DevTools', 'Profiler', 'flamegraph', 'highlight updates', 'why did this render', 'Redux DevTools', 'TanStack Query Devtools'],
+    q: {
+      pt: 'Um usuário diz que digitar no filtro da tela está travando. Mostre como você usa o React DevTools (Components e Profiler) para achar a causa.',
+      en: 'A user says typing in the screen\'s filter feels laggy. Show how you use React DevTools (Components and Profiler) to find the cause.',
+    },
+    a: {
+      pt: `**1. Reproduzir e medir.** Abro o **Profiler**, clico em gravar, digito algumas letras e paro. Nas configurações ativo **"Record why each component rendered while profiling"**.
+
+**2. Ler a gravação.**
+
+- Cada barra no topo é um **commit**; barras altas e amarelas são commits caros.
+- **Flamegraph**: a árvore do commit, com largura pelo tempo de render; cinza significa que o componente não renderizou nesse commit.
+- **Ranked**: os componentes mais lentos primeiro.
+- Clicando num componente: tempo em cada commit e **por que renderizou** ("props changed: onSelect", "hook 2 changed", "parent rendered", "context changed").
+
+**3. Diagnósticos típicos e correções.**
+
+- Toda a lista renderiza a cada tecla porque o estado do filtro está no pai da lista → mover o estado para baixo, \`useDeferredValue\` na lista ou virtualizar.
+- Linhas memoizadas renderizam com "props changed: onSelect" → a função é recriada a cada render; \`useCallback\` ou passar o id.
+- "Context changed" em componentes que nem usam o valor alterado → dividir o Context ou usar store com seletor.
+- Commit rápido no React, mas a tela ainda trava → o problema está fora do React: aba **Performance** do Chrome (long tasks, layout, parse pesado).
+
+**Aba Components**: inspecionar e **editar** props, estado e hooks ao vivo (os hooks aparecem numerados e com nome para custom hooks), ver "rendered by" (quem renderizou o componente), ir para o código-fonte, e ativar **"Highlight updates when components render"** para ver em tempo real o que pisca a cada tecla. \`useDebugValue\` dá um rótulo legível a custom hooks.
+
+Ferramentas complementares: **Redux DevTools** (ações, diff de estado, time-travel; funciona também com o middleware \`devtools\` do Zustand) e **TanStack Query Devtools** (cache, status de cada query, refetch). Em produção, o Profiler só funciona com o build de profiling; para medir usuários reais, Web Vitals (INP) e a API \`<Profiler onRender>\`.`,
+      en: `**1. Reproduce and measure.** I open the **Profiler**, start recording, type a few letters, and stop. In settings I enable **"Record why each component rendered while profiling"**.
+
+**2. Read the recording.**
+
+- Each bar at the top is a **commit**; tall yellow bars are expensive commits.
+- **Flamegraph**: the commit's tree, with width by render time; gray means the component did not render in that commit.
+- **Ranked**: the slowest components first.
+- Clicking a component: its time in each commit and **why it rendered** ("props changed: onSelect", "hook 2 changed", "parent rendered", "context changed").
+
+**3. Typical diagnoses and fixes.**
+
+- The whole list renders on every keystroke because the filter state lives in the list's parent → move state down, \`useDeferredValue\` on the list, or virtualize.
+- Memoized rows render with "props changed: onSelect" → the function is recreated every render; \`useCallback\` or pass the id.
+- "Context changed" on components that do not use the changed value → split the Context or use a store with selectors.
+- React commits are fast but the screen still lags → the problem is outside React: Chrome's **Performance** tab (long tasks, layout, heavy parsing).
+
+**Components tab**: inspect and **edit** props, state, and hooks live (hooks appear numbered, with names for custom hooks), see "rendered by" (who rendered the component), jump to source, and enable **"Highlight updates when components render"** to see in real time what flashes on each keystroke. \`useDebugValue\` gives custom hooks a readable label.
+
+Complementary tools: **Redux DevTools** (actions, state diffs, time travel; also works with Zustand's \`devtools\` middleware) and **TanStack Query Devtools** (cache, each query's status, refetch). In production the Profiler only works with the profiling build; to measure real users, Web Vitals (INP) and the \`<Profiler onRender>\` API.`,
+    },
+    follow: [
+      { pt: 'O Profiler mostra que o componente renderizou, mas a tela não mudou. Isso é um problema?', en: 'The Profiler shows a component rendered but the screen did not change. Is that a problem?' },
+      { pt: 'Como você mediria isso com usuários reais em produção?', en: 'How would you measure this with real users in production?' },
+    ],
+    flags: {
+      pt: 'Sair espalhando `memo`/`useMemo` sem abrir o Profiler. Ou só usar `console.log` dentro do componente para "contar renders".',
+      en: 'Sprinkling `memo`/`useMemo` everywhere without opening the Profiler. Or only using `console.log` inside the component to "count renders".',
+    },
+    anchor: {
+      pt: 'Seu hábito de medir antes de otimizar aparece no Livit (pressão de memória do macOS ajustando quadros e efeitos). Antes da entrevista, abra o front do GEMP (React) com o React DevTools e grave um Profiler de verdade: falar do que você viu na sua própria app convence mais que teoria. No portfólio (Vue), o Vue DevTools tem as abas equivalentes de componentes e performance.',
+      en: 'Your habit of measuring before optimizing shows in Livit (macOS memory pressure adjusting frames and effects). Before the interview, open GEMP\'s React frontend with React DevTools and record a real Profiler session: describing what you saw in your own app convinces more than theory. For your Vue portfolio, Vue DevTools has equivalent component and performance tabs.',
+    },
+  },
 ];

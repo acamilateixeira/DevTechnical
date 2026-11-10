@@ -716,4 +716,63 @@ export const rubrics = {
     tools: ['kubectl', 'Helm', 'HPA', 'KEDA', 'Argo CD', 'k3s'],
     metrics: ['Restarts por pod / pod restarts', 'CPU throttling', 'Uso de memória vs limite / memory vs limit'],
   },
+  // ---------- Estado, hooks e React DevTools ----------
+  'react-hooks-catalog': {
+    points: [
+      p('useState vs useReducer com critério', 'useState vs useReducer with criteria'),
+      p('useRef não dispara render (valor mutável e DOM)', 'useRef does not trigger renders (mutable value and DOM)'),
+      p('useEffect só para sincronizar com o exterior; useLayoutEffect antes da pintura', 'useEffect only to sync with the outside; useLayoutEffect before paint'),
+      p('useMemo/useCallback, useTransition e useDeferredValue', 'useMemo/useCallback, useTransition, and useDeferredValue'),
+      p('useContext, useSyncExternalStore e useId', 'useContext, useSyncExternalStore, and useId'),
+      p('Hooks do React 19: use, useActionState, useFormStatus, useOptimistic', 'React 19 hooks: use, useActionState, useFormStatus, useOptimistic'),
+    ],
+    tools: ['React 19', 'React Compiler', 'eslint-plugin-react-hooks', 'useDebugValue'],
+    metrics: ['INP', 'Re-renders por interação / re-renders per interaction'],
+  },
+  'react-usereducer-context': {
+    points: [
+      p('Reducer puro com ações nomeadas por evento e tipadas', 'Pure reducer with typed, event-named actions'),
+      p('Context re-renderiza todos os consumidores', 'Context re-renders every consumer'),
+      p('Separar contexts de estado e dispatch', 'Split state and dispatch contexts'),
+      p('Não criar objeto novo no value a cada render', 'Do not create a new value object every render'),
+      p('Context não tem seletor: quando ir para store', 'Context has no selectors: when to move to a store'),
+    ],
+    tools: ['useReducer', 'createContext', 'memo', 'React DevTools Highlight updates'],
+    metrics: ['Re-renders por ação / re-renders per action'],
+  },
+  'react-redux-zustand-code': {
+    points: [
+      p('Implementou o mesmo estado nos dois', 'Implemented the same state in both'),
+      p('Seletores assinam só a fatia usada', 'Selectors subscribe only to the slice used'),
+      p('Immer no createSlice e createSelector para derivação', 'Immer in createSlice and createSelector for derivation'),
+      p('Trade-offs: estrutura/DevTools/RTK Query vs simplicidade do Zustand', 'Trade-offs: structure/DevTools/RTK Query vs Zustand simplicity'),
+      p('Armadilha do seletor que cria objeto novo (useShallow)', 'Pitfall of selectors creating new objects (useShallow)'),
+      p('Server state fora do store; filtros na URL quando faz sentido', 'Server state out of the store; filters in the URL when it fits'),
+    ],
+    tools: ['Redux Toolkit', 'createSlice', 'createSelector', 'RTK Query', 'Redux DevTools', 'Zustand', 'useShallow', 'Immer'],
+    metrics: ['Re-renders por ação / re-renders per action'],
+  },
+  'react-derived-state-antipatterns': {
+    points: [
+      p('Valor calculável não é estado: derivar no render', 'A computable value is not state: derive in render'),
+      p('Effects de sincronização causam renders extras e dado velho', 'Sync effects cause extra renders and stale data'),
+      p('Guardar o ID selecionado, não o objeto', 'Store the selected ID, not the object'),
+      p('useState(prop) só usa a prop na montagem; reset com key', 'useState(prop) only uses the prop on mount; reset with key'),
+      p('Lifting state up e componente controlado vs não controlado', 'Lifting state up and controlled vs uncontrolled components'),
+    ],
+    tools: ['useMemo', 'key', 'React docs: You Might Not Need an Effect'],
+    metrics: ['Renders por interação / renders per interaction'],
+  },
+  'react-devtools-debugging': {
+    points: [
+      p('Gravou no Profiler com "why each component rendered"', 'Recorded in the Profiler with "why each component rendered"'),
+      p('Leu commits, flamegraph e ranked', 'Read commits, flamegraph, and ranked views'),
+      p('Ligou o motivo do render à correção certa', 'Tied the render reason to the right fix'),
+      p('Aba Components: inspecionar/editar props, estado, hooks e highlight updates', 'Components tab: inspect/edit props, state, hooks, and highlight updates'),
+      p('Quando o problema está fora do React (aba Performance)', 'When the problem is outside React (Performance tab)'),
+      p('Redux DevTools, TanStack Query Devtools e medição em produção', 'Redux DevTools, TanStack Query Devtools, and production measurement'),
+    ],
+    tools: ['React DevTools', 'Profiler', 'Chrome Performance', 'Redux DevTools', 'TanStack Query Devtools', 'useDebugValue', '<Profiler onRender>'],
+    metrics: ['Duração do commit / commit duration', 'Re-renders por tecla / re-renders per keystroke', 'INP', 'Long tasks'],
+  },
 };
