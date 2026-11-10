@@ -224,4 +224,74 @@ About \`this\`: regular functions bind \`this\` by **how they are called**; arro
       en: 'Debounced search is common in ERP/e-commerce screens like the ones at Grupo Mysa. If you used it, name the screen and the reason (fewer API calls). If you cannot recall a specific case, explain the concept without inventing one.',
     },
   },
+  {
+    id: 'ts-shared-contract-zod',
+    cat: 'typescript', type: 'architecture', jobs: ['elastic', 'brainrocket', 'frontend'],
+    tags: ['monorepo', 'Zod', 'shared types', 'API contract', 'end-to-end type safety', 'OpenAPI'],
+    q: {
+      pt: 'Front em React e back em Node, ambos em TypeScript. Como você garante que o contrato da API não quebra entre os dois sem duplicar tipos?',
+      en: 'React frontend and Node backend, both in TypeScript. How do you keep the API contract from breaking between them without duplicating types?',
+    },
+    code: {
+      src: `
+// packages/contracts/src/trip.ts — fonte única: schema em runtime + tipo em compilação
+import { z } from 'zod';
+
+export const TripStatus = z.enum(['PENDING', 'APPROVED', 'REJECTED']);
+export const Trip = z.object({
+  id: z.string().uuid(),
+  title: z.string().min(1).max(120),
+  status: TripStatus,
+  costCents: z.number().int().nonnegative(),
+});
+export const CreateTripInput = Trip.pick({ title: true, costCents: true });
+
+export type Trip = z.infer<typeof Trip>;
+export type CreateTripInput = z.infer<typeof CreateTripInput>;
+
+// apps/api — valida a entrada com o MESMO schema
+app.post('/trips', (req, res) => {
+  const input = CreateTripInput.safeParse(req.body);
+  if (!input.success) return res.status(422).json(input.error.flatten());
+  // ...
+});
+
+// apps/web — tipa e valida a resposta (o servidor pode estar numa versão diferente)
+const trips = Trip.array().parse(await (await fetch('/api/trips')).json());`,
+    },
+    a: {
+      pt: `O problema: tipos do TypeScript somem em runtime e cada lado tem sua cópia. Quando o back muda um campo, o front só descobre em produção.
+
+Opções, da mais simples para a mais estruturada:
+
+- **Monorepo com pacote de contratos** (pnpm/npm workspaces, Turborepo, Nx): schemas **Zod** como fonte única. O back usa para validar a entrada; o front usa o tipo inferido e, se quiser, valida a resposta. Mudou o schema, os dois lados quebram no build.
+- **OpenAPI como contrato**: gerado a partir do código (decorators do Nest, \`zod-to-openapi\`) ou escrito primeiro; o cliente TypeScript é gerado (\`openapi-typescript\`, Orval). Funciona com back-ends em qualquer linguagem e com parceiros externos.
+- **tRPC**: tipagem ponta a ponta sem gerar nada, quando front e back são TS no mesmo repo e a API não é pública.
+- **GraphQL + Codegen**: o schema é o contrato e o Codegen gera tipos e hooks.
+
+Mesmo com tipos compartilhados, front e back são **implantados em momentos diferentes**: o contrato precisa evoluir de forma compatível (campos novos opcionais, nada removido sem depreciação) e contract tests ou checagem de diff do OpenAPI no CI pegam a quebra antes do deploy.`,
+      en: `The problem: TypeScript types vanish at runtime and each side has its own copy. When the backend changes a field, the frontend finds out in production.
+
+Options, from simplest to most structured:
+
+- **Monorepo with a contracts package** (pnpm/npm workspaces, Turborepo, Nx): **Zod** schemas as the single source. The backend validates input with them; the frontend uses the inferred type and can validate responses. Change the schema and both sides fail at build time.
+- **OpenAPI as the contract**: generated from code (Nest decorators, \`zod-to-openapi\`) or written first; the TypeScript client is generated (\`openapi-typescript\`, Orval). It works with backends in any language and with external partners.
+- **tRPC**: end-to-end types without code generation, when frontend and backend are TS in the same repo and the API is not public.
+- **GraphQL + Codegen**: the schema is the contract and Codegen generates types and hooks.
+
+Even with shared types, frontend and backend **deploy at different times**: the contract must evolve compatibly (new optional fields, nothing removed without deprecation), and contract tests or an OpenAPI diff check in CI catch breakage before deploy.`,
+    },
+    follow: [
+      { pt: 'Por que validar a resposta no front se o tipo já é compartilhado?', en: 'Why validate the response on the frontend if the type is already shared?' },
+      { pt: 'tRPC ou OpenAPI para uma API que parceiros também vão consumir?', en: 'tRPC or OpenAPI for an API that partners will also consume?' },
+    ],
+    flags: {
+      pt: 'Copiar e colar as interfaces entre os dois projetos. Ou achar que tipo compartilhado dispensa versionamento.',
+      en: 'Copy-pasting interfaces between the two projects. Or believing shared types remove the need for versioning.',
+    },
+    anchor: {
+      pt: 'GEMP tem back em Go e front em React/TS: lá o contrato atravessa linguagens, o que é o caso de OpenAPI ou validação no front. Na Sicoob e no Grupo Mysa, front em React/TS falando com APIs em Laravel é o mesmo problema. Cite como você evitou (ou sofreu com) quebras de contrato.',
+      en: 'GEMP has a Go backend and a React/TS frontend: the contract crosses languages there, which is the OpenAPI or frontend-validation case. At Sicoob and Grupo Mysa, React/TS frontends talking to Laravel APIs are the same problem. Mention how you avoided (or suffered from) contract breaks.',
+    },
+  },
 ];

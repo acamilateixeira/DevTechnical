@@ -265,4 +265,172 @@ The senior caveat: keep business rules out of controllers and do not couple the 
       en: 'Laravel has a service container, service providers, middleware, form requests (≈ pipes), and policies/gates (≈ guards). ASP.NET (which you used at Sicoob) has built-in DI and filters. Ready line: "Nest\'s lifecycle maps almost one-to-one to Laravel and ASP.NET, which I have used for years."',
     },
   },
+  {
+    id: 'nest-guard-decorator-test',
+    cat: 'node', type: 'code', jobs: ['brainrocket'],
+    tags: ['NestJS', 'guards', 'custom decorator', 'Reflector', 'testing', 'RBAC'],
+    q: {
+      pt: 'Implemente no NestJS um guard de papéis com decorator `@Roles()` e escreva o teste unitário dele.',
+      en: 'Implement a NestJS roles guard with a `@Roles()` decorator and write its unit test.',
+    },
+    code: {
+      src: `
+// roles.decorator.ts
+export const ROLES_KEY = 'roles';
+export const Roles = (...roles: Role[]) => SetMetadata(ROLES_KEY, roles);
+
+// roles.guard.ts
+@Injectable()
+export class RolesGuard implements CanActivate {
+  constructor(private readonly reflector: Reflector) {}
+
+  canActivate(ctx: ExecutionContext): boolean {
+    const required = this.reflector.getAllAndOverride<Role[]>(ROLES_KEY, [
+      ctx.getHandler(),        // método tem prioridade
+      ctx.getClass(),          // depois o controller
+    ]);
+    if (!required?.length) return true;
+    const { user } = ctx.switchToHttp().getRequest();
+    if (!user) throw new UnauthorizedException();
+    return required.some((r) => user.roles.includes(r)); // false → 403 Forbidden
+  }
+}
+
+// roles.guard.spec.ts
+describe('RolesGuard', () => {
+  const reflector = new Reflector();
+  const guard = new RolesGuard(reflector);
+  const ctxFor = (user: unknown) => ({
+    getHandler: () => null, getClass: () => null,
+    switchToHttp: () => ({ getRequest: () => ({ user }) }),
+  }) as unknown as ExecutionContext;
+
+  it('allows routes without @Roles', () => {
+    jest.spyOn(reflector, 'getAllAndOverride').mockReturnValue(undefined);
+    expect(guard.canActivate(ctxFor({ roles: [] }))).toBe(true);
+  });
+  it('denies a user without the role', () => {
+    jest.spyOn(reflector, 'getAllAndOverride').mockReturnValue(['manager']);
+    expect(guard.canActivate(ctxFor({ roles: ['employee'] }))).toBe(false);
+  });
+  it('throws 401 when there is no user', () => {
+    jest.spyOn(reflector, 'getAllAndOverride').mockReturnValue(['manager']);
+    expect(() => guard.canActivate(ctxFor(undefined))).toThrow(UnauthorizedException);
+  });
+});`,
+    },
+    a: {
+      pt: `**Decorator** grava metadados na rota com \`SetMetadata\`; o **guard** lê com o \`Reflector\`. \`getAllAndOverride\` faz o decorator do método sobrescrever o do controller. O guard roda depois da autenticação (o \`JwtAuthGuard\` coloca \`request.user\`), na ordem em que aparecem em \`@UseGuards\`, ou pode ser global com \`APP_GUARD\`.
+
+Distinção importante: sem usuário → **401** (não autenticado); usuário sem papel → **403** (não autorizado). Retornar \`false\` gera 403.
+
+**Teste**: guard é uma classe comum, então testo sem subir o Nest, com um \`ExecutionContext\` falso. Cubro rota sem papéis, usuário com papel, usuário sem papel e sem usuário. Depois, um teste e2e com \`Test.createTestingModule\` + supertest confirma a integração com as rotas reais.
+
+Limite do RBAC: papéis não resolvem regras contextuais ("o gestor só aprova viagens do próprio centro de custo"). Essas ficam no caso de uso ou numa policy (CASL), porque dependem do recurso, não só do usuário.`,
+      en: `The **decorator** writes route metadata with \`SetMetadata\`; the **guard** reads it with \`Reflector\`. \`getAllAndOverride\` lets the method's decorator override the controller's. The guard runs after authentication (the \`JwtAuthGuard\` sets \`request.user\`), in the order listed in \`@UseGuards\`, or globally via \`APP_GUARD\`.
+
+Key distinction: no user → **401** (unauthenticated); user without the role → **403** (forbidden). Returning \`false\` produces a 403.
+
+**Testing**: a guard is a plain class, so I test it without booting Nest, using a fake \`ExecutionContext\`. I cover a route without roles, a user with the role, a user without it, and no user. Then an e2e test with \`Test.createTestingModule\` + supertest confirms integration with the real routes.
+
+RBAC's limit: roles do not handle contextual rules ("a manager only approves trips from their own cost center"). Those live in the use case or a policy (CASL), because they depend on the resource, not just the user.`,
+    },
+    follow: [
+      { pt: 'Como você faria esse guard funcionar também em resolvers GraphQL?', en: 'How would you make this guard also work for GraphQL resolvers?' },
+      { pt: 'Guard ou middleware para autenticação? Por quê?', en: 'Guard or middleware for authentication? Why?' },
+    ],
+    flags: {
+      pt: 'Checar papel dentro de cada controller com `if`. Ou confundir 401 com 403.',
+      en: 'Checking roles inside every controller with an `if`. Or mixing up 401 and 403.',
+    },
+    anchor: {
+      pt: 'No Laravel você usa middleware de rota e Policies/Gates, que são o mesmo conceito. Diga: "no Laravel faço isso com Policies e middleware `can:`; no Nest o equivalente é guard + decorator com Reflector". A separação entre papel e regra contextual aparece no TripFlow (aprovação depende do centro de custo).',
+      en: 'In Laravel you use route middleware and Policies/Gates, which are the same concept. Say: "in Laravel I do this with Policies and `can:` middleware; in Nest the equivalent is a guard + decorator with Reflector". The split between role and contextual rule shows up in TripFlow (approval depends on the cost center).',
+    },
+  },
+  {
+    id: 'nest-microservices-rabbitmq',
+    cat: 'node', type: 'lib', jobs: ['brainrocket'],
+    tags: ['NestJS', 'microservices', 'RabbitMQ', 'MessagePattern', 'EventPattern', 'transport'],
+    q: {
+      pt: 'Como o NestJS trabalha com microsserviços e RabbitMQ? Qual a diferença entre `@MessagePattern` e `@EventPattern`?',
+      en: 'How does NestJS handle microservices and RabbitMQ? What is the difference between `@MessagePattern` and `@EventPattern`?',
+    },
+    code: {
+      src: `
+// main.ts do serviço de notificações
+const app = await NestFactory.createMicroservice<MicroserviceOptions>(NotificationsModule, {
+  transport: Transport.RMQ,
+  options: {
+    urls: [process.env.RABBITMQ_URL],
+    queue: 'notifications',
+    queueOptions: { durable: true },
+    noAck: false,                 // ack manual
+    prefetchCount: 10,
+  },
+});
+
+@Controller()
+export class NotificationsController {
+  @EventPattern('trip.approved')                       // evento: fire-and-forget
+  async onTripApproved(@Payload() e: TripApproved, @Ctx() ctx: RmqContext) {
+    const channel = ctx.getChannelRef();
+    const msg = ctx.getMessage();
+    try {
+      await this.notify.tripApproved(e);               // idempotente por e.eventId
+      channel.ack(msg);
+    } catch (err) {
+      channel.nack(msg, false, false);                 // vai para a DLQ configurada
+    }
+  }
+
+  @MessagePattern('quote.calculate')                   // request-response
+  calculate(@Payload() dto: QuoteRequest) {
+    return this.quotes.calculate(dto);                 // resposta volta ao chamador
+  }
+}
+
+// lado do produtor
+this.client.emit('trip.approved', event);              // não espera
+const quote = await firstValueFrom(this.client.send('quote.calculate', dto).pipe(timeout(2000)));`,
+    },
+    a: {
+      pt: `O Nest abstrai o transporte (TCP, Redis, NATS, RabbitMQ, Kafka, gRPC) com a mesma API de controllers e decorators. Um serviço pode ser só microsserviço ou híbrido (HTTP + consumidor) com \`connectMicroservice\`.
+
+- **\`@EventPattern\`** + \`client.emit\`: **evento**, fire-and-forget. O produtor não espera resposta. É o padrão para integração assíncrona entre serviços (\`trip.approved\`).
+- **\`@MessagePattern\`** + \`client.send\`: **request-response** sobre o broker; devolve um Observable com a resposta. Útil, mas recria acoplamento síncrono: sempre com \`timeout\` e pensando no que acontece se o outro lado estiver fora.
+
+Cuidados de produção que o Nest não resolve sozinho:
+
+- \`noAck: false\` e ack/nack manual, com DLQ e retry com backoff configurados no RabbitMQ.
+- Consumidor **idempotente** (at-least-once).
+- Publicar a partir de uma **outbox**, não direto depois do commit.
+- Contratos versionados dos eventos (schema compartilhado, compatível para trás).
+- O transporte RMQ padrão do Nest usa uma fila por serviço; para roteamento por topic exchange e padrões avançados, muitos times usam \`@golevelup/nestjs-rabbitmq\`.`,
+      en: `Nest abstracts the transport (TCP, Redis, NATS, RabbitMQ, Kafka, gRPC) behind the same controller and decorator API. A service can be microservice-only or hybrid (HTTP + consumer) via \`connectMicroservice\`.
+
+- **\`@EventPattern\`** + \`client.emit\`: an **event**, fire-and-forget. The producer does not wait for a reply. This is the pattern for async integration between services (\`trip.approved\`).
+- **\`@MessagePattern\`** + \`client.send\`: **request-response** over the broker; returns an Observable with the reply. Useful, but it brings back synchronous coupling: always use a \`timeout\` and think about what happens when the other side is down.
+
+Production concerns Nest does not solve for you:
+
+- \`noAck: false\` and manual ack/nack, with a DLQ and backoff retries configured in RabbitMQ.
+- An **idempotent** consumer (at-least-once).
+- Publishing from an **outbox**, not right after commit.
+- Versioned event contracts (shared schema, backward compatible).
+- Nest's default RMQ transport uses one queue per service; for topic-exchange routing and advanced patterns, many teams use \`@golevelup/nestjs-rabbitmq\`.`,
+    },
+    follow: [
+      { pt: 'Como você rastrearia uma requisição que passa por HTTP e depois por duas filas?', en: 'How would you trace a request that goes through HTTP and then two queues?' },
+      { pt: 'O que acontece com `client.send` se o serviço consumidor estiver fora do ar?', en: 'What happens to `client.send` if the consuming service is down?' },
+    ],
+    flags: {
+      pt: 'Usar `send` (request-response) para tudo e chamar isso de arquitetura orientada a eventos.',
+      en: 'Using `send` (request-response) for everything and calling it event-driven architecture.',
+    },
+    anchor: {
+      pt: 'A parte difícil você já resolveu no TripFlow (outbox, relay, RabbitMQ, consumidor deduplicando por ID). Frase pronta: "O transporte do Nest é a parte fácil; a garantia de entrega e a idempotência eu implementei no TripFlow e levaria para o Nest do mesmo jeito".',
+      en: 'You already solved the hard part in TripFlow (outbox, relay, RabbitMQ, consumer deduplicating by ID). Ready line: "Nest\'s transport is the easy part; delivery guarantees and idempotency I implemented in TripFlow and would carry into Nest the same way".',
+    },
+  },
 ];

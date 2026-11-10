@@ -223,4 +223,165 @@ Other concerns: heartbeats/pings to detect dead connections, reconnection with e
       en: 'Legacy modernization at Grupo Mysa and Sicoob is exactly evolving without breaking existing users. Your portfolio says you understand the rule old code protects before changing it and ship in small steps. Use a real ERP/e-commerce integration you evolved without stopping operations.',
     },
   },
+  {
+    id: 'graphql-schema-apollo-server',
+    cat: 'api', type: 'code', jobs: ['brainrocket'],
+    tags: ['GraphQL', 'Apollo Server', 'schema design', 'connections', 'errors', 'authorization'],
+    q: {
+      pt: 'Desenhe o schema GraphQL de viagens com paginação, uma mutation de aprovação e tratamento de erros. Onde fica a autorização?',
+      en: 'Design a GraphQL schema for trips with pagination, an approval mutation, and error handling. Where does authorization live?',
+    },
+    code: {
+      src: `
+type Trip { id: ID!  title: String!  status: TripStatus!  costCents: Int!  requester: User! }
+enum TripStatus { PENDING APPROVED REJECTED }
+
+type TripEdge { cursor: String!  node: Trip! }
+type PageInfo { endCursor: String  hasNextPage: Boolean! }
+type TripConnection { edges: [TripEdge!]!  pageInfo: PageInfo! }
+
+type Query {
+  trips(first: Int = 20, after: String, status: TripStatus): TripConnection!
+}
+
+# Erros de negócio como parte do contrato (union), não exceções genéricas
+type ApproveTripSuccess { trip: Trip! }
+type BudgetExceeded { message: String!  remainingCents: Int! }
+type NotAllowed { message: String! }
+union ApproveTripResult = ApproveTripSuccess | BudgetExceeded | NotAllowed
+
+type Mutation {
+  approveTrip(id: ID!): ApproveTripResult!
+}
+
+// resolver: fino, delega ao caso de uso, que aplica autorização e regra
+const resolvers = {
+  Mutation: {
+    approveTrip: (_p, { id }, ctx) => ctx.useCases.approveTrip.execute(id, ctx.user),
+  },
+  ApproveTripResult: { __resolveType: (r) => r.kind },
+};`,
+    },
+    a: {
+      pt: `**Schema primeiro**, pensado para os casos de uso do cliente, não como espelho das tabelas.
+
+- **Paginação** no padrão *connection* (Relay): \`edges\`, \`cursor\`, \`pageInfo\`. Cursor opaco, baseado em keyset, para ser estável.
+- **Nullability com intenção**: \`!\` só onde o campo sempre existe; um campo nulo por falha parcial não derruba a resposta inteira.
+- **Erros**: falhas técnicas vão em \`errors\` com \`extensions.code\` (ex.: \`UNAUTHENTICATED\`); erros de **negócio** esperados entram no schema como union de resultados, para o cliente tratar com tipagem.
+- **Mutations** com nome de intenção (\`approveTrip\`, não \`updateTrip(status:)\`), com input e payload próprios.
+- **Evolução**: adicionar campos é seguro; remover exige \`@deprecated\` e métricas de uso por campo (o Apollo Studio/GraphOS mostra isso).
+
+**Autorização** fica na camada de **negócio** (caso de uso ou serviço), não espalhada nos resolvers: o resolver só repassa \`ctx.user\`. Assim a mesma regra vale para REST, GraphQL e jobs. A autenticação acontece antes, na criação do context. Para campos sensíveis, uma diretiva (\`@auth\`) ajuda, mas não substitui a regra no domínio.
+
+Proteções de produção: limite de profundidade e complexidade, persisted queries, desabilitar introspection em produção pública, DataLoader por requisição.`,
+      en: `**Schema first**, designed around client use cases, not as a mirror of the tables.
+
+- **Pagination** with the Relay *connection* pattern: \`edges\`, \`cursor\`, \`pageInfo\`. An opaque, keyset-based cursor so it stays stable.
+- **Intentional nullability**: \`!\` only where the field always exists; a field that is null because of a partial failure does not bring down the whole response.
+- **Errors**: technical failures go in \`errors\` with \`extensions.code\` (e.g. \`UNAUTHENTICATED\`); expected **business** errors live in the schema as a result union, so clients handle them with types.
+- **Mutations** named for intent (\`approveTrip\`, not \`updateTrip(status:)\`), with their own input and payload.
+- **Evolution**: adding fields is safe; removing them requires \`@deprecated\` and per-field usage metrics (Apollo Studio/GraphOS shows these).
+
+**Authorization** lives in the **business layer** (use case or service), not scattered across resolvers: the resolver just passes \`ctx.user\` along. That way the same rule applies to REST, GraphQL, and jobs. Authentication happens earlier, when building the context. For sensitive fields an \`@auth\` directive helps, but it does not replace the domain rule.
+
+Production safeguards: depth and complexity limits, persisted queries, introspection disabled on public production, and a per-request DataLoader.`,
+    },
+    follow: [
+      { pt: 'Como você faria subscriptions para atualizar o status da viagem em tempo real?', en: 'How would you do subscriptions to push trip status updates in real time?' },
+      { pt: 'O que é Apollo Federation e quando faria sentido?', en: 'What is Apollo Federation and when would it make sense?' },
+    ],
+    flags: {
+      pt: 'Gerar o schema direto do banco e expor todas as colunas. Ou checar permissão só no front.',
+      en: 'Generating the schema straight from the database and exposing every column. Or checking permissions only on the frontend.',
+    },
+    anchor: {
+      pt: 'O modelo de viagens e aprovação é o do TripFlow (REST em Laravel). Mostre que você sabe expor o mesmo domínio em GraphQL mantendo a regra no caso de uso. Se fizer uma camada GraphQL sobre o TripFlow ou um BFF no PulseOps, isso vira evidência real.',
+      en: 'The trips-and-approval model is TripFlow\'s (REST in Laravel). Show you can expose the same domain in GraphQL while keeping the rule in the use case. Building a GraphQL layer over TripFlow or a BFF in PulseOps would turn this into real evidence.',
+    },
+  },
+  {
+    id: 'socketio-auth-redis-adapter',
+    cat: 'api', type: 'code', jobs: ['brainrocket'],
+    tags: ['Socket.IO', 'WebSockets', 'Redis adapter', 'rooms', 'authentication', 'horizontal scaling'],
+    q: {
+      pt: 'Implemente um servidor Socket.IO que autentica no handshake, coloca o usuário na sala da empresa e funciona com várias instâncias.',
+      en: 'Implement a Socket.IO server that authenticates at the handshake, puts the user in their company room, and works across multiple instances.',
+    },
+    code: {
+      src: `
+import { Server } from 'socket.io';
+import { createAdapter } from '@socket.io/redis-adapter';
+import { createClient } from 'redis';
+
+const pub = createClient({ url: process.env.REDIS_URL });
+const sub = pub.duplicate();
+await Promise.all([pub.connect(), sub.connect()]);
+
+const io = new Server(httpServer, {
+  adapter: createAdapter(pub, sub),          // eventos atravessam todas as instâncias
+  cors: { origin: ['https://app.example.com'], credentials: true },
+  connectionStateRecovery: { maxDisconnectionDuration: 2 * 60_000 }, // recupera eventos perdidos
+});
+
+io.use(async (socket, next) => {
+  try {
+    const token = socket.handshake.auth?.token;
+    socket.data.user = await verifyAccessToken(token);   // assinatura, exp, aud
+    next();
+  } catch {
+    next(new Error('unauthorized'));
+  }
+});
+
+io.on('connection', (socket) => {
+  const { companyId, id } = socket.data.user;
+  socket.join(\`company:\${companyId}\`);              // sala decidida pelo servidor, nunca pelo cliente
+
+  socket.on('trip:watch', async (tripId, ack) => {
+    if (!(await canView(socket.data.user, tripId))) return ack({ ok: false });
+    socket.join(\`trip:\${tripId}\`);
+    ack({ ok: true });
+  });
+});
+
+// em qualquer instância, depois do commit (ex.: consumidor do RabbitMQ)
+export function notifyTripApproved(trip) {
+  io.to(\`company:\${trip.companyId}\`).emit('trip:approved', { id: trip.id });
+}`,
+    },
+    a: {
+      pt: `Pontos que o código mostra:
+
+- **Autenticação no handshake** com middleware \`io.use\`: token validado antes de aceitar a conexão; o usuário fica em \`socket.data\`.
+- **Autorização por sala**: o servidor decide em quais salas o socket entra, com base no usuário autenticado. Um pedido para assistir uma viagem é checado antes do \`join\`.
+- **Escala horizontal** com o **Redis adapter**: um \`emit\` numa instância é publicado no Redis e entregue pelos nós que têm sockets naquela sala. Se usar fallback de long-polling, o load balancer precisa de sticky sessions.
+- **Recuperação**: \`connectionStateRecovery\` reenvia eventos perdidos em quedas curtas; para quedas longas, o cliente refaz a consulta do estado atual (fonte da verdade é a API, o socket só avisa).
+- **Emitir depois do commit**, idealmente a partir de um consumidor de eventos, para não avisar sobre algo que fez rollback.
+- **ack** para o cliente saber que o servidor processou o pedido.
+
+Também: limite de eventos por conexão (rate limit), validação do payload de cada evento, heartbeat (já embutido no Socket.IO) e métricas de conexões ativas por instância.`,
+      en: `What the code shows:
+
+- **Handshake authentication** with \`io.use\` middleware: the token is validated before accepting the connection; the user lives in \`socket.data\`.
+- **Room-level authorization**: the server decides which rooms a socket joins, based on the authenticated user. A request to watch a trip is checked before \`join\`.
+- **Horizontal scaling** with the **Redis adapter**: an \`emit\` on one instance is published to Redis and delivered by the nodes holding sockets in that room. With a long-polling fallback, the load balancer needs sticky sessions.
+- **Recovery**: \`connectionStateRecovery\` replays missed events after short drops; after long drops, the client refetches current state (the API is the source of truth; the socket only notifies).
+- **Emit after commit**, ideally from an event consumer, so you never announce something that rolled back.
+- **acks** so the client knows the server processed the request.
+
+Also: per-connection event limits (rate limiting), payload validation for each event, heartbeats (built into Socket.IO), and metrics for active connections per instance.`,
+    },
+    follow: [
+      { pt: 'Por que não confiar no `companyId` enviado pelo cliente para entrar na sala?', en: 'Why not trust a client-sent `companyId` to join the room?' },
+      { pt: 'Como você testaria esse servidor?', en: 'How would you test this server?' },
+    ],
+    flags: {
+      pt: 'Aceitar `socket.emit("join", roomName)` do cliente sem checar permissão. Ou emitir dentro da transação do banco.',
+      en: 'Accepting `socket.emit("join", roomName)` from the client without a permission check. Or emitting inside the database transaction.',
+    },
+    anchor: {
+      pt: 'Conecte com o que você já fez: no Bora o Realtime do Supabase aplica as políticas do PostgreSQL ao que cada usuário recebe (mesma ideia de autorização por canal); no TripFlow os eventos saem depois do commit via outbox. Socket.IO em si é lacuna: diga isso.',
+      en: 'Connect it to what you have done: in Bora, Supabase Realtime applies PostgreSQL policies to what each user receives (same idea as per-channel authorization); in TripFlow events leave after commit via the outbox. Socket.IO itself is a gap: say so.',
+    },
+  },
 ];

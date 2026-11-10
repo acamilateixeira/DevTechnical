@@ -236,4 +236,129 @@ Other Redis uses: rate limiting, sessions, queues (BullMQ), pub/sub, leaderboard
       en: 'TripFlow: the Redis lock coordinates concurrent booking calls, but the final guarantee lives in MySQL and the Idempotency-Key. That shows exactly the "lock coordinates, database guarantees" nuance. Very strong for BrainRocket, which asks for Redis.',
     },
   },
+  {
+    id: 'mongo-aggregation-esr',
+    cat: 'data', type: 'code', jobs: ['brainrocket'],
+    tags: ['MongoDB', 'aggregation pipeline', 'indexes', 'ESR rule', 'explain', '$lookup'],
+    q: {
+      pt: 'No MongoDB, escreva uma agregação com o total gasto por centro de custo no mês, só de viagens aprovadas, e diga que índice criaria.',
+      en: 'In MongoDB, write an aggregation for total spend per cost center this month, only for approved trips, and say which index you would create.',
+    },
+    code: {
+      src: `
+db.trips.aggregate([
+  { $match: {                                     // primeiro: filtra usando índice
+      companyId: ObjectId('...'),
+      status: 'APPROVED',
+      approvedAt: { $gte: ISODate('2026-11-01'), $lt: ISODate('2026-12-01') },
+  } },
+  { $group: {
+      _id: '$costCenterId',
+      totalCents: { $sum: '$costCents' },
+      trips: { $sum: 1 },
+  } },
+  { $sort: { totalCents: -1 } },
+  { $limit: 20 },
+  { $lookup: {                                    // só depois de reduzir: 20 lookups, não 20 mil
+      from: 'costCenters', localField: '_id', foreignField: '_id', as: 'costCenter',
+  } },
+  { $unwind: '$costCenter' },
+  { $project: { _id: 0, name: '$costCenter.name', totalCents: 1, trips: 1 } },
+]);
+
+// Regra ESR: Equality → Sort → Range
+db.trips.createIndex({ companyId: 1, status: 1, approvedAt: 1 });
+
+db.trips.explain('executionStats').aggregate([...]); // IXSCAN, não COLLSCAN; docs examinados ≈ retornados`,
+    },
+    a: {
+      pt: `O **aggregation pipeline** processa documentos em estágios, como um pipe. A ordem importa para performance:
+
+1. \`$match\` (e \`$sort\` se houver) **no início**, para usar índice e reduzir o volume cedo.
+2. \`$group\` para agregar (\`$sum\`, \`$avg\`, \`$push\`).
+3. \`$sort\` + \`$limit\` juntos (o Mongo otimiza para top-N).
+4. \`$lookup\` (o "join") **depois** de reduzir, porque ele roda por documento.
+5. \`$project\` para devolver só o necessário.
+
+**Índice** pela regra **ESR**: campos de **igualdade** primeiro (\`companyId\`, \`status\`), depois os de **ordenação**, depois os de **intervalo** (\`approvedAt\`). É o mesmo raciocínio do índice composto em SQL.
+
+Valido com \`explain('executionStats')\`: quero \`IXSCAN\` em vez de \`COLLSCAN\` e \`totalDocsExamined\` próximo de \`nReturned\`. Limites a lembrar: cada estágio tem limite de 100 MB de memória (\`allowDiskUse\` para passar, com custo), e o documento final tem limite de 16 MB.
+
+Se esse relatório roda o tempo todo, a alternativa é manter um agregado pré-calculado (contador por centro de custo atualizado por evento) ou mandar para um banco analítico, em vez de agregar milhões de documentos a cada tela.`,
+      en: `The **aggregation pipeline** processes documents in stages, like a pipe. Order matters for performance:
+
+1. \`$match\` (and \`$sort\`, if any) **first**, to use an index and shrink volume early.
+2. \`$group\` to aggregate (\`$sum\`, \`$avg\`, \`$push\`).
+3. \`$sort\` + \`$limit\` together (Mongo optimizes top-N).
+4. \`$lookup\` (the "join") **after** reducing, because it runs per document.
+5. \`$project\` to return only what is needed.
+
+**Index** by the **ESR** rule: **equality** fields first (\`companyId\`, \`status\`), then **sort** fields, then **range** fields (\`approvedAt\`). Same reasoning as a composite SQL index.
+
+I validate with \`explain('executionStats')\`: I want \`IXSCAN\` instead of \`COLLSCAN\` and \`totalDocsExamined\` close to \`nReturned\`. Limits to remember: each stage has a 100 MB memory cap (\`allowDiskUse\` to go past it, at a cost), and the final document is capped at 16 MB.
+
+If this report runs constantly, the alternative is a precomputed aggregate (a per-cost-center counter updated by events) or an analytics store, instead of aggregating millions of documents on every page load.`,
+    },
+    follow: [
+      { pt: 'Como fica a mesma consulta em SQL?', en: 'What does the same query look like in SQL?' },
+      { pt: 'Por que um `$lookup` no começo do pipeline é perigoso?', en: 'Why is a `$lookup` at the start of the pipeline dangerous?' },
+    ],
+    flags: {
+      pt: 'Colocar `$lookup` antes do `$match`. Ou não saber que agregação também precisa de índice.',
+      en: 'Putting `$lookup` before `$match`. Or not knowing aggregations need indexes too.',
+    },
+    anchor: {
+      pt: 'MongoDB é lacuna. A ponte honesta e forte: a mesma lógica de índice composto e de filtrar antes de juntar que você aplica em SQL (MySQL, SQL Server, Oracle, PostgreSQL). Responda primeiro em SQL, que você domina, e depois traduza para o pipeline.',
+      en: 'MongoDB is a gap. The honest, strong bridge: the same composite-index and filter-before-join logic you apply in SQL (MySQL, SQL Server, Oracle, PostgreSQL). Answer in SQL first, which you master, then translate to the pipeline.',
+    },
+  },
+  {
+    id: 'mongo-replication-consistency',
+    cat: 'data', type: 'concept', jobs: ['brainrocket'],
+    tags: ['MongoDB', 'replica set', 'write concern', 'read concern', 'sharding', 'shard key', 'transactions'],
+    q: {
+      pt: 'Explique replica set, write concern, read concern e sharding no MongoDB. Como você escolhe a shard key?',
+      en: 'Explain replica sets, write concern, read concern, and sharding in MongoDB. How do you choose a shard key?',
+    },
+    a: {
+      pt: `**Replica set**: um primário recebe as escritas e secundários replicam pelo oplog. Se o primário cai, uma eleição promove um secundário (failover automático). Serve para **disponibilidade**, não para escalar escrita.
+
+**Write concern** define quando a escrita é confirmada: \`w: 1\` (só o primário, rápido, pode perder dados num failover) ou \`w: 'majority'\` (maioria dos nós, sobrevive ao failover; padrão atual). \`j: true\` exige escrita no journal.
+
+**Read concern / read preference**: \`readConcern: 'majority'\` só lê dados confirmados pela maioria (não volta atrás após failover). Ler de secundários (\`secondaryPreferred\`) alivia o primário, mas pode trazer dado **desatualizado**: não serve para "ler o que acabei de escrever" sem sessões causalmente consistentes.
+
+**Sharding** escala horizontalmente: os dados são divididos por uma **shard key** entre vários replica sets, e o \`mongos\` roteia as consultas. Boa shard key tem:
+
+- **alta cardinalidade** e **distribuição uniforme** (sem shard quente);
+- presença na maioria das consultas, para elas irem a um shard só (consultas sem a chave viram scatter-gather em todos);
+- não ser monotônica (um \`_id\` ou data crescente manda todas as escritas para o último shard; usar hashed ou chave composta como \`{ companyId, createdAt }\`).
+
+Trocar a shard key depois é caro (há resharding nas versões recentes, mas é uma operação pesada), então ela é decidida pelo padrão de acesso desde o início. **Transações** multi-documento existem, inclusive entre shards, mas têm custo de latência.`,
+      en: `**Replica set**: a primary takes writes and secondaries replicate via the oplog. If the primary fails, an election promotes a secondary (automatic failover). It is for **availability**, not for scaling writes.
+
+**Write concern** sets when a write is acknowledged: \`w: 1\` (primary only, fast, may lose data on failover) or \`w: 'majority'\` (a majority of nodes, survives failover; the current default). \`j: true\` requires a journal write.
+
+**Read concern / read preference**: \`readConcern: 'majority'\` only reads data acknowledged by a majority (it will not roll back after failover). Reading from secondaries (\`secondaryPreferred\`) offloads the primary but can return **stale** data: it does not give you "read your own writes" without causally consistent sessions.
+
+**Sharding** scales horizontally: data is split across several replica sets by a **shard key**, and \`mongos\` routes queries. A good shard key has:
+
+- **high cardinality** and **even distribution** (no hot shard);
+- presence in most queries, so they hit a single shard (queries without it become scatter-gather across all shards);
+- no monotonic growth (an increasing \`_id\` or date sends every write to the last shard; use hashed or a compound key like \`{ companyId, createdAt }\`).
+
+Changing the shard key later is expensive (recent versions support resharding, but it is heavy), so it is chosen from access patterns up front. Multi-document **transactions** exist, including across shards, but they cost latency.`,
+    },
+    follow: [
+      { pt: 'Em multi-tenant, `companyId` sozinho é uma boa shard key? E se um cliente for gigante?', en: 'In multi-tenancy, is `companyId` alone a good shard key? What if one customer is huge?' },
+      { pt: 'Qual o equivalente disso em MySQL (réplicas de leitura, replication lag)?', en: 'What is the MySQL equivalent (read replicas, replication lag)?' },
+    ],
+    flags: {
+      pt: 'Dizer que replica set escala escrita. Ou escolher data de criação como shard key.',
+      en: 'Saying a replica set scales writes. Or picking creation date as the shard key.',
+    },
+    anchor: {
+      pt: 'Sem experiência com Mongo em produção, apoie-se no que conhece: réplicas e consistência você vê em bancos relacionais gerenciados (AWS/Azure), e a pergunta do tenant grande conversa com o escopo por empresa do TripFlow. Diga claramente que é estudo.',
+      en: 'Without production Mongo experience, lean on what you know: replicas and consistency in managed relational databases (AWS/Azure), and the huge-tenant follow-up connects to TripFlow\'s company scoping. State clearly that this is study.',
+    },
+  },
 ];

@@ -345,4 +345,300 @@ Plus: WCAG AA contrast (4.5:1 for text), visible focus, never relying on color a
       en: 'Your portfolio has a "skip to content" link plus navigation and language labels (`skip`, `navLabel`, `language` in copy.ts): show it. DevTechnical also uses `aria-pressed`, `aria-live`, and visible focus.',
     },
   },
+  {
+    id: 'apollo-client-cache',
+    cat: 'react', type: 'lib', jobs: ['brainrocket'],
+    tags: ['Apollo Client', 'normalized cache', 'fetchPolicy', 'optimistic response', 'cache update'],
+    q: {
+      pt: 'Como funciona o cache normalizado do Apollo Client? Depois de aprovar uma viagem, como a lista na tela se atualiza sem refetch?',
+      en: "How does Apollo Client's normalized cache work? After approving a trip, how does the on-screen list update without a refetch?",
+    },
+    code: {
+      src: `
+const APPROVE = gql\`
+  mutation Approve($id: ID!) {
+    approveTrip(id: $id) {
+      ... on ApproveTripSuccess { trip { id status } }   # id + campo alterado → cache se atualiza
+      ... on BudgetExceeded { message remainingCents }
+    }
+  }\`;
+
+const [approve] = useMutation(APPROVE, {
+  optimisticResponse: ({ id }) => ({
+    approveTrip: { __typename: 'ApproveTripSuccess', trip: { __typename: 'Trip', id, status: 'APPROVED' } },
+  }),
+  // a viagem precisa sair da lista "pendentes": isso o cache não adivinha
+  update(cache, { data }) {
+    const trip = data?.approveTrip?.trip;
+    if (!trip) return;
+    cache.modify({
+      fields: {
+        trips(existing, { readField }) {
+          return { ...existing, edges: existing.edges.filter((e) => readField('id', e.node) !== trip.id) };
+        },
+      },
+    });
+  },
+});
+
+const { data } = useQuery(TRIPS, { variables: { status: 'PENDING' }, fetchPolicy: 'cache-and-network' });`,
+    },
+    a: {
+      pt: `O Apollo **normaliza** a resposta: cada objeto vira uma entrada única no cache, identificada por \`__typename\` + \`id\` (ex.: \`Trip:42\`). Consultas guardam referências. Se uma mutation devolve \`Trip:42\` com \`status\` novo, **todas** as telas que mostram essa viagem re-renderizam sozinhas.
+
+O que o cache **não** sabe: que um item deve entrar ou sair de uma **lista** (uma viagem aprovada deixa de ser pendente, um item criado deve aparecer). Para isso: \`update\` com \`cache.modify\`/\`writeQuery\`, \`refetchQueries\` (simples, mas faz requisição) ou \`typePolicies\` com \`merge\` para paginação.
+
+- **optimisticResponse**: a UI muda na hora; se a mutation falhar, o Apollo desfaz.
+- **fetchPolicy**: \`cache-first\` (padrão), \`cache-and-network\` (mostra o cache e revalida), \`network-only\`, \`no-cache\`.
+- **typePolicies**: \`keyFields\` quando o id tem outro nome e \`merge\` para concatenar páginas de \`trips\`.
+
+Comparando com TanStack Query: o Apollo atualiza por **entidade** automaticamente; o TanStack trabalha por **chave de consulta** e você invalida as chaves afetadas. O segundo é mais simples de raciocinar, o primeiro evita refetches.`,
+      en: `Apollo **normalizes** responses: each object becomes a single cache entry identified by \`__typename\` + \`id\` (e.g. \`Trip:42\`). Queries store references. If a mutation returns \`Trip:42\` with a new \`status\`, **every** screen showing that trip re-renders on its own.
+
+What the cache does **not** know: that an item should enter or leave a **list** (an approved trip is no longer pending, a created item should appear). For that: \`update\` with \`cache.modify\`/\`writeQuery\`, \`refetchQueries\` (simple, but makes a request), or \`typePolicies\` with \`merge\` for pagination.
+
+- **optimisticResponse**: the UI changes immediately; if the mutation fails, Apollo rolls it back.
+- **fetchPolicy**: \`cache-first\` (default), \`cache-and-network\` (show cache and revalidate), \`network-only\`, \`no-cache\`.
+- **typePolicies**: \`keyFields\` when the id has another name, and \`merge\` to concatenate pages of \`trips\`.
+
+Compared with TanStack Query: Apollo updates per **entity** automatically; TanStack works per **query key** and you invalidate the affected keys. The latter is simpler to reason about; the former avoids refetches.`,
+    },
+    follow: [
+      { pt: 'O que acontece se a query não pedir o campo `id`?', en: 'What happens if the query does not request the `id` field?' },
+      { pt: 'Como você tipa as queries do Apollo em TypeScript? (GraphQL Codegen)', en: 'How do you type Apollo queries in TypeScript? (GraphQL Codegen)' },
+    ],
+    flags: {
+      pt: '"Dou refetch em tudo depois de cada mutation." Funciona, mas mostra que você não entende o cache.',
+      en: '"I refetch everything after every mutation." It works, but shows you do not understand the cache.',
+    },
+    anchor: {
+      pt: 'Apollo não está no seu CV. O raciocínio de "estado do servidor vs estado do cliente" e de UI que reflete o estado real você já aplica no GEMP e no Bora. Um front em React + Apollo consumindo uma API GraphQL própria fecharia essa lacuna para a BrainRocket.',
+      en: 'Apollo is not on your CV. You already apply the "server state vs client state" reasoning and a UI that reflects real state in GEMP and Bora. A React + Apollo frontend consuming your own GraphQL API would close this gap for BrainRocket.',
+    },
+  },
+  {
+    id: 'next-server-actions-security',
+    cat: 'react', type: 'code', jobs: ['brainrocket', 'frontend'],
+    tags: ['Next.js', 'Server Actions', 'revalidatePath', 'Zod', 'security', 'App Router'],
+    q: {
+      pt: 'Implemente uma Server Action no Next.js que aprova uma viagem. Quais os riscos de segurança que muita gente esquece?',
+      en: 'Implement a Next.js Server Action that approves a trip. Which security risks do many people forget?',
+    },
+    code: {
+      src: `
+// app/trips/actions.ts
+'use server';
+
+import { z } from 'zod';
+import { revalidatePath } from 'next/cache';
+
+const Input = z.object({ tripId: z.string().uuid() });
+
+export async function approveTrip(_prev: unknown, formData: FormData) {
+  const session = await auth();                       // 1. autenticação DENTRO da action
+  if (!session) return { ok: false, error: 'UNAUTHENTICATED' };
+
+  const parsed = Input.safeParse({ tripId: formData.get('tripId') }); // 2. validar: é endpoint público
+  if (!parsed.success) return { ok: false, error: 'INVALID_INPUT' };
+
+  const result = await approveTripUseCase(parsed.data.tripId, session.user); // 3. regra + autorização
+  if (!result.ok) return result;
+
+  revalidatePath('/trips');                           // 4. invalida o cache da página
+  return { ok: true };
+}
+
+// app/trips/approve-button.tsx
+'use client';
+export function ApproveButton({ tripId }: { tripId: string }) {
+  const [state, action, pending] = useActionState(approveTrip, null);
+  return (
+    <form action={action}>
+      <input type="hidden" name="tripId" value={tripId} />
+      <button disabled={pending}>{pending ? 'Approving…' : 'Approve'}</button>
+      {state?.ok === false && <p role="alert">{state.error}</p>}
+    </form>
+  );
+}`,
+    },
+    a: {
+      pt: `Uma Server Action é uma função que roda no servidor, chamada de um formulário ou componente cliente. O Next gera um **endpoint POST público** para ela, e é daí que vêm os riscos:
+
+- **Autenticação e autorização dentro da action**: estar numa página protegida não protege a action; qualquer um pode chamá-la direto com o ID dela.
+- **Validar todo input** (Zod): o tipo TypeScript do parâmetro não existe em runtime.
+- **Não confiar em campos ocultos** para permissão (\`userId\`, \`role\`, \`price\`): sempre derivar do servidor.
+- **Não vazar dados**: o retorno é serializado para o cliente; não devolver objetos inteiros do banco.
+- Rate limit em actions caras e cuidado com closures que capturam variáveis sensíveis (o Next criptografa, mas não é lugar para segredo).
+
+O Next protege contra CSRF comparando \`Origin\` e \`Host\` e só aceita POST, mas configurações de proxy podem interferir.
+
+Funcionalidades: \`useActionState\` dá estado e pending; o formulário funciona sem JS (progressive enhancement); \`revalidatePath\`/\`revalidateTag\` invalidam o cache após a mudança. Para APIs consumidas por outros clientes (mobile, parceiros), continuo preferindo um Route Handler ou API separada.`,
+      en: `A Server Action is a function that runs on the server, called from a form or client component. Next generates a **public POST endpoint** for it, and that is where the risks come from:
+
+- **Authentication and authorization inside the action**: sitting on a protected page does not protect the action; anyone can call it directly with its ID.
+- **Validate every input** (Zod): the parameter's TypeScript type does not exist at runtime.
+- **Never trust hidden fields** for permissions (\`userId\`, \`role\`, \`price\`): always derive them on the server.
+- **Do not leak data**: the return value is serialized to the client; do not return whole database objects.
+- Rate-limit expensive actions and beware closures that capture sensitive variables (Next encrypts them, but it is no place for secrets).
+
+Next protects against CSRF by comparing \`Origin\` and \`Host\` and only accepting POST, but proxy setups can interfere.
+
+Features: \`useActionState\` provides state and pending; the form works without JS (progressive enhancement); \`revalidatePath\`/\`revalidateTag\` invalidate the cache after the change. For APIs consumed by other clients (mobile, partners), I still prefer a Route Handler or a separate API.`,
+    },
+    follow: [
+      { pt: 'Server Action ou Route Handler: quando cada um?', en: 'Server Action or Route Handler: when to use each?' },
+      { pt: 'Como você faria optimistic UI com `useOptimistic`?', en: 'How would you do optimistic UI with `useOptimistic`?' },
+    ],
+    flags: {
+      pt: '"A página já exige login, então a action está protegida." Esse é exatamente o erro.',
+      en: '"The page already requires login, so the action is protected." That is exactly the mistake.',
+    },
+    anchor: {
+      pt: 'Next.js é lacuna no CV. A regra "autorizar no servidor, a partir do usuário autenticado" você aplica no TripFlow (escopo por empresa) e no Bora (políticas no PostgreSQL). Use isso como prova do raciocínio, deixando claro que o Next em si você estudou.',
+      en: 'Next.js is a gap on your CV. You apply the "authorize on the server from the authenticated user" rule in TripFlow (company scoping) and Bora (PostgreSQL policies). Use that as proof of reasoning, while being clear you have studied Next itself.',
+    },
+  },
+  {
+    id: 'mui-theming-performance',
+    cat: 'react', type: 'lib', jobs: ['brainrocket', 'frontend', 'cv'],
+    tags: ['Material UI', 'MUI', 'theme', 'sx', 'styled', 'design system', 'bundle size'],
+    q: {
+      pt: 'A vaga pede Material (MUI). Como você estrutura o tema de uma aplicação grande e evita que o MUI pese ou fique lento?',
+      en: 'The role asks for Material (MUI). How do you structure the theme of a large app and keep MUI from getting heavy or slow?',
+    },
+    code: {
+      src: `
+// theme.ts — uma fonte da verdade para cores, tipografia, espaçamento e variações
+import { createTheme } from '@mui/material/styles';
+
+declare module '@mui/material/styles' {
+  interface Palette { brand: Palette['primary'] }
+  interface PaletteOptions { brand?: PaletteOptions['primary'] }
+}
+
+export const theme = createTheme({
+  cssVariables: true,                          // tema como CSS vars → dark mode sem re-render geral
+  colorSchemes: { light: true, dark: true },
+  palette: { brand: { main: '#b8620f' } },
+  shape: { borderRadius: 10 },
+  typography: { fontFamily: 'IBM Plex Sans, system-ui, sans-serif' },
+  components: {
+    MuiButton: {
+      defaultProps: { disableElevation: true },
+      styleOverrides: { root: { textTransform: 'none', fontWeight: 600 } },
+    },
+  },
+});
+
+// Componente do design system: encapsula o MUI, expõe uma API pequena
+export const StatusChip = ({ status }: { status: TripStatus }) => (
+  <Chip size="small" label={labels[status]} color={colorByStatus[status]} />
+);
+
+// imports por caminho ou named imports com tree-shaking
+import Button from '@mui/material/Button';`,
+    },
+    a: {
+      pt: `**Tema como design system**: \`createTheme\` centraliza paleta, tipografia, espaçamento, breakpoints e \`components\` (defaultProps e styleOverrides). Customizações recorrentes vão para o tema, não para \`sx\` espalhado. Estendo os tipos do tema com *module augmentation* para cores próprias continuarem tipadas. Com \`cssVariables\`, o dark mode troca variáveis CSS em vez de recalcular estilos.
+
+**Camada própria por cima do MUI**: componentes como \`StatusChip\` e \`PageHeader\` encapsulam o MUI e expõem uma API pequena. Facilita consistência, troca de versão e testes.
+
+**Estilo**: \`sx\` para ajustes pontuais; \`styled()\` para componentes reutilizados (o \`sx\` é recalculado a cada render, então evito objetos \`sx\` grandes em listas com milhares de itens).
+
+**Performance e tamanho**: imports com tree-shaking, \`@mui/icons-material\` importando ícone a ícone (o barrel pode deixar o build de dev muito lento), DataGrid com virtualização para tabelas grandes, lazy loading de telas pesadas e medir com bundle analyzer. Em SSR (Next), configurar o cache do Emotion ou o pacote de integração com App Router para evitar flash de estilos.
+
+**Acessibilidade**: o MUI segue WAI-ARIA, mas \`aria-label\` em IconButton, contraste do tema e foco visível continuam sendo responsabilidade de quem usa.`,
+      en: `**Theme as a design system**: \`createTheme\` centralizes palette, typography, spacing, breakpoints, and \`components\` (defaultProps and styleOverrides). Recurring customizations go into the theme, not scattered \`sx\`. I extend theme types with *module augmentation* so custom colors stay typed. With \`cssVariables\`, dark mode swaps CSS variables instead of recomputing styles.
+
+**Own layer on top of MUI**: components like \`StatusChip\` and \`PageHeader\` wrap MUI and expose a small API. That helps consistency, version upgrades, and testing.
+
+**Styling**: \`sx\` for one-off tweaks; \`styled()\` for reused components (\`sx\` is recomputed on every render, so I avoid big \`sx\` objects in lists with thousands of items).
+
+**Performance and size**: tree-shakable imports, \`@mui/icons-material\` imported icon by icon (the barrel can make dev builds very slow), DataGrid with virtualization for large tables, lazy-loaded heavy screens, and measuring with a bundle analyzer. With SSR (Next), configure the Emotion cache or the App Router integration package to avoid a flash of unstyled content.
+
+**Accessibility**: MUI follows WAI-ARIA, but \`aria-label\` on IconButton, theme contrast, and visible focus remain the user's responsibility.`,
+    },
+    follow: [
+      { pt: 'Como você migraria um projeto do MUI v4 (makeStyles/JSS) para a versão atual?', en: 'How would you migrate a project from MUI v4 (makeStyles/JSS) to the current version?' },
+      { pt: 'MUI ou Tailwind + Radix? Quais os trade-offs?', en: 'MUI or Tailwind + Radix? What are the trade-offs?' },
+    ],
+    flags: {
+      pt: 'Sobrescrever estilos com `!important` e classes globais em vez de usar o tema.',
+      en: 'Overriding styles with `!important` and global classes instead of using the theme.',
+    },
+    anchor: {
+      pt: 'Material-UI está no seu portfólio (Front-end: "Material-UI · Chart.js") e no perfil da Proxify, usado com React. Prepare um exemplo concreto de onde usou: que tela, que componentes, o que customizou no tema.',
+      en: 'Material-UI is on your portfolio (Front end: "Material-UI · Chart.js") and your Proxify profile, used with React. Prepare a concrete example of where you used it: which screen, which components, what you customized in the theme.',
+    },
+  },
+  {
+    id: 'rtl-msw-component-test',
+    cat: 'react', type: 'code', jobs: ['frontend', 'elastic', 'brainrocket'],
+    tags: ['React Testing Library', 'MSW', 'userEvent', 'Jest', 'Vitest', 'async testing'],
+    q: {
+      pt: 'Escreva o teste de um componente que lista ofertas da API e mostra erro quando a API falha. Por que testar pelo comportamento e não pela implementação?',
+      en: 'Write a test for a component that lists offers from the API and shows an error when the API fails. Why test behavior and not implementation?',
+    },
+    code: {
+      src: `
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { http, HttpResponse } from 'msw';
+import { setupServer } from 'msw/node';
+
+const server = setupServer(
+  http.get('/api/offers', () =>
+    HttpResponse.json([{ id: 'a1', provider: 'Alpha', totalCents: 105000 }])),
+);
+beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
+
+test('shows offers ranked by total cost', async () => {
+  render(<Offers amount={1000} />);
+  expect(screen.getByRole('status')).toHaveTextContent(/loading/i);
+  expect(await screen.findByRole('listitem')).toHaveTextContent('Alpha');
+});
+
+test('shows a retryable error when the API fails', async () => {
+  server.use(http.get('/api/offers', () => new HttpResponse(null, { status: 503 })));
+  const user = userEvent.setup();
+  render(<Offers amount={1000} />);
+
+  expect(await screen.findByRole('alert')).toHaveTextContent(/unavailable/i);
+
+  server.resetHandlers();                                       // a API volta
+  await user.click(screen.getByRole('button', { name: /try again/i }));
+  expect(await screen.findByRole('listitem')).toBeInTheDocument();
+});`,
+    },
+    a: {
+      pt: `**Testar pelo comportamento**: o teste interage como o usuário (encontra por *role* e nome acessível, clica com \`userEvent\`) e verifica o que aparece na tela. Assim ele sobrevive a refatorações (trocar \`useState\` por TanStack Query não quebra nada) e ainda valida acessibilidade de graça: se não dá para achar o botão por \`getByRole('button', { name })\`, leitor de tela também não acha.
+
+**MSW** intercepta na camada de rede: o componente usa o \`fetch\` real e o teste controla as respostas. É mais realista que mockar o módulo de API e o mesmo handler serve para Storybook e desenvolvimento. \`onUnhandledRequest: 'error'\` evita chamadas esquecidas.
+
+**Assíncrono**: \`findBy*\` espera o elemento aparecer; \`waitFor\` para asserções que mudam com o tempo; nunca \`setTimeout\` no teste. Prioridade de queries: \`getByRole\` > \`getByLabelText\` > \`getByText\` > \`getByTestId\` (último recurso).
+
+Cobrir: carregando, sucesso, vazio, erro e a ação de tentar de novo. Não testar detalhes como estado interno, nomes de classes CSS ou número de renders.`,
+      en: `**Test behavior**: the test interacts like a user (finds elements by *role* and accessible name, clicks with \`userEvent\`) and checks what appears on screen. That survives refactors (swapping \`useState\` for TanStack Query breaks nothing) and validates accessibility for free: if you cannot find the button via \`getByRole('button', { name })\`, neither can a screen reader.
+
+**MSW** intercepts at the network layer: the component uses the real \`fetch\` and the test controls responses. It is more realistic than mocking the API module, and the same handlers serve Storybook and local development. \`onUnhandledRequest: 'error'\` catches forgotten calls.
+
+**Async**: \`findBy*\` waits for the element; \`waitFor\` for assertions that change over time; never \`setTimeout\` in a test. Query priority: \`getByRole\` > \`getByLabelText\` > \`getByText\` > \`getByTestId\` (last resort).
+
+Cover: loading, success, empty, error, and the retry action. Do not test details like internal state, CSS class names, or render counts.`,
+    },
+    follow: [
+      { pt: 'Qual a diferença entre `getBy`, `queryBy` e `findBy`?', en: 'What is the difference between `getBy`, `queryBy`, and `findBy`?' },
+      { pt: 'Quando um teste de componente não basta e você vai para Playwright?', en: 'When is a component test not enough so you move to Playwright?' },
+    ],
+    flags: {
+      pt: 'Testar `wrapper.state()` ou usar `data-testid` em tudo. Ou mockar o `useEffect`.',
+      en: 'Testing `wrapper.state()` or putting `data-testid` on everything. Or mocking `useEffect`.',
+    },
+    anchor: {
+      pt: 'Você usou Jest na Sicoob e Vitest + Vue Test Utils no portfólio, com a mesma filosofia (Testing Library existe para Vue também). Os estados testados aqui são os do GEMP (carregando, parcial, indisponível, falha de rede): adicionar esses testes ao GEMP vira evidência direta.',
+      en: 'You used Jest at Sicoob and Vitest + Vue Test Utils in your portfolio, with the same philosophy (Testing Library exists for Vue too). The states tested here are GEMP\'s (loading, partial, unavailable, network failure): adding these tests to GEMP becomes direct evidence.',
+    },
+  },
 ];

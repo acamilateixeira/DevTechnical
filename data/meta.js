@@ -17,6 +17,7 @@ export const cats = {
   architecture: { pt: 'Arquitetura & system design', en: 'Architecture & system design' },
   principles: { pt: 'SOLID, Clean Code, DDD, patterns', en: 'SOLID, Clean Code, DDD, patterns' },
   testing: { pt: 'Testes & CI/CD', en: 'Testing & CI/CD' },
+  devops: { pt: 'Docker & Kubernetes', en: 'Docker & Kubernetes' },
   observability: { pt: 'Observabilidade', en: 'Observability' },
   security: { pt: 'Segurança', en: 'Security' },
   php: { pt: 'PHP & Laravel', en: 'PHP & Laravel' },
