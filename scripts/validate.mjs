@@ -11,6 +11,7 @@ import { glossary } from '../data/glossary.js';
 import { extraJobs, reported as reportedMap, sources } from '../data/evidence.js';
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { storyIds } from '../data/stories/index.js';
+import { cards as measureCards, areas as measureAreas, method as measureMethod } from '../data/measure.js';
 import { parseStory, findCast, STATE, stories as allStories } from '../assets/story.js';
 import { execFileSync } from 'node:child_process';
 
@@ -135,6 +136,23 @@ for (const st of allStories) for (const lg of ['pt', 'en']) {
 }
 const withStory = questions.filter((q) => storyIds.has(q.id) || labs.some((l) => l.story && (l.questions || []).includes(q.id))).length;
 
+// ---- como medir
+if (!bilingual(measureMethod)) err('medir', 'roteiro precisa de pt e en');
+const mIds = new Set();
+for (const c of measureCards) {
+  const id = `medir:${c.id}`;
+  if (mIds.has(c.id)) err(id, 'id duplicado'); mIds.add(c.id);
+  if (!measureAreas[c.area]) err(id, `área desconhecida "${c.area}"`);
+  for (const f of ['title', 'why', 'say']) if (!bilingual(c[f])) err(id, `${f} precisa de pt e en`);
+  if (!c.metrics?.length) err(id, 'sem métricas');
+  c.metrics?.forEach((m, i) => { if (!bilingual(m.name) || !bilingual(m.good)) err(id, `metrics[${i}] precisa de pt e en`); });
+  if (!c.tools?.length) err(id, 'sem ferramentas');
+  if (!Array.isArray(c.steps?.pt) || c.steps.pt.length !== c.steps.en?.length || !c.steps.pt.length) err(id, 'steps.pt e steps.en precisam ter o mesmo número de passos');
+  c.labs.forEach((l) => { if (!labIds.has(l)) err(id, `lab inexistente "${l}"`); });
+  (c.nodeLabs || []).forEach((f) => { if (!existsSync(`labs/node/${f}`)) err(id, `lab Node inexistente "${f}"`); });
+  c.questions.forEach((q) => { if (!ids.has(q)) err(id, `pergunta inexistente "${q}"`); });
+}
+
 // ---- glossário
 const gIds = new Set();
 for (const g of glossary) {
@@ -165,4 +183,5 @@ console.log(`✓ ${questions.length} perguntas válidas, ${Object.values(rubrics
 console.log('  por tema:', byCat);
 console.log('  por vaga:', byJob);
 console.log(`✓ ${withStory}/${questions.length} perguntas com história (pt + en)`);
+console.log(`✓ ${measureCards.length} guias de medição`);
 console.log(`✓ ${labs.length} labs no navegador, ${glossary.length} termos no glossário, 5 labs Node`);

@@ -319,7 +319,7 @@ export const glossary = [
   g('transaction', { pt: ['transação', 'transações'], en: ['transaction', 'transactions'] },
     { pt: 'grupo de operações no banco que vale tudo ou nada', en: 'a group of database operations that is all-or-nothing' },
     { pt: 'Se algo falhar no meio, o banco desfaz tudo (rollback). Se der certo, confirma (commit).', en: 'If something fails midway, the database undoes everything (rollback). If it succeeds, it commits.' }),
-  g('commit', { pt: ['commit', 'rollback'], en: ['commit', 'rollback'] },
+  g('commit', { pt: ['COMMIT', 'rollback'], en: ['COMMIT', 'rollback'] },
     { pt: 'confirmar (commit) ou desfazer (rollback) uma transação', en: 'confirming (commit) or undoing (rollback) a transaction' },
     { pt: 'Até o commit, outras conexões normalmente não veem as mudanças.', en: 'Until commit, other connections usually do not see the changes.' }),
   g('acid', { pt: ['ACID'], en: ['ACID'] },

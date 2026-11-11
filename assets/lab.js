@@ -2,6 +2,7 @@
 // e mostra o que aconteceu em quatro painéis: tela, contadores, linha do tempo e console.
 
 import { storyForLab, storyButton, bindStoryButtons, loadStory, castHtml } from './story.js';
+import { cards as measureCards } from '../data/measure.js';
 import { md, escapeHtml } from './md.js';
 import { labs } from '../labs/web/index.js';
 import { cats } from '../data/meta.js';
@@ -30,7 +31,7 @@ const T = {
     edited: 'editado', compileError: 'Erro de sintaxe', runtimeError: 'Erro ao rodar',
     ready: 'Pronto: agora use a tela acima ↑',
     nodeTitle: 'Para rodar no seu computador (Node.js)', seeCode: 'ver código',
-    castInCode: 'Quem é quem neste código',
+    castInCode: 'Quem é quem neste código', measure: '📏 Como medir isso fora do lab (ferramentas reais)',
     nodeIntro: 'Estes rodam de verdade no Node 22.13+: servidor HTTP, threads, sinais do sistema e banco SQLite. Clone o repositório e rode no terminal; cada arquivo explica o que acontece. Sem a flag mostrada, você vê o problema; com ela, a correção (ou o contrário, quando a flag começa com `--sem`).',
   },
   en: {
@@ -45,7 +46,7 @@ const T = {
     edited: 'edited', compileError: 'Syntax error', runtimeError: 'Runtime error',
     ready: 'Ready: now use the screen above ↑',
     nodeTitle: 'Run on your computer (Node.js)', seeCode: 'see code',
-    castInCode: 'Who is who in this code',
+    castInCode: 'Who is who in this code', measure: '📏 How to measure this outside the lab (real tools)',
     nodeIntro: 'These run for real on Node 22.13+: HTTP server, threads, OS signals, and a SQLite database. Clone the repo and run them in a terminal; each file explains what happens. Without the flag shown you see the problem; with it, the fix (or the reverse when the flag starts with `--sem`).',
   },
 };
@@ -156,6 +157,7 @@ export async function renderLab(view, id, ctx) {
     </div>
 
     <div class="panel followup"><h3>${t.tryTitle}</h3><ol>${(lab.try || []).map((x) => `<li>${md(L(x), ann).replace(/^<p>|<\/p>$/g, '')}</li>`).join('')}</ol></div>
+    ${measureCards.some((c) => c.labs.includes(lab.id)) ? `<div class="panel measure-link"><h3>${t.measure}</h3><ul>${measureCards.filter((c) => c.labs.includes(lab.id)).map((c) => `<li><a href="#/measure/${c.id}">${c.icon} ${escapeHtml(L(c.title))}</a></li>`).join('')}</ul></div>` : ''}
     ${related.length ? `<div class="panel"><h3>${t.related}</h3><ul>${related.map((q) =>
       `<li><a href="#/q/${q.id}">${escapeHtml(L(q.q))}</a></li>`).join('')}</ul></div>` : ''}`;
 

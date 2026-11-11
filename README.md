@@ -65,6 +65,20 @@ Na resposta, cada fonte aparece com o tipo, a empresa, o cargo do(a) candidato(a
 - **Brasil Card**: os relatos públicos são de vagas não técnicas (atendente e auxiliar contábil), mas mostram o formato: contato rápido do RH, entrevista com recrutador e depois com o gestor ("onde se vê em 5 anos?", "como conheceu a empresa?").
 - **PHP pleno no Brasil**: "como o Laravel processa uma requisição", classe abstrata × interface, polimorfismo, SOLID, design patterns, índices e live coding.
 
+## Como medir
+
+A aba **Como medir** responde à pergunta que todo recrutador sênior faz depois do conceito: **"como você mediu?"**. São 16 guias, um para cada parte da stack:
+
+- **Front-end**: re-renders (React DevTools), interações (INP), carregamento (LCP, CLS, bundle) e requisições da tela.
+- **Node.js**: event loop lag, memória e teste de carga.
+- **APIs**: RED por rota, SLO e alertas.
+- **Banco**: query lenta, N+1, locks e deadlocks.
+- **PHP/Laravel**: profiling com Xdebug, Telescope e Debugbar.
+- **Filas e cache**: RabbitMQ, Kafka e Redis.
+- **Time**: métricas DORA.
+
+Cada guia traz a métrica, o valor bom, as ferramentas, **onde clicar passo a passo**, um trecho de código quando ajuda e a frase pronta para a entrevista, com links para os labs e as perguntas ligadas. A página também tem um roteiro para responder "como você mediu?": linha de base, hipótese, uma mudança, medir de novo e deixar monitorado. Cada resposta modelo e cada lab ligado a um guia mostram o link "📏 Como medir isso na prática".
+
 ## Histórias
 
 Conceito abstrato fica mais fácil quando vira conversa engraçada. A aba **Histórias** tem 42 histórias (as 14 dos labs e mais 28 de perguntas), todas em português e em inglês. Elas cobrem 47 das 92 perguntas, porque as perguntas ligadas a um lab usam a história do lab. A do event loop foi escrita por mim.
@@ -112,6 +126,8 @@ assets/gloss.js       # anota termos do glossário no texto (definição entre p
 assets/start.js       # página "Comece aqui"
 assets/glossary-page.js # página do glossário
 assets/story.js       # histórias: formato, página, gaveta e "quem é quem"
+assets/measure-page.js # página "Como medir"
+assets/gloss-pop.js   # balão das definições, posicionado para nunca sair da tela
 assets/vendor/        # React 19 e TypeScript empacotados para rodar os labs
 assets/md.js          # markdown mínimo que escapa HTML
 assets/styles.css     # tema claro/escuro, responsivo
@@ -122,6 +138,7 @@ data/glossary.js      # 225 termos com definição curta e longa (PT/EN)
 data/brasilcard.js    # perguntas da vaga Brasil Card (PHP pleno)
 data/research.js      # perguntas acrescentadas a partir de relatos reais
 data/evidence.js      # fontes da pesquisa e vagas extras por pergunta
+data/measure.js       # guias de medição: métrica, ferramenta, passo a passo e frase de entrevista
 data/stories/         # histórias das perguntas: <id>.pt.md + <id>.en.md e index.js
 labs/web/             # labs do navegador: index.js (textos) + código e história (story.pt.md, story.en.md) de cada lab
 labs/node/            # labs para rodar com Node 22.13+
@@ -157,6 +174,7 @@ A picky interviewer, as an app. It asks senior-level technical questions about t
 - **Model answer**: full explanation, code where needed, tools/libraries/techniques to mention, metrics that prove mastery, the interviewer's follow-ups, red flags, and how to anchor the answer in my real experience without inventing any.
 - **Objective score**: each question has a checklist of points a 100% answer must cover. I tick only what I actually said: **≥ 80% correct, 40–79% partial, < 40% wrong**.
 - **Progress**: average score and correct/partial/wrong percentages, overall and per topic, plus strongest and weakest topic.
+- **How to measure**: 16 guides (React DevTools, INP/LCP/CLS, Node event loop and memory, load tests, RED/SLOs, slow queries, N+1, locks, Xdebug/Telescope, RabbitMQ/Kafka/Redis, DORA) with the metric, the good value, the tools, where to click step by step, and the interview line.
 - **Stories**: 42 funny dialogue-style stories (every lab plus 28 questions), in Portuguese and English, covering 47 of 92 questions. Each starts with **Who is who** (every character is a piece of code), plays out in chat-style scenes in plain language, with a **📋 State right now** panel closing every scene (output so far, queues, what's left), then a separate moral, technical section, and extras, and ends with the one-paragraph interview answer. They open from the **Stories** tab or from a button on each question and lab.
 - **Study**: every question with search and filters by role, topic, and type.
 - **Start here**: what a senior hiring process looks like and how to study with the app.

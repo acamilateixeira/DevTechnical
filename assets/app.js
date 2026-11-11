@@ -6,6 +6,8 @@ import { renderStart } from './start.js';
 import { createAnnotator } from './gloss.js';
 import { renderGlossary } from './glossary-page.js';
 import { initGlossPopover } from './gloss-pop.js';
+import { renderMeasure } from './measure-page.js';
+import { cardsForQuestion } from '../data/measure.js';
 import { sources, evidenceSummary } from '../data/evidence.js';
 import { storyForQuestion, storyButton, bindStoryButtons, renderStories, renderStoryPage } from './story.js';
 
@@ -94,7 +96,8 @@ function route() {
   document.getElementById('story-drawer')?.close();
   leave.forEach((fn) => fn()); leave = [];
   // Filtros só fazem sentido nas telas de perguntas.
-  $('.filters').hidden = ['lab', 'start', 'glossary', 'stories', 'story'].includes(name);
+  $('.filters').hidden = ['lab', 'start', 'glossary', 'stories', 'story', 'measure'].includes(name);
+  if (name === 'measure') { if (!arg) window.scrollTo(0, 0); return renderMeasure($('#view'), { lang: state.lang, gloss: state.gloss, L, questions, focus: arg && decodeURIComponent(arg) }); }
   if (name === 'stories') { window.scrollTo(0, 0); return renderStories($('#view'), { lang: state.lang, L, questions, cats }); }
   if (name === 'story') { window.scrollTo(0, 0); return renderStoryPage($('#view'), decodeURIComponent(arg || ''), { lang: state.lang }); }
   if (name === 'glossary') { return renderGlossary($('#view'), { lang: state.lang, focus: arg && decodeURIComponent(arg) }); }
@@ -136,6 +139,12 @@ function reportedChip(q) {
   const label = sum.kind === 'relato' ? t('reportedChip') : sum.kind === 'guia' ? t('chipGuide') : t('chipJob');
   const who = sum.companies?.length ? ` · ${sum.companies.join(', ')}` : '';
   return `<span class="chip reported-chip" data-kind="${sum.kind}">${escapeHtml(label + who)}</span>`;
+}
+
+function measureLinks(q) {
+  const cs = cardsForQuestion(q.id);
+  if (!cs.length) return '';
+  return `<div class="panel measure-link"><h3>${t('measureTitle')}</h3><ul>${cs.map((c) => `<li><a href="#/measure/${c.id}">${c.icon} ${escapeHtml(L(c.title))}</a></li>`).join('')}</ul></div>`;
 }
 
 function reportedHtml(q, ann) {
@@ -213,6 +222,7 @@ function revealHtml(q, ann = annotator(q)) {
   return `
     ${lab ? `<a class="panel lab-link" href="#/lab/${lab.id}"><strong>${t('seeLab')}</strong><span>${escapeHtml(L(lab.title))}</span></a>` : ''}
     ${reportedHtml(q, ann)}
+    ${measureLinks(q)}
     <div class="panel"><h3>${t('answer')}</h3>${md(L(q.a), ann)}</div>
     ${q.code ? `<div class="panel"><h3>${t('code')}</h3>${codeBlocks(q)}</div>` : ''}
     ${toolsHtml(q)}

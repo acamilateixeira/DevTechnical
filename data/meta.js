@@ -64,7 +64,7 @@ export const ui = {
     avg: 'nota média', pctGot: 'acerto', pctPartial: 'parcial', pctMiss: 'erro', pending: 'não avaliadas',
     best: 'Ponto forte', worst: 'Estudar primeiro',
     reportedTitle: 'Isso é perguntado de verdade? De onde veio', reportedChip: '✓ relatada', chipGuide: '📘 guia público', chipJob: '📋 está na vaga', kindRelato: '📝 Relato de candidato(a)', kindGuia: '📘 Guia público do processo', kindVaga: '📋 Descrição da vaga', srcOpen: 'abrir a fonte', srcNoLink: 'a vaga que você recebeu',
-    navStart: 'Comece aqui', navStories: 'Histórias', navLab: 'Laboratório', seeLab: '▶ Ver funcionando no Laboratório', navGlossary: 'Glossário',
+    navStart: 'Comece aqui', navStories: 'Histórias', navMeasure: 'Como medir', measureTitle: '📏 Como medir isso na prática (métrica, ferramenta e onde clicar)', navLab: 'Laboratório', seeLab: '▶ Ver funcionando no Laboratório', navGlossary: 'Glossário',
     glossToggle: 'Mostrar definições entre parênteses', glossOn: 'Definições entre parênteses: ligadas (toque para desligar)', glossOff: 'Definições entre parênteses: desligadas (toque para ligar)',
   },
   en: {
@@ -94,7 +94,7 @@ export const ui = {
     avg: 'average score', pctGot: 'correct', pctPartial: 'partial', pctMiss: 'wrong', pending: 'not scored',
     best: 'Strongest topic', worst: 'Study first',
     reportedTitle: 'Is this really asked? Where it came from', reportedChip: '✓ reported', chipGuide: '📘 public guide', chipJob: '📋 in the job ad', kindRelato: '📝 Candidate report', kindGuia: '📘 Public process guide', kindVaga: '📋 Job description', srcOpen: 'open the source', srcNoLink: 'the job ad you received',
-    navStart: 'Start here', navStories: 'Stories', navLab: 'Lab', seeLab: '▶ See it running in the Lab', navGlossary: 'Glossary',
+    navStart: 'Start here', navStories: 'Stories', navMeasure: 'How to measure', measureTitle: '📏 How to measure this in practice (metric, tool, and where to click)', navLab: 'Lab', seeLab: '▶ See it running in the Lab', navGlossary: 'Glossary',
     glossToggle: 'Show definitions in parentheses', glossOn: 'Definitions in parentheses: on (tap to turn off)', glossOff: 'Definitions in parentheses: off (tap to turn on)',
   },
 };
