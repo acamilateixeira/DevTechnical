@@ -1,6 +1,10 @@
 import { md, escapeHtml } from './md.js';
 import { jobs, cats, types, ui } from '../data/meta.js';
 import { questions } from '../data/index.js';
+import { labs } from '../labs/web/index.js';
+import { renderStart } from './start.js';
+import { createAnnotator } from './gloss.js';
+import { renderGlossary } from './glossary-page.js';
 
 const STORE = 'devtechnical:v1';
 const $ = (s, el = document) => el.querySelector(s);
@@ -10,8 +14,12 @@ let current = null;   // pergunta em exibição no modo entrevista
 let revealed = false;
 let timer = null;
 
+function defaultRoute() {
+  return Object.keys(state.scores).length ? 'interview' : 'start';
+}
+
 function load() {
-  const base = { lang: 'pt', filters: { job: '', cat: '', type: '' }, scores: {}, checks: {}, drafts: {} };
+  const base = { lang: 'pt', gloss: true, filters: { job: '', cat: '', type: '' }, scores: {}, checks: {}, drafts: {} };
   try {
     const saved = JSON.parse(localStorage.getItem(STORE) || '{}');
     return { ...base, ...saved, filters: { ...base.filters, ...(saved.filters || {}) } };
@@ -51,6 +59,11 @@ function renderChrome() {
   });
   document.querySelectorAll('[data-lang]').forEach((b) =>
     b.setAttribute('aria-pressed', String(b.dataset.lang === state.lang)));
+  const gt = $('#gloss-toggle');
+  gt.setAttribute('aria-pressed', String(state.gloss));
+  gt.title = t(state.gloss ? 'glossOn' : 'glossOff');
+  gt.setAttribute('aria-label', t('glossToggle'));
+  gt.textContent = state.lang === 'pt' ? '( ) definições' : '( ) definitions';
 
   fill($('#f-job'), jobs, t('allJobs'), state.filters.job);
   fill($('#f-cat'), cats, t('all'), state.filters.cat);
@@ -64,13 +77,28 @@ function fill(select, map, allLabel, value) {
       `<option value="${id}" ${id === value ? 'selected' : ''}>${escapeHtml(L(l))}</option>`).join('');
 }
 
+let leave = [];
+const onLeave = (fn) => leave.push(fn);
+let labModule = null;
+
 function route() {
-  const [, name = 'interview', arg] = location.hash.split('/');
+  const [, name = defaultRoute(), arg] = location.hash.split('/');
   document.querySelectorAll('[data-route]').forEach((a) => {
     const on = a.dataset.route === (name === 'q' ? 'interview' : name);
     if (on) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
   });
   stopTimer();
+  leave.forEach((fn) => fn()); leave = [];
+  // Filtros só fazem sentido nas telas de perguntas.
+  $('.filters').hidden = ['lab', 'start', 'glossary'].includes(name);
+  if (name === 'glossary') { return renderGlossary($('#view'), { lang: state.lang, focus: arg && decodeURIComponent(arg) }); }
+  if (name === 'start') { window.scrollTo(0, 0); return renderStart($('#view'), { lang: state.lang, gloss: state.gloss }); }
+  if (name === 'lab') {
+    window.scrollTo(0, 0);
+    labModule ||= import('./lab.js');
+    const ctx = { lang: state.lang, gloss: state.gloss, L, questions, onLeave };
+    return labModule.then((m) => (arg ? m.renderLab($('#view'), decodeURIComponent(arg), ctx) : m.renderLabIndex($('#view'), ctx)));
+  }
   if (name === 'study') return renderStudy();
   if (name === 'progress') return renderProgress();
   if (name === 'q' && arg) {
@@ -115,7 +143,7 @@ function currentScore(q) {
   return q.points.length ? checked.length / q.points.length : 0;
 }
 
-function checklistHtml(q) {
+function checklistHtml(q, ann) {
   if (!q.points.length) return '';
   const checked = new Set(state.checks[q.id] || []);
   const saved = state.scores[q.id];
@@ -126,7 +154,7 @@ function checklistHtml(q) {
       <p class="hint">${t('checklistHint')}</p>
       <ul class="checks">${q.points.map((pt, i) => `
         <li><label><input type="checkbox" data-i="${i}" ${checked.has(i) ? 'checked' : ''} />
-          <span>${escapeHtml(L(pt))}</span></label></li>`).join('')}
+          <span>${ann ? ann.text(L(pt)) : escapeHtml(L(pt))}</span></label></li>`).join('')}
       </ul>
       <div class="row score-row">
         <span class="score" data-level="${level(live)}"><strong class="score-num">${pct(live)}</strong></span>
@@ -146,16 +174,20 @@ function toolsHtml(q) {
     </div>`;
 }
 
-function revealHtml(q) {
-  const follow = (q.follow || []).map((f) => `<li>${md(L(f)).replace(/^<p>|<\/p>$/g, '')}</li>`).join('');
+const annotator = () => createAnnotator(state.lang, { inline: state.gloss });
+
+function revealHtml(q, ann = annotator()) {
+  const follow = (q.follow || []).map((f) => `<li>${md(L(f), ann).replace(/^<p>|<\/p>$/g, '')}</li>`).join('');
+  const lab = labs.find((l) => (l.questions || []).includes(q.id));
   return `
-    <div class="panel"><h3>${t('answer')}</h3>${md(L(q.a))}</div>
+    ${lab ? `<a class="panel lab-link" href="#/lab/${lab.id}"><strong>${t('seeLab')}</strong><span>${escapeHtml(L(lab.title))}</span></a>` : ''}
+    <div class="panel"><h3>${t('answer')}</h3>${md(L(q.a), ann)}</div>
     ${q.code ? `<div class="panel"><h3>${t('code')}</h3>${codeBlocks(q)}</div>` : ''}
     ${toolsHtml(q)}
     ${follow ? `<div class="panel followup"><h3>${t('followup')}</h3><ul>${follow}</ul></div>` : ''}
-    ${q.flags ? `<div class="panel flags"><h3>${t('flags')}</h3>${md(L(q.flags))}</div>` : ''}
-    ${q.anchor ? `<div class="panel anchor"><h3>${t('anchor')}</h3>${md(L(q.anchor))}</div>` : ''}
-    ${checklistHtml(q)}`;
+    ${q.flags ? `<div class="panel flags"><h3>${t('flags')}</h3>${md(L(q.flags), ann)}</div>` : ''}
+    ${q.anchor ? `<div class="panel anchor"><h3>${t('anchor')}</h3>${md(L(q.anchor), ann)}</div>` : ''}
+    ${checklistHtml(q, ann)}`;
 }
 
 function renderInterview() {
@@ -163,6 +195,7 @@ function renderInterview() {
   if (!current || !filtered().includes(current)) { current = pickNext(); revealed = false; }
   if (!current) { view.innerHTML = `<p class="empty">${t('none')}</p>`; return; }
   const q = current;
+  const ann = annotator();
 
   view.innerHTML = `
     <section class="room">
@@ -170,7 +203,7 @@ function renderInterview() {
         <div class="who"><span class="dot"></span>${t('recruiter')}
           <a href="#/q/${encodeURIComponent(q.id)}" style="color:inherit;margin-left:auto" title="${t('link')}">#${escapeHtml(q.id)}</a>
         </div>
-        <p class="question">${escapeHtml(L(q.q))}</p>
+        <p class="question">${ann.text(L(q.q))}</p>
         <div class="chips">${chips(q)}</div>
       </article>
 
@@ -186,7 +219,7 @@ function renderInterview() {
         <p class="count" style="margin-top:10px">${t('focus')}</p>
       </div>
 
-      <div class="reveal" id="reveal-area">${revealed ? revealHtml(q) : ''}</div>
+      <div class="reveal" id="reveal-area">${revealed ? revealHtml(q, ann) : ''}</div>
     </section>`;
 
   $('#draft').addEventListener('input', (e) => { state.drafts[q.id] = e.target.value; save(); });
@@ -342,6 +375,9 @@ function renderProgress() {
 /* ---------- eventos ---------- */
 
 if (typeof document !== 'undefined') {
+  $('#gloss-toggle').addEventListener('click', () => {
+    state.gloss = !state.gloss; save(); renderChrome(); route();
+  });
   document.querySelectorAll('[data-lang]').forEach((b) => b.addEventListener('click', () => {
     state.lang = b.dataset.lang; save(); renderChrome(); route();
   }));

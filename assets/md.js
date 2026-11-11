@@ -10,13 +10,19 @@ export function escapeHtml(s) {
     .replace(/'/g, '&#39;');
 }
 
-function inline(s) {
-  return escapeHtml(s)
-    .replace(/`([^`]+)`/g, '<code>$1</code>')
-    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+// ann (opcional): anotador do glossário (assets/gloss.js) que marca termos técnicos.
+function inline(s, ann) {
+  const html = s.split(/(`[^`]+`)/g).map((part) => {
+    if (part.startsWith('`') && part.endsWith('`') && part.length > 1) {
+      const raw = part.slice(1, -1);
+      return ann ? ann.code(raw) : `<code>${escapeHtml(raw)}</code>`;
+    }
+    return ann ? ann.text(part) : escapeHtml(part);
+  }).join('');
+  return html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
 }
 
-export function md(text) {
+export function md(text, ann) {
   if (!text) return '';
   const lines = String(text).trim().split('\n');
   const out = [];
@@ -26,12 +32,12 @@ export function md(text) {
   let fence = null;
 
   const flushPara = () => {
-    if (para.length) out.push(`<p>${inline(para.join(' '))}</p>`);
+    if (para.length) out.push(`<p>${inline(para.join(' '), ann)}</p>`);
     para = [];
   };
   const flushList = () => {
     const tag = ordered ? 'ol' : 'ul';
-    if (list) out.push(`<${tag}>${list.map((li) => `<li>${inline(li)}</li>`).join('')}</${tag}>`);
+    if (list) out.push(`<${tag}>${list.map((li) => `<li>${inline(li, ann)}</li>`).join('')}</${tag}>`);
     list = null;
   };
 

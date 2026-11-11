@@ -41,7 +41,7 @@ jobs:
       - name: Prepare site
         run: |
           mkdir -p _site
-          cp -r index.html assets data .nojekyll _site/
+          cp -r index.html assets data labs .nojekyll _site/
       - uses: actions/upload-pages-artifact@v5
         with:
           path: _site

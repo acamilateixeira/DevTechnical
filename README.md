@@ -8,6 +8,12 @@ Um recrutador chato, em forma de app. Ele faz perguntas técnicas de nível sên
 
 ## Como funciona
 
+O caminho sugerido é **ver funcionando → explicar com suas palavras → responder a pergunta**:
+
+- **Comece aqui**: como é um processo seletivo sênior e como estudar com o app, um tema por vez.
+- **Laboratório**: 14 exemplos que rodam no navegador, sem instalar nada. Cada um explica o conceito com uma analogia e tem código editável, botão **Rodar**, contadores, uma **linha do tempo** mostrando o que rodou em cada parte do sistema (cliente, API, banco, fila…) e quando, além de uma lista "Experimente mudar". Mais 5 labs de Node.js para rodar no terminal (servidor HTTP, threads, SIGTERM e SQLite reais). Detalhes em [`labs/node/README.md`](labs/node/README.md).
+- **Glossário**: 190 termos técnicos em linguagem simples. Nas respostas e nos labs, a definição curta aparece **entre parênteses** na primeira vez que o termo surge (dá para desligar no botão "( ) definições") e tocar no termo mostra a explicação maior.
+
 - **Entrevista**: uma pergunta por vez, sorteada com prioridade para as que eu ainda não respondi ou em que tirei nota baixa. Respondo em voz alta ou escrevo (o rascunho fica no navegador), com cronômetro opcional de 3 minutos.
 - **Resposta modelo**: explicação completa, código quando a pergunta pede, ferramentas/libs/técnicas para citar, métricas que provam domínio, follow-ups que o recrutador faria, red flags (o que não dizer) e como ancorar a resposta na minha experiência real, sem inventar.
 - **Nota objetiva**: cada pergunta tem um checklist com os pontos que uma resposta 100% precisa cobrir. Marco só o que eu realmente disse e a nota sai daí: **≥ 80% acerto, 40–79% parcial, < 40% erro**.
@@ -37,20 +43,49 @@ O progresso fica só no `localStorage` do navegador; não há back-end nem colet
 | PHP & Laravel / Salesforce | ciclo do Laravel e Eloquent, governor limits no Apex |
 | Scrum & comportamental | Scrum e estimativa, incidente (STAR), discordância técnica, IA, "por que sênior?" |
 
+## Laboratório
+
+| Lab | Tipo | O que mostra |
+| --- | --- | --- |
+| Event loop | JS | Cada `console.log` cai na coluna síncrono, microtask ou macrotask |
+| Closure e debounce | JS + tela | 11 chamadas à API sem debounce contra 1 com debounce |
+| Keys em listas | React | O texto digitado "pula" de item com `key={index}` |
+| useEffect e race condition | React | A resposta antiga sobrescreve a nova; `AbortController` corrige |
+| Re-renders | React | Context único vs separado, `memo` e contadores de render |
+| Mini Zustand | React | Store com seletores em 20 linhas (`useSyncExternalStore`) |
+| Idempotência | JS | Rede perde respostas: 3 cobranças sem `Idempotency-Key`, 1 com |
+| Transações e locks | JS | Lost update com duas aprovações; `FOR UPDATE` e update atômico |
+| Cache stampede | JS | 50 queries no banco sem single-flight, 1 com |
+| Outbox | JS | Evento perdido no dual write; duplicado sem consumidor idempotente |
+| Resiliência | JS | Timeout por provedor, resposta parcial e circuit breaker |
+| N+1 e DataLoader | JS | 51 queries contra 2 |
+| TDD | JS + testes | Testes que rodam na página: quebre a regra e veja ficar vermelho |
+| XSS | React | `{texto}` seguro, `dangerouslySetInnerHTML` executando script, sanitização |
+
+O código de cada lab fica em `labs/web/<id>/` (arquivos reais, editáveis no site e no repositório). Eles rodam num `iframe` isolado com React 19 e o compilador do TypeScript empacotados em `assets/vendor/` (ver [`assets/vendor/README.md`](assets/vendor/README.md)), então funcionam sem internet além do próprio site.
+
 ## Estrutura
 
 ```
 index.html            # casca da página
 assets/app.js         # modos entrevista, estudo e progresso; nota e persistência
+assets/lab.js         # motor do Laboratório: editor, iframe isolado, linha do tempo, contadores
+assets/gloss.js       # anota termos do glossário no texto (definição entre parênteses)
+assets/start.js       # página "Comece aqui"
+assets/glossary-page.js # página do glossário
+assets/vendor/        # React 19 e TypeScript empacotados para rodar os labs
 assets/md.js          # markdown mínimo que escapa HTML
 assets/styles.css     # tema claro/escuro, responsivo
 data/meta.js          # vagas, temas, tipos e textos da interface (PT/EN)
 data/<tema>.js        # perguntas por tema
 data/rubrics.js       # checklist, ferramentas e métricas por pergunta
-scripts/validate.mjs  # valida o banco (campos bilíngues, ids, rubricas)
+data/glossary.js      # 190 termos com definição curta e longa (PT/EN)
+labs/web/             # labs do navegador: index.js (textos) + código de cada lab
+labs/node/            # labs para rodar com Node 22.13+
+scripts/validate.mjs  # valida perguntas, rubricas, labs e glossário
 ```
 
-Sem build e sem dependências: o site é HTML, CSS e JavaScript em módulos ES.
+Sem build e sem dependências para instalar: o site é HTML, CSS e JavaScript em módulos ES.
 
 ## Rodar localmente
 
@@ -79,5 +114,8 @@ A picky interviewer, as an app. It asks senior-level technical questions about t
 - **Objective score**: each question has a checklist of points a 100% answer must cover. I tick only what I actually said: **≥ 80% correct, 40–79% partial, < 40% wrong**.
 - **Progress**: average score and correct/partial/wrong percentages, overall and per topic, plus strongest and weakest topic.
 - **Study**: every question with search and filters by role, topic, and type.
+- **Start here**: what a senior hiring process looks like and how to study with the app.
+- **Lab**: 14 in-browser examples (editable code, Run button, counters, and a timeline showing what ran in each part of the system and when) plus 5 Node.js labs for the terminal ([`labs/node/README.md`](labs/node/README.md)).
+- **Glossary**: 190 terms in plain language; the short definition appears in parentheses the first time a term shows up (toggle with "( ) definitions").
 
 69 questions and 354 rubric points in Portuguese and English, including a second batch on the gaps between my CV and the target roles (GraphQL/Apollo, NestJS, MongoDB, Next.js, Docker/Kubernetes, Elasticsearch, OpenTelemetry). No build step, no dependencies, no backend: progress lives only in the browser's `localStorage`. Run it with any static server and validate the question bank with `node scripts/validate.mjs`.

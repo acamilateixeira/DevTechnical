@@ -59,6 +59,8 @@ export const ui = {
     toolsTitle: 'Ferramentas, libs e técnicas para citar', metricsTitle: 'Métricas que provam domínio',
     avg: 'nota média', pctGot: 'acerto', pctPartial: 'parcial', pctMiss: 'erro', pending: 'não avaliadas',
     best: 'Ponto forte', worst: 'Estudar primeiro',
+    navStart: 'Comece aqui', navLab: 'Laboratório', seeLab: '▶ Ver funcionando no Laboratório', navGlossary: 'Glossário',
+    glossToggle: 'Mostrar definições entre parênteses', glossOn: 'Definições entre parênteses: ligadas (toque para desligar)', glossOff: 'Definições entre parênteses: desligadas (toque para ligar)',
   },
   en: {
     skip: 'Skip to content',
@@ -86,5 +88,7 @@ export const ui = {
     toolsTitle: 'Tools, libraries and techniques to mention', metricsTitle: 'Metrics that prove mastery',
     avg: 'average score', pctGot: 'correct', pctPartial: 'partial', pctMiss: 'wrong', pending: 'not scored',
     best: 'Strongest topic', worst: 'Study first',
+    navStart: 'Start here', navLab: 'Lab', seeLab: '▶ See it running in the Lab', navGlossary: 'Glossary',
+    glossToggle: 'Show definitions in parentheses', glossOn: 'Definitions in parentheses: on (tap to turn off)', glossOff: 'Definitions in parentheses: off (tap to turn on)',
   },
 };

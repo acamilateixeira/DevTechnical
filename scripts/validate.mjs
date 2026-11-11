@@ -6,6 +6,10 @@ import { questions } from '../data/index.js';
 import { rubrics } from '../data/rubrics.js';
 import { jobs, cats, types } from '../data/meta.js';
 import { md } from '../assets/md.js';
+import { labs } from '../labs/web/index.js';
+import { glossary } from '../data/glossary.js';
+import { existsSync, readFileSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
 
 const errors = [];
 const err = (id, msg) => errors.push(`${id}: ${msg}`);
@@ -54,6 +58,46 @@ for (const q of questions) {
 
 for (const id of Object.keys(rubrics)) if (!ids.has(id)) err(id, 'rubrica órfã (sem pergunta)');
 
+// ---- labs do navegador
+const labIds = new Set();
+for (const l of labs) {
+  const id = `lab:${l.id}`;
+  if (labIds.has(l.id)) err(id, 'id de lab duplicado');
+  labIds.add(l.id);
+  if (!cats[l.cat]) err(id, `tema desconhecido "${l.cat}"`);
+  if (!['js', 'react'].includes(l.kind)) err(id, 'kind deve ser js ou react');
+  for (const f of ['title', 'summary', 'what', 'watch']) if (!bilingual(l[f])) err(id, `campo "${f}" precisa de pt e en`);
+  if (!Array.isArray(l.try) || !l.try.length) err(id, 'precisa de itens em "try"');
+  else l.try.forEach((x, i) => { if (!bilingual(x)) err(id, `try[${i}] precisa de pt e en`); });
+  (l.questions || []).forEach((q) => { if (!ids.has(q)) err(id, `pergunta inexistente "${q}"`); });
+  for (const file of [l.main, l.setup].filter(Boolean)) {
+    const path = `labs/web/${l.id}/${file}`;
+    if (!existsSync(path)) { err(id, `arquivo não existe: ${path}`); continue; }
+    if (file.endsWith('.js')) {
+      try { execFileSync(process.execPath, ['--check', path], { stdio: 'pipe' }); }
+      catch (e) { err(id, `erro de sintaxe em ${path}: ${String(e.stderr).split('\n').slice(0, 4).join(' ')}`); }
+    }
+  }
+}
+
+// ---- glossário
+const gIds = new Set();
+for (const g of glossary) {
+  if (gIds.has(g.id)) err(`glossário:${g.id}`, 'id duplicado');
+  gIds.add(g.id);
+  if (!bilingual(g.short) || !bilingual(g.long)) err(`glossário:${g.id}`, 'short/long precisam de pt e en');
+  const n = (g.terms.pt?.length || 0) + (g.terms.en?.length || 0) + (g.terms.code?.length || 0);
+  if (!n) err(`glossário:${g.id}`, 'sem termos');
+}
+
+// ---- labs Node (só sintaxe; rodar exige o terminal)
+for (const f of ['01-event-loop-node.cjs', '02-bloqueio-event-loop.mjs', '03-streams-backpressure.mjs', '04-graceful-shutdown.mjs', '05-outbox-sqlite.mjs']) {
+  const path = `labs/node/${f}`;
+  if (!existsSync(path)) { err('lab-node', `arquivo não existe: ${path}`); continue; }
+  try { execFileSync(process.execPath, ['--check', path], { stdio: 'pipe' }); }
+  catch (e) { err('lab-node', `erro de sintaxe em ${path}`); }
+}
+
 const byCat = Object.fromEntries(Object.keys(cats).map((c) => [c, 0]));
 questions.forEach((q) => { byCat[q.cat] = (byCat[q.cat] || 0) + 1; });
 const byJob = Object.fromEntries(Object.keys(jobs).map((j) => [j, questions.filter((q) => q.jobs.includes(j)).length]));
@@ -65,3 +109,4 @@ if (errors.length) {
 console.log(`✓ ${questions.length} perguntas válidas, ${Object.values(rubrics).reduce((s, r) => s + r.points.length, 0)} pontos de rubrica`);
 console.log('  por tema:', byCat);
 console.log('  por vaga:', byJob);
+console.log(`✓ ${labs.length} labs no navegador, ${glossary.length} termos no glossário, 5 labs Node`);
