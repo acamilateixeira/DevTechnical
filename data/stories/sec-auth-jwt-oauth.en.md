@@ -20,6 +20,8 @@
 **Reception**: "Confirmed: you're Camila." 🪪
 **Camila**: "Then I'll approve the Marketing cost center's trip!"
 **VIP-area security**: "Whoa, whoa. Being Camila doesn't make you a Marketing manager. Not here." 🛂
+= 🪪 Authentication: ✅ it's Camila
+= 🛂 Authorization for Marketing: ❌ 403 (she isn't a manager there)
 
 ## 🎬 Scene 2 · Wristband or ticket?
 **Wristband**: "I keep your record on the server and give you just a number. Want to kick someone out? I delete it on the server, done." 🍪
@@ -28,11 +30,18 @@
 **Signed ticket**: "Go ahead, I'm only ENCODED, not encrypted. You just can't CHANGE me, because of the signature." ✍️
 **15-minute ticket**: "That's why I don't last long." ⏱️
 **Exchange token**: "And I get you a new ticket, but every time I'm used I get replaced too. If someone shows up with an old one, I cancel the whole family." 🔄🚨
+= 🍪 Session: id in an `HttpOnly` cookie; state on the server; revoked instantly
+= 🎟️ JWT: readable payload, signature prevents changes
+= ⏱️ Access token: 15 min
+= 🔄 Refresh token: rotated on every use; reuse → revokes the family
 
 ## 🎬 Scene 3 · Sign in with Google
 **Travel app**: "Can I see your Google calendar to suggest dates?"
 **Power of attorney**: "Yes, but without her password. I'll give you limited access, calendar only." 🔑
 **One-time code**: "And since you're a browser app that can't keep secrets, I'll protect the code exchange." 🧩
+= 🔑 Flow: Authorization Code + PKCE
+= 📱 The app received: a token with calendar scope only
+= 🔒 Camila's password: never went through the app ✅
 
 ## 💻 Translating to code
 ```http

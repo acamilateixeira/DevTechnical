@@ -22,12 +22,18 @@
 **Juntador**: "Eu junto vocês e deixo registrado o encontro. Fica tudo como foi, com as bifurcações." 🤝
 **Reaplicador**: "Eu pego seus commits e replanto em cima da main de hoje, como se você tivesse começado agora. Fica retinho." ✂️
 **Reaplicador** _(baixinho)_: "Mas eu reescrevo a história, então só me usa no SEU galho, que ninguém mais usa."
+= 🌿 Sua branch: 20 commits atrás da `main`
+= 🤝 Com merge: +1 commit de merge; história com bifurcação
+= ✂️ Com rebase: seus commits recriados em cima da `main`; linha reta
 
 ## 🎬 Cena 2 · A treta
 **Treta**: "Você e a Bia mudaram a mesma linha. Quem ganha?" ⚔️
 **Dev apressada**: "A minha, óbvio!"
 **Git**: "Calma, fia! Lê o que a Bia quis fazer, conversa com ela, junta as duas intenções e roda os testes." 🗣️
 **Bia**: "Obrigada por não apagar meu trabalho de novo." 😒
+= ⚔️ Arquivo em conflito: `checkout.ts`, mesma linha
+= 🗣️ Resolução: as duas intenções juntas, depois de falar com a Bia
+= 🧪 Testes: passando ✅
 
 ## 🎬 Cena 3 · Pegou fogo
 **Produção**: "BUG URGENTE NO CHECKOUT!" 🔥
@@ -35,6 +41,9 @@
 **Trator**: "Posso dar um `--force` na main pra limpar o histórico?" 😈
 **Time inteiro**: "NÃAAO!"
 **Desfazedor educado**: "Na branch compartilhada, quem desfaz sou eu: um commit novo que anula o outro, sem apagar nada de ninguém." ↩️
+= 🚑 Hotfix sai de: a tag `v2.4.1` (o que está em produção)
+= 🏷️ Publicado como: `v2.4.2`, depois merge de volta na develop
+= ↩️ Desfazer em branch compartilhada: `git revert`, nunca `--force`
 
 ## 💻 Traduzindo pro código
 ```bash

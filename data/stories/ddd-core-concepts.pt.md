@@ -20,11 +20,17 @@
 **Especialista**: "O solicitante abre uma solicitação; o despacho faz a atribuição de um motorista."
 **Código antigo**: "Aqui é tudo `Order` e `Job`, ué." 🤷
 **Dicionário**: "Então o código fala outra língua! Usa as MESMAS palavras: `Solicitacao`, `Atribuicao`." 🗣️
+= 🗣️ No negócio: Solicitação, Atribuição
+= 🤷 No código antes: `Order`, `Job`
+= ✅ No código depois: `Solicitacao`, `Atribuicao`
 
 ## 🎬 Cena 2 · O que é um cliente?
 **Vendas**: "Cliente pra mim é um lead com oportunidade."
 **Faturamento**: "Pra mim é CNPJ, endereço fiscal e imposto."
 **Territórios**: "Os dois têm razão, cada um no seu pedaço do mapa. Na fronteira a gente traduz." 🗺️
+= 🗺️ Bounded contexts: Vendas e Faturamento
+= 💼 "Cliente" em Vendas: lead com oportunidade
+= 🧾 "Cliente" em Faturamento: CNPJ, endereço fiscal, impostos
 
 ## 🎬 Cena 3 · As regras do reino
 **Dinheiro**: "Não tenho documento. Sou o que valho, não mudo, e não deixo ninguém me criar negativo." 💰
@@ -33,6 +39,9 @@
 **Fofoqueiro**: "APROVOU! Quem se interessar, e-mail, ERP, que reaja!" 📣
 **CRUD** _(bocejando)_: "E eu, preciso de rainha, fofoqueiro e território?"
 **DDD**: "Não, querido. Eu valho a pena onde o domínio é complicado." 😅
+= 💰 `Money`: imutável, sem ID, nunca negativo
+= 👑 Status da `Viagem`: PENDENTE → APROVADA (só por `aprovar()`)
+= 📣 Eventos publicados: `ViagemAprovada`
 
 ## 💻 Traduzindo pro código
 ```ts

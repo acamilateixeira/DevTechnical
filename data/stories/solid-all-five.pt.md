@@ -19,12 +19,17 @@
 ## 🎬 Cena 1 · O faz-tudo
 **Faz-tudo**: "Eu valido, calculo imposto, salvo no banco e mando e-mail! Sou multitarefa!" 🤹
 **S**: "Meu bem, quando o imposto mudar, o e-mail mudar ou o banco mudar, você muda por QUATRO motivos. Separa isso aí." ✂️
+= 🤹 Responsabilidades do controller: 4 (validar, imposto, salvar, e-mail)
+= ✂️ Depois do S: 4 classes, 1 motivo para mudar cada
 
 ## 🎬 Cena 2 · O checkout cheio de if
 **Checkout**: "Se for Pix… senão se for cartão… senão se for boleto…"
 **O**: "E pra cada forma de pagamento nova você vai mexer aqui de novo? Cria uma classe nova que segue o contrato `MeioDePagamento` e deixa o checkout em paz." 🚪
 **Impostor**: "Eu sou um repositório! Tenho `save()`… mas ele lança 'não suportado'." 🤥
 **L**: "Quem usa repositório espera que `save()` funcione. Se não honra o contrato, não finge ser um." 🙅
+= 🔀 `if` por forma de pagamento: 3 (e crescendo)
+= 🚪 Depois do O: 1 classe por forma; o checkout não muda
+= 🤥 `ReadOnlyRepository.save()`: lança erro → quebra o L
 
 ## 🎬 Cena 3 · A interfaceçona e o banco grudado
 **Interfaceçona**: "Quem só quer ler o nome do usuário tem que depender dos meus 30 métodos." 🐘
@@ -33,6 +38,9 @@
 **D**: "Depende de uma interface de repositório. No teste te dão uma versão em memória e, se o banco mudar, você nem fica sabendo." 🔌
 **Arquiteto empolgado**: "ENTÃO VOU CRIAR INTERFACE PRA TUDO! ATÉ PRO `console.log`!" 🤓
 **Tia SOLID**: "Calma, filho. Abstração sem necessidade também é custo." 😅
+= 🐘 Métodos da interface: 30
+= 🧩 Depois do I: `LeitorDeUsuario` (1) e `RedefinidorDeSenha` (1)
+= 🔌 Depois do D: a regra depende de `Repositorio`, não do MySQL
 
 ## 💻 Traduzindo pro código
 ```ts

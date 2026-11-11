@@ -18,12 +18,18 @@
 **Water tank**: "5 million rows coming out!"
 **Server memory**: "HELP, I'M GOING TO BURST!" 💥
 > 🚨 Loading everything into memory takes the server down.
+= 🪣 Rows in memory: 5 million at once
+= 🧠 Server memory: bursting ❌
+= 📤 Sent to the client: nothing yet
 
 ## 🎬 Scene 2 · The hose with no brake
 **Hose**: "Leave it to me: row by row, from the database to CSV, from CSV to Bia."
 **Tiny cup** 🐢: "Easy, people… I drink slowly…"
 **Water tank**: "DON'T CARE, I KEEP GUSHING!" 🚿
 **Puddle**: "It's all piling up in me… 💦💦💦" _(memory rises again)_
+= 🐍 Flow: database → CSV → client, row by row
+= 💦 Buffer: growing (nobody brakes)
+= 🧠 Memory: ~131 MB and rising ❌
 
 ## 🎬 Scene 3 · With a brake
 **Tiny cup**: "I'm full!" _(`write()` returned `false`)_
@@ -32,6 +38,10 @@
 **Brake**: "You can open it again."
 **Plumber**: "And if Bia closes the browser halfway, I shut every pipe myself, no leaks." 🔧
 **Memory**: "Now it's steady as a rock." 😌
+= ✋ `write()`: returned `false` → producer pauses
+= 🔁 `drain` event: producer resumes
+= 🧠 Memory: ~71 MB, steady ✅
+= 🔧 Client disconnected: `pipeline` closes everything, no leak
 
 ## 💻 Translating to code
 ```js

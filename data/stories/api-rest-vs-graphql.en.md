@@ -17,6 +17,9 @@
 **Set-menu restaurant**: "Dish 1: trip. Dish 2: user. Dish 3: cost center. Three trips to the kitchen!"
 **Screen**: "And dish 1 came with 40 sides, I only wanted 3…" 🍟
 **Ready meal in the fridge**: "But look: since every dish has a fixed address, I keep `GET /trips/1` and serve it without bothering the kitchen." 🏪
+= 🍛 HTTP requests: 3 (`/trips/1`, `/users/7`, `/cost-centers/3`)
+= 🍟 Fields received: ~40 (the screen uses 3) → over-fetching
+= 🏪 HTTP cache / CDN: works (GET by URL) ✅
 
 ## 🎬 Scene 2 · At build-your-own
 **Build your own plate**: "Tell me EXACTLY what you want, in a single order."
@@ -24,11 +27,17 @@
 **Build your own plate**: "Coming up! One trip and only what you asked for." 🥗
 **Screen**: "I'm in love." 😍
 **Ready meal in the fridge**: "Too bad it's all POST to the same address. I can't keep anything. I feel useless." 😢
+= 🥗 HTTP requests: 1 (`POST /graphql`)
+= 🎯 Fields received: 3, exactly the ones asked ✅
+= 🏪 HTTP cache / CDN: doesn't help (POST to the same address) ❌
 
 ## 🎬 Scene 3 · The smart aleck
 **Smart aleck**: "I want my friends, their friends, their friends' friends…"
 **Bouncer**: "Whoa, whoa. Max depth 5, max complexity 1000. Next!" 🛑
 **Kitchen**: "And every field has a resolver, you know? Watch out for N+1." _(→ DataLoader lab)_
+= 🦹 Query received: `friends` nested 8 levels
+= 🛑 Limits: depth 5 · complexity 1000
+= 🚫 Result: rejected before running
 
 ## 💻 Translating to code
 ```http

@@ -19,6 +19,10 @@
 **GPS**: "Peguei uma requisição lenta: API 2 ms, serviço de pagamento 3 ms, provedor externo… 4 SEGUNDOS. Achei onde dói." 🗺️
 **Diário**: "Filtra pelo barbante dessa requisição: 'provider timeout after 4000ms, retry 3/3'. Tá aí o detalhe." 📔
 **Plantonista**: "O termômetro me disse QUE deu ruim, o GPS disse ONDE e o diário disse POR QUÊ. Volto a dormir em 10 minutos." 💡
+= 🌡️ Métrica: erro do checkout 0,1% → 8% às 2h50
+= 🗺️ Trace: span do provedor externo: 4000ms
+= 📔 Log (mesmo `trace.id`): "provider timeout after 4000ms, retry 3/3"
+= ✅ Diagnóstico: o provedor está lento
 
 ## 🎬 Cena 2 · Os que atrapalham
 **Bilhetinho inútil**: "`aqui`" 🤦
@@ -26,6 +30,9 @@
 **Rótulo bomba**: "E se eu criar uma série de métrica por usuário? São só 2 milhões…" 💣
 **Banco de métricas**: "Aí EU que acordo às 3 da manhã. Cuidado com a cardinalidade!" 💥
 **Tomada universal**: "E não instrumenta pra cada ferramenta: liga em mim uma vez e manda pra Elastic, Grafana ou Datadog." 🔌
+= 🤦 Log `"aqui"`: sem contexto, inútil
+= 💣 Label `user_id`: 2 milhões de séries ❌
+= ✅ Labels certos: rota e status (poucos valores)
 
 ## 💻 Traduzindo pro código
 ```js

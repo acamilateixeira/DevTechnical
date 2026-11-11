@@ -21,16 +21,26 @@
 **Eloquent**: "Eu sou um desses 'alguéns'. Me pluga na tomada." 🧰
 **Recepcionista**: "E eu só traduzo o pedido HTTP. Regra? Aqui não, querida." 🚪
 **Lei da gravidade**: "Todo mundo aponta PRA DENTRO. O de fora conhece o de dentro; o de dentro nunca conhece o de fora." ⬇️
+= 💎 Domínio importa: nada de framework
+= 🎬 Caso de uso depende de: `FaturaRepository` (interface)
+= 🧰 Implementação: `EloquentFaturaRepository`
+= ⬇️ Direção das dependências: de fora para dentro
 
 ## 🎬 Cena 2 · A mudança de framework
 **Empresa**: "Vamos sair do CodeIgniter pro Laravel!"
 **Time**: "SOCORRO, VAI QUEBRAR TUDO!" 😱
 **Coração**: "Pode ir, eu vou junto sem mudar uma linha. Só troca a casca." 😎
 **Teste**: "E eu testo a regra em milissegundos, sem subir banco. Tô nem aí pro framework." 🧪
+= 🔄 Framework: CodeIgniter → Laravel
+= 💎 Linhas mudadas no domínio: 0 ✅
+= 🧰 O que muda: controllers e adaptadores
+= 🧪 Teste do caso de uso: sem banco, em milissegundos
 
 ## 🎬 Cena 3 · Sem exagero
 **Cadastro simples**: "Eu também preciso de quatro camadas, interface e adaptador?"
 **Arquiteta experiente**: "Não, meu anjo. Clean Architecture onde a regra é rica, tipo pagamento e fatura. No resto, simples." 😅
+= 💳 Pagamentos e faturas: Clean Architecture (regra rica)
+= 📝 Cadastro simples: controller + model direto (CRUD)
 
 ## 💻 Traduzindo pro código
 ```php

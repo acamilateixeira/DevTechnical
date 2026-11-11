@@ -17,15 +17,25 @@
 **Librarian**: "I'll read all 20 MILLION cards, one by one, pick the right ones, and then sort…" 🐌
 **Bia**: "The screen took 8 seconds! I had time to make coffee!" 😤
 **Flashlight**: "Found the culprit: it read the whole table and then sorted everything on disk." 🔦
+= 🔦 Plan (`EXPLAIN ANALYZE`): Seq Scan + Sort on disk
+= 📚 Rows read: 20 million
+= ⏱️ Time: ~8 s ❌
 
 ## 🎬 Scene 2 · With a catalog
 **Card index**: "I'm already sorted by company, then status, then date. I go straight to drawer 42, pending, already in order, and stop at 50." 📇
 **Librarian**: "I read 50 cards instead of 20 million. I feel like an athlete." ⚡
+= 📇 Index: `(company_id, status, created_at DESC)`
+= 🔦 Plan: Index Scan, already sorted, stops at `LIMIT 50`
+= 📚 Rows read: 50
+= ⏱️ Time: ~5ms ✅
 
 ## 🎬 Scene 3 · Not all roses
 **New entry**: "And every time a new card comes in, I have to update the catalog too. Too many catalogs make me slow!" 🐢
 **Disguise**: "What if I ask by creation DATE, with a function around it?"
 **Card index**: "Then I don't recognize you, dear. Not using it." 🙅
+= ✍️ Each `INSERT`: updates the table + every index
+= 🎭 `WHERE DATE(created_at) = ...`: doesn't use the index ❌
+= ✅ `WHERE created_at >= ... AND < ...`: uses the index
 
 ## 💻 Translating to code
 ```sql

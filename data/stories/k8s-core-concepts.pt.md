@@ -19,12 +19,19 @@
 **Capataz**: "Anotado. Caiu uma? Subo outra. Não discuto, só obedeço." 📋
 **Peão**: "Eu sou uma das cópias. Hoje tô nessa máquina, amanhã sei lá." 📦
 **Telefone fixo**: "E ninguém precisa saber em qual peão liga: liga em mim que eu distribuo entre os que estão bem." 📞
+= 📋 Réplicas desejadas: 3
+= 📦 Pods rodando: 3 (em máquinas diferentes)
+= 📞 Service `api`: distribui entre os 3
 
 ## 🎬 Cena 2 · Trocando a versão sem ninguém perceber
 **Capataz**: "Versão nova! Subo UM peão novo…"
 **Porteiro**: "Peraí, ele já tá pronto pra receber gente? …Agora sim!" 🚦
 **Capataz**: "…então mando UM velho embora, com aviso pra ele terminar o que estava fazendo. E repito até trocar todos." 🔄
 **Clientes**: "Teve deploy? Nem vi." 😎
+= 🆕 Pods da versão nova: 1 → 2 → 3
+= 👴 Pods da versão velha: 3 → 2 → 1 → 0 (cada um com SIGTERM)
+= 🚦 Recebe tráfego: só o pod com readiness OK
+= 😎 Requisições perdidas: 0 ✅
 
 ## 🎬 Cena 3 · Os perrengues
 **Enfermeiro**: "Tá vivo? Tá vivo? Travou? Reinicio." 💓
@@ -32,6 +39,9 @@
 **Todos os peões**: "…a gente reinicia em loop sem motivo! Socorro!" 😵
 **Peão comilão**: "Comi mais memória do que o meu limite…" 🍔
 **Kernel**: "OOMKilled. Tchau, querido." 💀
+= 💓 Liveness checando o banco: banco caiu → todos reiniciam em loop ❌
+= ✅ Liveness certa: só "o processo responde?"
+= 🍔 Pod acima de 512Mi: OOMKilled (exit 137)
 
 ## 💻 Traduzindo pro código
 ```yaml

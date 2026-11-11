@@ -17,6 +17,9 @@
 **Lista de viagens**: "Vovó, eu fiquei velha há 10 minutos e ninguém me atualizou." 🌐
 **Despensa inteligente**: "Deixa comigo, querida: eu busco, guardo, atualizo quando a aba volta pro foco, cancelo e não busco duas vezes a mesma coisa." 🗃️
 **Despensa inteligente** _(baixinho)_: "Uns 80% do seu 'estado global' era só cache do servidor, viu?" 😏
+= 🦖 No store do Redux: lista da API, filtro, modal, tema (tudo junto)
+= 🌐 Lista de viagens: desatualizada há 10 min ❌
+= 🗃️ Com TanStack Query: cache + refetch no foco + dedupe ✅
 
 ## 🎬 Cena 2 · Cada um na sua casa
 **Bilhete na porta**: "Eu sou o filtro 'só pendentes'. Moro na URL: aperta F5 e eu continuo aqui, manda o link e a Bia vê o mesmo filtro." 🔗
@@ -24,6 +27,10 @@
 **Tema escuro**: "Eu sou de todo mundo, mas mudo uma vez na vida. Context me resolve." 🌙
 **Carrinho cheio de regra**: "Eu mudo toda hora e tem um monte de componente me olhando…" 🛒
 **Zustand**: "Então vem comigo: cada um assina só o pedaço que usa, e só quem precisa redesenha."
+= 🔗 Filtro: na URL: `?status=pendente`
+= 🪟 Modal: `useState` no componente
+= 🌙 Tema: Context
+= 🛒 Carrinho: Zustand com seletores
 
 ## 💻 Traduzindo pro código
 ```tsx

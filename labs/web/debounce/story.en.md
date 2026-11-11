@@ -15,6 +15,9 @@
 **Jumpy field**: "NEW LETTER? CALL THE API! ANOTHER ONE? CALL AGAIN! 📞📞📞"
 **API**: "Hello? 'r'. Hello? 're'. Hello? 'rea'… LADY, FOR THE LOVE OF GOD, THAT'S 11 CALLS FOR ONE WORD! 😩"
 > 🚨 11 searches, and nobody wanted 10 of them.
+= ⌨️ Keys typed: 5 (r, e, a, c, t)
+= 📞 API searches (no debounce): 5, one per key
+= ⏳ Still to come: 6 more letters = 6 more searches (11 total)
 
 ## 🎬 Scene 2 · The chill field
 **Bia**: "R… E… A…"
@@ -23,11 +26,17 @@
 **Bia**: "…H-O-O-K-S." _(stops typing)_
 **Chill field**: "One, two, three… 300ms of silence! NOW: one call, with the whole word."
 **API**: "Now THAT is good manners! 🙏"
+= ⌨️ Keys typed: 11 ("react hooks")
+= 🎒 `timer`: canceled and recreated on every key; the last one fired after 300ms idle
+= 📞 API searches (with debounce): 1, with the whole word
 
 ## 🎬 Scene 3 · The cousin shows up
 **Throttle**: "I'm different, okay? I don't wait for anyone to stop. I let ONE call through every X ms, and the rest wait for the next window."
 **Chill field**: "So what are you good for?"
 **Throttle**: "Scrolling, and when someone keeps resizing the window like crazy. 🌀"
+= 🌀 Scroll events: many per second
+= 🚦 With a 200ms throttle: at most 5 runs per second
+= 📌 Rule: debounce waits for a pause; throttle caps the rate
 
 ## 💻 Translating to code
 ```js

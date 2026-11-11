@@ -17,17 +17,26 @@
 **Síndico**: "Porque você tá ouvindo o megafone, e o megafone grita pra todo mundo. E tem mais: o recado `{ state, dispatch }` é um papel NOVO a cada vez. Pra mim, SEMPRE mudou."
 **Rodapé** _(de fone)_: "Eu? Minhas props são as mesmas. Nem acordei." 😴
 > 🚨 O Botão re-renderizou à toa.
+= 📢 Context: um só, `value={{ state, dispatch }}` (objeto novo a cada render)
+= 🔄 Re-renderizou: Lista ✅ e Botão ❌ (à toa)
+= 😴 Não re-renderizou: Rodapé (com `memo`, props iguais)
 
 ## 🎬 Cena 2 · Dois megafones
 **Síndico**: "OS ITENS MUDARAM!"
 **Lista**: "Ouvi, me atualizo." ✅
 **Síndico do dispatch** 🤫: "Eu nunca grito nada. O `dispatch` do `useReducer` é sempre o mesmo, então não tenho novidade."
 **Botão** _(ouvindo só o síndico do dispatch)_: "FINALMENTE, UMA NOITE DE SONO! 😌"
+= 📢 Contexts: Estado (muda) + Dispatch (nunca muda)
+= 🔄 Re-renderizou: só a Lista ✅
+= 😴 Não re-renderizou: Botão e Rodapé
 
 ## 🎬 Cena 3 · A troca de tema
 **Síndico**: "MUDOU O TEMA PRA ESCURO!"
 **Lista**: "Ué, por que EU acordei? Eu nem uso o tema!"
 **Mini Zustand** _(passando no corredor)_: "Porque você ouve o estado INTEIRO, querida. Comigo você assina só o pedaço que usa. Passa lá no meu lab." 😏
+= 🎨 Mudou: só o `tema`
+= 🔄 Re-renderizou: a Lista ❌ (lê o estado inteiro, mesmo sem usar o tema)
+= 💡 Solução: store com seletor (lab Mini Zustand)
 
 ## 💻 Traduzindo pro código
 ```tsx

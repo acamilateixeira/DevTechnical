@@ -21,6 +21,9 @@
 **Email**: "Then I'm not sending anything."
 **João**: "My trip was approved three days ago and I FOUND OUT AT THE AIRPORT CHECK-IN?!" 😤
 > 🚨 The database and the mail carrier don't coordinate with each other: a dual write.
+= 🗄️ Database: trip APPROVED
+= 🐰 RabbitMQ: no message ❌
+= 📧 Emails sent: 0 ❌
 
 ## 🎬 Scene 2 · With a note
 **API**: "Now, in the SAME transaction, I save the approval AND a note in the outbox. Either both go, or neither." 📝
@@ -28,6 +31,10 @@
 **Relay** _(riding by)_: "Oh, an undelivered note! Take it, Rabbit!" 📮
 **Email**: "Got it! Sent the email to João." 📧
 **João**: "Finally! Off to the beach!" ✈️
+= 🗄️ Database: trip APPROVED + note in the outbox (same transaction)
+= 🚴 Relay: found 1 note and published it
+= 📧 Emails sent: 1 ✅
+= 📝 Note: published, marked with `publicadoEm`
 
 ## 🎬 Scene 3 · The forgetful courier
 **Relay**: "Now let me mark the note as delivered and—"
@@ -36,6 +43,10 @@
 **Email** _(no dedupe)_: "Got it again! Sent it again!" 📧📧
 **João**: "Why did I get two emails? Two trips? Yay!"
 **Dedupe**: "Easy, João. That message ID was already handled. I'm ignoring the repeat." 🛑
+= 📝 Note: published, but NOT marked (crashed first)
+= 🐰 Messages published: 2 (the relay resent it)
+= 📧 Emails without dedupe: 2 ❌
+= 🛑 Emails with dedupe: 1 ✅ (the repeated ID was ignored)
 
 ## 💻 Translating to code
 ```js

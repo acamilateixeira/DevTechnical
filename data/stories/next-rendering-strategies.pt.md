@@ -20,16 +20,27 @@
 **Prato feito na hora**: "Eu preparo o HTML no servidor pra cada pedido. Sempre fresquinho, mas dá trabalho toda vez." 🍳
 **Marmita pronta**: "Eu deixei tudo pronto no build. Sai na hora, mas se o conteúdo mudar, só no próximo build." 🥪
 **Marmita que se renova**: "Eu sou a marmita, mas a cada tanto tempo faço uma nova sem ninguém esperar." 🔄
+= 🧱 CSR: HTML vazio + JS; tela branca até montar
+= 🍳 SSR: HTML pronto a cada pedido
+= 🥪 SSG: HTML pronto no build, servido pela CDN
+= 🔄 ISR: SSG refeito a cada `revalidate` segundos
 
 ## 🎬 Cena 2 · O chef
 **Chef de cozinha**: "Eu cozinho no servidor, busco o dado direto do banco e não mando nem uma linha de JavaScript pro navegador." 🧑‍🍳
 **Garçom interativo**: "E só os pedaços com botão vão comigo, marcados com `'use client'`." 🎛️
 **Eletricista**: "Chegou o HTML pronto? Eu passo ligando os botões nele." 💧
+= 🧑‍🍳 Server Components: dados buscados no servidor; 0 KB de JS no cliente
+= 🎛️ Client Components: só os botões, com `'use client'`
+= 💧 Hydration: liga os eventos no HTML que já veio pronto
 
 ## 🎬 Cena 3 · O relógio desencontrado
 **Relógio desencontrado**: "No servidor eu era 10:00:00. No navegador, 10:00:01…" ⏰
 **Eletricista**: "O HTML não bate com o que eu esperava! ERRO DE HYDRATION!" 💥
 **Chef de cozinha**: "Coloca a hora num `useEffect`, que só roda no navegador, e acabou a briga."
+= ⏰ HTML do servidor: 10:00:00
+= ⏰ Primeiro render no navegador: 10:00:01
+= 💥 Resultado: erro de hydration
+= ✅ Correção: hora dentro do `useEffect`
 
 ## 💻 Traduzindo pro código
 ```tsx

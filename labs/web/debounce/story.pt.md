@@ -15,6 +15,9 @@
 **Campo afobado**: "LETRA NOVA? LIGA PRA API! OUTRA? LIGA DE NOVO! 📞📞📞"
 **API**: "Alô? 'r'. Alô? 're'. Alô? 'rea'… MOÇA, PELO AMOR, FORAM 11 LIGAÇÕES PRA UMA PALAVRA SÓ! 😩"
 > 🚨 11 buscas, e 10 delas ninguém queria.
+= ⌨️ Teclas digitadas: 5 (r, e, a, c, t)
+= 📞 Buscas na API (sem debounce): 5, uma por tecla
+= ⏳ Falta: mais 6 letras = mais 6 buscas (11 no total)
 
 ## 🎬 Cena 2 · O campo tranquilo
 **Bia**: "R… E… A…"
@@ -23,11 +26,17 @@
 **Bia**: "…H-O-O-K-S." _(para de digitar)_
 **Campo tranquilo**: "Um, dois, três… 300ms de silêncio! AGORA SIM: uma ligação, com a palavra inteira."
 **API**: "Isso sim é educação! 🙏"
+= ⌨️ Teclas digitadas: 11 ("react hooks")
+= 🎒 `timer`: cancelado e recriado a cada tecla; o último venceu depois de 300ms parado
+= 📞 Buscas na API (com debounce): 1, com a palavra inteira
 
 ## 🎬 Cena 3 · Chega o primo
 **Throttle**: "Eu sou diferente, viu? Não espero ninguém parar. Deixo passar UMA ligação a cada X ms, e o resto espera a próxima janela."
 **Campo tranquilo**: "Então você é bom pra quê?"
 **Throttle**: "Pra rolagem e pra quando a pessoa fica redimensionando a tela feito doida. 🌀"
+= 🌀 Eventos de scroll: muitos por segundo
+= 🚦 Com throttle de 200ms: no máximo 5 execuções por segundo
+= 📌 Regra: debounce espera parar; throttle limita a frequência
 
 ## 💻 Traduzindo pro código
 ```js

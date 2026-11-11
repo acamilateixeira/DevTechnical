@@ -20,17 +20,26 @@
 **Post office**: "Checking the map… one copy goes to the email box, one to the ERP, and one to reporting." 🗺️
 **Email carrier**: "Got it, sent the email, here's the receipt!" ✅
 **Post office**: "Receipt in hand, I throw the letter away."
+= 🏤 `viagens` exchange: received "viagem.aprovada"
+= 📬 Queues: email: 1 · erp: 1 · relatorio: 1
+= ✅ email queue after the ack: 0
 
 ## 🎬 Scene 2 · The carrier who went down
 **ERP carrier**: "Picked up the letter… processing…" 💥 _(went down without a receipt)_
 **Post office**: "No receipt? The letter goes back in the box and another carrier takes it." 🔁
 **ERP carrier 2**: "I've got it. Done, receipt!" ✅
+= 🧾 ERP consumer: went down without an ack
+= 🔁 Message: back in the queue (redelivered)
+= ✅ erp queue after the 2nd consumer: 0
 
 ## 🎬 Scene 3 · The letter bomb
 **Letter bomb**: "Hehe, everyone who opens me blows up." ☠️
 **Post office**: "I tried 5 times, waiting longer each time. Enough: off to lost and found." 📭
 **Lost and found**: "You stay here quietly until a human investigates."
 **Ledger** _(from the post office next door)_: "I'm different: I don't throw letters away when someone reads them. I keep everything in order, each reader marks where they stopped, and anyone can reread the history." 📜
+= ☠️ Attempts: 5, with growing waits
+= 📭 DLQ `viagens.dlx`: 1 message awaiting investigation
+= 📬 Main queue: free, other messages keep flowing ✅
 
 ## 💻 Translating to code
 ```js

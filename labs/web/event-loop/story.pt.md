@@ -15,44 +15,105 @@
 - 💎 **Microtask** · microtask · quem está na fila VIP
 - 🎟️ **Macrotask** · macrotask · quem está na fila normal
 
-## 🎬 Cena 1 · Todo mundo chegando
+## 🎬 Cena 1 · O código síncrono, de cima pra baixo
 **A**: "CHEGUEI! Sou o primeiro da fila mesmo! VOU FALAR AGORA!"
+= 📤 Saída (console): A
+= ▶️ Rodando agora: código síncrono (linha do A)
+= 💎 Fila VIP (microtasks): (vazia)
+= 🎟️ Fila normal (macrotasks): (vazia)
+= ⏸️ Pausado: nada
+= ⏳ Falta: as linhas B, C, D, E e G do script
 **B**: "EU TAMBÉM QUERO FALAR! DAQUI A 0ms!"
 **Event Loop**: "CALMA, APRESSADO! 0ms não significa agora! Vai esperar sua vez na fila dos timers!"
+= 📤 Saída (console): A
+= ▶️ Rodando agora: código síncrono (linha do B: só agenda o timer)
+= 💎 Fila VIP (microtasks): (vazia)
+= 🎟️ Fila normal (macrotasks): B
+= ⏸️ Pausado: nada
+= ⏳ Falta: as linhas C, D, E e G
 **C**: "MINHA PROMISE JÁ FOI RESOLVIDA! Eu prometi uma parada e agora quero executar meu `.then()`!"
 **Event Loop**: "Beleza! Entra na fila VIP das microtasks!"
+= 📤 Saída (console): A
+= ▶️ Rodando agora: código síncrono (linha do C: só agenda o `.then`)
+= 💎 Fila VIP (microtasks): C
+= 🎟️ Fila normal (macrotasks): B
+= ⏸️ Pausado: nada
+= ⏳ Falta: as linhas D, E e G
 **D**: "EU TAMBÉM QUERO ENTRAR NA FILA VIP!"
 **Event Loop** _(desconfiado)_: "Mas cadê sua Promise?"
 **D**: "NÃO TENHO PROMISE NENHUMA! 😂 Eu posso entrar diretamente na fila das microtasks!"
+= 📤 Saída (console): A
+= ▶️ Rodando agora: código síncrono (linha do D)
+= 💎 Fila VIP (microtasks): C, D
+= 🎟️ Fila normal (macrotasks): B
+= ⏸️ Pausado: nada
+= ⏳ Falta: as linhas E e G
 **E**: "SOU ASSÍNCRONA, MAS FUI CHAMADA AGORA! NÃO VOU ESPERAR NINGUÉM! VOU COMEÇAR A FALAR!"
+= 📤 Saída (console): A E
+= ▶️ Rodando agora: a função E, até o primeiro `await`
+= 💎 Fila VIP (microtasks): C, D
+= 🎟️ Fila normal (macrotasks): B
+= ⏸️ Pausado: nada
+= ⏳ Falta: o `await null` e a linha G
 **`await null`**: "ESPERAAAA, APRESSADA! ✋ Você já falou o que tinha antes de mim! Agora pausa essa função! O restante vai para a fila VIP das microtasks!"
 **F**: "UAI, MAS EU NEM FALEI AINDA! 😭"
 **`await null`**: "POIS VAI ESPERAR! C e D chegaram primeiro na fila VIP!"
+= 📤 Saída (console): A E
+= ▶️ Rodando agora: o `await` pausou a função E e o script continua
+= 💎 Fila VIP (microtasks): C, D, F (o resto da função E)
+= 🎟️ Fila normal (macrotasks): B
+= ⏸️ Pausado: a função E, no `await`
+= ⏳ Falta: a linha G
 **G**: "Enquanto essa galera tá nessa confusão, EU VOU FAZER O MEU! Não dependo de ninguém!"
+= 📤 Saída (console): A E G
+= ▶️ Rodando agora: fim do script
+= 💎 Fila VIP (microtasks): C, D, F
+= 🎟️ Fila normal (macrotasks): B
+= ⏸️ Pausado: a função E, no `await`
+= ⏳ Falta: esvaziar a fila VIP inteira, depois chamar a fila normal
 > 🚨 ACABOU O CÓDIGO SÍNCRONO! A FILA VIP FOI LIBERADA!
 
-## 🎬 Cena 2 · A fila VIP
+## 🎬 Cena 2 · A fila VIP (microtasks)
 **C**: "EU ENTREI PRIMEIRO! MINHA VEZ!"
+= 📤 Saída (console): A E G C
+= ▶️ Rodando agora: microtask C
+= 💎 Fila VIP (microtasks): D, F
+= 🎟️ Fila normal (macrotasks): B
+= ⏸️ Pausado: a função E, no `await`
+= ⏳ Falta: D e F na fila VIP, depois B
 **D**: "EU SOU O SEGUNDO! NEM PRECISEI DE PROMISE!"
+= 📤 Saída (console): A E G C D
+= ▶️ Rodando agora: microtask D
+= 💎 Fila VIP (microtasks): F
+= 🎟️ Fila normal (macrotasks): B
+= ⏸️ Pausado: a função E, no `await`
+= ⏳ Falta: F na fila VIP, depois B
 **F**: "FINALMENTE! O `await` me segurou, mas agora posso falar!"
-> ⏰ AGORA É A VEZ DOS TIMERS!
+= 📤 Saída (console): A E G C D F
+= ▶️ Rodando agora: microtask F: a função E volta do `await` e termina
+= 💎 Fila VIP (microtasks): (vazia)
+= 🎟️ Fila normal (macrotasks): B
+= ⏸️ Pausado: nada
+= ⏳ Falta: a fila normal: B
+> ⏰ FILA VIP VAZIA! AGORA É A VEZ DOS TIMERS!
 
-## 🎬 Cena 3 · A fila normal
+## 🎬 Cena 3 · A fila normal (macrotasks)
 **B**: "E EU, GENTE?! 😭 ERA PRA SER 0ms!"
 **Event Loop**: "AGORA É SUA VEZ! Mas não se empolga! Se você criar microtasks, elas vão ser executadas antes do próximo timer!"
 **B**: "FINALMENTE! 😂"
+= 📤 Saída (console): A E G C D F B
+= ▶️ Rodando agora: macrotask B (o timer)
+= 💎 Fila VIP (microtasks): (vazia)
+= 🎟️ Fila normal (macrotasks): (vazia)
+= ⏸️ Pausado: nada
+= ⏳ Falta: nada: o programa terminou
 
-## 🎬 Cena 4 · Moral da história
+## 🧠 Moral da história
 **A**: "Nós, os síncronos (A, E e G): estamos aqui! Vamos trabalhar primeiro!"
 **Microtask**: "Estamos na fila VIP! Quando os síncronos terminarem, É NOSSA VEZ!"
 **B**: "Nós, os timers: SOBROU PRA GENTE ESPERAR! 😭"
 **Event Loop**: "EU ORGANIZO ESSA BAGUNÇA! Primeiro termina o código síncrono, depois esvazio a fila das microtasks. Aí executo a próxima macrotask e verifico as microtasks de novo. E ASSIM CONTINUA!"
 **`await null`**: "EU NÃO PARO O PROGRAMA INTEIRO, NÃO! Só pauso a minha função. O RESTO QUE SE VIRE!" 😂
-
-## 🎬 Parte 2 · Quem define a fila?
-**Microtask**: "SOU DA FILA VIP! Assim que o código atual terminar, QUERO EXECUTAR ANTES DA PRÓXIMA MACROTASK!"
-**Macrotask**: "EU TAMBÉM QUERO EXECUTAR!"
-**Event Loop**: "BELEZA, MAS PRIMEIRO VOU ESVAZIAR A FILA VIP!"
 
 ## 💻 Traduzindo pro código
 ```js
@@ -75,7 +136,11 @@ console.log('G');                                       // G  → síncrono
 | 2 | Microtasks (fila VIP) | C, D, F |
 | 3 | Timer / macrotask (depois das microtasks) | B |
 
-## 📌 Quem define a fila é a API
+## ➕ Parte 2 · Quem define a fila?
+**Microtask**: "SOU DA FILA VIP! Assim que o código atual terminar, QUERO EXECUTAR ANTES DA PRÓXIMA MACROTASK!"
+**Macrotask**: "EU TAMBÉM QUERO EXECUTAR!"
+**Event Loop**: "BELEZA, MAS PRIMEIRO VOU ESVAZIAR A FILA VIP!"
+
 Quem define se é microtask ou macrotask é a **API que agenda a tarefa**, não o tempo que ela demora nem a importância dela.
 
 | Microtasks (fila VIP) | Macrotasks (fila normal) |

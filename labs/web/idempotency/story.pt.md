@@ -21,6 +21,10 @@
 **Servidor**: "Cobrei! ✅"
 **Cartão da Bia**: "R$450?! TÁ DE BRINCADEIRA?! ELA COMPROU UM TÊNIS, NÃO UMA CENTOPEIA! 😱"
 > 🚨 O servidor não tinha como saber que era o mesmo pedido.
+= 🔁 Tentativas do app: 3
+= 📨 Respostas que chegaram ao app: 1 (só a última; a rede comeu 2)
+= 💳 Cobranças no cartão: 3 → R$450 ❌
+= 📒 Caderninho: não existe
 
 ## 🎬 Cena 2 · Com número de pedido
 **App**: "Cobra R$150. Pedido número **abc-123**."
@@ -30,12 +34,20 @@
 **App**: "Cobra R$150. Pedido **abc-123**." _(o mesmo número, de propósito)_
 **Servidor** _(folheando)_: "Peraí… abc-123 já tá aqui! Não cobro de novo, só te devolvo a mesma resposta."
 **Cartão da Bia**: "R$150. Certinho. Pode respirar." 😌
+= 🔁 Tentativas do app: 2, as duas com a chave abc-123
+= 📒 Caderninho: abc-123 → 201 (resposta guardada)
+= 💳 Cobranças no cartão: 1 → R$150 ✅
+= 📋 Respostas devolvidas do caderninho: 1 (a segunda tentativa)
 
 ## 🎬 Cena 3 · O app espertinho
 **App**: "E se eu inventar um número novo a cada tentativa? Pedido **xyz-999**!"
 **Servidor**: "Número novo é pedido novo. Cobrei! ✅"
 **Cartão da Bia**: "DE NOVO NÃO, PELO AMOR!" 🤦
 **abc-123**: "O número é da COMPRA, meu bem. Não da tentativa."
+= 🎫 Chaves usadas: xyz-999, depois outra nova a cada tentativa
+= 📒 Caderninho: cada chave é nova → nunca acha nada
+= 💳 Cobranças no cartão: uma por tentativa ❌
+= 📌 Regra: uma chave por compra, não por tentativa
 
 ## 💻 Traduzindo pro código
 ```js

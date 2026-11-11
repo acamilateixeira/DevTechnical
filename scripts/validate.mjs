@@ -8,10 +8,10 @@ import { jobs, cats, types } from '../data/meta.js';
 import { md } from '../assets/md.js';
 import { labs } from '../labs/web/index.js';
 import { glossary } from '../data/glossary.js';
-import { extraJobs, reported as reportedMap } from '../data/evidence.js';
+import { extraJobs, reported as reportedMap, sources } from '../data/evidence.js';
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { storyIds } from '../data/stories/index.js';
-import { parseStory, findCast, stories as allStories } from '../assets/story.js';
+import { parseStory, findCast, STATE, stories as allStories } from '../assets/story.js';
 import { execFileSync } from 'node:child_process';
 
 const errors = [];
@@ -42,7 +42,15 @@ for (const q of questions) {
     });
   }
   if (q.type === 'code' && !q.code) err(id, 'tipo "code" sem bloco de código');
-  if (q.reported && !bilingual(q.reported)) err(id, 'reported precisa de pt e en');
+  if (q.reported) {
+    if (!Array.isArray(q.reported) || !q.reported.length) err(id, 'reported deve ser uma lista de fontes');
+    else q.reported.forEach((x, i) => {
+      const s = sources[x.src];
+      if (!s) return err(id, `reported[${i}]: fonte desconhecida "${x.src}"`);
+      if (!bilingual(x.quote)) err(id, `reported[${i}].quote precisa de pt e en`);
+      if (x.note && !bilingual(x.note)) err(id, `reported[${i}].note precisa de pt e en`);
+    });
+  }
 
   const r = rubrics[q.id];
   if (!r) err(id, 'sem rubrica em data/rubrics.js');
@@ -64,6 +72,11 @@ for (const id of Object.keys(rubrics)) if (!ids.has(id)) err(id, 'rubrica órfã
 
 // ---- evidências
 for (const id of [...Object.keys(extraJobs), ...Object.keys(reportedMap)]) if (!ids.has(id)) err(`evidence:${id}`, 'pergunta inexistente');
+for (const [k, s] of Object.entries(sources)) {
+  if (!['relato', 'guia', 'vaga'].includes(s.kind)) err(`fonte:${k}`, 'kind deve ser relato, guia ou vaga');
+  for (const f of ['role', 'when', 'stage']) if (!bilingual(s[f])) err(`fonte:${k}`, `${f} precisa de pt e en`);
+  if (s.kind !== 'vaga' && !/^https:\/\//.test(s.url)) err(`fonte:${k}`, 'relato e guia precisam de link https');
+}
 for (const [id, js] of Object.entries(extraJobs)) js.forEach((j) => { if (!jobs[j]) err(`evidence:${id}`, `vaga desconhecida "${j}"`); });
 
 // ---- labs do navegador
@@ -109,8 +122,14 @@ for (const st of allStories) for (const lg of ['pt', 'en']) {
   if (castLines !== s.cast.length) err(id, 'linha do elenco fora do formato "- emoji **Nome** · código · quem é"');
   if (!s.scenes.length) err(id, 'sem cenas (## 🎬 ...)');
   if (!s.interview) err(id, 'sem a seção 🎤');
-  for (const sc of s.scenes) for (const l of sc.lines) {
-    const m = l.match(/^\*\*(.+?)\*\*(?:\s*_\((.+?)\)_)?\s*:/);
+  for (const sc of s.scenes) {
+    const filled = sc.lines.filter((l) => l.trim() && !l.startsWith('> ')); // um aviso (> 🚨) pode fechar a cena depois do painel
+    if (!filled.some((l) => STATE.test(l))) err(id, `cena "${sc.title}" sem painel técnico (= emoji Rótulo: valor)`);
+    else if (!STATE.test(filled[filled.length - 1])) err(id, `cena "${sc.title}" precisa terminar com o painel técnico`);
+  }
+  for (const sc of [...s.scenes, ...(s.moral ? [s.moral] : []), ...s.extras]) for (const l of sc.lines) {
+    const m = l.match(/^\*\*(.+?)\*\*(?:\s*_\((.+?)\)_)?\s*:\s*(.*)$/);
+    if (m && sc.kind === 'extra' && !/^["“]/.test(m[3])) continue; // nos extras, só é fala o que vem entre aspas
     if (m && !findCast(s, m[1])) err(id, `"${m[1]}" fala mas não está no elenco`);
   }
 }

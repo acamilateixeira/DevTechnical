@@ -24,16 +24,25 @@
 > 🚨 The bank didn't know the request came from another site.
 **Suspicious cookie**: "Not with me: a request coming from ANOTHER site, I stay home." 🛑
 **Form password**: "And the bank also requires a code that only the bank's site has. The kitten doesn't know it." 🎫
+= 🍪 Cookie on the kitten site's request: with `SameSite=Lax`: not sent ✅
+= 🎫 CSRF token: missing → 403
+= 💸 Transfers made: 0 ✅
 
 ## 🎬 Scene 2 · The neighbor's invoice (IDOR)
 **Snoop**: "My invoice is `/faturas/123`… what if I try `/faturas/124`?" 🤔
 **API with no checker**: "Here's 124!" _(it belongs to Mrs. Neusa in 302)_
 **Checker**: "Hold on. Is 124 yours? No? Then 404, it doesn't exist for you." 🛂
+= 🤔 Request: `GET /faturas/124`
+= 🛂 Owner of invoice 124: someone else
+= ✅ Response: 404 (doesn't even confirm it exists)
 
 ## 🎬 Scene 3 · The apostrophe (SQL injection)
 **Sneaky apostrophe**: "Find the customer `' OR '1'='1`." 💉
 **Query glued with `+`**: "Returning… EVERY CUSTOMER IN THE BANK!" 💥
 **Sealed envelope**: "With me the text goes sealed, separate from the command. I literally look for someone named `' OR '1'='1`. Nobody. Next." 📦
+= 💉 Input: `' OR '1'='1`
+= 🧵 Concatenated: returns the whole table ❌
+= 📦 Prepared statement: looks for that literal text → 0 rows ✅
 
 ## 💻 Translating to code
 ```php

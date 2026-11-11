@@ -16,17 +16,25 @@
 **Test**: "And to run me? I'll have to spin up a real database, with Docker and everything?" 😩
 **Use case**: "…yes."
 **Test**: "I'm out."
+= 🧑‍💼 Who creates the repository: the use case itself (`new`)
+= 🧪 To test: needs a real database ❌
 
 ## 🎬 Scene 2 · Call the butler
 **Butler**: "Sir, just say in the constructor WHAT you need. I'll build it and hand it over ready." 🤵
 **Butler's list**: "When someone asks for `TripRepository`, deliver the real repository."
 **Use case**: "What a life. I don't even know where it came from, I just use it."
+= 📒 Registered provider: `TRIP_REPOSITORY` → `TypeOrmTripRepository`
+= 🤵 Who creates it: Nest's container
+= 🧑‍💼 The use case knows: only the `TripRepository` interface
 
 ## 🎬 Scene 3 · Test day
 **Test**: "Butler, today please deliver the toy repository."
 **Butler**: "Certainly." _(swaps the piece)_
 **Use case**: "Huh, did something change? Didn't notice." 😉
 **Test**: "I ran in 3 milliseconds, no database. Fancy."
+= 🧸 Provider in the test: `InMemoryTripRepository` (via `overrideProvider`)
+= 🧑‍💼 Use case code: unchanged
+= ⏱️ Test time: ~3ms, no database ✅
 
 ## 💻 Translating to code
 ```ts

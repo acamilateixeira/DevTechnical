@@ -19,6 +19,10 @@
 **Budget**: "Final balance: R$200. All good!" 🙂
 **Finance**: "ALL GOOD?! You approved R$1600 with R$1000! Which genius did this?!" 😱
 > 🚨 The second write erased the first: a lost update.
+= 🏦 Balance in the database: R$200
+= ✅ Trips approved: 2 (R$1600) ❌
+= 👀 What each manager read: both read R$1000
+= ✍️ Manager A's write: overwritten by Manager B's
 
 ## 🎬 Scene 2 · With a padlock
 **Manager A**: "I want to see the balance and lock this row for myself." 🔒
@@ -27,11 +31,18 @@
 **Manager A**: "Approved, balance 200, COMMIT. You can come in!" 🔓
 **Manager B**: "My turn… R$200? R$800 doesn't fit. Rejected." ✅
 **Finance**: "Now we're talking. Off to happy hour you go."
+= 🔒 Lock on row `cc1`: Manager A until COMMIT; Manager B waited
+= 🏦 Balance in the database: R$200
+= ✅ Trips approved: 1 ✅
+= 🚫 Rejected: 1 (Manager B read R$200)
 
 ## 🎬 Scene 3 · The short way
 **Atomic**: "I don't even peek first. I tell the database to check and subtract all at once. If there's no balance, no row changes and I know it didn't work."
 **Manager B**: "That simple?"
 **Atomic**: "That simple, babe." 😎
+= ⚡ SQL: `UPDATE ... SET saldo = saldo - 800 WHERE saldo >= 800`
+= 📊 Rows affected: A: 1 · B: 0
+= ✅ Trips approved: 1 ✅ (final balance R$200)
 
 ## 💻 Translating to code
 ```sql

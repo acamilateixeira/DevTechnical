@@ -7,10 +7,6 @@ export default [
     id: 'php-oop-abstract-interface-trait',
     cat: 'php', type: 'code', jobs: ['brasilcard', 'cv'],
     tags: ['POO', 'OOP', 'interface', 'abstract class', 'trait', 'polimorfismo', 'herança', 'composição'],
-    reported: {
-      pt: 'Sim. "Diferença entre classe abstrata e interface" e "explique polimorfismo" aparecem em relatos de entrevistas para pleno no Brasil (TabNews) e em quase toda lista de PHP.',
-      en: 'Yes. "Abstract class vs interface" and "explain polymorphism" show up in reports of mid-level interviews in Brazil (TabNews) and in nearly every PHP list.',
-    },
     q: {
       pt: 'Qual a diferença entre classe abstrata, interface e trait em PHP? Mostre polimorfismo num exemplo de meios de pagamento.',
       en: 'What is the difference between an abstract class, an interface, and a trait in PHP? Show polymorphism with a payments example.',
@@ -250,10 +246,6 @@ A \`Money\` value object (amount + currency, immutable) centralizes these rules 
     id: 'codeigniter3-architecture',
     cat: 'php', type: 'lib', jobs: ['brasilcard'],
     tags: ['CodeIgniter 3', 'MVC', 'Query Builder', 'hooks', 'libraries', 'helpers', 'CSRF', 'XSS'],
-    reported: {
-      pt: 'Pergunta típica de vagas que mantêm sistemas em CodeIgniter 3: estrutura MVC, Query Builder, hooks, libraries e helpers, e a diferença para o Laravel aparecem em todas as listas de entrevista de CodeIgniter.',
-      en: 'Typical for roles maintaining CodeIgniter 3 systems: MVC structure, Query Builder, hooks, libraries and helpers, and the difference from Laravel appear in every CodeIgniter interview list.',
-    },
     q: {
       pt: 'A vaga pede CodeIgniter 3 e Laravel. Como funciona uma requisição no CodeIgniter 3, quais as peças (controllers, models, libraries, helpers, hooks) e o que muda em relação ao Laravel?',
       en: 'The role asks for CodeIgniter 3 and Laravel. How does a request flow in CodeIgniter 3, what are the pieces (controllers, models, libraries, helpers, hooks), and how does it differ from Laravel?',
@@ -562,10 +554,6 @@ To integrate all three, I let each system own its database and integrate via API
     id: 'sql-live-query-faturas',
     cat: 'data', type: 'code', jobs: ['brasilcard'],
     tags: ['SQL', 'JOIN', 'GROUP BY', 'HAVING', 'LEFT JOIN', 'window function', 'subquery', 'live coding'],
-    reported: {
-      pt: 'Escrever SQL ao vivo é comum em vagas PHP pleno no Brasil: joins, agrupamento e "explique indexação" aparecem nos relatos.',
-      en: 'Writing SQL live is common in mid-level PHP roles in Brazil: joins, grouping, and "explain indexing" appear in reports.',
-    },
     q: {
       pt: 'SQL ao vivo: tabelas `clientes`, `faturas` (cliente_id, vencimento, total_centavos, pago_em). Liste os clientes com faturas vencidas e não pagas, o total devido e há quantos dias está a mais antiga. Depois: clientes sem nenhuma fatura.',
       en: 'Live SQL: tables `clientes`, `faturas` (cliente_id, vencimento, total_centavos, pago_em). List customers with overdue unpaid invoices, the total owed, and how many days the oldest one is overdue. Then: customers with no invoices at all.',
@@ -790,10 +778,6 @@ Also: clear commit messages (Conventional Commits), a protected \`main\` with PR
     id: 'java-basics-for-php-dev',
     cat: 'php', type: 'concept', jobs: ['brasilcard'],
     tags: ['Java', 'JVM', 'tipagem estática', 'exceptions', 'checked', 'collections', 'equals', 'hashCode', 'Spring'],
-    reported: {
-      pt: 'Perguntas de Java básico aparecem em relatos de entrevistas pleno no Brasil: "== vs .equals()", "classe abstrata vs interface", "uma classe pode implementar várias interfaces?".',
-      en: 'Basic Java questions appear in reports of mid-level interviews in Brazil: "== vs .equals()", "abstract class vs interface", "can a class implement multiple interfaces?".',
-    },
     q: {
       pt: 'A vaga pede PHP e também Java. Para quem vem do PHP: o que muda em Java? Explique JVM, tipagem, `==` × `.equals()`, exceptions checked × unchecked e as coleções principais.',
       en: 'The role asks for PHP and also Java. Coming from PHP: what changes in Java? Explain the JVM, typing, `==` vs `.equals()`, checked vs unchecked exceptions, and the main collections.',
@@ -1127,10 +1111,6 @@ Signs of maturity in the example:
     id: 'legacy-production-bug',
     cat: 'php', type: 'behavioral', jobs: ['brasilcard', 'cv'],
     tags: ['bug em produção', 'legado', 'debug', 'Xdebug', 'logs', 'teste de caracterização', 'hotfix', 'manutenção'],
-    reported: {
-      pt: 'A vaga fala em "manutenção contínua de software existente, corrigindo bugs". "Como você investiga um bug em produção" é uma das perguntas mais comuns para esse perfil.',
-      en: 'The role mentions "continuous maintenance of existing software, fixing bugs". "How do you investigate a production bug" is one of the most common questions for this profile.',
-    },
     q: {
       pt: 'Chega um chamado: "alguns clientes estão vendo o valor da fatura errado". O sistema é PHP legado, sem testes. Passo a passo, o que você faz?',
       en: 'A ticket arrives: "some customers see the wrong invoice amount". The system is legacy PHP with no tests. Step by step, what do you do?',
@@ -1225,10 +1205,6 @@ Care points: each service with a least-privilege **service account**, no public 
     id: 'behavioral-brasilcard-fit',
     cat: 'agile', type: 'behavioral', jobs: ['brasilcard'],
     tags: ['RH', 'gestor', 'onde se vê em 5 anos', 'por que a empresa', 'pretensão salarial', 'pleno', 'remoto'],
-    reported: {
-      pt: 'Sim. Nos relatos da própria Brasil Card no Glassdoor, a entrevista com RH e depois com o gestor perguntou "Como você se vê daqui 5 anos?", "Como conheceu a empresa?" e sobre experiência, formação e trabalho atual.',
-      en: 'Yes. In Brasil Card\'s own Glassdoor reports, the HR interview followed by the manager interview asked "Where do you see yourself in 5 years?", "How did you learn about the company?" and about experience, education, and current job.',
-    },
     q: {
       pt: 'Entrevista com o gestor: "Fale de você. Por que a Brasil Card? Onde você se vê em 5 anos? Você tem experiência de sênior, por que uma vaga pleno?"',
       en: 'Manager interview: "Tell me about yourself. Why Brasil Card? Where do you see yourself in 5 years? You have senior-level experience, why a mid-level role?"',

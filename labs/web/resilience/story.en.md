@@ -18,6 +18,9 @@
 **Beta**: "Hmmm… let me see… hold on, looking for my glasses… 3 seconds… and… error 500." 🐌💥
 **Bia**: "THREE SECONDS FOR THIS?! I'm going to the competition!" 😤
 > 🚨 The screen is only as fast as the slowest one in the group.
+= 📞 Providers called: Alpha, Gamma, and Beta, in parallel
+= ⏱️ Response time: ~3 s (waits for the slowest) ❌
+= 📦 Offers returned: 2 (Beta returned a 500)
 
 ## 🎬 Scene 2 · With a stopwatch
 **Stopwatch**: "Each of you gets 400ms. After that, we move on without you."
@@ -25,6 +28,9 @@
 **Stopwatch**: "TIME! ⏱️"
 **API**: "I'll answer with Alpha and Gamma and say Beta didn't make it." ✂️
 **Bia**: "Two offers in half a second? Works for me."
+= ⏱️ Timeout per provider: 400ms
+= ⏱️ Response time: ~400ms ✅
+= ✂️ Response: partial: Alpha and Gamma, Beta marked as failed
 
 ## 🎬 Scene 3 · With a circuit breaker
 **Circuit breaker**: "Beta failed twice in a row? TRIPPED. For 1.5 s nobody calls Beta: I answer 'unavailable' right away, without spending the 400ms." 🔌
@@ -32,6 +38,10 @@
 **Circuit breaker** _(1.5 s later, suspicious)_: "I'll let ONE test call through to Beta…"
 **Beta**: "I'm back! Offer in 120ms, good as new!"
 **Circuit breaker**: "Fine, you're forgiven. Back on." ✅
+= 🔌 Beta's breaker: OPEN for 1.5 s (2 failures in a row)
+= 🚫 Calls avoided: all during the open period
+= ⏱️ Response time: ~150ms (doesn't even wait for the timeout) ✅
+= 🔁 Then: half-open: 1 test call succeeded → CLOSED
 
 ## 💻 Translating to code
 ```js

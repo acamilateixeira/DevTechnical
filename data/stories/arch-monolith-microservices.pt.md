@@ -16,6 +16,9 @@
 ## 🎬 Cena 1 · No casarão
 **Casarão**: "Aqui mora todo mundo: viagens, faturas, usuários. Uma transação resolve tudo, um deploy só."
 **Time de faturas**: "Mas toda vez que eu quero publicar, tenho que esperar o time de viagens terminar a reforma deles…" 😩
+= 🏠 Aplicações: 1
+= 🚀 Deploys: 1, todo mundo junto
+= 💾 Transação: uma só cobre tudo ✅
 
 ## 🎬 Cena 2 · Mudança pro condomínio
 **Condomínio**: "Cada time com sua casa, seu banco, seu deploy!"
@@ -24,11 +27,18 @@
 **Transação**: "E eu não atravesso muro. Vão ter que se virar com saga, eventos e consistência eventual." 💔
 **Detetive**: "E pra achar um bug, agora eu preciso seguir a pista por 6 casas." 🔦
 **Monolito distribuído** _(arrastando correntes)_: "E se as casas ainda dependerem umas das outras pra tudo e precisarem fazer deploy juntas… eu apareço." 🧟
+= 🏘️ Serviços: 6, cada um com seu banco
+= 🌐 Chamadas de rede por pedido: várias (podem falhar ou demorar)
+= 💔 Consistência: eventual, via saga e eventos
+= 🔦 Para depurar: tracing distribuído
 
 ## 🎬 Cena 3 · O meio-termo
 **Prédio de apartamentos**: "Que tal começar comigo? Um prédio só, mas cada apartamento com parede e porta próprias."
 **Figueira**: "E se um apartamento crescer demais, eu ajudo ele a se mudar aos pouquinhos, sem derrubar o prédio." 🌳
 **Time de faturas**: "Gostei. Dá pra ter paz sem pagar o aluguel do condomínio inteiro."
+= 🏢 Aplicações: 1, com módulos de fronteira clara
+= 🚪 Módulos conversam por: API pública do módulo ou eventos
+= 🌳 Extração: um módulo por vez, quando houver motivo (Strangler Fig)
 
 ## 💻 Traduzindo pro código
 ```

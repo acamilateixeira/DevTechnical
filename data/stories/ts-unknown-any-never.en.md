@@ -18,17 +18,26 @@
 **Sloppy doorman**: "Relax, with me you can be ANYTHING! Want `.toUpperCase()`? Go for it! If it breaks, it breaks in production, at 3 a.m., whoever's on call deals with it." 😎
 **TypeScript** _(covering its eyes)_: "With `any` I see nothing, I know nothing." 🙈
 > 🚨 `any` turns checking off: the error only shows up in production.
+= 🏷️ Data type: `any`
+= 🙈 TypeScript check: off
+= 💥 Error shows up in: production (runtime) ❌
 
 ## 🎬 Scene 2 · The suspicious doorwoman
 **Suspicious doorwoman**: "Come on in, dear, but you can only USE it after I check."
 **Check**: "Is it a string? Then you can use it as a string."
 **Zod**: "And if it's a huge object, leave it to me, I'll X-ray it field by field." 🧪
 **Package**: "How fancy, I feel like I'm at the airport."
+= 🏷️ Data type: `unknown` → after `typeof`, `string`
+= 🧪 Runtime validation: Zod `parse()` checks every field
+= ✅ Error shows up at: compile time or when data comes in
 
 ## 🎬 Scene 3 · The forgotten status
 **'cancelada'**: "Hi, I'm the new status! I just arrived at the `switch`…"
 **Impossible**: "Nobody handled you? Then you fell into me, and NOTHING can fall into me. BUILD BROKEN! Go handle her!" 🚨
 **Dev**: "Thank goodness it broke here and not for the customer." 😮‍💨
+= 🔀 `switch (status)`: handles "aberta" and "aprovada"
+= 🆕 Left in `default`: "cancelada"
+= 🚫 `const x: never = s`: compile error: build broken ✅
 
 ## 💻 Translating to code
 ```ts

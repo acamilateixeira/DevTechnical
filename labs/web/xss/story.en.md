@@ -16,6 +16,9 @@
 **Crook**: "Great trip! Loved the hotel! And here's a little picture as a gift…" _(with the bait hidden inside)_ 😇
 **Safe board**: "Got text? I show it as TEXT. The `<` and `>` become little characters on the screen. I don't run anything." 🛡️
 **Crook**: "Dang, my code showed up on the screen like a fool." 😒
+= 📝 Comment: text + `<img src=x onerror=...>`
+= 🛡️ Board 1 (`{comentario}`): shows the tags as text; nothing runs ✅
+= 😈 Attacker scripts run: 0
 
 ## 🎬 Scene 2 · The unguarded board
 **Unguarded board**: "Got HTML? I paste it straight into the page without even looking!"
@@ -24,11 +27,17 @@
 **Crook**: "Now I'm INSIDE the page, with Bia logged in. I can read the screen, place orders in her name…" 😈
 **React** _(rolling its eyes)_: "I warned you, people. It says DANGEROUSLY right in the name!" 🙄
 > 🚨 User text became code: that's XSS.
+= 🕳️ Board 2 (`dangerouslySetInnerHTML`): HTML pasted into the page
+= 😈 Attacker scripts run: 1 ❌ (via `onerror`)
+= 🔓 The script can: read the screen and make requests as Bia
 
 ## 🎬 Scene 3 · With a sieve and an armored cookie
 **Sieve**: "Got HTML? Before showing it, I sift it: bye `<script>`, bye `onerror`, bye `javascript:`. Bold can stay, it's harmless." 🧹
 **Crook**: "All that's left is a broken image. What a life." 😭
 **Cookie**: "And even if a script got in, it couldn't read me. JavaScript can't touch me." 🍪🔒
+= 🧹 Board 3 (sanitized): `onerror` and `<script>` removed; `<b>` kept
+= 😈 Attacker scripts run: 0 ✅
+= 🍪 Session cookie: `HttpOnly`: invisible to JavaScript
 
 ## 💻 Translating to code
 ```tsx

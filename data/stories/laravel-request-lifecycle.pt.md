@@ -21,17 +21,27 @@
 **Zeladores**: "Já arrumamos tudo: banco, filas, rotas, e registramos no mordomo quem é quem." 🧰
 **Catracas**: "Tá logada? Tá. Não tá mandando pedido demais? Não. Pode passar." 👮
 **Mapa**: "Pagar fatura? Sala do `PagamentoController`, método `store`." 🗺️
+= ✉️ Requisição: `POST /faturas/10/pagar`
+= ✅ Já passou por: `index.php` → providers → middlewares (`auth`, `throttle`)
+= 🗺️ Rota encontrada: `PagamentoController@store`
+= ⏳ Falta: Form Request, controller, resposta
 
 ## 🎬 Cena 2 · Na sala
 **Fiscal da sala**: "Antes de falar com o atendente: o valor veio certo? A fatura é sua? Então pode." 🧪
 **Mordomo**: "O atendente precisa do `PagarFatura`? Montei e tá aqui." 🤵
 **Atendente**: "Paguei! Toma o 201." 🎤
 **Requisição**: "E agora volto pelas mesmas catracas até a saída." 📬
+= 🧪 Form Request: dados válidos ✅ e `authorize()` true ✅
+= 🤵 Injetado no controller: `PagarFatura`
+= 📬 Resposta: 201, voltando pelos middlewares
 
 ## 🎬 Cena 3 · O distraído
 **Eloquent distraído**: "Listando 50 faturas com o cliente… uma query pra lista… mais uma pro cliente da 1… mais uma pro da 2…" 🐌
 **Cesta**: "Para com isso! Me pede junto: 2 queries e pronto." 🧺
 **Laravel em dev**: "E eu ainda grito se alguém tentar carregar preguiçosamente." 🚨
+= 🐌 Sem `with()`: 51 queries (1 + 50 clientes) ❌
+= 🧺 Com `with('cliente')`: 2 queries ✅
+= 🚨 `preventLazyLoading()`: ligado em dev
 
 ## 💻 Traduzindo pro código
 ```php

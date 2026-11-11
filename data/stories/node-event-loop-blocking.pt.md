@@ -15,17 +15,26 @@
 **Mesa do banco**: "Quero um dado do banco!"
 **Garçom**: "Anotado, cozinha tá fazendo, já volto!" 🏃
 **Cozinha**: "Pode deixar, a gente avisa quando ficar pronto." 🔥
+= 🧑‍🍳 Event loop: livre
+= 🔥 Na libuv / SO: a query do banco
+= ⏱️ Espera das outras requisições: ~10ms
 
 ## 🎬 Cena 2 · A mesa da conta
 **Mesa da conta**: "Quero que VOCÊ calcule 10 milhões de contas. Aqui. Na minha frente."
 **Garçom**: "…tá bom, né." 🧮🧮🧮 _(parado 1,5 s na mesma mesa)_
 **Mesas 4 a 1000**: "GARÇOM?! GARÇOOOM?! Era só um copo d'água, meu Deus!" 😤
 > 🚨 Event loop bloqueado: ninguém mais é atendido.
+= 🧑‍🍳 Event loop: PRESO no cálculo por 1,5 s ❌
+= 😤 Requisições esperando: todas as outras
+= ⏱️ Espera das outras requisições: ~1410ms
 
 ## 🎬 Cena 3 · Chama o ajudante
 **Ajudante**: "Me passa essa conta. Eu faço na outra sala e te aviso quando terminar." 👷
 **Garçom**: "Valeu, parceiro! Voltei a voar." 😌
 **Mesas 4 a 1000**: "Até que enfim, hein."
+= 👷 Cálculo pesado: em `worker_threads` (outra thread)
+= 🧑‍🍳 Event loop: livre de novo ✅
+= ⏱️ Espera das outras requisições: ~10ms
 
 ## 💻 Traduzindo pro código
 ```js

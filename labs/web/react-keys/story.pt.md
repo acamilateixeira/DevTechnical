@@ -18,17 +18,27 @@
 **Davi**: "Uai, quem escreveu 'oi' no MEU caderno?!"
 **Ana**: "ERA MEU, SEU LADRÃO DE CADERNO! 😭"
 > 🚨 O estado ficou com a cadeira, não com a pessoa.
+= 📋 Lista na tela: cadeira 0: Davi · 1: Ana · 2: Bruno · 3: Carla
+= 🪪 `key` usada: o índice (0, 1, 2, 3)
+= 📓 Texto "oi": ficou na key 0, que agora é o Davi ❌
 
 ## 🎬 Cena 2 · Crachá com o nome (`key={item.id}`)
 **React**: "Mudança de regra: agora o crachá é o nome de vocês."
 **Davi**: "Sentei na cadeira 0 de novo, tá?"
 **React**: "Crachá 'Davi' é novo? Caderninho novinho pra você. Crachá 'Ana' mudou de cadeira? Levo o caderninho dela junto." ✅
 **Ana** _(abraçando o caderno)_: "Meu 'oi' tá aqui. Paz na Terra." 🕊️
+= 📋 Lista na tela: Davi, Ana, Bruno, Carla
+= 🪪 `key` usada: o id (4, 1, 2, 3)
+= 📓 Texto "oi": continua com a Ana (key 1) ✅
+= 🆕 Criado do zero: só o Davi (key 4)
 
 ## 🎬 Cena 3 · O palhaço
 **`Math.random()`**: "E se eu der um crachá novo pra todo mundo a cada render? Kkkkk"
 **React**: "Aí eu acho que a sala inteira é gente nova e jogo TODOS os caderninhos no lixo, toda vez." 🗑️
 **Ana**: "Professor, expulsa ele."
+= 🪪 `key` usada: `Math.random()`: nova a cada render
+= 🗑️ Itens recriados por render: todos (4 de 4)
+= 📓 Texto digitado: perdido em todo render ❌
 
 ## 💻 Traduzindo pro código
 ```tsx

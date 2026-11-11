@@ -16,6 +16,9 @@
 ## 🎬 Scene 1 · In the big house
 **Big house**: "Everyone lives here: trips, invoices, users. One transaction handles everything, one deploy."
 **Invoicing team**: "But every time I want to ship, I have to wait for the trips team to finish their renovation…" 😩
+= 🏠 Applications: 1
+= 🚀 Deploys: 1, everyone together
+= 💾 Transaction: a single one covers everything ✅
 
 ## 🎬 Scene 2 · Moving to the gated community
 **Gated community**: "Each team with its own house, database, and deploy!"
@@ -24,11 +27,18 @@
 **Transaction**: "And I don't cross walls. You'll have to make do with sagas, events, and eventual consistency." 💔
 **Detective**: "And to find a bug, now I have to follow the trail through 6 houses." 🔦
 **Distributed monolith** _(dragging chains)_: "And if the houses still depend on each other for everything and have to deploy together… I show up." 🧟
+= 🏘️ Services: 6, each with its own database
+= 🌐 Network calls per request: several (they can fail or lag)
+= 💔 Consistency: eventual, via sagas and events
+= 🔦 To debug: distributed tracing
 
 ## 🎬 Scene 3 · The middle ground
 **Apartment building**: "How about starting with me? One building, but each apartment with its own walls and door."
 **Fig tree**: "And if an apartment grows too big, I help it move out little by little, without knocking the building down." 🌳
 **Invoicing team**: "I like it. Peace without paying rent on the whole community."
+= 🏢 Applications: 1, with clearly bounded modules
+= 🚪 Modules talk via: the module's public API or events
+= 🌳 Extraction: one module at a time, when there's a reason (Strangler Fig)
 
 ## 💻 Translating to code
 ```

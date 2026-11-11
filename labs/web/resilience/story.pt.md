@@ -18,6 +18,9 @@
 **Beta**: "Hmmm… deixa eu ver… peraí, tô procurando o óculos… 3 segundos… e… erro 500." 🐌💥
 **Bia**: "TRÊS SEGUNDOS PRA ISSO?! Vou no concorrente!" 😤
 > 🚨 A tela é tão lenta quanto o mais lento da turma.
+= 📞 Provedores chamados: Alpha, Gamma e Beta, em paralelo
+= ⏱️ Tempo da resposta: ~3 s (espera o mais lento) ❌
+= 📦 Ofertas devolvidas: 2 (o Beta deu erro 500)
 
 ## 🎬 Cena 2 · Com cronômetro
 **Cronômetro**: "Cada um tem 400ms. Passou disso, a gente segue sem você."
@@ -25,6 +28,9 @@
 **Cronômetro**: "TEMPO! ⏱️"
 **API**: "Respondo com Alpha e Gamma e aviso que o Beta não veio." ✂️
 **Bia**: "Duas ofertas em meio segundo? Tá ótimo."
+= ⏱️ Timeout por provedor: 400ms
+= ⏱️ Tempo da resposta: ~400ms ✅
+= ✂️ Resposta: parcial: Alpha e Gamma, Beta marcado como falha
 
 ## 🎬 Cena 3 · Com disjuntor
 **Disjuntor**: "Beta falhou duas vezes seguidas? DESARMEI. Por 1,5 s ninguém liga pro Beta: eu já respondo 'indisponível' na hora, sem gastar os 400ms." 🔌
@@ -32,6 +38,10 @@
 **Disjuntor** _(1,5 s depois, desconfiado)_: "Vou deixar passar UMA ligação de teste pro Beta…"
 **Beta**: "Voltei! Oferta em 120ms, novinho em folha!"
 **Disjuntor**: "Tá bom, tá perdoado. Religado." ✅
+= 🔌 Disjuntor do Beta: ABERTO por 1,5 s (2 falhas seguidas)
+= 🚫 Chamadas evitadas: todas no período aberto
+= ⏱️ Tempo da resposta: ~150ms (nem espera o timeout) ✅
+= 🔁 Depois: meio-aberto: 1 chamada de teste deu certo → FECHADO
 
 ## 💻 Traduzindo pro código
 ```js

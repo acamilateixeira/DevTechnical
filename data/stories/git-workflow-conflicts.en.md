@@ -22,12 +22,18 @@
 **Joiner**: "I'll join you two and record the meeting. Everything stays as it was, forks included." 🤝
 **Replanter**: "I'll take your commits and replant them on top of today's main, as if you'd started now. Nice and straight." ✂️
 **Replanter** _(whispering)_: "But I rewrite history, so only use me on YOUR twig, which nobody else uses."
+= 🌿 Your branch: 20 commits behind `main`
+= 🤝 With merge: +1 merge commit; history with a fork
+= ✂️ With rebase: your commits recreated on top of `main`; a straight line
 
 ## 🎬 Scene 2 · The fight
 **Fight**: "You and Bia changed the same line. Who wins?" ⚔️
 **Rushed dev**: "Mine, obviously!"
 **Git**: "Easy, girl! Read what Bia meant to do, talk to her, combine both intentions, and run the tests." 🗣️
 **Bia**: "Thanks for not deleting my work again." 😒
+= ⚔️ Conflicting file: `checkout.ts`, same line
+= 🗣️ Resolution: both intentions combined, after talking to Bia
+= 🧪 Tests: passing ✅
 
 ## 🎬 Scene 3 · Something's on fire
 **Production**: "URGENT BUG IN CHECKOUT!" 🔥
@@ -35,6 +41,9 @@
 **Bulldozer**: "Can I `--force` main to clean up the history?" 😈
 **Whole team**: "NOOOO!"
 **Polite undoer**: "On a shared branch, I do the undoing: a new commit that cancels the other, without erasing anyone's work." ↩️
+= 🚑 Hotfix branches from: tag `v2.4.1` (what's in production)
+= 🏷️ Released as: `v2.4.2`, then merged back into develop
+= ↩️ Undo on a shared branch: `git revert`, never `--force`
 
 ## 💻 Translating to code
 ```bash

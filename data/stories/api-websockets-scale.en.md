@@ -21,6 +21,9 @@
 **Server**: "Kid, I'll tell you!" 😩
 **Radio**: "I'm the radio: I talk, you listen. Great for notifications and live logs." 📻
 **Open phone call**: "And I'm the phone call: both sides talk whenever they want. Chat, games, co-editing." ☎️
+= 🔁 Polling: 1 request every 2 s, even with no news
+= 📻 SSE: 1 connection; only the server talks
+= ☎️ WebSocket: 1 connection; both sides talk
 
 ## 🎬 Scene 2 · Different buildings
 **Bia** _(in Building 1)_: "Posted a photo of the cake in the group!" 🎂
@@ -30,11 +33,18 @@
 **Building 2**: "Heard it on the loudspeaker! Delivering to Caio." ✅
 **Caio**: "What a beautiful cake! Save me a slice!"
 > 🚨 With several instances, each server only sees its own connections.
+= 🏢 Building 1 knows: Bia
+= 🏬 Building 2 knows: Caio
+= 📢 Redis pub/sub: relayed the message to both servers
+= ✅ Message reached: Bia and Caio
 
 ## 🎬 Scene 3 · After the deploy
 **Deploy**: 💥 _(drops every call)_
 **50,000 clients**: "EVERYONE RECONNECT RIGHT NOW!"
 **Staggered return**: "NO! Each one waits a random little while, or 50,000 arrive in the same second and knock everything down again." 🎲
+= 💥 Connections dropped: 50,000
+= 🎲 Reconnect: wait = min(30 s, 1 s × 2^attempt) × (0.5 to 1.5)
+= 📈 Server spike: spread over several seconds ✅
 
 ## 💻 Translating to code
 ```ts

@@ -24,16 +24,25 @@
 > 🚨 O banco não sabia que o pedido veio de outro site.
 **Cookie desconfiado**: "Comigo não: pedido vindo de OUTRO site, eu fico em casa." 🛑
 **Senha do formulário**: "E o banco ainda exige um código que só o site do banco tem. O gatinho não sabe." 🎫
+= 🍪 Cookie no pedido do site do gatinho: com `SameSite=Lax`: não vai ✅
+= 🎫 Token CSRF: ausente → 403
+= 💸 Transferências feitas: 0 ✅
 
 ## 🎬 Cena 2 · A fatura do vizinho (IDOR)
 **Curioso**: "Minha fatura é `/faturas/123`… e se eu tentar `/faturas/124`?" 🤔
 **API sem conferente**: "Toma a 124!" _(é da Dona Neusa do 302)_
 **Conferente**: "Peraí. A 124 é sua? Não? Então 404, não existe pra você." 🛂
+= 🤔 Pedido: `GET /faturas/124`
+= 🛂 Dono da fatura 124: outra pessoa
+= ✅ Resposta: 404 (nem confirma que existe)
 
 ## 🎬 Cena 3 · O apóstrofo (SQL injection)
 **Apóstrofo malandro**: "Busca o cliente `' OR '1'='1`." 💉
 **Query colada com `+`**: "Devolvo… TODOS OS CLIENTES DO BANCO!" 💥
 **Envelope lacrado**: "Comigo o texto vai lacrado, separado do comando. Procuro literalmente alguém chamado `' OR '1'='1`. Ninguém. Próximo." 📦
+= 💉 Entrada: `' OR '1'='1`
+= 🧵 Concatenado: devolve a tabela inteira ❌
+= 📦 Prepared statement: procura esse texto literal → 0 linhas ✅
 
 ## 💻 Traduzindo pro código
 ```php

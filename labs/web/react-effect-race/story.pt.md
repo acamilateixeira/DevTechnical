@@ -19,6 +19,10 @@
 **Pedido R$3000** _(chegando suado)_: "CHEGUEI! MOSTRA R$3000! EU VENCI!" 🏆
 **Tela**: "Ela escolheu R$1000 e eu tô mostrando R$3000. Tô fazendo papel de palhaça." 🤡
 > 🚨 Quem chegou por último ganhou, mesmo sendo um pedido velho.
+= 👆 Valor escolhido: R$1000 (o último clique)
+= 📨 Respostas na ordem que chegaram: 1000 (0,2 s) → 2000 (0,8 s) → 3000 (1,4 s)
+= 📺 Tela mostra: R$3000 ❌ (quem chegou por último)
+= ✂️ Pedidos cancelados: 0
 
 ## 🎬 Cena 2 · Com o cleanup
 **Bia**: "R$3000… R$2000… R$1000!"
@@ -27,6 +31,10 @@
 **Cleanup**: "Ninguém mais quer você, amor. Segue o baile." 💅
 **Pedido R$1000**: "Tela, mostra R$1000!"
 **Tela**: "Escolheu R$1000, mostro R$1000. Que alívio." ✅
+= 👆 Valor escolhido: R$1000
+= ✂️ Pedidos cancelados pelo cleanup: 2 (R$3000 e R$2000)
+= 📨 Respostas que chamaram `setData`: só a de R$1000
+= 📺 Tela mostra: R$1000 ✅
 
 ## 💻 Traduzindo pro código
 ```tsx

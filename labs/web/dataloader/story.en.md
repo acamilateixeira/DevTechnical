@@ -16,6 +16,9 @@
 **Jumpy waiter**: "Trip 1? I'll run to the kitchen for user 1! Trip 2? Run for user 2! Trip 3? User 1 again! Running!" 🏃🏃🏃
 **Kitchen**: "51 TRIPS?! And half are for the SAME user! Stop making a fool of me!" 😵
 > 🚨 1 query for the list + 1 per item: that's N+1.
+= 📋 Trips in the response: 50
+= 👨‍🍳 Database queries: 51 ❌ (1 for the list + 50 for users)
+= 🔁 Users fetched again: 40 (only 10 are distinct)
 
 ## 🎬 Scene 2 · The smart waiter
 **Smart waiter**: "I don't go to the kitchen for every order. I'll write down everything the table orders right now…"
@@ -24,10 +27,17 @@
 **Smart waiter**: "Duplicates removed: users 1 to 10. Now, ONE trip to the kitchen with the whole list."
 **Kitchen**: "2 trips in total. Bless you." 🙏
 **Smart waiter**: "And I serve each dish in the order it was requested, or user 1 gets user 2's name and there's a fight." 🍽️
+= 📝 Requests noted in the tick: 50 `load(id)`
+= 🧹 After removing duplicates: 10 ids
+= 👨‍🍳 Database queries: 2 ✅ (list + `WHERE id IN (…10 ids)`)
+= 🍽️ Delivery order: the same as requested
 
 ## 🎬 Scene 3 · He isn't forever
 **Customer**: "Will you remember me tomorrow?"
 **Smart waiter**: "No way. I'm born and I die with each request. If there were only one of me for the whole restaurant, I'd serve one customer's dish to another." 🙅
+= 🧑‍💼 DataLoader lifetime: 1 per HTTP request
+= 🗑️ Its cache: thrown away at the end of the request
+= 🚫 If it were global: one user's data could show up for another ❌
 
 ## 💻 Translating to code
 ```js

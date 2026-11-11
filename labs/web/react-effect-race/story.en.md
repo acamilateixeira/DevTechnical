@@ -19,6 +19,10 @@
 **R$3000 order** _(arriving all sweaty)_: "I'M HERE! SHOW R$3000! I WON!" 🏆
 **Screen**: "She picked R$1000 and I'm showing R$3000. I'm making a clown of myself." 🤡
 > 🚨 Whoever arrived last won, even though it was an old order.
+= 👆 Selected value: R$1000 (the last click)
+= 📨 Responses in arrival order: 1000 (0.2 s) → 2000 (0.8 s) → 3000 (1.4 s)
+= 📺 Screen shows: R$3000 ❌ (whoever arrived last)
+= ✂️ Requests canceled: 0
 
 ## 🎬 Scene 2 · With the cleanup
 **Bia**: "R$3000… R$2000… R$1000!"
@@ -27,6 +31,10 @@
 **Cleanup**: "Nobody wants you anymore, honey. Move along." 💅
 **R$1000 order**: "Screen, show R$1000!"
 **Screen**: "Picked R$1000, showing R$1000. What a relief." ✅
+= 👆 Selected value: R$1000
+= ✂️ Requests canceled by cleanup: 2 (R$3000 and R$2000)
+= 📨 Responses that called `setData`: only R$1000
+= 📺 Screen shows: R$1000 ✅
 
 ## 💻 Translating to code
 ```tsx

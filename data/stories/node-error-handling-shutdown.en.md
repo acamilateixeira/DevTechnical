@@ -18,6 +18,9 @@
 **Rude server**: "BYE!" 💀 _(dies on the spot)_
 **Customers**: "ERROR?! Just because of a deploy?! I was paying!" 😡
 > 🚨 Requests cut off halfway.
+= 📨 Signal received: SIGTERM
+= 💀 Process: died on the spot
+= 🛒 In-flight requests: 3 cut off (`UND_ERR_SOCKET`) ❌
 
 ## 🎬 Scene 2 · Slips out quietly
 **Polite server**: "Got the notice. Easy, I'll leave properly."
@@ -26,11 +29,18 @@
 **Polite server**: "Now I'll close the database and the queue, without acknowledging any message I didn't finish." 🔌
 **Polite server**: "All done. Bye, everyone!" 👋
 **Kubernetes**: "Well done. But if you dawdle more than 30 seconds, I'll yank you out." 🔪⏰
+= 🚦 Readiness: 503: out of the load balancer
+= 🚪 `server.close()`: no new connections; the 3 in flight finished ✅
+= 🔌 Database and queue: closed
+= ⏰ Time used: within 30 s (before SIGKILL)
 
 ## 🎬 Scene 3 · The loose bug
 **Loose bug**: "I failed and nobody handled me…" 🐛
 **Polite server**: "Unknown state? Better to restart clean than limp along half-broken. I'll log the error and exit."
 **Kubernetes**: "No problem, I'll start another one." ♻️
+= 🐛 Event: `unhandledRejection`
+= 📝 Log: fatal error with stack
+= ♻️ Process: `exit(1)`; Kubernetes starts another
 
 ## 💻 Translating to code
 ```js

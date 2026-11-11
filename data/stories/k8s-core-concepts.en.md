@@ -20,12 +20,19 @@
 **Foreman**: "Noted. One goes down? I start another. I don't argue, I just obey." 📋
 **Worker**: "I'm one of the copies. Today I'm on this machine, tomorrow who knows." 📦
 **Landline**: "And nobody needs to know which worker to call: call me and I'll spread it across the healthy ones." 📞
+= 📋 Desired replicas: 3
+= 📦 Pods running: 3 (on different machines)
+= 📞 `api` Service: balances across the 3
 
 ## 🎬 Scene 2 · Swapping versions without anyone noticing
 **Foreman**: "New version! I start ONE new worker…"
 **Doorman**: "Hold on, is it ready to take people? …Now it is!" 🚦
 **Foreman**: "…so I send ONE old one home, with notice so it finishes what it was doing. And repeat until all are swapped." 🔄
 **Customers**: "There was a deploy? Didn't notice." 😎
+= 🆕 New-version pods: 1 → 2 → 3
+= 👴 Old-version pods: 3 → 2 → 1 → 0 (each with SIGTERM)
+= 🚦 Gets traffic: only pods with readiness OK
+= 😎 Requests lost: 0 ✅
 
 ## 🎬 Scene 3 · The headaches
 **Nurse**: "Alive? Alive? Stuck? Restarting." 💓
@@ -33,6 +40,9 @@
 **Every worker**: "…we restart in a loop for no reason! Help!" 😵
 **Greedy worker**: "I ate more memory than my limit…" 🍔
 **Kernel**: "OOMKilled. Bye, darling." 💀
+= 💓 Liveness checking the database: database down → all restart in a loop ❌
+= ✅ Correct liveness: just "does the process respond?"
+= 🍔 Pod over 512Mi: OOMKilled (exit 137)
 
 ## 💻 Translating to code
 ```yaml

@@ -19,17 +19,28 @@
 **Fiscal da esteira**: "Lint ✅, tipos ✅, testes ✅, build ✅, procurei senha vazada ✅, dependência com falha ✅. Pode revisar." 🤖
 **Revisora**: "Aprovado, mas renomeia essa variável `x2`, pelo amor." 👀
 **Caixa lacrada**: "Fui construída UMA vez, com a etiqueta do commit. A mesma caixa vai pra homologação e depois pra produção. Nada de recompilar no caminho." 📀
+= 🤖 CI: lint ✅ · tipos ✅ · testes ✅ · build ✅ · scans ✅
+= 📀 Imagem: `app:3f9c2e1` (tag = commit)
+= 🌍 Onde está: homologação
 
 ## 🎬 Cena 2 · Entrando no ar sem susto
 **Migração educada**: "Eu sou compatível com a versão velha e a nova, porque durante o deploy as duas rodam juntas." 🗄️
 **Interruptor**: "O código novo tá lá, mas DESLIGADO. Ligo pra 1% dos usuários primeiro." 🎚️
 **Canarinho**: "Eu sou a versão nova pegando 5% do tráfego. Se a taxa de erro subir…" 🐤
 **Botão de voltar**: "…eu volto pra versão anterior sozinho, em segundos." ⏪
+= 🗄️ Migration: expand: coluna nova opcional, a velha continua
+= 🎚️ Feature flag: ligada para 1%
+= 🐤 Canary: 5% do tráfego na versão nova
+= ⏪ Rollback automático: se o erro passar de 1%
 
 ## 🎬 Cena 3 · A pergunta proibida
 **Dev**: "Então posso fazer deploy na sexta às 17h?" 😏
 **Esteira**: "Com deploy pequeno, interruptor, canarinho e botão de voltar testado… pode. O medo vem de deploy gigante e sem volta."
 **Boletim**: "E eu conto se vocês estão melhorando: quantas vezes publicam, quanto demora do commit ao ar, quantas mudanças dão problema e quanto demora pra consertar." 📊
+= 📊 Frequência de deploy: várias vezes por dia
+= ⏱️ Lead time: horas
+= 💥 Taxa de falha: baixa (deploys pequenos)
+= ♻️ Tempo de recuperação: minutos (rollback)
 
 ## 💻 Traduzindo pro código
 ```yaml

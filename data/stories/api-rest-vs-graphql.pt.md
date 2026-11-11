@@ -17,6 +17,9 @@
 **Restaurante PF**: "Prato 1: viagem. Prato 2: usuário. Prato 3: centro de custo. Três idas até a cozinha!"
 **Tela**: "E o prato 1 veio com 40 acompanhamentos, eu só queria 3…" 🍟
 **Marmita pronta na geladeira**: "Mas olha: como cada prato tem endereço fixo, eu guardo o `GET /trips/1` e entrego sem nem incomodar a cozinha." 🏪
+= 🍛 Requisições HTTP: 3 (`/trips/1`, `/users/7`, `/cost-centers/3`)
+= 🍟 Campos recebidos: ~40 (a tela usa 3) → over-fetching
+= 🏪 Cache HTTP / CDN: funciona (GET por URL) ✅
 
 ## 🎬 Cena 2 · No monte-seu-prato
 **Monte seu prato**: "Me diz EXATAMENTE o que quer, num pedido só."
@@ -24,11 +27,17 @@
 **Monte seu prato**: "Saindo! Uma ida só e só o que você pediu." 🥗
 **Tela**: "Tô apaixonada." 😍
 **Marmita pronta na geladeira**: "Pena que é tudo POST pro mesmo endereço. Não consigo guardar nada. Me sinto inútil." 😢
+= 🥗 Requisições HTTP: 1 (`POST /graphql`)
+= 🎯 Campos recebidos: 3, exatamente os pedidos ✅
+= 🏪 Cache HTTP / CDN: não ajuda (POST no mesmo endereço) ❌
 
 ## 🎬 Cena 3 · O espertinho
 **Espertinho**: "Quero meus amigos, os amigos deles, os amigos dos amigos deles…"
 **Segurança**: "Opa, opa. Profundidade máxima 5, complexidade máxima 1000. Próximo!" 🛑
 **Cozinha**: "E cada campo tem um resolver, viu? Cuidado com o N+1." _(→ lab do DataLoader)_
+= 🦹 Query recebida: `friends` aninhado 8 níveis
+= 🛑 Limites: profundidade 5 · complexidade 1000
+= 🚫 Resultado: recusada antes de rodar
 
 ## 💻 Traduzindo pro código
 ```http

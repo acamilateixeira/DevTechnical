@@ -19,6 +19,8 @@
 **New dev**: "How do I run the project?"
 **47-step tutorial**: "Install PHP 7.4… no, 8.1… extension X… MySQL 5.7, not 8… and pray nobody updated anything." 🙏
 **Coworker**: "It works on my machine." 🤷
+= 🙏 Steps to run: 47, manual
+= 🤷 Environment: every machine is different
 
 ## 🎬 Scene 2 · With Docker
 **New dev**: "`docker compose up`."
@@ -26,6 +28,9 @@
 **Cake**: "I'm running! And if something breaks, delete me and bake another, no regrets." 📦
 **Database** _(no fridge)_: "They deleted my container… I LOST ALL THE DATA!" 😱
 **Fridge container**: "That's why data lives in me. The cake comes and goes; I stay." 💾
+= 🐳 Command: `docker compose up`
+= 📦 Containers: app (PHP-FPM) · nginx · db (MySQL)
+= 💾 `dbdata` volume: data survives the container ✅
 
 ## 🎬 Scene 3 · The localhost
 **PHP app**: "I'll talk to the database at `localhost`…"
@@ -33,6 +38,9 @@
 **PHP app**: "Ohhh. Makes sense."
 **Doorman**: "And whoever comes in through port 80, I receive and pass to PHP." 🚪
 **Magnifying glass**: "And I only show up in dev. In production, don't even invite me." 🐞
+= 🕸️ `DB_HOST`: `db` (the service name), not `localhost`
+= 🚪 Port: machine 8080 → Nginx 80
+= 🐞 Xdebug: only in the dev image
 
 ## 💻 Translating to code
 ```yaml

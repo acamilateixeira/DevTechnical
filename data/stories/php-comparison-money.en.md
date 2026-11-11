@@ -17,17 +17,26 @@
 **Strict**: "Same type AND same value, or it's not equal. In money code, only me." 🧐
 **Whatever**: "Ugh, so uptight."
 **Strict**: "Not uptight. Responsible."
+= 🤝 `'1' == '01'`: `true`
+= 🧐 `'1' === '01'`: `false`
+= 🤝 `null == false`: `true`
 
 ## 🎬 Scene 2 · The hole
 **Balloon**: "I store 0.1… more or less, okay? Nobody's perfect." 🎈
 **Accountant**: "I added up a million transactions and R$3.17 vanished. WHERE DID IT GO, PEOPLE?!" 🧾😱
 **Coin**: "With me it's 10000 instead of 100.00. Integers have no rounding error, babe." 🪙
+= 🎈 `0.1 + 0.2`: `0.30000000000000004`
+= 🧾 Monthly difference (float): R$3.17 ❌
+= 🪙 In integer cents: difference R$0.00 ✅
 
 ## 🎬 Scene 3 · The runaway cent
 **Installments**: "R$100 in 3 payments: 33.33 + 33.33 + 33.33 = 99.99. A cent vanished!" ➗
 **Coin**: "Do it like this: 3334 + 3333 + 3333 = 10000. The first installment takes the leftover cent." ✅
 **2.99% interest**: "What about me? I never come out round."
 **Precision calculator**: "I do it with exact decimals and the rounding rule the business agreed on." 🧮
+= ➗ R$100 ÷ 3 with float: 33.33 × 3 = 99.99 ❌
+= 🪙 In cents: [3334, 3333, 3333] = 10000 ✅
+= 🧮 2.99% interest with bcmath: `bcmul('10000', '0.0299', 4)` = 299.0000
 
 ## 💻 Translating to code
 ```php

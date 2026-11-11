@@ -20,16 +20,27 @@
 **Cooked to order**: "I prepare the HTML on the server for every request. Always fresh, but it's work every time." 🍳
 **Ready lunchbox**: "I had everything ready at build time. Instant, but if the content changes, only on the next build." 🥪
 **Self-renewing lunchbox**: "I'm the lunchbox, but every so often I make a new one without anyone waiting." 🔄
+= 🧱 CSR: empty HTML + JS; blank screen until it's built
+= 🍳 SSR: ready HTML on every request
+= 🥪 SSG: HTML ready at build time, served from the CDN
+= 🔄 ISR: SSG rebuilt every `revalidate` seconds
 
 ## 🎬 Scene 2 · The chef
 **Head chef**: "I cook on the server, fetch data straight from the database, and don't send a single line of JavaScript to the browser." 🧑‍🍳
 **Interactive waiter**: "And only the pieces with buttons go with me, marked `'use client'`." 🎛️
 **Electrician**: "Ready-made HTML arrived? I'll go around wiring up the buttons." 💧
+= 🧑‍🍳 Server Components: data fetched on the server; 0 KB of JS on the client
+= 🎛️ Client Components: only the buttons, with `'use client'`
+= 💧 Hydration: wires events onto the HTML that came ready
 
 ## 🎬 Scene 3 · The mismatched clock
 **Mismatched clock**: "On the server I was 10:00:00. In the browser, 10:00:01…" ⏰
 **Electrician**: "The HTML doesn't match what I expected! HYDRATION ERROR!" 💥
 **Head chef**: "Put the time in a `useEffect`, which only runs in the browser, and the fight's over."
+= ⏰ Server HTML: 10:00:00
+= ⏰ First browser render: 10:00:01
+= 💥 Result: hydration error
+= ✅ Fix: time inside `useEffect`
 
 ## 💻 Translating to code
 ```tsx

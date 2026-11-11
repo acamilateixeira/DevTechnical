@@ -15,44 +15,105 @@
 - 💎 **Microtask** · microtask · whoever is in the VIP line
 - 🎟️ **Macrotask** · macrotask · whoever is in the regular line
 
-## 🎬 Scene 1 · Everyone arriving
+## 🎬 Scene 1 · The synchronous code, top to bottom
 **A**: "I'M HERE! I'm first in line anyway! I'M TALKING NOW!"
+= 📤 Output (console): A
+= ▶️ Running now: synchronous code (line A)
+= 💎 VIP line (microtasks): (empty)
+= 🎟️ Regular line (macrotasks): (empty)
+= ⏸️ Paused: nothing
+= ⏳ Still to do: lines B, C, D, E, and G of the script
 **B**: "I WANT TO TALK TOO! IN 0ms!"
 **Event Loop**: "EASY THERE, HOTSHOT! 0ms doesn't mean now! Wait your turn in the timer line!"
+= 📤 Output (console): A
+= ▶️ Running now: synchronous code (line B: only schedules the timer)
+= 💎 VIP line (microtasks): (empty)
+= 🎟️ Regular line (macrotasks): B
+= ⏸️ Paused: nothing
+= ⏳ Still to do: lines C, D, E, and G
 **C**: "MY PROMISE IS ALREADY RESOLVED! I promised something and now I want to run my `.then()`!"
 **Event Loop**: "Fine! Get in the VIP microtask line!"
+= 📤 Output (console): A
+= ▶️ Running now: synchronous code (line C: only schedules the `.then`)
+= 💎 VIP line (microtasks): C
+= 🎟️ Regular line (macrotasks): B
+= ⏸️ Paused: nothing
+= ⏳ Still to do: lines D, E, and G
 **D**: "I WANT THE VIP LINE TOO!"
 **Event Loop** _(suspicious)_: "But where's your Promise?"
 **D**: "I DON'T HAVE ANY PROMISE! 😂 I can go straight into the microtask line!"
+= 📤 Output (console): A
+= ▶️ Running now: synchronous code (line D)
+= 💎 VIP line (microtasks): C, D
+= 🎟️ Regular line (macrotasks): B
+= ⏸️ Paused: nothing
+= ⏳ Still to do: lines E and G
 **E**: "I'M ASYNC, BUT I WAS CALLED NOW! I'M NOT WAITING FOR ANYONE! I'M STARTING TO TALK!"
+= 📤 Output (console): A E
+= ▶️ Running now: function E, up to the first `await`
+= 💎 VIP line (microtasks): C, D
+= 🎟️ Regular line (macrotasks): B
+= ⏸️ Paused: nothing
+= ⏳ Still to do: the `await null` and line G
 **`await null`**: "WAAAAIT, HOTSHOT! ✋ You already said everything before me! Now pause this function! The rest goes to the VIP microtask line!"
 **F**: "HEY, I HAVEN'T EVEN TALKED YET! 😭"
 **`await null`**: "THEN YOU'LL WAIT! C and D got to the VIP line first!"
+= 📤 Output (console): A E
+= ▶️ Running now: the `await` paused function E and the script goes on
+= 💎 VIP line (microtasks): C, D, F (the rest of function E)
+= 🎟️ Regular line (macrotasks): B
+= ⏸️ Paused: function E, at the `await`
+= ⏳ Still to do: line G
 **G**: "While everyone's in this mess, I'M DOING MY THING! I don't depend on anyone!"
+= 📤 Output (console): A E G
+= ▶️ Running now: end of the script
+= 💎 VIP line (microtasks): C, D, F
+= 🎟️ Regular line (macrotasks): B
+= ⏸️ Paused: function E, at the `await`
+= ⏳ Still to do: empty the whole VIP line, then call the regular line
 > 🚨 SYNCHRONOUS CODE IS DONE! THE VIP LINE IS OPEN!
 
-## 🎬 Scene 2 · The VIP line
+## 🎬 Scene 2 · The VIP line (microtasks)
 **C**: "I GOT IN FIRST! MY TURN!"
+= 📤 Output (console): A E G C
+= ▶️ Running now: microtask C
+= 💎 VIP line (microtasks): D, F
+= 🎟️ Regular line (macrotasks): B
+= ⏸️ Paused: function E, at the `await`
+= ⏳ Still to do: D and F in the VIP line, then B
 **D**: "I'M SECOND! DIDN'T EVEN NEED A PROMISE!"
+= 📤 Output (console): A E G C D
+= ▶️ Running now: microtask D
+= 💎 VIP line (microtasks): F
+= 🎟️ Regular line (macrotasks): B
+= ⏸️ Paused: function E, at the `await`
+= ⏳ Still to do: F in the VIP line, then B
 **F**: "FINALLY! The `await` held me back, but now I can talk!"
-> ⏰ NOW IT'S THE TIMERS' TURN!
+= 📤 Output (console): A E G C D F
+= ▶️ Running now: microtask F: function E resumes after the `await` and finishes
+= 💎 VIP line (microtasks): (empty)
+= 🎟️ Regular line (macrotasks): B
+= ⏸️ Paused: nothing
+= ⏳ Still to do: the regular line: B
+> ⏰ VIP LINE EMPTY! NOW IT'S THE TIMERS' TURN!
 
-## 🎬 Scene 3 · The regular line
+## 🎬 Scene 3 · The regular line (macrotasks)
 **B**: "WHAT ABOUT ME, PEOPLE?! 😭 IT WAS SUPPOSED TO BE 0ms!"
 **Event Loop**: "NOW IT'S YOUR TURN! But don't get excited! If you create microtasks, they'll run before the next timer!"
 **B**: "FINALLY! 😂"
+= 📤 Output (console): A E G C D F B
+= ▶️ Running now: macrotask B (the timer)
+= 💎 VIP line (microtasks): (empty)
+= 🎟️ Regular line (macrotasks): (empty)
+= ⏸️ Paused: nothing
+= ⏳ Still to do: nothing: the program is done
 
-## 🎬 Scene 4 · The moral of the story
+## 🧠 Moral of the story
 **A**: "Us, the synchronous ones (A, E, and G): we're here! We work first!"
 **Microtask**: "We're in the VIP line! As soon as the synchronous code finishes, IT'S OUR TURN!"
 **B**: "Us, the timers: WE'RE STUCK WAITING! 😭"
 **Event Loop**: "I ORGANIZE THIS MESS! First the synchronous code finishes, then I empty the microtask line. Then I run the next macrotask and check the microtasks again. AND SO ON!"
 **`await null`**: "I DON'T STOP THE WHOLE PROGRAM! I only pause my own function. EVERYONE ELSE CAN FEND FOR THEMSELVES!" 😂
-
-## 🎬 Part 2 · Who decides the line?
-**Microtask**: "I'M IN THE VIP LINE! As soon as the current code finishes, I WANT TO RUN BEFORE THE NEXT MACROTASK!"
-**Macrotask**: "I WANT TO RUN TOO!"
-**Event Loop**: "FINE, BUT FIRST I'M EMPTYING THE VIP LINE!"
 
 ## 💻 Translating to code
 ```js
@@ -75,7 +136,11 @@ console.log('G');                                       // G  → synchronous
 | 2 | Microtasks (VIP line) | C, D, F |
 | 3 | Timer / macrotask (after the microtasks) | B |
 
-## 📌 The API decides the line
+## ➕ Part 2 · Who decides the line?
+**Microtask**: "I'M IN THE VIP LINE! As soon as the current code finishes, I WANT TO RUN BEFORE THE NEXT MACROTASK!"
+**Macrotask**: "I WANT TO RUN TOO!"
+**Event Loop**: "FINE, BUT FIRST I'M EMPTYING THE VIP LINE!"
+
 What decides whether something is a microtask or a macrotask is the **API that schedules it**, not how long it takes or how important it is.
 
 | Microtasks (VIP line) | Macrotasks (regular line) |

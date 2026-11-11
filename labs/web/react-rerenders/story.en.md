@@ -17,17 +17,26 @@
 **Manager**: "Because you're listening to the megaphone, and the megaphone shouts at everyone. Plus: the `{ state, dispatch }` note is a NEW piece of paper every time. As far as I'm concerned, it ALWAYS changed."
 **Footer** _(headphones on)_: "Me? My props are the same. Didn't even wake up." 😴
 > 🚨 The Button re-rendered for nothing.
+= 📢 Context: just one, `value={{ state, dispatch }}` (a new object every render)
+= 🔄 Re-rendered: List ✅ and Button ❌ (for nothing)
+= 😴 Did not re-render: Footer (`memo`, same props)
 
 ## 🎬 Scene 2 · Two megaphones
 **Manager**: "THE ITEMS CHANGED!"
 **List**: "Heard it, updating." ✅
 **Dispatch manager** 🤫: "I never shout anything. `useReducer`'s `dispatch` is always the same, so I have no news."
 **Button** _(only listening to the dispatch manager)_: "FINALLY, A NIGHT OF SLEEP! 😌"
+= 📢 Contexts: State (changes) + Dispatch (never changes)
+= 🔄 Re-rendered: only the List ✅
+= 😴 Did not re-render: Button and Footer
 
 ## 🎬 Scene 3 · The theme switch
 **Manager**: "THE THEME IS NOW DARK!"
 **List**: "Wait, why did I wake up? I don't even use the theme!"
 **Mini Zustand** _(walking down the hall)_: "Because you listen to the WHOLE state, dear. With me, you subscribe only to the piece you use. Come by my lab." 😏
+= 🎨 Changed: only `tema` (theme)
+= 🔄 Re-rendered: the List ❌ (reads the whole state, even without using the theme)
+= 💡 Fix: a store with selectors (Mini Zustand lab)
 
 ## 💻 Translating to code
 ```tsx

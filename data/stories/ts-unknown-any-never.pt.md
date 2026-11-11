@@ -18,17 +18,26 @@
 **Porteiro largado**: "Relaxa, comigo você pode ser TUDO! Quer `.toUpperCase()`? Manda! Se quebrar, quebra em produção, às 3 da manhã, problema de quem tá de plantão." 😎
 **TypeScript** _(tapando os olhos)_: "Com o `any` eu não vejo nada, não sei de nada." 🙈
 > 🚨 `any` desliga a checagem: o erro só aparece em produção.
+= 🏷️ Tipo do dado: `any`
+= 🙈 Checagem do TypeScript: desligada
+= 💥 Erro aparece em: produção (runtime) ❌
 
 ## 🎬 Cena 2 · A porteira desconfiada
 **Porteira desconfiada**: "Pode entrar, meu bem, mas USAR só depois de eu conferir."
 **Conferência**: "É string? Então pode usar como string."
 **Zod**: "E se for um objetão, deixa comigo que eu passo no raio-X campo por campo." 🧪
 **Pacote**: "Que chique, me senti num aeroporto."
+= 🏷️ Tipo do dado: `unknown` → depois do `typeof`, `string`
+= 🧪 Validação em runtime: Zod `parse()` confere cada campo
+= ✅ Erro aparece em: compilação ou na entrada do dado
 
 ## 🎬 Cena 3 · O status esquecido
 **'cancelada'**: "Oi, sou o status novo! Cheguei no `switch`…"
 **Impossível**: "Ninguém te tratou? Então você caiu em mim, e em mim NADA pode cair. BUILD QUEBRADO! Vai lá tratar ela!" 🚨
 **Dev**: "Ainda bem que quebrou aqui e não no cliente." 😮‍💨
+= 🔀 `switch (status)`: trata "aberta" e "aprovada"
+= 🆕 Sobrou no `default`: "cancelada"
+= 🚫 `const x: never = s`: erro de compilação: build quebrado ✅
 
 ## 💻 Traduzindo pro código
 ```ts

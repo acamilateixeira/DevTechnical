@@ -6,10 +6,6 @@ export default [
     id: 'algo-top-k-frequent',
     cat: 'algorithms', type: 'code', jobs: ['elastic', 'brainrocket'],
     tags: ['live coding', 'Map', 'heap', 'sort', 'Big O', 'top-K', 'logs'],
-    reported: {
-      pt: 'Sim. Relatos de entrevistas na Elastic citam "problemas fáceis estilo LeetCode" e um guia do processo lista "top-K termos de um stream". A BrainRocket usa teste no HackerRank.',
-      en: 'Yes. Elastic interview reports mention "easy LeetCode-style problems" and a process guide lists "top-K terms in a stream". BrainRocket uses a HackerRank test.',
-    },
     q: {
       pt: 'Live coding: dada uma lista de linhas de log, devolva os K serviços que mais geraram erro. Qual a complexidade da sua solução? E se o log não couber na memória?',
       en: 'Live coding: given a list of log lines, return the K services that produced the most errors. What is your solution\'s complexity? And if the log does not fit in memory?',
@@ -75,10 +71,6 @@ What counts: code that runs, clear names, explained complexity, and tested edge 
     id: 'algo-classic-hackerrank',
     cat: 'algorithms', type: 'code', jobs: ['brainrocket', 'kwan', 'brasilcard'],
     tags: ['HackerRank', 'two sum', 'parênteses balanceados', 'stack', 'hash map', 'anagramas', 'Big O'],
-    reported: {
-      pt: 'A BrainRocket aplica um teste no HackerRank ("não muito complicado", segundo relatos) e a KWAN um teste técnico de 1 hora na sua linguagem. Esses três problemas são os clássicos desse formato.',
-      en: 'BrainRocket runs a HackerRank test ("not too complicated", per reports) and KWAN a 1-hour technical test in your language. These three problems are the classics of that format.',
-    },
     q: {
       pt: 'Teste de código cronometrado: (1) two sum, (2) parênteses balanceados, (3) agrupar anagramas. Resolva os três explicando a complexidade.',
       en: 'Timed coding test: (1) two sum, (2) balanced brackets, (3) group anagrams. Solve all three explaining the complexity.',
@@ -154,10 +146,6 @@ In a timed test: read every prompt first, solve the easiest first, run the given
     id: 'elastic-alerting-design',
     cat: 'architecture', type: 'architecture', jobs: ['elastic'],
     tags: ['alerting', 'system design', 'deduplicação', 'throttling', 'regras', 'notificações', 'Kibana alerting'],
-    reported: {
-      pt: 'Sim: "desenhe alertas sobre streams de logs (throttling, deduplicação, integração com plantão)" aparece num guia do processo da Elastic, e system design aparece nos relatos do Glassdoor.',
-      en: 'Yes: "design alerting on log streams (throttling, deduplication, paging integration)" appears in an Elastic process guide, and system design appears in Glassdoor reports.',
-    },
     q: {
       pt: 'System design: o usuário cria uma regra "me avise se o serviço X tiver mais de 50 erros em 5 minutos". Desenhe o sistema de alertas: avaliação, deduplicação, throttling e notificação.',
       en: 'System design: a user creates a rule "alert me if service X has more than 50 errors in 5 minutes". Design the alerting system: evaluation, deduplication, throttling, and notification.',
@@ -207,10 +195,6 @@ Trade-offs: **polling** evaluation (simple, delay equals the interval) vs **stre
     id: 'behavioral-proud-project-deepdive',
     cat: 'agile', type: 'behavioral', jobs: ['elastic', 'brainrocket', 'kwan', 'brasilcard', 'cv'],
     tags: ['projeto que te orgulha', 'deep dive', 'decisões', 'trade-offs', 'impacto', 'STAR'],
-    reported: {
-      pt: 'Sim: "Conte de um projeto de que você se orgulha" aparece em relato de entrevista para Senior Frontend na Elastic, e outros relatos dizem que os entrevistadores "cavam sua experiência com perguntas de follow-up".',
-      en: 'Yes: "Tell me about a project you are proud of" appears in an Elastic Senior Frontend interview report, and other reports say interviewers "dig into your work experience with follow-up questions".',
-    },
     q: {
       pt: 'Conte de um projeto de que você se orgulha. (O entrevistador vai cavar: por que essa arquitetura? O que você faria diferente? Qual foi exatamente a SUA parte?)',
       en: 'Tell me about a project you are proud of. (The interviewer will dig: why that architecture? What would you do differently? What exactly was YOUR part?)',
@@ -254,10 +238,6 @@ Prepare answers for the "dig": why not the obvious alternative, how you tested, 
     id: 'behavioral-remote-async',
     cat: 'agile', type: 'behavioral', jobs: ['elastic', 'brasilcard', 'kwan'],
     tags: ['trabalho remoto', 'assíncrono', 'distribuído', 'comunicação escrita', 'fusos horários', 'autonomia'],
-    reported: {
-      pt: 'A Elastic é uma empresa distribuída desde a fundação e os relatos descrevem a rodada comportamental como "mais séria que o esperado". A vaga da Brasil Card é remota.',
-      en: 'Elastic has been distributed since its founding and reports describe the behavioral round as "more serious than expected". The Brasil Card role is remote.',
-    },
     q: {
       pt: 'Você vai trabalhar remoto com pessoas em outros fusos. Como você se comunica, pede ajuda, toma decisões e mostra progresso sem reunião o tempo todo?',
       en: 'You will work remotely with people in other time zones. How do you communicate, ask for help, make decisions, and show progress without constant meetings?',
@@ -297,10 +277,6 @@ Give a real example of when this prevented a problem or sped up a delivery.`,
     id: 'behavioral-relocation-consultancy',
     cat: 'agile', type: 'behavioral', jobs: ['kwan', 'brainrocket'],
     tags: ['realocação', 'Portugal', 'consultoria', 'entrevista com cliente', 'inglês', 'motivação'],
-    reported: {
-      pt: 'Sim. Na KWAN, os relatos do Glassdoor descrevem: entrevista de RH (motivo para ir para Portugal, valores, objetivos), teste de inglês, teste técnico de 1 hora, entrevista com especialista e depois com o cliente. Na BrainRocket, um sênior relatou: "Você pesquisou os aspectos de se mudar para a cidade da vaga?".',
-      en: 'Yes. At KWAN, Glassdoor reports describe: HR interview (reasons for moving to Portugal, values, goals), an English test, a 1-hour technical test, a specialist interview, then the client interview. At BrainRocket, a senior reported: "Have you researched the aspects of relocating to the target city?".',
-    },
     q: {
       pt: 'Por que você quer se mudar para Portugal (ou para a cidade da vaga)? Já pesquisou custo de vida, visto e adaptação? E como você se sai numa consultoria, sendo entrevistada pelo cliente?',
       en: 'Why do you want to move to Portugal (or the role\'s city)? Have you researched cost of living, visa, and adjustment? And how do you do at a consultancy, being interviewed by the client?',

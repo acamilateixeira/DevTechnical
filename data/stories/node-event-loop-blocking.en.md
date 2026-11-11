@@ -15,17 +15,26 @@
 **Database table**: "I want some data from the database!"
 **Waiter**: "Got it, the kitchen's on it, be right back!" 🏃
 **Kitchen**: "Leave it to us, we'll call you when it's ready." 🔥
+= 🧑‍🍳 Event loop: free
+= 🔥 In libuv / OS: the database query
+= ⏱️ Wait for other requests: ~10ms
 
 ## 🎬 Scene 2 · The math table
 **Math table**: "I want YOU to calculate 10 million sums. Here. In front of me."
 **Waiter**: "…fine, I guess." 🧮🧮🧮 _(stuck at the same table for 1.5 s)_
 **Tables 4 to 1000**: "WAITER?! WAITEEER?! It was just a glass of water, for crying out loud!" 😤
 > 🚨 Event loop blocked: nobody else gets served.
+= 🧑‍🍳 Event loop: STUCK on the math for 1.5 s ❌
+= 😤 Requests waiting: all the others
+= ⏱️ Wait for other requests: ~1410ms
 
 ## 🎬 Scene 3 · Call the helper
 **Helper**: "Hand me that math. I'll do it in the other room and let you know when I'm done." 👷
 **Waiter**: "Thanks, buddy! I'm flying again." 😌
 **Tables 4 to 1000**: "About time."
+= 👷 Heavy math: in `worker_threads` (another thread)
+= 🧑‍🍳 Event loop: free again ✅
+= ⏱️ Wait for other requests: ~10ms
 
 ## 💻 Translating to code
 ```js

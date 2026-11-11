@@ -21,16 +21,26 @@
 **Eloquent**: "I'm one of those 'someones'. Plug me into the socket." 🧰
 **Receptionist**: "And I just translate the HTTP request. Rules? Not here, dear." 🚪
 **Law of gravity**: "Everyone points INWARD. The outside knows the inside; the inside never knows the outside." ⬇️
+= 💎 Domain imports: nothing from the framework
+= 🎬 Use case depends on: `FaturaRepository` (interface)
+= 🧰 Implementation: `EloquentFaturaRepository`
+= ⬇️ Dependency direction: outside in
 
 ## 🎬 Scene 2 · The framework switch
 **Company**: "We're moving from CodeIgniter to Laravel!"
 **Team**: "HELP, EVERYTHING WILL BREAK!" 😱
 **Heart**: "Go ahead, I'll come along without changing a line. Just swap the shell." 😎
 **Test**: "And I test the rule in milliseconds, without a database. I couldn't care less about the framework." 🧪
+= 🔄 Framework: CodeIgniter → Laravel
+= 💎 Lines changed in the domain: 0 ✅
+= 🧰 What changes: controllers and adapters
+= 🧪 Use-case test: no database, in milliseconds
 
 ## 🎬 Scene 3 · Without overdoing it
 **Simple form**: "Do I need four layers, an interface, and an adapter too?"
 **Experienced architect**: "No, angel. Clean Architecture where the rules are rich, like payments and invoices. Everything else stays simple." 😅
+= 💳 Payments and invoices: Clean Architecture (rich rules)
+= 📝 Simple form: controller + model directly (CRUD)
 
 ## 💻 Translating to code
 ```php

@@ -19,6 +19,10 @@
 **Red**: "FAILED! The function doesn't even exist!" 🔴
 **Dev**: "Fine, I'll do the MINIMUM to pass."
 **Green**: "Passed!" 🟢
+= 🧪 Tests: 1
+= 🔴 Failing: 0 (the first failed, then passed)
+= 🟢 Passing: 1
+= 📄 Rules in the code: just `return { ok: true }`
 
 ## 🎬 Scene 2 · One test at a time
 **Test**: "Cost 1200 with a 1000 budget? I expect 'no budget'."
@@ -30,12 +34,18 @@
 **Test**: "THEN ASK THE PO, WOMAN!" 🗣️
 **PO**: "Equal to the limit is allowed."
 **Edge case**: "Then I'll live here forever reminding everyone of that." 📜🟢
+= 🧪 Tests: 3 (approves · no budget · at the limit)
+= 🟢 Passing: 3
+= 📏 Rule agreed with the PO: cost === limit → approves
 
 ## 🎬 Scene 3 · The cleanup and the alarm
 **Cleanup**: "All green? Now I'll fix the names and tidy up the mess. If I break something, the tests will scream." 🧹
 **Dev** _(six months later, changing `>` to `>=` by accident)_: "There, just a tiny tweak…"
 **Edge case**: "HEY! THE PO SAID THE LIMIT IS ALLOWED!" 🔴🚨
 **Dev**: "Thank you for existing." 🥹
+= 🧹 Refactor: better names, same behavior
+= 🐛 Accidental change: `>` became `>=`
+= 🔴 Failing: 1: "approves exactly at the limit" ✅ caught the bug
 
 ## 💻 Translating to code
 ```js

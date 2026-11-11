@@ -16,6 +16,9 @@
 **Garçom afobado**: "Viagem 1? Corro na cozinha buscar o usuário 1! Viagem 2? Corro buscar o 2! Viagem 3? O 1 de novo! Corro!" 🏃🏃🏃
 **Cozinha**: "51 IDAS?! E metade é pro MESMO usuário! Para de me fazer de besta!" 😵
 > 🚨 1 query da lista + 1 por item: é o N+1.
+= 📋 Viagens na resposta: 50
+= 👨‍🍳 Queries no banco: 51 ❌ (1 da lista + 50 de usuário)
+= 🔁 Usuários repetidos buscados de novo: 40 (só existem 10 diferentes)
 
 ## 🎬 Cena 2 · O garçom esperto
 **Garçom esperto**: "Eu não vou à cozinha a cada pedido. Vou anotar tudo que a mesa pedir agora…"
@@ -24,10 +27,17 @@
 **Garçom esperto**: "Tirei os repetidos: usuários 1 a 10. Agora sim, UMA ida à cozinha com a lista inteira."
 **Cozinha**: "2 idas no total. Deus te abençoe." 🙏
 **Garçom esperto**: "E entrego cada prato na ordem em que pediram, senão o usuário 1 recebe o nome do 2 e dá briga." 🍽️
+= 📝 Pedidos anotados no tick: 50 `load(id)`
+= 🧹 Depois de tirar repetidos: 10 ids
+= 👨‍🍳 Queries no banco: 2 ✅ (lista + `WHERE id IN (…10 ids)`)
+= 🍽️ Ordem de entrega: a mesma dos pedidos
 
 ## 🎬 Cena 3 · Ele não é eterno
 **Cliente**: "Você lembra de mim amanhã?"
 **Garçom esperto**: "Nem pensar. Eu nasço e morro em cada requisição. Se eu fosse um só pro restaurante inteiro, ia servir o prato de um cliente pra outro." 🙅
+= 🧑‍💼 Vida do DataLoader: 1 por requisição HTTP
+= 🗑️ Cache dele: jogado fora no fim da requisição
+= 🚫 Se fosse global: dado de um usuário poderia aparecer para outro ❌
 
 ## 💻 Traduzindo pro código
 ```js

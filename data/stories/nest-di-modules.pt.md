@@ -16,17 +16,25 @@
 **Teste**: "E pra me rodar? Vou ter que subir um banco de verdade, com Docker e tudo?" 😩
 **Caso de uso**: "…é."
 **Teste**: "Fui."
+= 🧑‍💼 Quem cria o repositório: o próprio caso de uso (`new`)
+= 🧪 Para testar: precisa de banco de verdade ❌
 
 ## 🎬 Cena 2 · Chama o mordomo
 **Mordomo**: "Patrão, você só diz no construtor DO QUE precisa. Eu monto e te entrego prontinho." 🤵
 **Lista do mordomo**: "Quando alguém pedir `TripRepository`, entrega o Repositório de verdade."
 **Caso de uso**: "Que vida boa. Nem sei de onde veio, só uso."
+= 📒 Provider registrado: `TRIP_REPOSITORY` → `TypeOrmTripRepository`
+= 🤵 Quem cria: o container do Nest
+= 🧑‍💼 O caso de uso conhece: só a interface `TripRepository`
 
 ## 🎬 Cena 3 · Dia de teste
 **Teste**: "Mordomo, hoje entrega o Repositório de brinquedo, por favor."
 **Mordomo**: "Pois não." _(troca a peça)_
 **Caso de uso**: "Ué, mudou alguma coisa? Nem percebi." 😉
 **Teste**: "Rodei em 3 milissegundos, sem banco. Tô chique."
+= 🧸 Provider no teste: `InMemoryTripRepository` (via `overrideProvider`)
+= 🧑‍💼 Código do caso de uso: não mudou
+= ⏱️ Tempo do teste: ~3ms, sem banco ✅
 
 ## 💻 Traduzindo pro código
 ```ts

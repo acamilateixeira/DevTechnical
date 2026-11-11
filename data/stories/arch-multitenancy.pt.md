@@ -19,6 +19,9 @@
 **Dev apressado**: "`SELECT * FROM viagens WHERE id = 10`. Prontinho!"
 **Empresa A**: "Por que eu tô vendo a viagem da Empresa B pra Cancún?! Eu nem fui convidada!" 😱
 > 🚨 Vazamento entre tenants: o pior bug de um SaaS.
+= 🔍 Query: `SELECT * FROM viagens WHERE id = 10` (sem tenant)
+= 🏷️ Tenant da linha: B
+= 🙋‍♀️ Usuária logada: da empresa A → vazou ❌
 
 ## 🎬 Cena 2 · As camadas de proteção
 **Porteiro automático**: "Daqui pra frente eu coloco a empresa do usuário logado em TODA consulta. Ninguém precisa lembrar." 🛡️
@@ -26,11 +29,17 @@
 **API**: "Ignoro, meu filho. A empresa vem do usuário AUTENTICADO, nunca do que você manda." 🙅
 **Cofre do banco**: "E se mesmo assim o código esquecer, eu, o banco, não entrego a linha." 🔒
 **Fiscal**: "E eu crio dados de duas empresas e testo endpoint por endpoint, em todo PR." 🧪
+= 🛡️ Escopo global: `WHERE tenant_id = 42` em toda query
+= 🦹 `tenant_id` do body: ignorado (vem da autenticação)
+= 🔒 RLS no banco: ligado
+= 🧪 Teste de isolamento: passando em todo PR ✅
 
 ## 🎬 Cena 3 · O armário
 **Armário**: "Opa, e eu? Se a minha chave for só `viagem:10`, sem a etiqueta…" 😬
 **Todo mundo**: "ETIQUETA NA CHAVE TAMBÉM!"
 **Armário**: "`tenant:42:viagem:10`. Anotado." 🏷️
+= 🗄️ Chave do cache antes: `viagem:10` ❌
+= 🗄️ Chave do cache depois: `tenant:42:viagem:10` ✅
 
 ## 💻 Traduzindo pro código
 ```php

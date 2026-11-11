@@ -18,17 +18,27 @@
 **Davi**: "Wait, who wrote 'hi' in MY notebook?!"
 **Ana**: "IT WAS MINE, YOU NOTEBOOK THIEF! 😭"
 > 🚨 The state stayed with the chair, not with the person.
+= 📋 List on screen: chair 0: Davi · 1: Ana · 2: Bruno · 3: Carla
+= 🪪 `key` used: the index (0, 1, 2, 3)
+= 📓 "hi" text: stayed at key 0, which is now Davi ❌
 
 ## 🎬 Scene 2 · Badge with the name (`key={item.id}`)
 **React**: "New rule: now the badge is your name."
 **Davi**: "I'm sitting in chair 0 again, okay?"
 **React**: "Badge 'Davi' is new? Brand-new notebook for you. Badge 'Ana' changed chairs? I'll carry her notebook along." ✅
 **Ana** _(hugging her notebook)_: "My 'hi' is here. World peace." 🕊️
+= 📋 List on screen: Davi, Ana, Bruno, Carla
+= 🪪 `key` used: the id (4, 1, 2, 3)
+= 📓 "hi" text: stays with Ana (key 1) ✅
+= 🆕 Created from scratch: only Davi (key 4)
 
 ## 🎬 Scene 3 · The clown
 **`Math.random()`**: "What if I give everyone a new badge on every render? Hahaha"
 **React**: "Then I think the whole class is new people and throw ALL the notebooks in the trash, every time." 🗑️
 **Ana**: "Teacher, kick him out."
+= 🪪 `key` used: `Math.random()`: new on every render
+= 🗑️ Items recreated per render: all of them (4 of 4)
+= 📓 Typed text: lost on every render ❌
 
 ## 💻 Translating to code
 ```tsx

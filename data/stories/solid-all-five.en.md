@@ -19,12 +19,17 @@
 ## 🎬 Scene 1 · The do-it-all
 **Do-it-all**: "I validate, calculate tax, save to the database, and send email! I'm a multitasker!" 🤹
 **S**: "Sweetie, when the tax changes, the email changes, or the database changes, you change for FOUR reasons. Split that up." ✂️
+= 🤹 Controller responsibilities: 4 (validate, tax, save, email)
+= ✂️ After S: 4 classes, 1 reason to change each
 
 ## 🎬 Scene 2 · The checkout full of ifs
 **Checkout**: "If it's Pix… else if it's a card… else if it's a boleto…"
 **O**: "And for every new payment method you'll edit this again? Create a new class that follows the `MeioDePagamento` contract and leave the checkout alone." 🚪
 **Impostor**: "I'm a repository! I have `save()`… but it throws 'not supported'." 🤥
 **L**: "Whoever uses a repository expects `save()` to work. If you don't honor the contract, don't pretend to be one." 🙅
+= 🔀 `if`s per payment method: 3 (and growing)
+= 🚪 After O: 1 class per method; the checkout doesn't change
+= 🤥 `ReadOnlyRepository.save()`: throws → breaks L
 
 ## 🎬 Scene 3 · The mega-interface and the glued-on database
 **Mega-interface**: "Whoever just wants to read a user's name has to depend on my 30 methods." 🐘
@@ -33,6 +38,9 @@
 **D**: "Depend on a repository interface. In tests they'll give you an in-memory version and, if the database changes, you won't even know." 🔌
 **Overexcited architect**: "THEN I'LL CREATE AN INTERFACE FOR EVERYTHING! EVEN FOR `console.log`!" 🤓
 **Auntie SOLID**: "Easy, son. Unnecessary abstraction is a cost too." 😅
+= 🐘 Interface methods: 30
+= 🧩 After I: `LeitorDeUsuario` (1) and `RedefinidorDeSenha` (1)
+= 🔌 After D: the rule depends on `Repositorio`, not MySQL
 
 ## 💻 Translating to code
 ```ts

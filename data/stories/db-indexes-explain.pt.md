@@ -17,15 +17,25 @@
 **Bibliotecária**: "Vou ler as 20 MILHÕES de fichas, uma por uma, separar as que servem e depois ordenar…" 🐌
 **Bia**: "A tela demorou 8 segundos! Deu tempo de passar um café!" 😤
 **Lanterna**: "Achei o culpado: leu a tabela inteira e ainda ordenou tudo em disco." 🔦
+= 🔦 Plano (`EXPLAIN ANALYZE`): Seq Scan + Sort em disco
+= 📚 Linhas lidas: 20 milhões
+= ⏱️ Tempo: ~8 s ❌
 
 ## 🎬 Cena 2 · Com fichário
 **Índice remissivo**: "Eu já tô organizado por empresa, depois status, depois data. Vou direto na gaveta 42, pendentes, já na ordem, e paro quando der 50." 📇
 **Bibliotecária**: "Li 50 fichas em vez de 20 milhões. Tô me sentindo uma atleta." ⚡
+= 📇 Índice: `(company_id, status, created_at DESC)`
+= 🔦 Plano: Index Scan, já ordenado, para no `LIMIT 50`
+= 📚 Linhas lidas: 50
+= ⏱️ Tempo: ~5ms ✅
 
 ## 🎬 Cena 3 · Nem tudo são flores
 **Cadastro**: "E toda vez que entra ficha nova, eu tenho que atualizar o fichário também. Fichário demais me deixa lerdo!" 🐢
 **Disfarce**: "E se eu pedir pela DATA da criação, com uma função em volta?"
 **Índice remissivo**: "Aí eu não te reconheço, querida. Não uso." 🙅
+= ✍️ Cada `INSERT`: atualiza a tabela + todos os índices
+= 🎭 `WHERE DATE(created_at) = ...`: não usa o índice ❌
+= ✅ `WHERE created_at >= ... AND < ...`: usa o índice
 
 ## 💻 Traduzindo pro código
 ```sql

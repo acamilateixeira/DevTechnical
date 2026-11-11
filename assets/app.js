@@ -5,6 +5,7 @@ import { labs } from '../labs/web/index.js';
 import { renderStart } from './start.js';
 import { createAnnotator } from './gloss.js';
 import { renderGlossary } from './glossary-page.js';
+import { sources, evidenceSummary } from '../data/evidence.js';
 import { storyForQuestion, storyButton, bindStoryButtons, renderStories, renderStoryPage } from './story.js';
 
 const STORE = 'devtechnical:v1';
@@ -128,8 +129,32 @@ function pickNext() {
   return pool[pool.length - 1];
 }
 
+function reportedChip(q) {
+  const sum = evidenceSummary(q.reported);
+  if (!sum) return '';
+  const label = sum.kind === 'relato' ? t('reportedChip') : sum.kind === 'guia' ? t('chipGuide') : t('chipJob');
+  const who = sum.companies?.length ? ` · ${sum.companies.join(', ')}` : '';
+  return `<span class="chip reported-chip" data-kind="${sum.kind}">${escapeHtml(label + who)}</span>`;
+}
+
+function reportedHtml(q, ann) {
+  if (!q.reported?.length) return '';
+  const kindLabel = { relato: t('kindRelato'), guia: t('kindGuia'), vaga: t('kindVaga') };
+  const S = (v) => (typeof v === 'string' ? v : L(v));
+  return `<div class="panel reported"><h3>${t('reportedTitle')}</h3><ul class="evidence">${q.reported.map((x) => {
+    const s = sources[x.src];
+    return `<li data-kind="${s.kind}">
+      <div class="ev-head"><span class="ev-kind">${kindLabel[s.kind]}</span> <strong>${escapeHtml(S(s.company))}</strong></div>
+      <div class="ev-meta">${escapeHtml(L(s.role))} · ${escapeHtml(L(s.when))} · ${escapeHtml(L(s.stage))}</div>
+      <blockquote>${md(L(x.quote), ann).replace(/^<p>|<\/p>$/g, '')}</blockquote>
+      ${x.note ? `<div class="ev-note">⚠️ ${escapeHtml(L(x.note))}</div>` : ''}
+      <div class="ev-src">${s.url ? `<a href="${s.url}" target="_blank" rel="noopener">${escapeHtml(S(s.site))} ↗ ${t('srcOpen')}</a>` : escapeHtml(t('srcNoLink'))}</div>
+    </li>`;
+  }).join('')}</ul></div>`;
+}
+
 function chips(q) {
-  return (q.reported ? `<span class="chip reported-chip">${escapeHtml(t('reportedChip'))}</span>` : '') +
+  return reportedChip(q) +
     `<span class="chip">${escapeHtml(L(cats[q.cat]))}</span>` +
     `<span class="chip">${escapeHtml(L(types[q.type]))}</span>` +
     q.jobs.map((j) => `<span class="chip">${escapeHtml(L(jobs[j]).split(' · ')[0])}</span>`).join('');
@@ -186,7 +211,7 @@ function revealHtml(q, ann = annotator(q)) {
   const lab = labs.find((l) => (l.questions || []).includes(q.id));
   return `
     ${lab ? `<a class="panel lab-link" href="#/lab/${lab.id}"><strong>${t('seeLab')}</strong><span>${escapeHtml(L(lab.title))}</span></a>` : ''}
-    ${q.reported ? `<div class="panel reported"><h3>${t('reportedTitle')}</h3>${md(L(q.reported), ann)}</div>` : ''}
+    ${reportedHtml(q, ann)}
     <div class="panel"><h3>${t('answer')}</h3>${md(L(q.a), ann)}</div>
     ${q.code ? `<div class="panel"><h3>${t('code')}</h3>${codeBlocks(q)}</div>` : ''}
     ${toolsHtml(q)}

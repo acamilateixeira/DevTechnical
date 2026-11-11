@@ -18,17 +18,26 @@
 **Agência**: "Olhando o mapa… vai uma cópia pra caixa do e-mail, uma do ERP e uma do relatório." 🗺️
 **Carteiro do e-mail**: "Peguei, mandei o e-mail, toma o recibo!" ✅
 **Agência**: "Recibo na mão, jogo a carta fora."
+= 🏤 Exchange `viagens`: recebeu "viagem.aprovada"
+= 📬 Filas: email: 1 · erp: 1 · relatorio: 1
+= ✅ Fila email depois do ack: 0
 
 ## 🎬 Cena 2 · O carteiro que caiu
 **Carteiro do ERP**: "Peguei a carta… processando…" 💥 _(caiu sem dar recibo)_
 **Agência**: "Sem recibo? A carta volta pra caixa e outro carteiro pega." 🔁
 **Carteiro do ERP 2**: "Deixa comigo. Pronto, recibo!" ✅
+= 🧾 Consumidor do ERP: caiu sem ack
+= 🔁 Mensagem: voltou para a fila (redelivered)
+= ✅ Fila erp depois do 2º consumidor: 0
 
 ## 🎬 Cena 3 · A carta-bomba
 **Carta-bomba**: "Hehe, todo mundo que me abre explode." ☠️
 **Agência**: "Tentei 5 vezes, esperando cada vez mais. Chega: vai pros achados e perdidos." 📭
 **Achados e perdidos**: "Fica aqui quietinha até um humano investigar."
 **Livro de registro** _(da agência vizinha)_: "Eu sou diferente: não jogo carta fora quando alguém lê. Guardo tudo em ordem, cada leitor marca onde parou, e quem quiser relê o histórico." 📜
+= ☠️ Tentativas: 5, com espera crescente
+= 📭 DLQ `viagens.dlx`: 1 mensagem esperando investigação
+= 📬 Fila principal: livre, as outras mensagens seguem ✅
 
 ## 💻 Traduzindo pro código
 ```js

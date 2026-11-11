@@ -16,6 +16,9 @@
 **Pilantra**: "Ótima viagem! Adorei o hotel! E aqui uma imagenzinha de presente…" _(com a isca escondida)_ 😇
 **Mural seguro**: "Chegou texto? Mostro como TEXTO. Os `<` e `>` viram letrinhas na tela. Não executo nada." 🛡️
 **Pilantra**: "Droga, meu código apareceu na tela feito bobo." 😒
+= 📝 Comentário: texto + `<img src=x onerror=...>`
+= 🛡️ Quadro 1 (`{comentario}`): mostra as tags como texto; nada roda ✅
+= 😈 Scripts do atacante executados: 0
 
 ## 🎬 Cena 2 · O mural sem porteiro
 **Mural sem porteiro**: "Chegou HTML? Colo direto na página, sem nem olhar!"
@@ -24,11 +27,17 @@
 **Pilantra**: "Agora tô DENTRO da página, com a Bia logada. Posso ler a tela, fazer pedidos no nome dela…" 😈
 **React** _(revirando os olhos)_: "Eu avisei, gente. Tá escrito DANGEROUSLY no nome!" 🙄
 > 🚨 Texto do usuário virou código: isso é XSS.
+= 🕳️ Quadro 2 (`dangerouslySetInnerHTML`): HTML colado na página
+= 😈 Scripts do atacante executados: 1 ❌ (pelo `onerror`)
+= 🔓 O script consegue: ler a tela e fazer pedidos como a Bia
 
 ## 🎬 Cena 3 · Com peneira e biscoito blindado
 **Peneira**: "Chegou HTML? Antes de mostrar, passo na peneira: tchau `<script>`, tchau `onerror`, tchau `javascript:`. O negrito pode ficar, é gente boa." 🧹
 **Pilantra**: "Sobrou só a imagem quebrada. Que fase." 😭
 **Biscoito**: "E mesmo se algum script entrasse, não ia conseguir me ler. JavaScript não encosta em mim." 🍪🔒
+= 🧹 Quadro 3 (sanitizado): `onerror` e `<script>` removidos; `<b>` mantido
+= 😈 Scripts do atacante executados: 0 ✅
+= 🍪 Cookie de sessão: `HttpOnly`: invisível para o JavaScript
 
 ## 💻 Traduzindo pro código
 ```tsx

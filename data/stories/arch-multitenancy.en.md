@@ -19,6 +19,9 @@
 **Rushed dev**: "`SELECT * FROM viagens WHERE id = 10`. Done!"
 **Company A**: "Why am I seeing Company B's trip to Cancún?! I wasn't even invited!" 😱
 > 🚨 A cross-tenant leak: the worst bug a SaaS can have.
+= 🔍 Query: `SELECT * FROM viagens WHERE id = 10` (no tenant)
+= 🏷️ Row's tenant: B
+= 🙋‍♀️ Logged-in user: from company A → leaked ❌
 
 ## 🎬 Scene 2 · Layers of protection
 **Automatic doorman**: "From now on I add the logged-in user's company to EVERY query. Nobody has to remember." 🛡️
@@ -26,11 +29,17 @@
 **API**: "I ignore it, kid. The company comes from the AUTHENTICATED user, never from what you send." 🙅
 **Database vault**: "And if the code still forgets, I, the database, won't hand over the row." 🔒
 **Inspector**: "And I create data for two companies and test endpoint by endpoint, on every PR." 🧪
+= 🛡️ Global scope: `WHERE tenant_id = 42` on every query
+= 🦹 `tenant_id` in the body: ignored (it comes from authentication)
+= 🔒 RLS in the database: on
+= 🧪 Isolation test: passing on every PR ✅
 
 ## 🎬 Scene 3 · The cupboard
 **Cupboard**: "Wait, what about me? If my key is just `viagem:10`, without the label…" 😬
 **Everyone**: "LABEL IN THE KEY TOO!"
 **Cupboard**: "`tenant:42:viagem:10`. Got it." 🏷️
+= 🗄️ Cache key before: `viagem:10` ❌
+= 🗄️ Cache key after: `tenant:42:viagem:10` ✅
 
 ## 💻 Translating to code
 ```php

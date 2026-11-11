@@ -27,12 +27,19 @@
 **Confirmação**: "Agora sim, virou lançamento na fatura." ✅
 **Reserva** _(esquecida, em outra loja)_: "E se o lojista nunca me confirmar?"
 **Emissor**: "Depois de uns dias você expira e o limite volta, meu bem." ⏳
+= 💳 Limite total: R$3000
+= 🔒 Reservado (autorizado): R$0 (já capturado)
+= 🧾 Na fatura: compra R$2000
+= 💳 Limite disponível: R$1000
 
 ## 🎬 Cena 2 · O arrependimento
 **Dona Cida** _(uma semana depois)_: "O sofá não passou na porta. Desisti!"
 **Devolução**: "Não apago a compra! Crio um lançamento NOVO de R$2000 de crédito. A história fica toda registradinha." ↩️
 **Fechamento**: "Dia 10 eu fecho: junto compras, parcelas, juros e devoluções do ciclo." 📅
 **Pagamento**: "Dona Cida pagou? Abato o saldo e devolvo o limite." 💸
+= 🧾 Lançamentos: compra +R$2000 · estorno −R$2000
+= 📅 Saldo da fatura: R$0
+= 💳 Limite disponível: R$3000 (voltou)
 
 ## 🎬 Cena 3 · Os perrengues
 **Seu Zé**: "Não reconheço essa compra de R$900 em Fortaleza!"
@@ -40,6 +47,9 @@
 **Conferente** _(7h da manhã, com café)_: "O que o sistema registrou bate com o arquivo da processadora e do banco? Diferença de R$12? Investigar!" 🔍
 **Duas compras ao mesmo tempo** _(limite só pra uma)_: "Quem ganha?"
 **Banco**: "Transação com trava no limite: a segunda espera e é recusada." 🔒
+= ⚖️ Chargeback do Seu Zé: crédito provisório de R$900; lojista pode contestar
+= 🔍 Conciliação: diferença de R$12 aberta para investigar
+= 🔒 Duas compras ao mesmo tempo: 1 autorizada, 1 negada (trava no limite)
 
 ## 💻 Traduzindo pro código
 ```sql

@@ -17,12 +17,18 @@
 **Caixa d'água**: "5 milhões de linhas saindo!"
 **Memória**: "SOCORRO, VOU ESTOURAR!" 💥
 > 🚨 Carregar tudo na memória derruba o servidor.
+= 🪣 Linhas na memória: 5 milhões de uma vez
+= 🧠 Memória do servidor: estourando ❌
+= 📤 Enviado ao cliente: nada ainda
 
 ## 🎬 Cena 2 · A mangueira sem freio
 **Mangueira**: "Deixa comigo: linha a linha, do banco pro CSV, do CSV pra Bia."
 **Copinho** 🐢: "Calma, gente… eu bebo devagar…"
 **Caixa d'água**: "NÃO QUERO SABER, CONTINUO JORRANDO!" 🚿
 **Poça**: "Tá acumulando tudo aqui em mim… 💦💦💦" _(a memória sobe de novo)_
+= 🐍 Fluxo: banco → CSV → cliente, linha a linha
+= 💦 Buffer: crescendo (ninguém freia)
+= 🧠 Memória: ~131 MB e subindo ❌
 
 ## 🎬 Cena 3 · Com freio
 **Copinho**: "Tô cheio!" _(o `write()` devolveu `false`)_
@@ -31,6 +37,10 @@
 **Freio**: "Pode abrir de novo."
 **Encanador**: "E se a Bia fechar o navegador no meio, eu fecho todos os canos sozinho, sem vazamento." 🔧
 **Memória**: "Agora sim, estável feito coqueiro." 😌
+= ✋ `write()`: devolveu `false` → produtor pausa
+= 🔁 Evento `drain`: produtor volta
+= 🧠 Memória: ~71 MB, estável ✅
+= 🔧 Cliente desconectou: `pipeline` fecha tudo, sem vazamento
 
 ## 💻 Traduzindo pro código
 ```js

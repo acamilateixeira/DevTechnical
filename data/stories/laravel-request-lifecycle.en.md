@@ -21,17 +21,27 @@
 **Caretakers**: "Everything's set up: database, queues, routes, and we registered who's who with the butler." 🧰
 **Turnstiles**: "Logged in? Yes. Sending too many requests? No. Go ahead." 👮
 **Map**: "Pay an invoice? The `PagamentoController` room, `store` method." 🗺️
+= ✉️ Request: `POST /faturas/10/pagar`
+= ✅ Already passed: `index.php` → providers → middleware (`auth`, `throttle`)
+= 🗺️ Route found: `PagamentoController@store`
+= ⏳ Still to do: Form Request, controller, response
 
 ## 🎬 Scene 2 · In the room
 **Room inspector**: "Before you see the clerk: is the amount right? Is the invoice yours? Then go ahead." 🧪
 **Butler**: "The clerk needs `PagarFatura`? Built it, here it is." 🤵
 **Clerk**: "Paid! Here's your 201." 🎤
 **Request**: "And now I go back out through the same turnstiles." 📬
+= 🧪 Form Request: valid data ✅ and `authorize()` true ✅
+= 🤵 Injected into the controller: `PagarFatura`
+= 📬 Response: 201, going back through the middleware
 
 ## 🎬 Scene 3 · The absent-minded one
 **Absent-minded Eloquent**: "Listing 50 invoices with their customer… one query for the list… another for invoice 1's customer… another for invoice 2's…" 🐌
 **Basket**: "Stop that! Ask me for everything together: 2 queries and done." 🧺
 **Laravel in dev**: "And I'll even yell if anyone tries to lazy-load." 🚨
+= 🐌 Without `with()`: 51 queries (1 + 50 customers) ❌
+= 🧺 With `with('cliente')`: 2 queries ✅
+= 🚨 `preventLazyLoading()`: on in dev
 
 ## 💻 Translating to code
 ```php

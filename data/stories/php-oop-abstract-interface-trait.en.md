@@ -17,17 +17,25 @@
 **Contract**: "Whoever signs with me PROMISES to have `cobrar()`. How they charge is their own business." 📜
 **Pix**: "Signed! I charge instantly, no fee." ⚡
 **Card**: "Signed too!" 💳
+= 📜 Interface: `MeioDePagamento::cobrar()`
+= ✍️ Implemented by: `Pix`, `CartaoDeCredito`
 
 ## 🎬 Scene 2 · The blueprint and the kit
 **House blueprint**: "And I come half-built: I compute the total with the fee. Each child just says WHICH fee. Nobody lives in me directly, okay? Only in houses built from me." 🏗️
 **Card**: "I was built from that blueprint. I just said my fee is 3%."
 **Ready-made kit**: "And I'm a bundle of logging methods anyone can paste in, even if they're not family." 🧩
 **Pix**: "I pasted the kit in and I'm not even related to Card. Fancy."
+= 🏗️ Abstract class: `PagamentoComTaxa` (computes the total; `taxa()` is abstract)
+= 💳 `CartaoDeCredito`: `extends PagamentoComTaxa`, 3% fee
+= 🧩 `RegistraLog` trait: used by `Pix` (no inheritance)
 
 ## 🎬 Scene 3 · Boleto arrives
 **Boleto**: "Hi, everyone! May I come in?" 🧾
 **Checkout**: "Signed the contract? Then come in. I don't even need to change." 😎
 **Chameleon**: "That's it: the checkout calls `cobrar()` and each one answers its own way." 🎭
+= 🧾 New class: `Boleto implements MeioDePagamento`
+= 🛒 Lines changed in checkout: 0 ✅
+= 🎭 `$meio->cobrar()` works with: Pix, Card, and Boleto
 
 ## 💻 Translating to code
 ```php

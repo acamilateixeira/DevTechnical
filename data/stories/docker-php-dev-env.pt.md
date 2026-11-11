@@ -19,6 +19,8 @@
 **Dev nova**: "Como eu rodo o projeto?"
 **Tutorial de 47 passos**: "Instala o PHP 7.4… não, 8.1… a extensão X… o MySQL 5.7, não o 8… e reza pra ninguém ter atualizado nada." 🙏
 **Colega**: "Na minha máquina funciona." 🤷
+= 🙏 Passos para rodar: 47, manuais
+= 🤷 Ambiente: cada máquina de um jeito
 
 ## 🎬 Cena 2 · Com Docker
 **Dev nova**: "`docker compose up`."
@@ -26,6 +28,9 @@
 **Bolo**: "Tô rodando! E se der ruim, me apaga e faz outro, sem dó." 📦
 **Banco** _(sem pote)_: "Apagaram meu container… PERDI TODOS OS DADOS!" 😱
 **Pote da geladeira**: "Por isso os dados moram em mim. O bolo vai e vem, eu fico." 💾
+= 🐳 Comando: `docker compose up`
+= 📦 Containers: app (PHP-FPM) · nginx · db (MySQL)
+= 💾 Volume `dbdata`: os dados sobrevivem ao container ✅
 
 ## 🎬 Cena 3 · O localhost
 **App PHP**: "Vou falar com o banco em `localhost`…"
@@ -33,6 +38,9 @@
 **App PHP**: "Ahhh. Faz sentido."
 **Porteiro**: "E quem chega pela porta 80 sou eu que recebo e passo pro PHP." 🚪
 **Lupa**: "E eu só apareço no dev. Em produção, nem me convida." 🐞
+= 🕸️ `DB_HOST`: `db` (nome do serviço), não `localhost`
+= 🚪 Porta: 8080 da máquina → 80 do Nginx
+= 🐞 Xdebug: só na imagem de dev
 
 ## 💻 Traduzindo pro código
 ```yaml

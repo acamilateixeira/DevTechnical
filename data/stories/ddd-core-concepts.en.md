@@ -20,11 +20,17 @@
 **Expert**: "The requester opens a request; dispatch makes the assignment of a driver."
 **Old code**: "Here it's all `Order` and `Job`, duh." 🤷
 **Dictionary**: "So the code speaks another language! Use the SAME words: `Solicitacao` (request), `Atribuicao` (assignment)." 🗣️
+= 🗣️ In the business: Request, Assignment
+= 🤷 In the code before: `Order`, `Job`
+= ✅ In the code after: `Solicitacao`, `Atribuicao`
 
 ## 🎬 Scene 2 · What is a customer?
 **Sales**: "To me, a customer is a lead with an opportunity."
 **Billing**: "To me, it's a tax ID, a billing address, and taxes."
 **Territories**: "You're both right, each in your own part of the map. At the border, we translate." 🗺️
+= 🗺️ Bounded contexts: Sales and Billing
+= 💼 "Customer" in Sales: a lead with an opportunity
+= 🧾 "Customer" in Billing: tax ID, billing address, taxes
 
 ## 🎬 Scene 3 · The rules of the realm
 **Money**: "I have no ID. I am what I'm worth, I don't change, and I don't let anyone create me negative." 💰
@@ -33,6 +39,9 @@
 **Town crier**: "APPROVED! Whoever's interested, email, ERP, react!" 📣
 **CRUD** _(yawning)_: "And me, do I need a queen, a town crier, and territories?"
 **DDD**: "No, dear. I'm worth it where the domain is complicated." 😅
+= 💰 `Money`: immutable, no ID, never negative
+= 👑 `Viagem` status: PENDENTE → APROVADA (only via `aprovar()`)
+= 📣 Events published: `ViagemAprovada`
 
 ## 💻 Translating to code
 ```ts

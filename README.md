@@ -51,12 +51,18 @@ Filtre por **Vaga → Brasil Card** para ver as 39 perguntas ligadas aos requisi
 
 ### Isso é perguntado de verdade?
 
-Perguntas marcadas com **✓ relatada** têm evidência pública de que aparecem em entrevistas reais; a resposta abre com a fonte. A pesquisa (Glassdoor, TabNews e guias públicos do processo da Elastic) está registrada em [`data/evidence.js`](data/evidence.js). Resumo do que os relatos descrevem:
+O chip de cada pergunta diz de onde ela vem e de qual empresa:
+
+- **✓ relatada · Elastic**: alguém contou que passou por isso.
+- **📘 guia público**: está num guia do processo, não é relato de uma pessoa.
+- **📋 está na vaga**: não achei relato; ela está aqui porque o assunto está na descrição da vaga.
+
+Na resposta, cada fonte aparece com o tipo, a empresa, o cargo do(a) candidato(a), a data, a etapa, a frase citada e o link. Quando a fonte tem uma limitação, o aviso fica junto: por exemplo, os relatos da Brasil Card são de vagas não técnicas. Tudo fica em [`data/evidence.js`](data/evidence.js), conferido em 11/11/2026. O que não deu para confirmar foi retirado. Resumo do que os relatos descrevem:
 
 - **Elastic**: triagem com RH, rodadas técnicas com problemas "fáceis estilo LeetCode", concorrência e system design, exercício com code review ao vivo, comportamental "mais sério que o esperado" (STAR) e aprofundamento na sua experiência.
-- **BrainRocket**: conversa com recrutador, teste no HackerRank, entrevista técnica com o head da área e perguntas sobre realocação.
+- **BrainRocket**: RH, teste no HackerRank, entrevista técnica com engenheiro (event loop, race conditions, RabbitMQ × Kafka, live coding) e conversa com o tech lead.
 - **KWAN**: RH (motivo para ir a Portugal, valores, inglês), teste técnico de 1 hora na sua linguagem, entrevista com especialista e depois com o cliente.
-- **Brasil Card**: os relatos públicos são de outras áreas, mas mostram o formato: contato rápido do RH, entrevista com recrutador e depois com o gestor ("onde se vê em 5 anos?", "como conheceu a empresa?").
+- **Brasil Card**: os relatos públicos são de vagas não técnicas (atendente e auxiliar contábil), mas mostram o formato: contato rápido do RH, entrevista com recrutador e depois com o gestor ("onde se vê em 5 anos?", "como conheceu a empresa?").
 - **PHP pleno no Brasil**: "como o Laravel processa uma requisição", classe abstrata × interface, polimorfismo, SOLID, design patterns, índices e live coding.
 
 ## Histórias
@@ -67,9 +73,11 @@ Toda história segue o mesmo formato, para não misturar a brincadeira com a par
 
 1. **Título e cenário**: onde a história acontece (uma balada, uma padaria, um condomínio).
 2. **🎭 Quem é quem**: cada personagem com emoji, cor e o pedaço de código ou termo técnico que ele representa (⏰ **B** = `setTimeout`).
-3. **🎬 Cenas**: as falas, como conversa de WhatsApp, em linguagem do dia a dia. Cada fala mostra o código do personagem do lado.
-4. **💻 Agora o lado técnico**: o código comentado com os mesmos personagens, tabelas e o que o recrutador pergunta depois.
-5. **🎤 Pra entrevista**: a resposta pronta, em um parágrafo.
+3. **🎬 Cenas**: as falas, como conversa de WhatsApp, em linguagem do dia a dia. Cada fala mostra o código do personagem do lado. Toda cena termina com o painel **📋 Como está agora**, que mostra o estado do programa naquele momento (o que já saiu, o que está em cada fila, o que ainda falta) e destaca o que acabou de mudar. Na do event loop, o painel aparece a cada passo.
+4. **🧠 Moral da história**: o resumo, num bloco separado das cenas.
+5. **💻 Agora o lado técnico**: o código comentado com os mesmos personagens e tabelas.
+6. **➕ Extras**: o que vai além do código da história, como o que o recrutador pergunta depois.
+7. **🎤 Pra entrevista**: a resposta pronta, em um parágrafo.
 
 Na pergunta e no lab, o botão **"😂 Não entendeu? Leia a história"** abre a história por cima da tela, sem perder o que você estava escrevendo. No lab, o "Quem é quem" também aparece acima do código.
 
@@ -149,11 +157,11 @@ A picky interviewer, as an app. It asks senior-level technical questions about t
 - **Model answer**: full explanation, code where needed, tools/libraries/techniques to mention, metrics that prove mastery, the interviewer's follow-ups, red flags, and how to anchor the answer in my real experience without inventing any.
 - **Objective score**: each question has a checklist of points a 100% answer must cover. I tick only what I actually said: **≥ 80% correct, 40–79% partial, < 40% wrong**.
 - **Progress**: average score and correct/partial/wrong percentages, overall and per topic, plus strongest and weakest topic.
-- **Stories**: 42 funny dialogue-style stories (every lab plus 28 questions), in Portuguese and English, covering 47 of 92 questions. Each starts with **Who is who** (every character is a piece of code), plays out in chat-style scenes in plain language, then moves to a separate technical section and ends with the one-paragraph interview answer. They open from the **Stories** tab or from a button on each question and lab.
+- **Stories**: 42 funny dialogue-style stories (every lab plus 28 questions), in Portuguese and English, covering 47 of 92 questions. Each starts with **Who is who** (every character is a piece of code), plays out in chat-style scenes in plain language, with a **📋 State right now** panel closing every scene (output so far, queues, what's left), then a separate moral, technical section, and extras, and ends with the one-paragraph interview answer. They open from the **Stories** tab or from a button on each question and lab.
 - **Study**: every question with search and filters by role, topic, and type.
 - **Start here**: what a senior hiring process looks like and how to study with the app.
 - **Lab**: 14 in-browser examples (editable code, Run button, counters, and a timeline showing what ran in each part of the system and when) plus 5 Node.js labs for the terminal ([`labs/node/README.md`](labs/node/README.md)).
 - **Glossary**: 224 terms in plain language; the short definition appears in parentheses the first time a term shows up (toggle with "( ) definitions").
-- **Is this really asked?**: questions marked **✓ reported** have public evidence (Glassdoor, TabNews, Elastic process guides) that they come up in real interviews; sources live in [`data/evidence.js`](data/evidence.js). There is also a dedicated set for the Brasil Card mid-level PHP role.
+- **Is this really asked?**: each question's chip says where it comes from and which company (**✓ reported · Elastic**, **📘 public guide**, or **📋 in the job ad**). The answer lists each source with company, candidate role, date, stage, quote, and link; sources live in [`data/evidence.js`](data/evidence.js). There is also a dedicated set for the Brasil Card mid-level PHP role.
 
 92 questions and 473 rubric points in Portuguese and English, including a second batch on the gaps between my CV and the target roles (GraphQL/Apollo, NestJS, MongoDB, Next.js, Docker/Kubernetes, Elasticsearch, OpenTelemetry). No build step, no dependencies, no backend: progress lives only in the browser's `localStorage`. Run it with any static server and validate the question bank with `node scripts/validate.mjs`.

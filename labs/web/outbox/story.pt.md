@@ -21,6 +21,9 @@
 **E-mail**: "Então não mando nada."
 **João**: "Minha viagem foi aprovada há três dias e EU DESCOBRI PELO CRACHÁ DO AEROPORTO?!" 😤
 > 🚨 O banco e o carteiro não combinam entre si: dual write.
+= 🗄️ Banco: viagem APROVADA
+= 🐰 RabbitMQ: nenhuma mensagem ❌
+= 📧 E-mails enviados: 0 ❌
 
 ## 🎬 Cena 2 · Com bilhetinho
 **API**: "Agora, na MESMA transação, eu salvo a aprovação E um bilhetinho na outbox. Ou vão os dois, ou nenhum." 📝
@@ -28,6 +31,10 @@
 **Relay** _(passando de moto)_: "Opa, bilhetinho não entregue! Leva, Coelho!" 📮
 **E-mail**: "Recebi! Mandei o e-mail pro João." 📧
 **João**: "Agora sim! Partiu Floripa!" ✈️
+= 🗄️ Banco: viagem APROVADA + bilhetinho na outbox (mesma transação)
+= 🚴 Relay: achou 1 bilhetinho e publicou
+= 📧 E-mails enviados: 1 ✅
+= 📝 Bilhetinho: publicado, marcado com `publicadoEm`
 
 ## 🎬 Cena 3 · O motoboy esquecido
 **Relay**: "Agora deixa eu marcar o bilhetinho como entregue e—"
@@ -36,6 +43,10 @@
 **E-mail** _(sem dedupe)_: "Recebi de novo! Mandei de novo!" 📧📧
 **João**: "Por que eu recebi dois e-mails? Foram duas viagens? Oba!"
 **Dedupe**: "Calma, João. Esse ID de recado já foi atendido. Ignoro o repetido." 🛑
+= 📝 Bilhetinho: publicado, mas NÃO marcado (caiu antes)
+= 🐰 Mensagens publicadas: 2 (o relay reenviou)
+= 📧 E-mails sem dedupe: 2 ❌
+= 🛑 E-mails com dedupe: 1 ✅ (o ID repetido foi ignorado)
 
 ## 💻 Traduzindo pro código
 ```js

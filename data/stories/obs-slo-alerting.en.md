@@ -20,6 +20,10 @@
 **Ruler**: "And I actually measure that, request by request." 📏
 **Allowance**: "And I'm what's left over: about 43 minutes of errors a month. Some left? The team can take risks and ship fast. All gone? Pause new features and focus on stability." 💰
 **Contract**: "And I'm what goes on paper for the customer, with penalties. I sit a bit below the target to leave some slack." 📜
+= 📏 SLI: % of OK requests in < 300 ms
+= 🎯 SLO: 99.9% per month
+= 💰 Error budget: ~43 min/month
+= 📜 SLA: 99.5% (with penalties)
 
 ## 🎬 Scene 2 · The alarms
 **Hysterical alarm**: "CPU AT 81%! WAKE UP, WAKE UP!" 🚨
@@ -27,10 +31,16 @@
 **Hysterical alarm**: "…no."
 **SRE**: "THEN LET ME SLEEP, FOR THE LOVE OF GOD!" 😤
 **Smart alarm**: "I only ring when the allowance is draining too fast, meaning real people are suffering. And I come with the step-by-step of what to do." 🔥
+= 🚨 81% CPU alert: woke someone with no users affected ❌
+= 🔥 Burn-rate alert: fires if the budget burns 14x faster (1h and 5min)
+= 📋 Runbook: linked in the alert
 
 ## 🎬 Scene 3 · The average
 **Lying average**: "I look gorgeous: 120 ms!" 📊
 **p99**: "You're hiding that 1 in every 100 users waits 8 seconds, dear." 🐢🙄
+= 📊 Average: 120 ms
+= 🐢 p99: 8 s ❌
+= ✅ Look at: p95 and p99
 
 ## 💻 Translating to code
 ```promql

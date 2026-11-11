@@ -21,6 +21,9 @@
 **Servidor**: "Menino, eu te aviso!" 😩
 **Rádio**: "Eu sou a rádio: eu falo, você escuta. Ótimo pra notificação e log ao vivo." 📻
 **Ligação aberta**: "E eu sou a ligação: os dois falam quando quiserem. Chat, jogo, edição junto." ☎️
+= 🔁 Polling: 1 requisição a cada 2 s, mesmo sem novidade
+= 📻 SSE: 1 conexão; só o servidor fala
+= ☎️ WebSocket: 1 conexão; os dois falam
 
 ## 🎬 Cena 2 · Prédios diferentes
 **Bia** _(no Prédio 1)_: "Mandei foto do bolo no grupo!" 🎂
@@ -30,11 +33,18 @@
 **Prédio 2**: "Ouvi no alto-falante! Entregando pro Caio." ✅
 **Caio**: "Que bolo lindo! Guarda um pedaço!"
 > 🚨 Com várias instâncias, cada servidor só enxerga as próprias conexões.
+= 🏢 Prédio 1 conhece: Bia
+= 🏬 Prédio 2 conhece: Caio
+= 📢 Redis pub/sub: repassou a mensagem para os 2 servidores
+= ✅ Mensagem chegou para: Bia e Caio
 
 ## 🎬 Cena 3 · Depois do deploy
 **Deploy**: 💥 _(derruba todas as ligações)_
 **50 mil clientes**: "RECONECTA TODO MUNDO AGORA!"
 **Volta escalonada**: "NÃO! Cada um espera um tempinho aleatório, senão 50 mil chegam no mesmo segundo e derrubam tudo de novo." 🎲
+= 💥 Conexões derrubadas: 50 mil
+= 🎲 Reconexão: espera = mín(30 s, 1 s × 2^tentativa) × (0,5 a 1,5)
+= 📈 Pico no servidor: espalhado em vários segundos ✅
 
 ## 💻 Traduzindo pro código
 ```ts

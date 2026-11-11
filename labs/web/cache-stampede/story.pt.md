@@ -16,6 +16,9 @@
 ## 🎬 Cena 1 · Tudo tranquilo
 **Vitrine**: "Pão de queijo 42 aqui, quentinho! Quem pedir, levo na hora." ⚡
 **Cozinha** _(tomando um cafezinho)_: "Ô beleza, a vitrine me poupa de tudo." 😌
+= 🪟 Cache (Redis): `produto:42` guardado, TTL 5 s
+= 👨‍🍳 Queries no banco: 0
+= ⚡ Respostas do cache: todas
 
 ## 🎬 Cena 2 · Venceu a fornada
 **Relógio**: "Deu 5 segundos! A fornada 42 VENCEU!" ⏰
@@ -24,6 +27,9 @@
 **Boiada**: "COZINHA! COZINHA! COZINHA! COZINHA!…" 🐃🐃🐃🐃
 **Cozinha** _(derrubando o café)_: "50 PEDIDOS IGUAIS AO MESMO TEMPO?! EU SÓ TENHO UM FORNO, GENTE!" 😵
 > 🚨 Cache stampede: todo mundo foi ao banco pela mesma coisa.
+= 🪟 Cache (Redis): `produto:42` expirou (vazio)
+= 🐃 Requisições ao mesmo tempo: 50
+= 👨‍🍳 Queries no banco: 50 ❌ (todas iguais)
 
 ## 🎬 Cena 3 · Com porteiro
 **Cliente 1**: "Acabou na vitrine? Deixa que eu vou na cozinha." 🏃
@@ -33,6 +39,10 @@
 **Cozinha**: "Um pedido só. Assim dá pra trabalhar." 😌
 **Cliente 1**: "Voltei! E botei na vitrine por 5 segundos e mais um tiquinho aleatório."
 **Jitter**: "É pra fornada do 42 e a do 43 não vencerem no mesmo segundo e começar tudo de novo." 🎲
+= 🤝 `emAndamento`: `produto:42` → a promise do Cliente 1
+= ⏳ Esperaram a busca de outro: 49
+= 👨‍🍳 Queries no banco: 1 ✅
+= 🎲 Novo TTL: 5 s + um aleatório entre 0 e 1 s
 
 ## 💻 Traduzindo pro código
 ```js

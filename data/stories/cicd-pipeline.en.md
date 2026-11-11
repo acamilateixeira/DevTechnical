@@ -19,17 +19,28 @@
 **Belt inspector**: "Lint ✅, types ✅, tests ✅, build ✅, checked for leaked passwords ✅, vulnerable dependencies ✅. Ready for review." 🤖
 **Reviewer**: "Approved, but please rename that `x2` variable, for heaven's sake." 👀
 **Sealed box**: "I was built ONCE, labeled with the commit. The same box goes to staging and then to production. No rebuilding along the way." 📀
+= 🤖 CI: lint ✅ · types ✅ · tests ✅ · build ✅ · scans ✅
+= 📀 Image: `app:3f9c2e1` (tag = commit)
+= 🌍 Where it is: staging
 
 ## 🎬 Scene 2 · Going live without a scare
 **Polite migration**: "I'm compatible with the old and new versions, because during the deploy both run together." 🗄️
 **Switch**: "The new code is there, but OFF. I turn it on for 1% of users first." 🎚️
 **Canary**: "I'm the new version taking 5% of traffic. If the error rate goes up…" 🐤
 **Back button**: "…I go back to the previous version on my own, in seconds." ⏪
+= 🗄️ Migration: expand: new optional column, the old one stays
+= 🎚️ Feature flag: on for 1%
+= 🐤 Canary: 5% of traffic on the new version
+= ⏪ Automatic rollback: if errors go above 1%
 
 ## 🎬 Scene 3 · The forbidden question
 **Dev**: "So can I deploy on Friday at 5 p.m.?" 😏
 **Pipeline**: "With a small deploy, a switch, a canary, and a tested back button… yes. The fear comes from huge deploys with no way back."
 **Report card**: "And I track whether you're improving: how often you ship, how long from commit to live, how many changes cause problems, and how long it takes to fix them." 📊
+= 📊 Deploy frequency: several times a day
+= ⏱️ Lead time: hours
+= 💥 Change failure rate: low (small deploys)
+= ♻️ Time to restore: minutes (rollback)
 
 ## 💻 Translating to code
 ```yaml

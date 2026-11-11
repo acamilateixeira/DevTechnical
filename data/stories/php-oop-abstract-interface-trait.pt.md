@@ -17,17 +17,25 @@
 **Contrato**: "Quem assinar comigo PROMETE ter `cobrar()`. Como vai cobrar é problema de cada um." 📜
 **Pix**: "Assinei! Cobro na hora, sem taxa." ⚡
 **Cartão**: "Também assinei!" 💳
+= 📜 Interface: `MeioDePagamento::cobrar()`
+= ✍️ Implementam: `Pix`, `CartaoDeCredito`
 
 ## 🎬 Cena 2 · A planta e o kit
 **Planta da casa**: "E eu já venho com metade pronta: calculo o total com taxa. Cada filho só diz QUAL taxa. Ninguém mora em mim direto, viu? Só nas casas feitas a partir de mim." 🏗️
 **Cartão**: "Fui construído com essa planta. Só disse que minha taxa é 3%."
 **Kit pronto**: "E eu sou um pacote de métodos de log que qualquer um cola, mesmo sem ser da família." 🧩
 **Pix**: "Colei o kit e nem sou parente do Cartão. Chique."
+= 🏗️ Classe abstrata: `PagamentoComTaxa` (calcula o total; `taxa()` abstrata)
+= 💳 `CartaoDeCredito`: `extends PagamentoComTaxa`, taxa 3%
+= 🧩 Trait `RegistraLog`: usado por `Pix` (sem herança)
 
 ## 🎬 Cena 3 · Chegou o boleto
 **Boleto**: "Oi, gente! Posso entrar?" 🧾
 **Checkout**: "Assinou o contrato? Então entra. Eu nem preciso mudar." 😎
 **Camaleão**: "É isso: o checkout chama `cobrar()` e cada um responde do seu jeito." 🎭
+= 🧾 Classe nova: `Boleto implements MeioDePagamento`
+= 🛒 Linhas mudadas no checkout: 0 ✅
+= 🎭 `$meio->cobrar()` funciona com: Pix, Cartão e Boleto
 
 ## 💻 Traduzindo pro código
 ```php

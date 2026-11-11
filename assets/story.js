@@ -4,10 +4,12 @@
 //   # 🍞 Título
 //   > Cenário em uma linha (onde a história acontece)
 //   ## 🎭 Elenco            → "- 🗣️ **Nome** · `código` · quem é, em linguagem simples"
-//   ## 🎬 Cena 1 · Título   → falas "**Nome** _(rubrica)_: fala" e avisos "> 🚨 texto"
+//   ## 🎬 Cena 1 · Título   → falas "**Nome** _(rubrica)_: fala", avisos "> 🚨 texto" e o painel
+//                              técnico "= 📤 Saída: A E G" (toda cena termina com um painel)
+//   ## 🧠 Moral da história  → resumo em falas, fora das cenas
 //   ## 💻 ...               → lado técnico: código e tabelas (markdown livre)
+//   ## ➕ ... / 📌 ...       → extras: o que vai além do código (pode ter falas)
 //   ## 🎤 ...               → a resposta pronta para a entrevista
-//   ## qualquer outro título → extra técnico (markdown livre)
 // O emoji do título da seção decide o tipo, então o mesmo formato vale em PT e EN.
 
 import { md, escapeHtml } from './md.js';
@@ -23,6 +25,9 @@ const T = {
     open: '😂 Não entendeu? Leia a história', openLab: '😂 Ler a história deste lab', pageTitle: 'Histórias',
     pageIntro: 'Cada conceito vira uma conversa engraçada entre personagens. Primeiro você entende a ideia, depois vê **quem é quem no código**, e no fim leva a frase pronta para a entrevista. Ordem que funciona: **história → laboratório → entrevista**.',
     labs: 'Histórias com laboratório', questions: 'Histórias de perguntas', fail: 'Não consegui carregar a história.',
+    zoneStory: '📖 A história', zoneStoryHint: 'cada cena acompanha o código; o painel 📋 mostra como o programa está naquele momento (em destaque o que acabou de mudar)',
+    stateTitle: '📋 Como está agora', moral: '🧠 Moral da história', moralHint: 'o resumo, já fora das cenas',
+    extras: '➕ Extras', extrasHint: 'vai além do código desta história', changed: 'mudou',
   },
   en: {
     cast: 'Who is who', castHint: 'each character is a piece of code or a technical term',
@@ -31,6 +36,9 @@ const T = {
     open: '😂 Lost? Read the story', openLab: '😂 Read this lab\'s story', pageTitle: 'Stories',
     pageIntro: 'Each concept becomes a funny conversation between characters. First you get the idea, then you see **who is who in the code**, and you finish with the line to say in the interview. The order that works: **story → lab → interview**.',
     labs: 'Stories with a lab', questions: 'Question stories', fail: 'Could not load the story.',
+    zoneStory: '📖 The story', zoneStoryHint: 'each scene follows the code; the 📋 panel shows the program\'s state at that moment (what just changed is highlighted)',
+    stateTitle: '📋 State right now', moral: '🧠 Moral of the story', moralHint: 'the recap, outside the scenes',
+    extras: '➕ Extras', extrasHint: 'goes beyond this story\'s code', changed: 'changed',
   },
 };
 
@@ -62,18 +70,27 @@ export const loadStory = (s, lang) => fetchText(`${s.base}.${lang}.md`).catch(()
 const SPEECH = /^\*\*(.+?)\*\*(?:\s*_\((.+?)\)_)?\s*:\s*(.+)$/;
 const CAST = /^-\s+(\S+)\s+\*\*(.+?)\*\*\s*·\s*(?:(.*?)\s*·\s*)?(.+)$/;
 
+const KINDS = { '🎭': 'cast', '🎬': 'scene', '🧠': 'moral', '💻': 'tech', '🎤': 'interview' };
+export function sectionKind(title) {
+  const k = Object.keys(KINDS).find((e) => title.startsWith(e));
+  return k ? KINDS[k] : 'extra';
+}
+export const STATE = /^=\s+(\S+)\s+([^:]+):\s*(.*)$/;
+
 export function parseStory(text) {
   const lines = text.replace(/\r/g, '').split('\n');
-  const story = { title: '', setting: '', cast: [], scenes: [], tech: [], interview: '' };
+  const story = { title: '', setting: '', cast: [], scenes: [], moral: null, tech: [], extras: [], interview: '' };
   let section = null;
   for (const line of lines) {
     if (!story.title && line.startsWith('# ')) { story.title = line.slice(2).trim(); continue; }
     if (line.startsWith('## ')) {
       const title = line.slice(3).trim();
-      const kind = title.startsWith('🎭') ? 'cast' : title.startsWith('🎬') ? 'scene' : title.startsWith('🎤') ? 'interview' : 'tech';
+      const kind = sectionKind(title);
       section = { kind, title: title.replace(/^\S+\s*/, ''), lines: [] };
       if (kind === 'scene') story.scenes.push(section);
       else if (kind === 'tech') story.tech.push(section);
+      else if (kind === 'extra') story.extras.push(section);
+      else if (kind === 'moral') story.moral = section;
       else story[kind === 'cast' ? '_cast' : '_interview'] = section;
       continue;
     }
@@ -96,13 +113,27 @@ const COLORS = 8;
 const chip = (code) => (code.includes('`') ? `<span class="st-code">${inline(code)}</span>` : `<span class="st-term">${inline(code)}</span>`); // classes .c0 ... .c7
 const inline = (s) => md(s).replace(/^<p>|<\/p>\s*$/g, '').replace(/(^|\s)_\((.+?)\)_/g, '$1<em class="st-dir">($2)</em>');
 
-function sceneHtml(scene, who) {
+function linesHtml(lines, who, t, prev, strict = false) {
   const out = [];
   let buf = [];
+  let state = [];
   const flush = () => { if (buf.join('').trim()) out.push(`<div class="st-note">${md(buf.join('\n'))}</div>`); buf = []; };
-  for (const line of scene.lines) {
+  const flushState = () => {
+    if (!state.length) return;
+    out.push(`<div class="st-state"><div class="st-state-title">${t.stateTitle}</div><dl>${state.map(([emoji, label, value]) => {
+      const norm = (v) => (v || '').replace(/\s*\([^)]*\)/g, '').trim();
+      const changed = prev && prev.has(label) && norm(prev.get(label)) !== norm(value);
+      if (prev) prev.set(label, value);
+      return `<div class="st-state-row${changed ? ' changed' : ''}"><dt>${emoji} ${inline(label)}</dt><dd>${inline(value || '—')}${changed ? ` <span class="st-changed">${t.changed}</span>` : ''}</dd></div>`;
+    }).join('')}</dl></div>`);
+    state = [];
+  };
+  for (const line of lines) {
+    const st = line.match(STATE);
+    if (st) { flush(); state.push([st[1], st[2].trim(), st[3].trim()]); continue; }
+    flushState();
     const m = line.match(SPEECH);
-    if (m) {
+    if (m && !(strict && !/^["“]/.test(m[3]))) {
       flush();
       const c = who(m[1]);
       out.push(`<div class="st-line ${c ? `c${c.i % COLORS}` : 'cx'}">
@@ -116,8 +147,8 @@ function sceneHtml(scene, who) {
       out.push(`<div class="st-banner">${inline(line.slice(2))}</div>`);
     } else buf.push(line);
   }
-  flush();
-  return `<section class="st-scene"><h3 class="st-scene-title">🎬 ${inline(scene.title)}</h3>${out.join('')}</section>`;
+  flush(); flushState();
+  return out.join('');
 }
 
 export function findCast(story, name) {
@@ -149,6 +180,7 @@ export function storyHtml(story, lang, meta = {}) {
   const ann = createAnnotator(lang, { inline: false });
   // A fala pode ser de uma variação do personagem ("Carteiro do ERP" usa a cor do "Carteiro").
   const who = (name) => findCast(story, name);
+  const prev = new Map(); // valores do painel na cena anterior, para destacar o que mudou
   const links = [
     meta.lab ? `<a class="btn ghost" href="#/lab/${meta.lab}">${t.seeLab}</a>` : '',
     meta.question ? `<a class="btn ghost" href="#/q/${meta.question}">${t.train}</a>` : '',
@@ -161,10 +193,21 @@ export function storyHtml(story, lang, meta = {}) {
       ${meta.author ? `<p class="hint">${t.by(escapeHtml(meta.author))}</p>` : ''}
     </header>
     ${castHtml(story, lang)}
-    <div class="st-play">${story.scenes.map((s) => sceneHtml(s, who)).join('')}</div>
+    <section class="st-zone">
+      <h3 class="st-zone-title">${t.zoneStory} <span class="hint">· ${t.zoneStoryHint}</span></h3>
+      <div class="st-play">${story.scenes.map((s) => `<section class="st-scene"><h4 class="st-scene-title">🎬 ${inline(s.title)}</h4>${linesHtml(s.lines, who, t, prev)}</section>`).join('')}</div>
+    </section>
+    ${story.moral ? `
+    <section class="st-zone st-moral">
+      <h3 class="st-zone-title">${t.moral} <span class="hint">· ${t.moralHint}</span></h3>
+      ${linesHtml(story.moral.lines, who, t, null)}
+    </section>` : ''}
     ${story.tech.length ? `
     <div class="st-divider"><span>💻 ${t.tech}</span></div>
     ${story.tech.map((s) => `<section class="panel st-tech"><h3>${inline(s.title)}</h3>${md(s.lines.join('\n'), ann)}</section>`).join('')}` : ''}
+    ${story.extras.length ? `
+    <div class="st-divider"><span>${t.extras} · ${t.extrasHint}</span></div>
+    ${story.extras.map((s) => `<section class="panel st-extra"><h3>${inline(s.title)}</h3>${s.lines.some((l) => SPEECH.test(l)) ? linesHtml(s.lines, who, t, null, true) : md(s.lines.join('\n'), ann)}</section>`).join('')}` : ''}
     ${story.interview ? `<section class="panel st-interview"><h3>🎤 ${t.interview}</h3>${md(story.interview, ann)}</section>` : ''}
     ${links ? `<div class="row st-links">${links}</div>` : ''}
   </article>`;

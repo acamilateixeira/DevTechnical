@@ -19,6 +19,10 @@
 **Orçamento**: "Saldo final: R$200. Tudo nos conformes!" 🙂
 **Financeiro**: "NOS CONFORMES?! Aprovaram R$1600 com R$1000! Quem foi o gênio?!" 😱
 > 🚨 A segunda escrita apagou a primeira: lost update.
+= 🏦 Saldo no banco: R$200
+= ✅ Viagens aprovadas: 2 (R$1600) ❌
+= 👀 O que cada gestor leu: os dois leram R$1000
+= ✍️ Escrita do Gestor A: apagada pela do Gestor B
 
 ## 🎬 Cena 2 · Com cadeado
 **Gestor A**: "Quero ver o saldo e já trancar essa linha pra mim." 🔒
@@ -27,11 +31,18 @@
 **Gestor A**: "Aprovo, saldo 200, COMMIT. Pode entrar!" 🔓
 **Gestor B**: "Minha vez… R$200? Não cabe R$800. Recuso." ✅
 **Financeiro**: "Agora sim. Pode ir pro happy hour."
+= 🔒 Lock na linha `cc1`: Gestor A até o COMMIT; Gestor B esperou
+= 🏦 Saldo no banco: R$200
+= ✅ Viagens aprovadas: 1 ✅
+= 🚫 Recusadas: 1 (Gestor B leu R$200)
 
 ## 🎬 Cena 3 · O jeito curtinho
 **Atômico**: "Eu nem olho antes. Mando o banco conferir e descontar de uma vez só. Se não tiver saldo, nenhuma linha muda e eu sei que não deu."
 **Gestor B**: "Simples assim?"
 **Atômico**: "Simples assim, mô." 😎
+= ⚡ SQL: `UPDATE ... SET saldo = saldo - 800 WHERE saldo >= 800`
+= 📊 Linhas afetadas: A: 1 · B: 0
+= ✅ Viagens aprovadas: 1 ✅ (saldo final R$200)
 
 ## 💻 Traduzindo pro código
 ```sql

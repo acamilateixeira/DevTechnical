@@ -16,6 +16,9 @@
 **CampoBusca**: "Quero só a busca."
 **SeletorServico**: "Só o serviço, por favor."
 **BotaoNivel**: "Só o nível. E sem cebola."
+= 🧑‍🍳 Estado na store: busca: "" · servico: "trips-api" · nivel: "todos"
+= 📝 Inscritos (listeners): CampoBusca → busca · SeletorServico → servico · BotaoNivel → nivel
+= 🔄 Renders: 1 de cada (o primeiro)
 
 ## 🎬 Cena 2 · A Bia digita "a"
 **Store**: "MUDOU ALGUMA COISA! Vou avisar TODO MUNDO que se inscreveu!" 📣
@@ -24,12 +27,20 @@
 **`===`** _(conferindo o serviço)_: "`'trips-api'` e `'trips-api'`. Igualzinho."
 **SeletorServico**: "Volto a dormir." 😴
 **BotaoNivel**: "Também. Zzz." 😴
+= 🧑‍🍳 Estado na store: busca: "a" · servico: "trips-api" · nivel: "todos"
+= 📣 Avisados: os 3 inscritos
+= 🔄 Re-renderizou: só o CampoBusca ("" !== "a")
+= 😴 Não re-renderizou: SeletorServico e BotaoNivel (valor igual por ===)
 
 ## 🎬 Cena 3 · O pedido que sempre parece novo
 **CampoBusca**: "Agora quero assim: `{ busca }`, embrulhado num objeto."
 **`===`**: "`{busca:'a'}` e `{busca:'a'}`… são duas caixas DIFERENTES! Mudou!"
 **CampoBusca**: "Me redesenho! E de novo! E DE NOVO!" 🔁💥
 **`useShallow`**: "Deixa comigo: eu abro a caixa e comparo campo por campo. Igual? Ninguém acorda."
+= 🍽️ Seletor: `s => ({ busca: s.busca })` (objeto novo a cada leitura)
+= 🟰 Comparação: `{busca:"a"} === {busca:"a"}` → false
+= 🔄 Renders do CampoBusca: em loop ❌ (o React avisa: "getSnapshot should be cached")
+= 🧾 Com `useShallow`: compara campo a campo → re-renderiza só quando muda ✅
 
 ## 💻 Traduzindo pro código
 ```ts

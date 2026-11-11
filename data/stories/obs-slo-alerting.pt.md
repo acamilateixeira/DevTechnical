@@ -20,6 +20,10 @@
 **Régua**: "E eu meço isso de verdade, requisição por requisição." 📏
 **Mesada**: "E eu sou o que sobra: uns 43 minutos de erro no mês. Sobrou? O time pode arriscar e entregar rápido. Acabou? Freio nas novidades e foco em estabilidade." 💰
 **Contrato**: "E eu sou o que vai no papel pro cliente, com multa. Fico um pouco abaixo da meta pra dar folga." 📜
+= 📏 SLI: % de requisições OK em < 300 ms
+= 🎯 SLO: 99,9% no mês
+= 💰 Error budget: ~43 min/mês
+= 📜 SLA: 99,5% (com multa)
 
 ## 🎬 Cena 2 · Os alarmes
 **Alarme histérico**: "CPU EM 81%! ACORDA, ACORDA!" 🚨
@@ -27,10 +31,16 @@
 **Alarme histérico**: "…não."
 **SRE**: "ENTÃO ME DEIXA DORMIR, PELO AMOR!" 😤
 **Alarme esperto**: "Eu só toco quando a mesada está indo embora rápido demais, ou seja, gente de verdade sofrendo. E já venho com o passo a passo do que fazer." 🔥
+= 🚨 Alerta de CPU 81%: acordou alguém sem usuário afetado ❌
+= 🔥 Alerta de burn rate: dispara se gastar o budget 14x mais rápido (1h e 5min)
+= 📋 Runbook: link no alerta
 
 ## 🎬 Cena 3 · A média
 **Média mentirosa**: "Tô linda: 120 ms!" 📊
 **p99**: "Você esconde que 1 em cada 100 usuários espera 8 segundos, querida." 🐢🙄
+= 📊 Média: 120 ms
+= 🐢 p99: 8 s ❌
+= ✅ Olhar: p95 e p99
 
 ## 💻 Traduzindo pro código
 ```promql

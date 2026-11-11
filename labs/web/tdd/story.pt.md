@@ -19,6 +19,10 @@
 **Vermelho**: "FALHOU! A função nem existe!" 🔴
 **Dev**: "Tá, faço o MÍNIMO pra passar."
 **Verde**: "Passou!" 🟢
+= 🧪 Testes: 1
+= 🔴 Falhando: 0 (o primeiro falhou e depois passou)
+= 🟢 Passando: 1
+= 📄 Regras no código: só `return { ok: true }`
 
 ## 🎬 Cena 2 · Um teste de cada vez
 **Teste**: "Custo 1200 com orçamento 1000? Espero 'sem orçamento'."
@@ -30,12 +34,18 @@
 **Teste**: "ENTÃO PERGUNTA PRO PO, CRIATURA!" 🗣️
 **PO**: "Igual ao limite pode."
 **Caso de borda**: "Então vou morar aqui pra sempre lembrando todo mundo disso." 📜🟢
+= 🧪 Testes: 3 (aprova · sem orçamento · no limite)
+= 🟢 Passando: 3
+= 📏 Regra combinada com o PO: custo === limite → aprova
 
 ## 🎬 Cena 3 · A faxina e o alarme
 **Faxina**: "Tudo verde? Agora eu arrumo os nomes e organizo a bagunça. Se eu quebrar algo, os testes gritam." 🧹
 **Dev** _(seis meses depois, trocando `>` por `>=` sem querer)_: "Pronto, só uma mexidinha…"
 **Caso de borda**: "EI! O PO DISSE QUE NO LIMITE PODE!" 🔴🚨
 **Dev**: "Obrigada por existir." 🥹
+= 🧹 Refatoração: nomes melhores, mesmo comportamento
+= 🐛 Mudança acidental: `>` virou `>=`
+= 🔴 Falhando: 1: "aprova exatamente no limite" ✅ pegou o bug
 
 ## 💻 Traduzindo pro código
 ```js

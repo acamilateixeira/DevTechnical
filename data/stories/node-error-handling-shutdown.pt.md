@@ -18,6 +18,9 @@
 **Servidor sem modos**: "TCHAU!" 💀 _(morre na hora)_
 **Clientes**: "ERRO?! Só porque teve deploy?! Eu tava pagando!" 😡
 > 🚨 Requisições cortadas no meio.
+= 📨 Sinal recebido: SIGTERM
+= 💀 Processo: morreu na hora
+= 🛒 Requisições em andamento: 3 cortadas (`UND_ERR_SOCKET`) ❌
 
 ## 🎬 Cena 2 · Sai de fininho
 **Servidor educado**: "Recebi o aviso. Calma, vou sair direitinho."
@@ -26,11 +29,18 @@
 **Servidor educado**: "Agora fecho o banco e a fila, sem confirmar mensagem que eu não terminei." 🔌
 **Servidor educado**: "Prontinho. Tchau, gente!" 👋
 **Kubernetes**: "Muito bem. Mas se você enrolar mais de 30 segundos, eu te arranco na marra." 🔪⏰
+= 🚦 Readiness: 503: fora do balanceador
+= 🚪 `server.close()`: sem conexões novas; as 3 em andamento terminaram ✅
+= 🔌 Banco e fila: fechados
+= ⏰ Tempo usado: dentro dos 30 s (antes do SIGKILL)
 
 ## 🎬 Cena 3 · O bug solto
 **Bug solto**: "Dei erro e ninguém me tratou…" 🐛
 **Servidor educado**: "Estado desconhecido? Melhor reiniciar limpinho do que seguir meio quebrado. Anoto o erro no log e saio."
 **Kubernetes**: "Pode deixar que eu subo outro." ♻️
+= 🐛 Evento: `unhandledRejection`
+= 📝 Log: erro fatal com stack
+= ♻️ Processo: `exit(1)`; o Kubernetes sobe outro
 
 ## 💻 Traduzindo pro código
 ```js

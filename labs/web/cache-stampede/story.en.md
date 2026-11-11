@@ -16,6 +16,9 @@
 ## 🎬 Scene 1 · All calm
 **Display case**: "Cheese bread 42 right here, nice and warm! Ask and it's yours instantly." ⚡
 **Kitchen** _(sipping coffee)_: "Ah, lovely, the display case handles everything for me." 😌
+= 🪟 Cache (Redis): `produto:42` stored, 5 s TTL
+= 👨‍🍳 Database queries: 0
+= ⚡ Responses from cache: all of them
 
 ## 🎬 Scene 2 · The batch expired
 **Clock**: "5 seconds! Batch 42 EXPIRED!" ⏰
@@ -24,6 +27,9 @@
 **Herd**: "KITCHEN! KITCHEN! KITCHEN! KITCHEN!…" 🐃🐃🐃🐃
 **Kitchen** _(spilling the coffee)_: "50 IDENTICAL ORDERS AT ONCE?! I ONLY HAVE ONE OVEN, PEOPLE!" 😵
 > 🚨 Cache stampede: everyone went to the database for the same thing.
+= 🪟 Cache (Redis): `produto:42` expired (empty)
+= 🐃 Simultaneous requests: 50
+= 👨‍🍳 Database queries: 50 ❌ (all identical)
 
 ## 🎬 Scene 3 · With a doorman
 **Customer 1**: "Gone from the display case? I'll go to the kitchen." 🏃
@@ -33,6 +39,10 @@
 **Kitchen**: "One order. Now I can work." 😌
 **Customer 1**: "I'm back! And I put it in the display case for 5 seconds plus a tiny random bit."
 **Jitter**: "So batch 42 and batch 43 don't expire in the same second and start the whole mess again." 🎲
+= 🤝 `emAndamento`: `produto:42` → Customer 1's promise
+= ⏳ Waited for someone else's fetch: 49
+= 👨‍🍳 Database queries: 1 ✅
+= 🎲 New TTL: 5 s + a random 0 to 1 s
 
 ## 💻 Translating to code
 ```js

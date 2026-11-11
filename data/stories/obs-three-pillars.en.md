@@ -19,6 +19,10 @@
 **GPS**: "I caught a slow request: API 2 ms, payment service 3 ms, external provider… 4 SECONDS. Found where it hurts." 🗺️
 **Diary**: "Filter by that request's string: 'provider timeout after 4000ms, retry 3/3'. There's your detail." 📔
 **On-call engineer**: "The thermometer told me THAT it broke, the GPS told me WHERE, and the diary told me WHY. Back to sleep in 10 minutes." 💡
+= 🌡️ Metric: checkout errors 0.1% → 8% at 2:50
+= 🗺️ Trace: external provider span: 4000ms
+= 📔 Log (same `trace.id`): "provider timeout after 4000ms, retry 3/3"
+= ✅ Diagnosis: the provider is slow
 
 ## 🎬 Scene 2 · The ones who get in the way
 **Useless note**: "`here`" 🤦
@@ -26,6 +30,9 @@
 **Bomb label**: "What if I create one metric series per user? It's only 2 million…" 💣
 **Metrics store**: "Then I'M the one waking up at 3 a.m. Watch the cardinality!" 💥
 **Universal plug**: "And don't instrument for each tool: plug into me once and send to Elastic, Grafana, or Datadog." 🔌
+= 🤦 `"here"` log: no context, useless
+= 💣 `user_id` label: 2 million series ❌
+= ✅ Right labels: route and status (few values)
 
 ## 💻 Translating to code
 ```js

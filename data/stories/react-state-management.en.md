@@ -17,6 +17,9 @@
 **Trip list**: "Grandma, I went stale 10 minutes ago and nobody refreshed me." 🌐
 **Smart pantry**: "Leave it to me, dear: I fetch, store, refresh when the tab regains focus, cancel, and never fetch the same thing twice." 🗃️
 **Smart pantry** _(whispering)_: "About 80% of your 'global state' was just server cache, you know?" 😏
+= 🦖 In the Redux store: API list, filter, modal, theme (all together)
+= 🌐 Trip list: stale for 10 min ❌
+= 🗃️ With TanStack Query: cache + refetch on focus + dedupe ✅
 
 ## 🎬 Scene 2 · Everyone in their own home
 **Note on the door**: "I'm the 'pending only' filter. I live in the URL: hit F5 and I'm still here, send the link and Bia sees the same filter." 🔗
@@ -24,6 +27,10 @@
 **Dark theme**: "I belong to everyone, but I change once in a lifetime. Context handles me." 🌙
 **Rule-packed cart**: "I change all the time and loads of components are watching me…" 🛒
 **Zustand**: "Then come with me: each one subscribes only to the piece it uses, and only whoever needs to re-renders."
+= 🔗 Filter: in the URL: `?status=pendente`
+= 🪟 Modal: `useState` in the component
+= 🌙 Theme: Context
+= 🛒 Cart: Zustand with selectors
 
 ## 💻 Translating to code
 ```tsx

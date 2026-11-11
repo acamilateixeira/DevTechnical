@@ -21,6 +21,10 @@
 **Server**: "Charged! ✅"
 **Bia's card**: "R$450?! ARE YOU KIDDING ME?! SHE BOUGHT SNEAKERS, NOT A CENTIPEDE! 😱"
 > 🚨 The server had no way of knowing it was the same order.
+= 🔁 App attempts: 3
+= 📨 Responses that reached the app: 1 (only the last; the network ate 2)
+= 💳 Card charges: 3 → R$450 ❌
+= 📒 Notebook: doesn't exist
 
 ## 🎬 Scene 2 · With an order number
 **App**: "Charge R$150. Order number **abc-123**."
@@ -30,12 +34,20 @@
 **App**: "Charge R$150. Order **abc-123**." _(the same number, on purpose)_
 **Server** _(flipping pages)_: "Hold on… abc-123 is already here! I won't charge again, I'll just give you the same response."
 **Bia's card**: "R$150. Exactly right. You can breathe now." 😌
+= 🔁 App attempts: 2, both with key abc-123
+= 📒 Notebook: abc-123 → 201 (stored response)
+= 💳 Card charges: 1 → R$150 ✅
+= 📋 Responses returned from the notebook: 1 (the second attempt)
 
 ## 🎬 Scene 3 · The clever app
 **App**: "What if I make up a new number on every attempt? Order **xyz-999**!"
 **Server**: "New number means new order. Charged! ✅"
 **Bia's card**: "NOT AGAIN, FOR THE LOVE OF GOD!" 🤦
 **abc-123**: "The number belongs to the PURCHASE, sweetie. Not to the attempt."
+= 🎫 Keys used: xyz-999, then a new one on every attempt
+= 📒 Notebook: every key is new → never finds anything
+= 💳 Card charges: one per attempt ❌
+= 📌 Rule: one key per purchase, not per attempt
 
 ## 💻 Translating to code
 ```js

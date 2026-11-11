@@ -16,6 +16,9 @@
 **CampoBusca**: "Just the search."
 **SeletorServico**: "Just the service, please."
 **BotaoNivel**: "Just the level. No onions."
+= 🧑‍🍳 State in the store: busca: "" · servico: "trips-api" · nivel: "todos"
+= 📝 Subscribers (listeners): CampoBusca → busca · SeletorServico → servico · BotaoNivel → nivel
+= 🔄 Renders: 1 each (the first one)
 
 ## 🎬 Scene 2 · Bia types "a"
 **Store**: "SOMETHING CHANGED! I'll tell EVERYONE who subscribed!" 📣
@@ -24,12 +27,20 @@
 **`===`** _(checking the service)_: "`'trips-api'` and `'trips-api'`. Identical."
 **SeletorServico**: "Back to sleep." 😴
 **BotaoNivel**: "Same. Zzz." 😴
+= 🧑‍🍳 State in the store: busca: "a" · servico: "trips-api" · nivel: "todos"
+= 📣 Notified: all 3 subscribers
+= 🔄 Re-rendered: only CampoBusca ("" !== "a")
+= 😴 Did not re-render: SeletorServico and BotaoNivel (equal by ===)
 
 ## 🎬 Scene 3 · The order that always looks new
 **CampoBusca**: "Now I want it like this: `{ busca }`, wrapped in an object."
 **`===`**: "`{busca:'a'}` and `{busca:'a'}`… those are two DIFFERENT boxes! Changed!"
 **CampoBusca**: "I re-render! And again! AND AGAIN!" 🔁💥
 **`useShallow`**: "Leave it to me: I open the box and compare field by field. Equal? Nobody wakes up."
+= 🍽️ Selector: `s => ({ busca: s.busca })` (a new object on every read)
+= 🟰 Comparison: `{busca:"a"} === {busca:"a"}` → false
+= 🔄 CampoBusca renders: in a loop ❌ (React warns: "getSnapshot should be cached")
+= 🧾 With `useShallow`: compares field by field → re-renders only on change ✅
 
 ## 💻 Translating to code
 ```ts

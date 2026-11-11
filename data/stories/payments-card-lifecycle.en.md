@@ -28,12 +28,19 @@
 **Confirmation**: "Now it's an entry on the statement." ✅
 **Forgotten hold** _(at another store)_: "What if the merchant never confirms me?"
 **Issuer**: "After a few days you expire and the limit comes back, sweetie." ⏳
+= 💳 Total limit: R$3000
+= 🔒 Held (authorized): R$0 (already captured)
+= 🧾 On the statement: purchase R$2000
+= 💳 Available limit: R$1000
 
 ## 🎬 Scene 2 · Buyer's remorse
 **Mrs. Cida** _(a week later)_: "The sofa didn't fit through the door. I give up!"
 **Return**: "I don't delete the purchase! I create a NEW R$2000 credit entry. The whole history stays on record." ↩️
 **Closing**: "On the 10th I close: I gather the cycle's purchases, installments, interest, and returns." 📅
 **Payment**: "Mrs. Cida paid? I reduce the balance and restore the limit." 💸
+= 🧾 Entries: purchase +R$2000 · refund −R$2000
+= 📅 Statement balance: R$0
+= 💳 Available limit: R$3000 (restored)
 
 ## 🎬 Scene 3 · The headaches
 **Mr. Zé**: "I don't recognize this R$900 purchase in Fortaleza!"
@@ -41,6 +48,9 @@
 **Checker** _(7 a.m., with coffee)_: "Does what the system recorded match the processor's and the bank's files? R$12 off? Investigate!" 🔍
 **Two purchases at once** _(limit for only one)_: "Who wins?"
 **Database**: "A transaction with a lock on the limit: the second one waits and is declined." 🔒
+= ⚖️ Mr. Zé's chargeback: provisional R$900 credit; the merchant may contest
+= 🔍 Reconciliation: R$12 difference opened for investigation
+= 🔒 Two purchases at once: 1 authorized, 1 declined (lock on the limit)
 
 ## 💻 Translating to code
 ```sql
