@@ -3,6 +3,7 @@
 
 import { storyForLab, storyButton, bindStoryButtons, loadStory, castHtml } from './story.js';
 import { cards as measureCards } from '../data/measure.js';
+import { attachHighlighter, legendHtml } from './highlight.js';
 import { md, escapeHtml } from './md.js';
 import { labs } from '../labs/web/index.js';
 import { cats } from '../data/meta.js';
@@ -31,7 +32,7 @@ const T = {
     edited: 'editado', compileError: 'Erro de sintaxe', runtimeError: 'Erro ao rodar',
     ready: 'Pronto: agora use a tela acima ↑',
     nodeTitle: 'Para rodar no seu computador (Node.js)', seeCode: 'ver código',
-    castInCode: 'Quem é quem neste código', measure: '📏 Como medir isso fora do lab (ferramentas reais)',
+    castInCode: 'Quem é quem neste código', legend: '🎨 O que cada cor significa', measure: '📏 Como medir isso fora do lab (ferramentas reais)',
     nodeIntro: 'Estes rodam de verdade no Node 22.13+: servidor HTTP, threads, sinais do sistema e banco SQLite. Clone o repositório e rode no terminal; cada arquivo explica o que acontece. Sem a flag mostrada, você vê o problema; com ela, a correção (ou o contrário, quando a flag começa com `--sem`).',
   },
   en: {
@@ -46,7 +47,7 @@ const T = {
     edited: 'edited', compileError: 'Syntax error', runtimeError: 'Runtime error',
     ready: 'Ready: now use the screen above ↑',
     nodeTitle: 'Run on your computer (Node.js)', seeCode: 'see code',
-    castInCode: 'Who is who in this code', measure: '📏 How to measure this outside the lab (real tools)',
+    castInCode: 'Who is who in this code', legend: '🎨 What each color means', measure: '📏 How to measure this outside the lab (real tools)',
     nodeIntro: 'These run for real on Node 22.13+: HTTP server, threads, OS signals, and a SQLite database. Clone the repo and run them in a terminal; each file explains what happens. Without the flag shown you see the problem; with it, the fix (or the reverse when the flag starts with `--sem`).',
   },
 };
@@ -136,6 +137,7 @@ export async function renderLab(view, id, ctx) {
 
     <div class="panel lab-editor-box">
       <h3>${t.main} <span class="edited" data-for="main"></span></h3>
+      <details class="legend-box"><summary>${t.legend}</summary>${legendHtml(lang)}</details>
       <textarea class="code-editor" id="ed-main" spellcheck="false" aria-label="${t.main}"></textarea>
       <div class="row">
         <button type="button" class="btn primary" id="run">${t.run}</button>
@@ -176,6 +178,7 @@ export async function renderLab(view, id, ctx) {
     const original = await source(lab, file);
     const mine = saved(lab, file);
     ed.value = mine ?? original;
+    const hl = attachHighlighter(ed, file.endsWith('.php') ? 'php' : 'js');
     const mark = () => { view.querySelector(`.edited[data-for="${slot}"]`).textContent = ed.value !== original ? `· ${t.edited}` : ''; };
     mark();
     autosize(ed);
@@ -190,7 +193,7 @@ export async function renderLab(view, id, ctx) {
       if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); run(); }
     });
     view.querySelector(`[data-restore="${slot}"]`).addEventListener('click', () => {
-      forget(lab, file); ed.value = original; mark(); autosize(ed);
+      forget(lab, file); ed.value = original; mark(); autosize(ed); hl.render();
     });
   }
 

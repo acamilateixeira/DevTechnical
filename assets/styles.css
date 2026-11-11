@@ -12,8 +12,8 @@
   --good: #2f7a4b;
   --mid: #9a6b0c;
   --bad: #a63a2c;
-  --code-bg: #1b1916;
-  --code-ink: #efe6d6;
+  --code-bg: #282a36;
+  --code-ink: #f8f8f2;
   --radius: 14px;
   --serif: "Fraunces", Georgia, serif;
   --sans: "IBM Plex Sans", system-ui, sans-serif;
@@ -34,7 +34,7 @@
     --good: #5cbf83;
     --mid: #e0b14a;
     --bad: #ec7563;
-    --code-bg: #0c0b0a;
+    --code-bg: #282a36;
   }
 }
 
@@ -378,3 +378,47 @@ pre code { background: none; padding: 0; font-size: inherit; color: inherit; }
 .measure-card { scroll-margin-top: 120px; }
 .measure-link { border-left: 4px solid var(--accent); }
 .measure-link ul { margin: 0; padding-left: 1.2em; }
+
+/* ---------- Código colorido: tema Dracula + colchetes por nível + indentação colorida ---------- */
+pre.hl { background: #282a36; color: #f8f8f2; tab-size: 2; }
+.tk-k  { color: #ff79c6; }                       /* palavra-chave: const, if, return, async */
+.tk-f  { color: #50fa7b; }                       /* função */
+.tk-v  { color: #ffb86c; }                       /* variável declarada / $variavel */
+.tk-pa { color: #ffb86c; font-style: italic; }   /* parâmetro */
+.tk-n  { color: #bd93f9; }                       /* número, true/false/null, CONSTANTE */
+.tk-t  { color: #8be9fd; font-style: italic; }   /* tipo, classe, componente */
+.tk-s  { color: #f1fa8c; }                       /* string */
+.tk-c  { color: #6272a4; font-style: italic; }   /* comentário */
+.tk-pr { color: #f8f8f2; }                       /* propriedade (.algo) */
+.tk-th { color: #bd93f9; font-style: italic; }   /* this / self */
+.tk-o  { color: #ff79c6; }                       /* operador: =>, ===, && */
+.tk-tag { color: #ff79c6; }                      /* tag JSX: div, button */
+.tk-tp { color: #ff79c6; }                       /* < > </ /> do JSX */
+.tk-at { color: #50fa7b; font-style: italic; }   /* atributo JSX: onClick, className */
+.br { font-weight: 700; }
+.br-0 { color: #ffd700; }
+.br-1 { color: #da70d6; }
+.br-2 { color: #179fff; }
+.br-bad { color: #ff5555; text-decoration: wavy underline; }
+.br-match { background: rgba(248, 248, 242, .18); outline: 1px solid rgba(248, 248, 242, .7); border-radius: 2px; }
+.ind { box-shadow: inset 1px 0 0 rgba(248, 248, 242, .14); }
+.ind-0 { background: rgba(255, 255, 64, .07); }
+.ind-1 { background: rgba(127, 255, 127, .07); }
+.ind-2 { background: rgba(255, 127, 255, .07); }
+.ind-3 { background: rgba(79, 236, 236, .07); }
+pre.hl ::selection { background: rgba(68, 71, 90, .9); }
+
+/* Editor do lab: <pre> colorido atrás de um <textarea> transparente, com as mesmas medidas */
+.code-wrap { position: relative; border: 1px solid var(--line); border-radius: 10px; background: #282a36; overflow: hidden; }
+.code-wrap .code-hl, .code-wrap .code-input { font: .84rem/1.55 var(--mono); padding: 14px; margin: 0; tab-size: 2; white-space: pre; overflow-wrap: normal; word-break: normal; letter-spacing: normal; }
+.code-wrap .code-hl { position: absolute; inset: 0; overflow: hidden; border-radius: 0; pointer-events: none; }
+.code-wrap .code-hl code { display: block; min-width: max-content; }
+.code-wrap .code-input { position: relative; z-index: 1; display: block; width: 100%; border: 0; border-radius: 0; background: transparent; color: transparent; caret-color: #f8f8f2; resize: vertical; overflow: auto; outline: none; }
+.code-wrap .code-input::selection { background: rgba(98, 114, 164, .55); color: transparent; }
+.code-wrap:focus-within { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.legend-box { margin: 4px 0 8px; font-size: .88rem; }
+.legend-box > summary { cursor: pointer; color: var(--muted); }
+.code-legend { background: #282a36; color: #f8f8f2; border-radius: 10px; padding: 10px 12px; margin-top: 6px; font: .82rem/1.5 var(--mono); }
+.code-legend-items { display: flex; flex-wrap: wrap; gap: 6px 14px; }
+.code-legend p { margin: 8px 0 0; font-family: var(--sans); color: #e2e2dc; }

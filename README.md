@@ -65,6 +65,17 @@ Na resposta, cada fonte aparece com o tipo, a empresa, o cargo do(a) candidato(a
 - **Brasil Card**: os relatos públicos são de vagas não técnicas (atendente e auxiliar contábil), mas mostram o formato: contato rápido do RH, entrevista com recrutador e depois com o gestor ("onde se vê em 5 anos?", "como conheceu a empresa?").
 - **PHP pleno no Brasil**: "como o Laravel processa uma requisição", classe abstrata × interface, polimorfismo, SOLID, design patterns, índices e live coding.
 
+## Código colorido
+
+Todo código do app (editor do lab, respostas, histórias e "Como medir") usa o tema **Dracula**:
+
+- **Cores por tipo:** palavra-chave rosa, função verde, variável laranja, parâmetro laranja em itálico, constante e número roxo, tipo e componente azul-claro, string amarela e comentário azul-acinzentado.
+- **Usos acompanhados:** cada variável e parâmetro tem a mesma cor em todos os lugares onde aparece.
+- **Colchetes por nível:** `(` `{` `[` mudam de cor como no Bracket Pair Colorization do VS Code. A abertura e o fechamento do mesmo bloco têm a mesma cor, e o par se acende ao passar o mouse ou com o cursor no editor.
+- **Indentação colorida:** cada nível de recuo ganha uma faixa de cor, como no Indent-Rainbow.
+- **Legenda:** o lab tem uma legenda "🎨 O que cada cor significa".
+- **Sem dependências:** o colorizador fica em `assets/highlight.js`.
+
 ## Como medir
 
 A aba **Como medir** responde à pergunta que todo recrutador sênior faz depois do conceito: **"como você mediu?"**. São 16 guias, um para cada parte da stack:
@@ -128,13 +139,14 @@ assets/glossary-page.js # página do glossário
 assets/story.js       # histórias: formato, página, gaveta e "quem é quem"
 assets/measure-page.js # página "Como medir"
 assets/gloss-pop.js   # balão das definições, posicionado para nunca sair da tela
+assets/highlight.js   # cores do código (Dracula), colchetes por nível e indentação colorida
 assets/vendor/        # React 19 e TypeScript empacotados para rodar os labs
 assets/md.js          # markdown mínimo que escapa HTML
 assets/styles.css     # tema claro/escuro, responsivo
 data/meta.js          # vagas, temas, tipos e textos da interface (PT/EN)
 data/<tema>.js        # perguntas por tema
 data/rubrics.js       # checklist, ferramentas e métricas por pergunta
-data/glossary.js      # 225 termos com definição curta e longa (PT/EN)
+data/glossary.js      # 267 termos com definição curta e longa (PT/EN)
 data/brasilcard.js    # perguntas da vaga Brasil Card (PHP pleno)
 data/research.js      # perguntas acrescentadas a partir de relatos reais
 data/evidence.js      # fontes da pesquisa e vagas extras por pergunta
@@ -174,6 +186,7 @@ A picky interviewer, as an app. It asks senior-level technical questions about t
 - **Model answer**: full explanation, code where needed, tools/libraries/techniques to mention, metrics that prove mastery, the interviewer's follow-ups, red flags, and how to anchor the answer in my real experience without inventing any.
 - **Objective score**: each question has a checklist of points a 100% answer must cover. I tick only what I actually said: **≥ 80% correct, 40–79% partial, < 40% wrong**.
 - **Progress**: average score and correct/partial/wrong percentages, overall and per topic, plus strongest and weakest topic.
+- **Colored code**: Dracula theme everywhere, with bracket pair colorization (matching pair lights up on hover or at the cursor), rainbow indentation, and a color legend in the lab.
 - **How to measure**: 16 guides (React DevTools, INP/LCP/CLS, Node event loop and memory, load tests, RED/SLOs, slow queries, N+1, locks, Xdebug/Telescope, RabbitMQ/Kafka/Redis, DORA) with the metric, the good value, the tools, where to click step by step, and the interview line.
 - **Stories**: 42 funny dialogue-style stories (every lab plus 28 questions), in Portuguese and English, covering 47 of 92 questions. Each starts with **Who is who** (every character is a piece of code), plays out in chat-style scenes in plain language, with a **📋 State right now** panel closing every scene (output so far, queues, what's left), then a separate moral, technical section, and extras, and ends with the one-paragraph interview answer. They open from the **Stories** tab or from a button on each question and lab.
 - **Study**: every question with search and filters by role, topic, and type.

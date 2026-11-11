@@ -42,10 +42,17 @@
 
 ## 💻 Traduzindo pro código
 ```tsx
+// ❌ crachá = cadeira: o estado fica na posição
 {itens.map((item, index) => (
-  <li key={index}>    {/* ❌ crachá = cadeira: o estado fica na posição */}
-  <li key={item.id}>  {/* ✅ crachá = nome: o estado acompanha o item */}
+  <li key={index}>
     <strong>{item.nome}</strong> <input />  {/* 📓 o caderninho */}
+  </li>
+))}
+
+// ✅ crachá = nome: o estado acompanha o item
+{itens.map((item) => (
+  <li key={item.id}>
+    <strong>{item.nome}</strong> <input />
   </li>
 ))}
 ```

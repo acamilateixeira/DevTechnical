@@ -1,6 +1,7 @@
 // Página "Como medir": métrica, ferramenta, onde clicar, valor bom e como falar na entrevista.
 
 import { md, escapeHtml } from './md.js';
+import { codeBlock } from './highlight.js';
 import { createAnnotator } from './gloss.js';
 import { areas, cards, method } from '../data/measure.js';
 import { labs } from '../labs/web/index.js';
@@ -38,7 +39,7 @@ export function renderMeasure(view, { lang, gloss, L, questions, focus }) {
       <p class="m-tools"><strong>${t.tools}:</strong> ${c.tools.map((x) => `<span class="chip">${escapeHtml(x)}</span>`).join(' ')}</p>
       <h3>${t.steps}</h3>
       <ol class="m-steps">${L(c.steps).map((s) => `<li>${strip(md(s, a))}</li>`).join('')}</ol>
-      ${c.code ? `<h3>${t.code}</h3><pre><code>${escapeHtml(c.code)}</code></pre>` : ''}
+      ${c.code ? `<h3>${t.code}</h3>${codeBlock(c.code)}` : ''}
       <div class="m-say"><h3>${t.say}</h3>${md(L(c.say), a)}</div>
       ${ls.length || c.nodeLabs?.length || qs.length ? `<div class="m-links">
         ${ls.length ? `<p><strong>${t.labs}:</strong> ${ls.map((l) => `<a href="#/lab/${l.id}">${escapeHtml(L(l.title))}</a>`).join(' · ')}</p>` : ''}

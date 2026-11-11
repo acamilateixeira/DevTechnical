@@ -6,6 +6,7 @@ import { renderStart } from './start.js';
 import { createAnnotator } from './gloss.js';
 import { renderGlossary } from './glossary-page.js';
 import { initGlossPopover } from './gloss-pop.js';
+import { codeBlock, initBracketHover } from './highlight.js';
 import { renderMeasure } from './measure-page.js';
 import { cardsForQuestion } from '../data/measure.js';
 import { sources, evidenceSummary } from '../data/evidence.js';
@@ -175,7 +176,7 @@ function codeBlocks(q) {
   const list = Array.isArray(q.code) ? q.code : [q.code];
   return list.map((c) =>
     `${c.label ? `<p class="code-label">${escapeHtml(L(c.label))}</p>` : ''}` +
-    `<pre><code>${escapeHtml(c.src.trim())}</code></pre>`).join('');
+    codeBlock(c.src.trim(), c.lang)).join('');
 }
 
 function currentScore(q) {
@@ -432,6 +433,7 @@ if (typeof document !== 'undefined') {
     }));
   window.addEventListener('hashchange', route);
   initGlossPopover();
+  initBracketHover();
   renderChrome();
   route();
 }

@@ -42,10 +42,17 @@
 
 ## 💻 Translating to code
 ```tsx
+// ❌ badge = chair: state stays at the position
 {itens.map((item, index) => (
-  <li key={index}>    {/* ❌ badge = chair: state stays at the position */}
-  <li key={item.id}>  {/* ✅ badge = name: state follows the item */}
+  <li key={index}>
     <strong>{item.nome}</strong> <input />  {/* 📓 the notebook */}
+  </li>
+))}
+
+// ✅ badge = name: state follows the item
+{itens.map((item) => (
+  <li key={item.id}>
+    <strong>{item.nome}</strong> <input />
   </li>
 ))}
 ```
