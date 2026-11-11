@@ -1,11 +1,11 @@
 // Rótulos de vagas, temas e tipos. Cada pergunta referencia estes ids.
 
 export const jobs = {
-  elastic: { pt: 'Elastic · Sr Full Stack (Observability)', en: 'Elastic · Sr Full Stack (Observability)' },
-  brainrocket: { pt: 'BrainRocket · Sr Full Stack (Node/React)', en: 'BrainRocket · Sr Full Stack (Node/React)' },
+  'sr-observability': { pt: 'Sr Full Stack · Observabilidade', en: 'Sr Full Stack · Observability' },
+  'sr-node-react': { pt: 'Sr Full Stack · Node/React', en: 'Sr Full Stack · Node/React' },
   frontend: { pt: 'Frontend Sr (React)', en: 'Senior Frontend (React)' },
-  kwan: { pt: 'KWAN · consultoria (Portugal)', en: 'KWAN · consultancy (Portugal)' },
-  brasilcard: { pt: 'Brasil Card · Full Stack Pleno (PHP)', en: 'Brasil Card · Mid-level Full Stack (PHP)' },
+  consulting: { pt: 'Consultoria internacional', en: 'International consultancy' },
+  'php-fintech': { pt: 'Full Stack Pleno · PHP (pagamentos)', en: 'Mid-level Full Stack · PHP (payments)' },
   cv: { pt: 'Meu CV / portfólio', en: 'My CV / portfolio' },
 };
 
@@ -42,7 +42,7 @@ export const ui = {
     navInterview: 'Entrevista', navStudy: 'Estudo', navProgress: 'Progresso',
     fJob: 'Vaga', fCat: 'Tema', fType: 'Tipo', all: 'Todos', allJobs: 'Todas',
     count: (n, t) => `${n} de ${t} perguntas`,
-    recruiter: 'Recrutador(a) chato(a)',
+    recruiter: 'Entrevistador(a)',
     yourAnswer: 'Sua resposta (fale em voz alta ou escreva; fica salva só no seu navegador)',
     placeholder: 'Responda como responderia na call. Estruture: definição → exemplo real → trade-off.',
     reveal: 'Ver resposta modelo', next: 'Próxima pergunta', skip2: 'Pular',
@@ -72,7 +72,7 @@ export const ui = {
     navInterview: 'Interview', navStudy: 'Study', navProgress: 'Progress',
     fJob: 'Role', fCat: 'Topic', fType: 'Type', all: 'All', allJobs: 'All',
     count: (n, t) => `${n} of ${t} questions`,
-    recruiter: 'Picky interviewer',
+    recruiter: 'Interviewer',
     yourAnswer: 'Your answer (say it out loud or type it; saved only in your browser)',
     placeholder: 'Answer like you would on the call. Structure: definition → real example → trade-off.',
     reveal: 'Show model answer', next: 'Next question', skip2: 'Skip',

@@ -12,14 +12,14 @@ import observability from './observability.js';
 import security from './security.js';
 import php from './php.js';
 import agile from './agile.js';
-import brasilcard from './brasilcard.js';
+import phpFintech from './php-fintech.js';
 import research from './research.js';
 import { rubrics } from './rubrics.js';
 import { extraJobs, reported } from './evidence.js';
 
 const all = [
   ...typescript, ...react, ...node, ...api, ...databases, ...messaging,
-  ...architecture, ...principles, ...testing, ...devops, ...observability, ...security, ...php, ...agile, ...brasilcard, ...research,
+  ...architecture, ...principles, ...testing, ...devops, ...observability, ...security, ...php, ...agile, ...phpFintech, ...research,
 ];
 
 // Cada pergunta recebe sua rubrica (pontos obrigatórios, ferramentas, métricas).

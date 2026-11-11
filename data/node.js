@@ -1,7 +1,7 @@
 export default [
   {
     id: 'node-event-loop-blocking',
-    cat: 'node', type: 'concept', jobs: ['elastic', 'brainrocket'],
+    cat: 'node', type: 'concept', jobs: ['sr-observability', 'sr-node-react'],
     tags: ['event loop', 'libuv', 'worker threads', 'cluster', 'CPU bound', 'thread pool'],
     q: {
       pt: 'Node.js é single-thread. Então como ele aguenta milhares de conexões? E o que acontece quando um endpoint faz um cálculo pesado?',
@@ -48,7 +48,7 @@ To detect it: \`monitorEventLoopDelay\` from \`perf_hooks\`, clinic.js, or the e
   },
   {
     id: 'node-streams-backpressure',
-    cat: 'node', type: 'code', jobs: ['elastic', 'brainrocket'],
+    cat: 'node', type: 'code', jobs: ['sr-observability', 'sr-node-react'],
     tags: ['streams', 'backpressure', 'pipeline', 'csv', 'memory'],
     q: {
       pt: 'Você precisa exportar 5 milhões de linhas do banco para CSV numa rota HTTP. Como faz sem estourar a memória? O que é backpressure?',
@@ -107,7 +107,7 @@ For truly large exports, the sturdier option is asynchronous: enqueue a job, wri
   },
   {
     id: 'node-error-handling-shutdown',
-    cat: 'node', type: 'code', jobs: ['elastic', 'brainrocket'],
+    cat: 'node', type: 'code', jobs: ['sr-observability', 'sr-node-react'],
     tags: ['error handling', 'graceful shutdown', 'SIGTERM', 'unhandledRejection', 'Kubernetes'],
     q: {
       pt: 'Como você trata erros num serviço Node em produção e como implementa graceful shutdown num container?',
@@ -174,7 +174,7 @@ setTimeout(() => process.exit(1), 25_000).unref(); // não passe do terminationG
   },
   {
     id: 'nest-di-modules',
-    cat: 'node', type: 'lib', jobs: ['brainrocket'],
+    cat: 'node', type: 'lib', jobs: ['sr-node-react'],
     tags: ['NestJS', 'dependency injection', 'modules', 'guards', 'interceptors', 'pipes'],
     q: {
       pt: 'Explique a arquitetura do NestJS: módulos, providers, injeção de dependência e o ciclo de vida de uma requisição (middleware, guard, interceptor, pipe, filter).',
@@ -267,7 +267,7 @@ The senior caveat: keep business rules out of controllers and do not couple the 
   },
   {
     id: 'nest-guard-decorator-test',
-    cat: 'node', type: 'code', jobs: ['brainrocket'],
+    cat: 'node', type: 'code', jobs: ['sr-node-react'],
     tags: ['NestJS', 'guards', 'custom decorator', 'Reflector', 'testing', 'RBAC'],
     q: {
       pt: 'Implemente no NestJS um guard de papéis com decorator `@Roles()` e escreva o teste unitário dele.',
@@ -350,7 +350,7 @@ RBAC's limit: roles do not handle contextual rules ("a manager only approves tri
   },
   {
     id: 'nest-microservices-rabbitmq',
-    cat: 'node', type: 'lib', jobs: ['brainrocket'],
+    cat: 'node', type: 'lib', jobs: ['sr-node-react'],
     tags: ['NestJS', 'microservices', 'RabbitMQ', 'MessagePattern', 'EventPattern', 'transport'],
     q: {
       pt: 'Como o NestJS trabalha com microsserviços e RabbitMQ? Qual a diferença entre `@MessagePattern` e `@EventPattern`?',

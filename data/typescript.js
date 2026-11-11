@@ -1,7 +1,7 @@
 export default [
   {
     id: 'js-event-loop',
-    cat: 'typescript', type: 'code', jobs: ['elastic', 'brainrocket', 'frontend'],
+    cat: 'typescript', type: 'code', jobs: ['sr-observability', 'sr-node-react', 'frontend'],
     tags: ['event loop', 'microtask', 'macrotask', 'promise', 'setTimeout'],
     q: {
       pt: 'Qual a ordem de saída deste código e por quê? Explique microtasks e macrotasks.',
@@ -53,7 +53,7 @@ Practical consequence: code that keeps scheduling microtasks forever starves ren
   },
   {
     id: 'ts-unknown-any-never',
-    cat: 'typescript', type: 'concept', jobs: ['elastic', 'brainrocket', 'frontend'],
+    cat: 'typescript', type: 'concept', jobs: ['sr-observability', 'sr-node-react', 'frontend'],
     tags: ['any', 'unknown', 'never', 'type safety', 'narrowing'],
     q: {
       pt: 'Qual a diferença entre `any`, `unknown` e `never`? Quando cada um aparece num código sênior?',
@@ -109,7 +109,7 @@ function parse(raw: string): Offer[] {
   },
   {
     id: 'ts-generics-utility',
-    cat: 'typescript', type: 'code', jobs: ['elastic', 'brainrocket', 'frontend'],
+    cat: 'typescript', type: 'code', jobs: ['sr-observability', 'sr-node-react', 'frontend'],
     tags: ['generics', 'utility types', 'Partial', 'Pick', 'keyof', 'mapped types'],
     q: {
       pt: 'Escreva uma função genérica `groupBy` tipada e explique `keyof`, mapped types e os utility types que você mais usa.',
@@ -170,7 +170,7 @@ The senior principle: **derive types from a single source of truth** (a schema, 
   },
   {
     id: 'js-closures-this',
-    cat: 'typescript', type: 'code', jobs: ['frontend', 'brainrocket'],
+    cat: 'typescript', type: 'code', jobs: ['frontend', 'sr-node-react'],
     tags: ['closure', 'this', 'arrow function', 'debounce', 'stale closure'],
     q: {
       pt: 'O que é closure? Implemente um `debounce` e explique o bug clássico de "stale closure" no React.',
@@ -226,7 +226,7 @@ About \`this\`: regular functions bind \`this\` by **how they are called**; arro
   },
   {
     id: 'ts-shared-contract-zod',
-    cat: 'typescript', type: 'architecture', jobs: ['elastic', 'brainrocket', 'frontend'],
+    cat: 'typescript', type: 'architecture', jobs: ['sr-observability', 'sr-node-react', 'frontend'],
     tags: ['monorepo', 'Zod', 'shared types', 'API contract', 'end-to-end type safety', 'OpenAPI'],
     q: {
       pt: 'Front em React e back em Node, ambos em TypeScript. Como você garante que o contrato da API não quebra entre os dois sem duplicar tipos?',

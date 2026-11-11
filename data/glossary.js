@@ -463,7 +463,7 @@ export const glossary = [
   g('otel', { pt: ['OpenTelemetry', 'OTel'], en: ['OpenTelemetry', 'OTel'] },
     { pt: 'padrão aberto para gerar logs, métricas e traces', en: 'an open standard for producing logs, metrics, and traces' },
     { pt: 'Instrumenta uma vez e envia para qualquer ferramenta (Elastic, Grafana, Datadog).', en: 'Instrument once and send to any tool (Elastic, Grafana, Datadog).' }),
-  g('elastic', { pt: ['Elasticsearch', 'Kibana', 'Elastic Stack'], en: ['Elasticsearch', 'Kibana', 'Elastic Stack'] },
+  g('sr-observability', { pt: ['Elasticsearch', 'Kibana', 'Elastic Stack'], en: ['Elasticsearch', 'Kibana', 'Elastic Stack'] },
     { pt: 'motor de busca para logs e textos (Kibana: as telas)', en: 'a search engine for logs and text (Kibana: the UI)' },
     { pt: 'Indexa bilhões de documentos e responde buscas e gráficos rápido.', en: 'Indexes billions of documents and answers searches and charts fast.' }),
   g('latency', { pt: ['latência'], en: ['latency'] },

@@ -1,7 +1,7 @@
 export default [
   {
     id: 'test-pyramid-strategy',
-    cat: 'testing', type: 'concept', jobs: ['elastic', 'brainrocket', 'frontend', 'cv'],
+    cat: 'testing', type: 'concept', jobs: ['sr-observability', 'sr-node-react', 'frontend', 'cv'],
     tags: ['test pyramid', 'unit', 'integration', 'e2e', 'testing trophy', 'mocks', 'flaky'],
     q: {
       pt: 'Qual sua estratégia de testes numa aplicação full stack? O que você mocka e o que não mocka?',
@@ -46,7 +46,7 @@ Flaky tests are bugs: quarantine, investigate, and fix them, never "rerun until 
   },
   {
     id: 'test-tdd-code',
-    cat: 'testing', type: 'code', jobs: ['brainrocket', 'elastic'],
+    cat: 'testing', type: 'code', jobs: ['sr-node-react', 'sr-observability'],
     tags: ['TDD', 'red green refactor', 'Jest', 'Vitest', 'unit test'],
     q: {
       pt: 'Faça ao vivo, em TDD, uma função que valida se uma viagem pode ser aprovada (orçamento e limite do aprovador). Narre os passos.',
@@ -123,7 +123,7 @@ TDD works very well for business rules and bug fixes (first the test that reprod
   },
   {
     id: 'cicd-pipeline',
-    cat: 'testing', type: 'lib', jobs: ['elastic', 'brainrocket', 'cv'],
+    cat: 'testing', type: 'lib', jobs: ['sr-observability', 'sr-node-react', 'cv'],
     tags: ['CI/CD', 'GitHub Actions', 'GitLab CI', 'Docker', 'feature flags', 'canary', 'blue-green'],
     q: {
       pt: 'Desenhe o pipeline de CI/CD ideal para um serviço Node + React. Como você faz deploy sem medo numa sexta-feira?',

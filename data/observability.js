@@ -1,7 +1,7 @@
 export default [
   {
     id: 'obs-three-pillars',
-    cat: 'observability', type: 'concept', jobs: ['elastic', 'brainrocket'],
+    cat: 'observability', type: 'concept', jobs: ['sr-observability', 'sr-node-react'],
     tags: ['observability', 'logs', 'metrics', 'traces', 'OpenTelemetry', 'correlation', 'ECS'],
     q: {
       pt: 'O que é observabilidade e como ela difere de monitoramento? Como logs, métricas e traces se complementam?',
@@ -42,7 +42,7 @@ Useful frameworks: **RED** for services (Rate, Errors, Duration), **USE** for re
   },
   {
     id: 'obs-slo-alerting',
-    cat: 'observability', type: 'concept', jobs: ['elastic'],
+    cat: 'observability', type: 'concept', jobs: ['sr-observability'],
     tags: ['SLI', 'SLO', 'SLA', 'error budget', 'alerting', 'percentiles', 'burn rate'],
     q: {
       pt: 'Explique SLI, SLO, SLA e error budget. Como você decide o que merece alerta que acorda alguém de madrugada?',
@@ -81,7 +81,7 @@ Percentiles: p99 shows the tail the average hides. A great p50 with an 8 s p99 m
   },
   {
     id: 'obs-frontend-reactflow',
-    cat: 'observability', type: 'lib', jobs: ['elastic', 'frontend'],
+    cat: 'observability', type: 'lib', jobs: ['sr-observability', 'frontend'],
     tags: ['React Flow', 'graph UI', 'pipelines', 'Fleet', 'Streams', 'large graphs'],
     q: {
       pt: 'A vaga cita React Flow para Fleet e Streams. Como você construiria um editor visual de pipeline de processamento de logs? Que problemas aparecem com grafos grandes?',
@@ -146,7 +146,7 @@ export function PipelineEditor({ initial }: { initial: Pipeline }) {
   },
   {
     id: 'elasticsearch-fundamentals',
-    cat: 'observability', type: 'lib', jobs: ['elastic'],
+    cat: 'observability', type: 'lib', jobs: ['sr-observability'],
     tags: ['Elasticsearch', 'inverted index', 'mapping', 'analyzer', 'query vs filter', 'shards', 'aggregations'],
     q: {
       pt: 'Como o Elasticsearch funciona por dentro? Explique índice invertido, mapping, `text` vs `keyword`, query vs filter context e shards.',
@@ -219,7 +219,7 @@ A **mapping** is the field schema. \`text\` runs through an **analyzer** (tokeni
   },
   {
     id: 'otel-node-instrumentation',
-    cat: 'observability', type: 'code', jobs: ['elastic', 'brainrocket'],
+    cat: 'observability', type: 'code', jobs: ['sr-observability', 'sr-node-react'],
     tags: ['OpenTelemetry', 'tracing', 'spans', 'context propagation', 'Node.js', 'structured logging'],
     q: {
       pt: 'Instrumente uma API Node com OpenTelemetry: traces automáticos, um span manual numa operação de negócio e logs correlacionados pelo trace ID.',
@@ -296,8 +296,8 @@ const logger = pino({
       en: 'Importing the SDK after the app (nothing gets instrumented). Or putting `user.email` in a span attribute.',
     },
     anchor: {
-      pt: 'Instrumentar o TripFlow ou o GEMP com OpenTelemetry (um trace atravessando API → MySQL → RabbitMQ → consumidor) é o projeto que mais aproxima seu portfólio da vaga da Elastic, e é o coração natural do PulseOps. Até existir, apresente como plano, não como experiência.',
-      en: 'Instrumenting TripFlow or GEMP with OpenTelemetry (one trace crossing API → MySQL → RabbitMQ → consumer) is the project that brings your portfolio closest to the Elastic role, and it is the natural core of PulseOps. Until it exists, present it as a plan, not experience.',
+      pt: 'Instrumentar o TripFlow ou o GEMP com OpenTelemetry (um trace atravessando API → MySQL → RabbitMQ → consumidor) é o projeto que mais aproxima seu portfólio de uma vaga de observabilidade, e é o coração natural do PulseOps. Até existir, apresente como plano, não como experiência.',
+      en: 'Instrumenting TripFlow or GEMP with OpenTelemetry (one trace crossing API → MySQL → RabbitMQ → consumer) is the project that brings your portfolio closest to an observability role, and it is the natural core of PulseOps. Until it exists, present it as a plan, not experience.',
     },
   },
 ];

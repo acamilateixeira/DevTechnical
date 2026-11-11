@@ -1,7 +1,7 @@
 export default [
   {
     id: 'sec-owasp-web',
-    cat: 'security', type: 'concept', jobs: ['elastic', 'brainrocket', 'frontend'],
+    cat: 'security', type: 'concept', jobs: ['sr-observability', 'sr-node-react', 'frontend'],
     tags: ['OWASP', 'XSS', 'CSRF', 'SQL injection', 'IDOR', 'CSP', 'dangerouslySetInnerHTML'],
     q: {
       pt: 'O React já protege contra XSS? Quais vulnerabilidades do OWASP Top 10 você mais checa em code review numa aplicação full stack?',
@@ -48,7 +48,7 @@ What I check most in review:
   },
   {
     id: 'sec-auth-jwt-oauth',
-    cat: 'security', type: 'architecture', jobs: ['brainrocket', 'elastic'],
+    cat: 'security', type: 'architecture', jobs: ['sr-node-react', 'sr-observability'],
     tags: ['authentication', 'authorization', 'JWT', 'OAuth 2.0', 'OIDC', 'refresh token', 'PKCE', 'RBAC'],
     q: {
       pt: 'Como você desenha autenticação e autorização para uma SPA React + API Node? Fale de JWT, sessões, OAuth/OIDC e refresh tokens.',

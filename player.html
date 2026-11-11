@@ -24,7 +24,7 @@
     if (capture) document.body.classList.add('cap');
     if (!s) root.textContent = 'história não encontrada';
     else loadStory(s, lang).then((story) => {
-      const player = mountPlayer(root, story, { lang, capture, meta: lang === 'pt' ? 'Trilha Brasil Card · DevTechnical' : 'Brasil Card path · DevTechnical' });
+      const player = mountPlayer(root, story, { lang, capture, meta: 'DevTechnical' });
       window.__player = player;
       window.__ready = true;
     });

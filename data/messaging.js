@@ -1,7 +1,7 @@
 export default [
   {
     id: 'mq-outbox-pattern',
-    cat: 'messaging', type: 'architecture', jobs: ['brainrocket', 'cv'],
+    cat: 'messaging', type: 'architecture', jobs: ['sr-node-react', 'cv'],
     tags: ['outbox', 'dual write', 'RabbitMQ', 'at-least-once', 'idempotent consumer', 'CDC'],
     q: {
       pt: 'Você salva um pedido no banco e publica um evento no RabbitMQ. O que pode dar errado e como resolver?',
@@ -76,7 +76,7 @@ This gives **at-least-once**: if the relay crashes between publishing and markin
   },
   {
     id: 'mq-rabbitmq-concepts',
-    cat: 'messaging', type: 'lib', jobs: ['brainrocket'],
+    cat: 'messaging', type: 'lib', jobs: ['sr-node-react'],
     tags: ['RabbitMQ', 'exchange', 'routing key', 'DLQ', 'prefetch', 'ack', 'Kafka'],
     q: {
       pt: 'Explique exchanges, filas e bindings no RabbitMQ, ack/nack, prefetch e dead-letter queue. Quando você usaria Kafka no lugar?',

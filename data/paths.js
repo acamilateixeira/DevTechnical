@@ -10,9 +10,9 @@ const Q = (...ids) => ids.map((id) => ({ kind: 'q', id }));
 const stop = (title, ...items) => ({ title, items: items.flat() });
 
 export const paths = {
-  brasilcard: {
-    why: r('Você está na etapa técnica: PHP 7.4+, CodeIgniter 3 e Laravel, SQL Server/MySQL/PostgreSQL, Docker, Git e, como diferencial, Clean Architecture, DDD, TDD, Kubernetes e GCP. A empresa é de cartão: dinheiro, limite e fatura aparecem em tudo.',
-      'You\'re in the technical stage: PHP 7.4+, CodeIgniter 3 and Laravel, SQL Server/MySQL/PostgreSQL, Docker, Git, and, as differentiators, Clean Architecture, DDD, TDD, Kubernetes, and GCP. It\'s a card company: money, limits, and statements show up everywhere.'),
+  'php-fintech': {
+    why: r('Full Stack pleno PHP em pagamentos: PHP 7.4+, CodeIgniter 3 e Laravel, SQL Server/MySQL/PostgreSQL, Docker, Git e, como diferencial, Clean Architecture, DDD, TDD, Kubernetes e GCP. Em empresa de cartão, dinheiro, limite e fatura aparecem em tudo.',
+      'Mid-level PHP Full Stack in payments: PHP 7.4+, CodeIgniter 3 and Laravel, SQL Server/MySQL/PostgreSQL, Docker, Git, and, as differentiators, Clean Architecture, DDD, TDD, Kubernetes, and GCP. At a card company, money, limits, and statements show up everywhere.'),
     stops: [
       stop(r('Orientação a objetos em PHP', 'Object-oriented PHP'), S('php-oop-abstract-interface-trait'), Q('php-oop-abstract-interface-trait', 'php-7-to-8-features')),
       stop(r('Dinheiro sem centavo sumindo', 'Money without vanishing cents'), S('php-comparison-money'), Q('php-comparison-money')),
@@ -29,16 +29,16 @@ export const paths = {
       stop(r('TDD com PHPUnit (diferencial)', 'TDD with PHPUnit (differentiator)'), S('lab-tdd'), Lb('tdd'), Q('phpunit-tdd-service', 'test-tdd-code')),
       stop(r('Java básico para quem vem do PHP', 'Basic Java for PHP developers'), Q('java-basics-for-php-dev')),
       stop(r('Kubernetes e GCP (diferencial)', 'Kubernetes and GCP (differentiator)'), S('k8s-core-concepts'), Q('k8s-core-concepts', 'gcp-services-map')),
-      stop(r('Conversa com RH e gestor', 'HR and manager conversation'), Q('behavioral-brasilcard-fit', 'behavioral-incident-star')),
+      stop(r('Conversa com RH e gestor', 'HR and manager conversation'), Q('behavioral-company-fit', 'behavioral-incident-star')),
     ],
   },
-  elastic: {
-    why: r('Sênior Full Stack em Observabilidade: Node, React, Elasticsearch e sinais (logs, métricas, traces). Os relatos falam de problemas fáceis estilo LeetCode, concorrência, system design, code review ao vivo e uma comportamental séria.',
-      'Senior Full Stack in Observability: Node, React, Elasticsearch, and signals (logs, metrics, traces). Reports mention easy LeetCode-style problems, concurrency, system design, live code review, and a serious behavioral round.'),
+  'sr-observability': {
+    why: r('Sênior Full Stack em Observabilidade: Node, React, Elasticsearch e sinais (logs, métricas, traces). Relatos públicos de vagas assim falam de problemas fáceis estilo LeetCode, concorrência, system design, code review ao vivo e uma comportamental séria.',
+      'Senior Full Stack in Observability: Node, React, Elasticsearch, and signals (logs, metrics, traces). Public reports for roles like this mention easy LeetCode-style problems, concurrency, system design, live code review, and a serious behavioral round.'),
     stops: [
       stop(r('Event loop e Node travado', 'The event loop and a blocked Node'), S('lab-event-loop'), Lb('event-loop'), S('node-event-loop-blocking'), M('node-eventloop'), Q('js-event-loop', 'node-event-loop-blocking')),
       stop(r('Os três sinais: logs, métricas, traces', 'The three signals: logs, metrics, traces'), S('obs-three-pillars'), M('red'), Q('obs-three-pillars', 'otel-node-instrumentation')),
-      stop(r('SLO e alertas', 'SLOs and alerts'), S('obs-slo-alerting'), M('slo'), Q('obs-slo-alerting', 'elastic-alerting-design')),
+      stop(r('SLO e alertas', 'SLOs and alerts'), S('obs-slo-alerting'), M('slo'), Q('obs-slo-alerting', 'obs-alerting-design')),
       stop(r('Elasticsearch por dentro', 'Elasticsearch internals'), Q('elasticsearch-fundamentals')),
       stop(r('System design: ingestão de logs', 'System design: log ingestion'), Q('arch-system-design-logs')),
       stop(r('Algoritmo: top-K', 'Algorithm: top-K'), Q('algo-top-k-frequent', 'algo-classic-hackerrank')),
@@ -48,7 +48,7 @@ export const paths = {
       stop(r('Comportamental: incidente, projeto, trabalho remoto', 'Behavioral: incident, project, remote work'), Q('behavioral-incident-star', 'behavioral-proud-project-deepdive', 'behavioral-remote-async')),
     ],
   },
-  brainrocket: {
+  'sr-node-react': {
     why: r('Sênior Full Stack Node/React. Os relatos citam teste no HackerRank e entrevista técnica com event loop, race conditions, RabbitMQ × Kafka, sistemas distribuídos e live coding.',
       'Senior Full Stack Node/React. Reports mention a HackerRank test and a technical interview covering the event loop, race conditions, RabbitMQ × Kafka, distributed systems, and live coding.'),
     stops: [
@@ -78,11 +78,11 @@ export const paths = {
       stop(r('Segurança no front (XSS)', 'Front-end security (XSS)'), S('lab-xss'), Lb('xss'), Q('sec-owasp-web')),
     ],
   },
-  kwan: {
-    why: r('Consultoria em Portugal: RH (motivo para ir a Portugal, valores, inglês), teste técnico de 1 hora na sua linguagem, especialista e depois o cliente.',
-      'A consultancy in Portugal: HR (reasons for moving, values, English), a 1-hour technical test in your language, a specialist, and then the client.'),
+  consulting: {
+    why: r('Consultoria internacional: RH (motivo para se mudar, valores, inglês), teste técnico de 1 hora na sua linguagem, especialista e depois o cliente.',
+      'An international consultancy: HR (reasons for relocating, values, English), a 1-hour technical test in your language, a specialist, and then the client.'),
     stops: [
-      stop(r('Por que Portugal e como é a consultoria', 'Why Portugal and how consulting works'), Q('behavioral-relocation-consultancy')),
+      stop(r('Por que se mudar e como é a consultoria', 'Why relocate and how consulting works'), Q('behavioral-relocation-consultancy')),
       stop(r('Teste técnico de 1 hora', 'The 1-hour technical test'), Q('algo-classic-hackerrank')),
       stop(r('JavaScript que sempre cai', 'JavaScript that always comes up'), S('lab-event-loop'), Lb('event-loop'), Q('js-event-loop', 'js-closures-this')),
       stop(r('React: hooks e estado', 'React: hooks and state'), S('react-state-management'), Q('react-hooks-catalog', 'react-state-management', 'react-useeffect-pitfalls')),

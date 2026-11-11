@@ -1,7 +1,7 @@
 export default [
   {
     id: 'docker-node-multistage',
-    cat: 'devops', type: 'code', jobs: ['brainrocket', 'elastic', 'cv'],
+    cat: 'devops', type: 'code', jobs: ['sr-node-react', 'sr-observability', 'cv'],
     tags: ['Docker', 'Dockerfile', 'multi-stage', 'image size', 'non-root', 'layer cache'],
     q: {
       pt: 'Escreva um Dockerfile de produção para uma API Node com TypeScript. O que torna uma imagem boa: tamanho, segurança, cache de build?',
@@ -68,7 +68,7 @@ The same image, tagged with the commit SHA, is promoted from staging to producti
   },
   {
     id: 'k8s-core-concepts',
-    cat: 'devops', type: 'concept', jobs: ['brainrocket', 'elastic'],
+    cat: 'devops', type: 'concept', jobs: ['sr-node-react', 'sr-observability'],
     tags: ['Kubernetes', 'pod', 'deployment', 'service', 'probes', 'HPA', 'requests and limits', 'rolling update'],
     q: {
       pt: 'Explique os objetos principais do Kubernetes e o que acontece num rolling update de uma API Node. Por que pods morrem com OOMKilled?',
@@ -130,8 +130,8 @@ spec:
       { pt: 'Como escalaria consumidores de fila no Kubernetes? (KEDA)', en: 'How would you scale queue consumers in Kubernetes? (KEDA)' },
     ],
     flags: {
-      pt: 'Dizer que tem experiência com Kubernetes em produção sem ter. A BrainRocket lista K8s como "nice to have": conceito sólido + honestidade bastam.',
-      en: 'Claiming production Kubernetes experience you do not have. BrainRocket lists K8s as a nice-to-have: solid concepts plus honesty are enough.',
+      pt: 'Dizer que tem experiência com Kubernetes em produção sem ter. Muitas vagas listam K8s como "nice to have": conceito sólido + honestidade bastam.',
+      en: 'Claiming production Kubernetes experience you do not have. Many roles list K8s as a nice-to-have: solid concepts plus honesty are enough.',
     },
     anchor: {
       pt: 'Kubernetes não está no seu CV. Ponte honesta: você já fez deploy com Docker e GitLab CI na Sicoob e trabalha com AWS e Azure. O PulseOps e o portfolio-infra são o lugar natural para praticar (por exemplo, k3s numa VM do Oracle Cloud Always Free). Diga só o que já tiver feito de fato.',

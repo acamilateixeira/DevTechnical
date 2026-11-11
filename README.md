@@ -4,7 +4,7 @@
 
 **Site:** https://acamilateixeira.github.io/DevTechnical/
 
-Um recrutador chato, em forma de app. Ele faz perguntas técnicas sobre a stack que aparece no meu currículo e no [portfólio](https://acamilateixeira.github.io/camilat/), e sobre o que as vagas-alvo pedem: Elastic (Senior Full Stack, Observability), BrainRocket (Senior Full Stack Node/React), KWAN (consultoria em Portugal), vagas de Frontend Sênior em React e Brasil Card (Full Stack Pleno PHP).
+Um entrevistador técnico em forma de app. Ele faz perguntas técnicas sobre a stack que aparece no meu currículo e no [portfólio](https://acamilateixeira.github.io/camilat/), organizadas por perfil de vaga: Sênior Full Stack (Observabilidade), Sênior Full Stack Node/React, Frontend Sênior em React, consultoria internacional e Full Stack Pleno PHP (pagamentos).
 
 ## Como funciona
 
@@ -26,7 +26,7 @@ O progresso fica só no `localStorage` do navegador; não há back-end nem colet
 
 A primeira tela é o **Comece aqui**. Ela traz:
 
-- **Trilha de estudo por vaga:** Brasil Card, Elastic, BrainRocket, Frontend Sr e KWAN. Cada parada junta a história, o lab, o guia de medição e as perguntas do mesmo assunto, na ordem que mais ajuda.
+- **Trilha de estudo por perfil de vaga:** PHP (pagamentos), Observabilidade, Node/React, Frontend Sr e Consultoria. Cada parada junta a história, o lab, o guia de medição e as perguntas do mesmo assunto, na ordem que mais ajuda.
   - Mostra quantas perguntas da trilha já estão com nota de acerto.
   - Destaca a próxima parada, com o botão "Continuar de onde parei".
   - A vaga escolhida fica salva no navegador.
@@ -60,24 +60,23 @@ As trilhas ficam em [`data/paths.js`](data/paths.js) e o validador confere se ca
 | Meios de pagamento | `==` × `===` e dinheiro em centavos, ciclo da compra no cartão (autorização, captura, estorno, chargeback, conciliação) |
 | Algoritmos (live coding) | top-K de logs, two sum, parênteses balanceados, anagramas, com complexidade |
 
-### Vaga Brasil Card (Full Stack Pleno PHP)
+### Perfil Full Stack Pleno PHP (pagamentos)
 
-Filtre por **Vaga → Brasil Card** para ver as 39 perguntas ligadas aos requisitos e diferenciais da vaga: POO em PHP, novidades do PHP 7.4 → 8, CodeIgniter 3 × Laravel, filas no Laravel, segurança (PDO, senhas, PCI DSS), diferenças entre SQL Server, MySQL e PostgreSQL, SQL ao vivo, Docker para PHP, Git, Java para quem vem do PHP, Clean Architecture, TDD com PHPUnit, bug em produção no legado, GCP e a entrevista com RH e gestor.
+Filtre por **Vaga → Full Stack Pleno · PHP (pagamentos)** para ver as perguntas ligadas aos requisitos e diferenciais comuns desse perfil: POO em PHP, novidades do PHP 7.4 → 8, CodeIgniter 3 × Laravel, filas no Laravel, segurança (PDO, senhas, PCI DSS), diferenças entre SQL Server, MySQL e PostgreSQL, SQL ao vivo, Docker para PHP, Git, Java para quem vem do PHP, Clean Architecture, TDD com PHPUnit, bug em produção no legado, GCP e a entrevista com RH e gestor.
 
 ### Isso é perguntado de verdade?
 
 O chip de cada pergunta diz de onde ela vem e de qual empresa:
 
-- **✓ relatada · Elastic**: alguém contou que passou por isso.
+- **✓ relatada · empresa de observabilidade**: alguém contou que passou por isso.
 - **📘 guia público**: está num guia do processo, não é relato de uma pessoa.
 - **📋 está na vaga**: não achei relato; ela está aqui porque o assunto está na descrição da vaga.
 
-Na resposta, cada fonte aparece com o tipo, a empresa, o cargo do(a) candidato(a), a data, a etapa, a frase citada e o link. Quando a fonte tem uma limitação, o aviso fica junto: por exemplo, os relatos da Brasil Card são de vagas não técnicas. Tudo fica em [`data/evidence.js`](data/evidence.js), conferido em 11/11/2026. O que não deu para confirmar foi retirado. Resumo do que os relatos descrevem:
+Na resposta, cada fonte aparece com o tipo, a empresa, o cargo do(a) candidato(a), a data, a etapa, a frase citada e o link. Quando a fonte tem uma limitação, o aviso fica junto: Tudo fica em [`data/evidence.js`](data/evidence.js), conferido em 11/11/2026. O que não deu para confirmar foi retirado. Resumo do que os relatos descrevem:
 
-- **Elastic**: triagem com RH, rodadas técnicas com problemas "fáceis estilo LeetCode", concorrência e system design, exercício com code review ao vivo, comportamental "mais sério que o esperado" (STAR) e aprofundamento na sua experiência.
-- **BrainRocket**: RH, teste no HackerRank, entrevista técnica com engenheiro (event loop, race conditions, RabbitMQ × Kafka, live coding) e conversa com o tech lead.
-- **KWAN**: RH (motivo para ir a Portugal, valores, inglês), teste técnico de 1 hora na sua linguagem, entrevista com especialista e depois com o cliente.
-- **Brasil Card**: os relatos públicos são de vagas não técnicas (atendente e auxiliar contábil), mas mostram o formato: contato rápido do RH, entrevista com recrutador e depois com o gestor ("onde se vê em 5 anos?", "como conheceu a empresa?").
+- **Observabilidade (Sr Full Stack)**: triagem com RH, rodadas técnicas com problemas "fáceis estilo LeetCode", concorrência e system design, exercício com code review ao vivo, comportamental "mais sério que o esperado" (STAR) e aprofundamento na sua experiência.
+- **Node/React (Sr Full Stack)**: RH, teste no HackerRank, entrevista técnica com engenheiro (event loop, race conditions, RabbitMQ × Kafka, live coding) e conversa com o tech lead.
+- **Consultoria internacional**: RH (motivo da mudança, valores, inglês), teste técnico de 1 hora na sua linguagem, entrevista com especialista e depois com o cliente.
 - **PHP pleno no Brasil**: "como o Laravel processa uma requisição", classe abstrata × interface, polimorfismo, SOLID, design patterns, índices e live coding.
 
 ## Código colorido
@@ -132,7 +131,7 @@ Toda história tem um **mini vídeo animado** no topo da página dela. A trilha 
 
 Os controles são: play/pausa, linha do tempo, velocidade, tela cheia e **🔊 narração** com a voz do próprio navegador. Em telas estreitas o vídeo fica em pé, com a conversa em cima e o painel embaixo. O player fica em `assets/story-player.js` e funciona em PT e EN, porque lê o próprio arquivo da história.
 
-As 15 histórias da trilha Brasil Card também têm **MP4** (1280×720, em português) para baixar e compartilhar, em `media/videos/`. Eles são gravados quadro a quadro a partir do mesmo player:
+As 15 histórias da trilha PHP também têm **MP4** (1280×720, em português) para baixar e compartilhar, em `media/videos/`. Eles são gravados quadro a quadro a partir do mesmo player:
 
 ```bash
 python3 -m http.server 8765 &
@@ -182,13 +181,13 @@ data/meta.js          # vagas, temas, tipos e textos da interface (PT/EN)
 data/<tema>.js        # perguntas por tema
 data/rubrics.js       # checklist, ferramentas e métricas por pergunta
 data/glossary.js      # 267 termos com definição curta e longa (PT/EN)
-data/brasilcard.js    # perguntas da vaga Brasil Card (PHP pleno)
+data/php-fintech.js   # perguntas do perfil PHP pleno (pagamentos)
 data/research.js      # perguntas acrescentadas a partir de relatos reais
 data/evidence.js      # fontes da pesquisa e vagas extras por pergunta
 data/measure.js       # guias de medição: métrica, ferramenta, passo a passo e frase de entrevista
 data/paths.js         # trilhas de estudo por vaga (Comece aqui)
 data/videos.js        # quais histórias já têm MP4 gravado
-media/videos/         # MP4 dos mini vídeos (trilha Brasil Card)
+media/videos/         # MP4 dos mini vídeos (trilha PHP)
 player.html           # página só do player (usada para gravar os MP4)
 assets/story-player.js # mini vídeo animado das histórias
 scripts/render-videos.mjs # grava os MP4 quadro a quadro
@@ -222,14 +221,14 @@ node scripts/validate.mjs     # valida o banco de perguntas
 
 **Site:** https://acamilateixeira.github.io/DevTechnical/
 
-A picky interviewer, as an app. It asks senior-level technical questions about the stack on my CV and [portfolio](https://acamilateixeira.github.io/camilat/), and about what my target roles require: Elastic (Senior Full Stack, Observability), BrainRocket (Senior Full Stack Node/React), and Senior React Frontend roles.
+A technical interviewer, as an app. It asks technical questions about the stack on my CV and [portfolio](https://acamilateixeira.github.io/camilat/), grouped by role profile: Senior Full Stack (Observability), Senior Full Stack Node/React, Senior React Frontend, international consultancy, and mid-level PHP Full Stack (payments).
 
 - **Interview**: one question at a time, weighted toward questions I have not answered or scored low on, with an optional 3-minute timer and a draft saved in the browser.
 - **Model answer**: full explanation, code where needed, tools/libraries/techniques to mention, metrics that prove mastery, the interviewer's follow-ups, red flags, and how to anchor the answer in my real experience without inventing any.
 - **Objective score**: each question has a checklist of points a 100% answer must cover. I tick only what I actually said: **≥ 80% correct, 40–79% partial, < 40% wrong**.
 - **Progress**: average score and correct/partial/wrong percentages, overall and per topic, plus strongest and weakest topic.
-- **Mini videos**: every story plays as an animated video (scenes, the 📋 state panel changing, the interview answer) with browser narration; the 15 Brasil Card path stories also have downloadable MP4s.
-- **Start here**: a study path per role (Brasil Card, Elastic, BrainRocket, Frontend, KWAN) that ties stories, labs, measuring guides, and questions together, with progress and a "continue where I left off" button, plus a map of the app.
+- **Mini videos**: every story plays as an animated video (scenes, the 📋 state panel changing, the interview answer) with browser narration; the 15 PHP path stories also have downloadable MP4s.
+- **Start here**: a study path per role profile (PHP payments, Observability, Node/React, Frontend, Consultancy) that ties stories, labs, measuring guides, and questions together, with progress and a "continue where I left off" button, plus a map of the app.
 - **Colored code**: Dracula theme everywhere, with bracket pair colorization (matching pair lights up on hover or at the cursor), rainbow indentation, and a color legend in the lab.
 - **How to measure**: 16 guides (React DevTools, INP/LCP/CLS, Node event loop and memory, load tests, RED/SLOs, slow queries, N+1, locks, Xdebug/Telescope, RabbitMQ/Kafka/Redis, DORA) with the metric, the good value, the tools, where to click step by step, and the interview line.
 - **Stories**: 42 funny dialogue-style stories (every lab plus 28 questions), in Portuguese and English, covering 47 of 92 questions. Each starts with **Who is who** (every character is a piece of code), plays out in chat-style scenes in plain language, with a **📋 State right now** panel closing every scene (output so far, queues, what's left), then a separate moral, technical section, and extras, and ends with the one-paragraph interview answer. They open from the **Stories** tab or from a button on each question and lab.
@@ -237,6 +236,6 @@ A picky interviewer, as an app. It asks senior-level technical questions about t
 - **Start here**: what a senior hiring process looks like and how to study with the app.
 - **Lab**: 14 in-browser examples (editable code, Run button, counters, and a timeline showing what ran in each part of the system and when) plus 5 Node.js labs for the terminal ([`labs/node/README.md`](labs/node/README.md)).
 - **Glossary**: 224 terms in plain language; the short definition appears in parentheses the first time a term shows up (toggle with "( ) definitions").
-- **Is this really asked?**: each question's chip says where it comes from and which company (**✓ reported · Elastic**, **📘 public guide**, or **📋 in the job ad**). The answer lists each source with company, candidate role, date, stage, quote, and link; sources live in [`data/evidence.js`](data/evidence.js). There is also a dedicated set for the Brasil Card mid-level PHP role.
+- **Is this really asked?**: each question's chip says where it comes from and which company (**✓ reported · an observability company**, **📘 public guide**, or **📋 in the job ad**). The answer lists each source with company, candidate role, date, stage, quote, and link; sources live in [`data/evidence.js`](data/evidence.js). There is also a dedicated set for mid-level PHP roles in payments.
 
 92 questions and 473 rubric points in Portuguese and English, including a second batch on the gaps between my CV and the target roles (GraphQL/Apollo, NestJS, MongoDB, Next.js, Docker/Kubernetes, Elasticsearch, OpenTelemetry). No build step, no dependencies, no backend: progress lives only in the browser's `localStorage`. Run it with any static server and validate the question bank with `node scripts/validate.mjs`.

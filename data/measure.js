@@ -311,7 +311,7 @@ export default () => http.get('https://staging.exemplo.com/api/viagens?status=pe
     ]),
     say: r('"Defino SLI do ponto de vista do usuário, SLO e error budget, e alerto por burn rate com duas janelas e runbook, em vez de alertar CPU."',
       '"I define a user-facing SLI, an SLO, and an error budget, and alert on burn rate over two windows with a runbook, instead of alerting on CPU."'),
-    labs: [], questions: ['obs-slo-alerting', 'elastic-alerting-design', 'behavioral-incident-star'],
+    labs: [], questions: ['obs-slo-alerting', 'obs-alerting-design', 'behavioral-incident-star'],
   },
   // ---------------- DB ----------------
   {

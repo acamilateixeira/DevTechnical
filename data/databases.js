@@ -1,7 +1,7 @@
 export default [
   {
     id: 'db-isolation-locks',
-    cat: 'data', type: 'concept', jobs: ['brainrocket', 'elastic', 'cv'],
+    cat: 'data', type: 'concept', jobs: ['sr-node-react', 'sr-observability', 'cv'],
     tags: ['transactions', 'ACID', 'isolation levels', 'SELECT FOR UPDATE', 'deadlock', 'race condition'],
     q: {
       pt: 'Dois gestores aprovam viagens ao mesmo tempo contra o mesmo orçamento. Como você evita que o saldo fique negativo? Explique níveis de isolamento.',
@@ -63,7 +63,7 @@ Caveats: keep transactions short, never call an external API with a transaction 
   },
   {
     id: 'db-indexes-explain',
-    cat: 'data', type: 'concept', jobs: ['brainrocket', 'elastic', 'cv'],
+    cat: 'data', type: 'concept', jobs: ['sr-node-react', 'sr-observability', 'cv'],
     tags: ['indexes', 'B-tree', 'composite index', 'EXPLAIN', 'query optimization', 'covering index'],
     q: {
       pt: 'Uma query que filtra por `company_id`, `status` e ordena por `created_at` ficou lenta com 20 milhões de linhas. Como você investiga e que índice cria?',
@@ -125,7 +125,7 @@ Points that show seniority:
   },
   {
     id: 'db-mongo-vs-sql',
-    cat: 'data', type: 'architecture', jobs: ['brainrocket'],
+    cat: 'data', type: 'architecture', jobs: ['sr-node-react'],
     tags: ['MongoDB', 'MySQL', 'NoSQL', 'document model', 'embedding', 'schema design'],
     q: {
       pt: 'A vaga pede MongoDB e MySQL. Quando você escolhe cada um? Como modela relacionamentos no Mongo: embutir ou referenciar?',
@@ -170,7 +170,7 @@ Mongo has had multi-document transactions since 4.0, but if you need them all th
   },
   {
     id: 'redis-cache-patterns',
-    cat: 'data', type: 'lib', jobs: ['brainrocket', 'cv'],
+    cat: 'data', type: 'lib', jobs: ['sr-node-react', 'cv'],
     tags: ['Redis', 'cache-aside', 'TTL', 'cache stampede', 'invalidation', 'distributed lock'],
     q: {
       pt: 'Como você usa Redis como cache? Explique cache-aside, invalidação, cache stampede e os limites de um lock distribuído.',
@@ -232,13 +232,13 @@ Other Redis uses: rate limiting, sessions, queues (BullMQ), pub/sub, leaderboard
       en: '"I cache everything to make it fast." Or trusting a Redis lock as the only guarantee against double charging.',
     },
     anchor: {
-      pt: 'TripFlow: o lock no Redis coordena chamadas concorrentes de reserva, mas a garantia final está no MySQL e na Idempotency-Key. Isso mostra exatamente a nuance "lock coordena, banco garante". Muito forte para a BrainRocket, que pede Redis.',
-      en: 'TripFlow: the Redis lock coordinates concurrent booking calls, but the final guarantee lives in MySQL and the Idempotency-Key. That shows exactly the "lock coordinates, database guarantees" nuance. Very strong for BrainRocket, which asks for Redis.',
+      pt: 'TripFlow: o lock no Redis coordena chamadas concorrentes de reserva, mas a garantia final está no MySQL e na Idempotency-Key. Isso mostra exatamente a nuance "lock coordena, banco garante". Muito forte para vagas que pedem Redis.',
+      en: 'TripFlow: the Redis lock coordinates concurrent booking calls, but the final guarantee lives in MySQL and the Idempotency-Key. That shows exactly the "lock coordinates, database guarantees" nuance. Very strong for roles that ask for Redis.',
     },
   },
   {
     id: 'mongo-aggregation-esr',
-    cat: 'data', type: 'code', jobs: ['brainrocket'],
+    cat: 'data', type: 'code', jobs: ['sr-node-react'],
     tags: ['MongoDB', 'aggregation pipeline', 'indexes', 'ESR rule', 'explain', '$lookup'],
     q: {
       pt: 'No MongoDB, escreva uma agregação com o total gasto por centro de custo no mês, só de viagens aprovadas, e diga que índice criaria.',
@@ -314,7 +314,7 @@ If this report runs constantly, the alternative is a precomputed aggregate (a pe
   },
   {
     id: 'mongo-replication-consistency',
-    cat: 'data', type: 'concept', jobs: ['brainrocket'],
+    cat: 'data', type: 'concept', jobs: ['sr-node-react'],
     tags: ['MongoDB', 'replica set', 'write concern', 'read concern', 'sharding', 'shard key', 'transactions'],
     q: {
       pt: 'Explique replica set, write concern, read concern e sharding no MongoDB. Como você escolhe a shard key?',

@@ -1,7 +1,7 @@
 export default [
   {
     id: 'arch-monolith-microservices',
-    cat: 'architecture', type: 'architecture', jobs: ['brainrocket', 'elastic'],
+    cat: 'architecture', type: 'architecture', jobs: ['sr-node-react', 'sr-observability'],
     tags: ['microservices', 'modular monolith', 'bounded context', 'distributed systems', 'saga'],
     q: {
       pt: 'Monolito ou microsserviços? Você já quebrou um sistema em serviços? Quais os custos que ninguém conta?',
@@ -38,7 +38,7 @@ Signs of the right boundary: the service owns its data, can be down without taki
   },
   {
     id: 'arch-resilience-partial',
-    cat: 'architecture', type: 'architecture', jobs: ['elastic', 'brainrocket', 'cv'],
+    cat: 'architecture', type: 'architecture', jobs: ['sr-observability', 'sr-node-react', 'cv'],
     tags: ['timeout', 'retry', 'circuit breaker', 'bulkhead', 'graceful degradation', 'fan-out'],
     q: {
       pt: 'Sua API agrega dados de três provedores externos. Um deles às vezes leva 30 segundos. Como você desenha isso?',
@@ -83,7 +83,7 @@ On the frontend, the UI must represent these states: loading, partial, unavailab
   },
   {
     id: 'arch-system-design-logs',
-    cat: 'architecture', type: 'architecture', jobs: ['elastic'],
+    cat: 'architecture', type: 'architecture', jobs: ['sr-observability'],
     tags: ['system design', 'log ingestion', 'Elasticsearch', 'backpressure', 'retention', 'Kibana'],
     q: {
       pt: 'System design: desenhe um sistema que recebe logs de 10 mil serviços e permite buscar e visualizar em tempo quase real (pense num Kibana simplificado).',
@@ -128,7 +128,7 @@ Senior points: estimate storage (1M/s × 1 KB × 86,400 s ≈ 86 TB/day raw, bef
   },
   {
     id: 'arch-multitenancy',
-    cat: 'architecture', type: 'architecture', jobs: ['brainrocket', 'cv'],
+    cat: 'architecture', type: 'architecture', jobs: ['sr-node-react', 'cv'],
     tags: ['multi-tenancy', 'tenant isolation', 'row level security', 'SaaS'],
     q: {
       pt: 'Como você implementa multi-tenancy numa aplicação SaaS e garante que um cliente nunca veja dados de outro?',

@@ -775,7 +775,7 @@ export const rubrics = {
     tools: ['React DevTools', 'Profiler', 'Chrome Performance', 'Redux DevTools', 'TanStack Query Devtools', 'useDebugValue', '<Profiler onRender>'],
     metrics: ['Duração do commit / commit duration', 'Re-renders por tecla / re-renders per keystroke', 'INP', 'Long tasks'],
   },
-  // ---------- Brasil Card (Full Stack Pleno PHP) ----------
+  // ---------- Full Stack Pleno PHP (pagamentos) ----------
   'php-oop-abstract-interface-trait': {
     points: [
       p('Interface = contrato; várias por classe', 'Interface = contract; many per class'),
@@ -955,7 +955,7 @@ export const rubrics = {
     tools: ['Cloud Run', 'GKE', 'Cloud SQL', 'Pub/Sub', 'Cloud Storage', 'Secret Manager', 'Artifact Registry'],
     metrics: [],
   },
-  'behavioral-brasilcard-fit': {
+  'behavioral-company-fit': {
     points: [
       p('Pitch de 90 s: presente → passado → esta vaga', '90 s pitch: present → past → this role'),
       p('Por que a empresa com algo específico e pesquisado', 'Why the company with something specific and researched'),
@@ -989,7 +989,7 @@ export const rubrics = {
     tools: ['HackerRank', 'Map', 'Set', 'stack', 'Big O'],
     metrics: ['Complexidade / complexity'],
   },
-  'elastic-alerting-design': {
+  'obs-alerting-design': {
     points: [
       p('Clarificou requisitos (volume, atraso, canais)', 'Clarified requirements (volume, delay, channels)'),
       p('Agendador e avaliadores distribuídos com lease', 'Scheduler and distributed evaluators with leases'),

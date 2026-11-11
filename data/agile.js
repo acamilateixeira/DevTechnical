@@ -1,7 +1,7 @@
 export default [
   {
     id: 'scrum-ceremonies-estimation',
-    cat: 'agile', type: 'concept', jobs: ['brainrocket', 'elastic', 'cv'],
+    cat: 'agile', type: 'concept', jobs: ['sr-node-react', 'sr-observability', 'cv'],
     tags: ['Scrum', 'sprint', 'story points', 'estimation', 'refinement', 'retrospective', 'Kanban'],
     q: {
       pt: 'Explique os papéis, eventos e artefatos do Scrum. Como você estima, e o que faz quando a sprint claramente não vai fechar?',
@@ -36,13 +36,13 @@ export default [
       en: 'Converting story points into hours. Or "we work overtime to close the sprint".',
     },
     anchor: {
-      pt: 'Na Sicoob você atuou em times Scrum com Trello, Planner e GitLab Issue Boards; na ZR System organizou entregas com práticas ágeis; a BrainRocket pede sprints quinzenais com grooming e planning. No Grupo Mysa, sustentação em produção convive com evolução: ótimo exemplo para "trabalho não planejado".',
-      en: 'At Sicoob you worked in Scrum teams with Trello, Planner, and GitLab Issue Boards; at ZR System you organized deliveries with agile practices; BrainRocket asks for bi-weekly sprints with grooming and planning. At Grupo Mysa, production support coexists with new work: a great example of "unplanned work".',
+      pt: 'Na Sicoob você atuou em times Scrum com Trello, Planner e GitLab Issue Boards; na ZR System organizou entregas com práticas ágeis; vagas sênior costumam pedir sprints quinzenais com grooming e planning. No Grupo Mysa, sustentação em produção convive com evolução: ótimo exemplo para "trabalho não planejado".',
+      en: 'At Sicoob you worked in Scrum teams with Trello, Planner, and GitLab Issue Boards; at ZR System you organized deliveries with agile practices; senior roles often ask for bi-weekly sprints with grooming and planning. At Grupo Mysa, production support coexists with new work: a great example of "unplanned work".',
     },
   },
   {
     id: 'behavioral-incident-star',
-    cat: 'agile', type: 'behavioral', jobs: ['elastic', 'brainrocket', 'frontend', 'cv'],
+    cat: 'agile', type: 'behavioral', jobs: ['sr-observability', 'sr-node-react', 'frontend', 'cv'],
     tags: ['STAR', 'incident', 'postmortem', 'ownership', 'production'],
     q: {
       pt: 'Me conte sobre o pior incidente de produção que você enfrentou. O que aconteceu, o que você fez e o que mudou depois?',
@@ -81,7 +81,7 @@ What the interviewer is assessing: ownership, calm under pressure, diagnostic re
   },
   {
     id: 'behavioral-technical-disagreement',
-    cat: 'agile', type: 'behavioral', jobs: ['elastic', 'brainrocket', 'frontend'],
+    cat: 'agile', type: 'behavioral', jobs: ['sr-observability', 'sr-node-react', 'frontend'],
     tags: ['disagreement', 'ADR', 'influence', 'disagree and commit', 'leadership'],
     q: {
       pt: 'Conte de uma vez em que você discordou de uma decisão técnica do time ou de alguém mais sênior. Como terminou?',
@@ -122,7 +122,7 @@ Tone matters: the conflict is with the idea, not the person.`,
   },
   {
     id: 'behavioral-ai-tools',
-    cat: 'agile', type: 'behavioral', jobs: ['elastic', 'brainrocket', 'frontend'],
+    cat: 'agile', type: 'behavioral', jobs: ['sr-observability', 'sr-node-react', 'frontend'],
     tags: ['AI-assisted development', 'Copilot', 'Claude', 'code review', 'productivity', 'evaluation'],
     q: {
       pt: 'A vaga pede experiência com ferramentas de desenvolvimento assistido por IA. Como você usa, onde não confia e como avalia uma ferramenta nova?',
@@ -155,7 +155,7 @@ Tone matters: the conflict is with the idea, not the person.`,
   },
   {
     id: 'behavioral-why-senior',
-    cat: 'agile', type: 'behavioral', jobs: ['elastic', 'brainrocket', 'frontend', 'cv'],
+    cat: 'agile', type: 'behavioral', jobs: ['sr-observability', 'sr-node-react', 'frontend', 'cv'],
     tags: ['seniority', 'tell me about yourself', 'pitch', 'gaps', 'experience'],
     q: {
       pt: 'A vaga pede 5+ anos com TypeScript, React e Node em produção. Sua experiência principal é PHP/Laravel. Por que você é sênior para essa vaga?',

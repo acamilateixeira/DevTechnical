@@ -117,7 +117,7 @@ function fillStoryTitlesIn(view, lang) {
 export function renderStart(view, { lang, gloss = true, L, questions, scores = {} }) {
   const c = C[lang];
   const ann = createAnnotator(lang, { inline: gloss });
-  const current = paths[getPath()] ? getPath() : 'brasilcard';
+  const current = paths[getPath()] ? getPath() : 'php-fintech';
   const strip = (h) => h.replace(/^<p>|<\/p>$/g, '');
   const fillStoryTitles = () => fillStoryTitlesIn(view, lang);
 

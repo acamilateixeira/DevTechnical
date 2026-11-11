@@ -4,7 +4,7 @@
 export default [
   {
     id: 'algo-top-k-frequent',
-    cat: 'algorithms', type: 'code', jobs: ['elastic', 'brainrocket'],
+    cat: 'algorithms', type: 'code', jobs: ['sr-observability', 'sr-node-react'],
     tags: ['live coding', 'Map', 'heap', 'sort', 'Big O', 'top-K', 'logs'],
     q: {
       pt: 'Live coding: dada uma lista de linhas de log, devolva os K serviços que mais geraram erro. Qual a complexidade da sua solução? E se o log não couber na memória?',
@@ -69,7 +69,7 @@ What counts: code that runs, clear names, explained complexity, and tested edge 
   },
   {
     id: 'algo-classic-hackerrank',
-    cat: 'algorithms', type: 'code', jobs: ['brainrocket', 'kwan', 'brasilcard'],
+    cat: 'algorithms', type: 'code', jobs: ['sr-node-react', 'consulting', 'php-fintech'],
     tags: ['HackerRank', 'two sum', 'parênteses balanceados', 'stack', 'hash map', 'anagramas', 'Big O'],
     q: {
       pt: 'Teste de código cronometrado: (1) two sum, (2) parênteses balanceados, (3) agrupar anagramas. Resolva os três explicando a complexidade.',
@@ -138,13 +138,13 @@ In a timed test: read every prompt first, solve the easiest first, run the given
       en: 'Submitting O(n²) without mentioning a better solution exists. Or not testing with empty input.',
     },
     anchor: {
-      pt: 'Algoritmos clássicos não aparecem no CV de ninguém; aparecem no treino. Faça 2 ou 3 problemas fáceis por dia no HackerRank em JavaScript/TypeScript (e em PHP para a Brasil Card) durante a semana da entrevista.',
-      en: 'Classic algorithms show up in practice, not on anyone\'s CV. Do 2 or 3 easy HackerRank problems a day in JavaScript/TypeScript (and PHP for Brasil Card) during interview week.',
+      pt: 'Algoritmos clássicos não aparecem no CV de ninguém; aparecem no treino. Faça 2 ou 3 problemas fáceis por dia no HackerRank em JavaScript/TypeScript (e em PHP para vagas PHP) durante a semana da entrevista.',
+      en: 'Classic algorithms show up in practice, not on anyone\'s CV. Do 2 or 3 easy HackerRank problems a day in JavaScript/TypeScript (and PHP for PHP roles) during interview week.',
     },
   },
   {
-    id: 'elastic-alerting-design',
-    cat: 'architecture', type: 'architecture', jobs: ['elastic'],
+    id: 'obs-alerting-design',
+    cat: 'architecture', type: 'architecture', jobs: ['sr-observability'],
     tags: ['alerting', 'system design', 'deduplicação', 'throttling', 'regras', 'notificações', 'Kibana alerting'],
     q: {
       pt: 'System design: o usuário cria uma regra "me avise se o serviço X tiver mais de 50 erros em 5 minutos". Desenhe o sistema de alertas: avaliação, deduplicação, throttling e notificação.',
@@ -193,7 +193,7 @@ Trade-offs: **polling** evaluation (simple, delay equals the interval) vs **stre
   },
   {
     id: 'behavioral-proud-project-deepdive',
-    cat: 'agile', type: 'behavioral', jobs: ['elastic', 'brainrocket', 'kwan', 'brasilcard', 'cv'],
+    cat: 'agile', type: 'behavioral', jobs: ['sr-observability', 'sr-node-react', 'consulting', 'php-fintech', 'cv'],
     tags: ['projeto que te orgulha', 'deep dive', 'decisões', 'trade-offs', 'impacto', 'STAR'],
     q: {
       pt: 'Conte de um projeto de que você se orgulha. (O entrevistador vai cavar: por que essa arquitetura? O que você faria diferente? Qual foi exatamente a SUA parte?)',
@@ -236,7 +236,7 @@ Prepare answers for the "dig": why not the obvious alternative, how you tested, 
   },
   {
     id: 'behavioral-remote-async',
-    cat: 'agile', type: 'behavioral', jobs: ['elastic', 'brasilcard', 'kwan'],
+    cat: 'agile', type: 'behavioral', jobs: ['sr-observability', 'php-fintech', 'consulting'],
     tags: ['trabalho remoto', 'assíncrono', 'distribuído', 'comunicação escrita', 'fusos horários', 'autonomia'],
     q: {
       pt: 'Você vai trabalhar remoto com pessoas em outros fusos. Como você se comunica, pede ajuda, toma decisões e mostra progresso sem reunião o tempo todo?',
@@ -275,25 +275,25 @@ Give a real example of when this prevented a problem or sped up a delivery.`,
   },
   {
     id: 'behavioral-relocation-consultancy',
-    cat: 'agile', type: 'behavioral', jobs: ['kwan', 'brainrocket'],
-    tags: ['realocação', 'Portugal', 'consultoria', 'entrevista com cliente', 'inglês', 'motivação'],
+    cat: 'agile', type: 'behavioral', jobs: ['consulting', 'sr-node-react'],
+    tags: ['realocação', 'consultoria', 'entrevista com cliente', 'inglês', 'motivação'],
     q: {
-      pt: 'Por que você quer se mudar para Portugal (ou para a cidade da vaga)? Já pesquisou custo de vida, visto e adaptação? E como você se sai numa consultoria, sendo entrevistada pelo cliente?',
-      en: 'Why do you want to move to Portugal (or the role\'s city)? Have you researched cost of living, visa, and adjustment? And how do you do at a consultancy, being interviewed by the client?',
+      pt: 'Por que você quer se mudar para outro país (ou para a cidade da vaga)? Já pesquisou custo de vida, visto e adaptação? E como você se sai numa consultoria, sendo entrevistada pelo cliente?',
+      en: 'Why do you want to move to another country (or the role\'s city)? Have you researched cost of living, visa, and adjustment? And how do you do at a consultancy, being interviewed by the client?',
     },
     a: {
       pt: `**Motivação**: uma razão profissional e uma pessoal, ambas verdadeiras, sem soar como fuga. Ex.: "quero trabalhar num mercado com produtos internacionais e times diversos; e quero viver essa experiência, que venho planejando com calma".
 
 **Mostre que pesquisou** (é isso que eles avaliam, porque realocação que desiste em 3 meses custa caro): tipo de visto e quem patrocina, custo de moradia na cidade, tempo até começar, e que você entende a faixa salarial local.
 
-**Consultoria (KWAN)**: você será alocada num cliente e entrevistada por ele. Mostre que se adapta a stacks, processos e culturas diferentes, que aprende rápido o domínio do cliente e que representa bem a consultoria (comunicação, pontualidade, transparência sobre problemas). Exemplos fortes: ter trabalhado em contextos muito diferentes (financeiro, ERP, indústria e mineração, prefeitura) e em mais de uma empresa ao mesmo tempo.
+**Consultoria**: você será alocada num cliente e entrevistada por ele. Mostre que se adapta a stacks, processos e culturas diferentes, que aprende rápido o domínio do cliente e que representa bem a consultoria (comunicação, pontualidade, transparência sobre problemas). Exemplos fortes: ter trabalhado em contextos muito diferentes (financeiro, ERP, indústria e mineração, prefeitura) e em mais de uma empresa ao mesmo tempo.
 
 **Inglês**: pratique este pitch e as respostas técnicas em inglês; o teste costuma ser uma conversa.`,
       en: `**Motivation**: one professional and one personal reason, both true, without sounding like running away. E.g. "I want to work in a market with international products and diverse teams; and I want that experience, which I have been planning carefully".
 
 **Show you researched it** (that is what they assess, because a relocation that quits in 3 months is costly): visa type and who sponsors it, housing costs in the city, time until you can start, and that you understand the local salary range.
 
-**Consultancy (KWAN)**: you will be placed with a client and interviewed by them. Show you adapt to different stacks, processes, and cultures, learn the client's domain fast, and represent the consultancy well (communication, punctuality, transparency about problems). Strong examples: having worked in very different contexts (finance, ERP, industry and mining, a municipality) and for more than one company at a time.
+**Consultancy**: you will be placed with a client and interviewed by them. Show you adapt to different stacks, processes, and cultures, learn the client's domain fast, and represent the consultancy well (communication, punctuality, transparency about problems). Strong examples: having worked in very different contexts (finance, ERP, industry and mining, a municipality) and for more than one company at a time.
 
 **English**: rehearse this pitch and your technical answers in English; the test is usually a conversation.`,
     },

@@ -1,7 +1,7 @@
 export default [
   {
     id: 'solid-all-five',
-    cat: 'principles', type: 'code', jobs: ['elastic', 'brainrocket', 'frontend', 'cv'],
+    cat: 'principles', type: 'code', jobs: ['sr-observability', 'sr-node-react', 'frontend', 'cv'],
     tags: ['SOLID', 'SRP', 'OCP', 'LSP', 'ISP', 'DIP'],
     q: {
       pt: 'Explique os cinco princípios SOLID com um exemplo real para cada um. Não vale a definição de livro.',
@@ -68,7 +68,7 @@ The senior point: SOLID is a tool against coupling, not a rule to add an interfa
   },
   {
     id: 'ddd-core-concepts',
-    cat: 'principles', type: 'concept', jobs: ['brainrocket', 'elastic', 'cv'],
+    cat: 'principles', type: 'concept', jobs: ['sr-node-react', 'sr-observability', 'cv'],
     tags: ['DDD', 'bounded context', 'aggregate', 'ubiquitous language', 'value object', 'domain events'],
     q: {
       pt: 'O que é DDD na prática? Explique bounded context, agregado, value object, linguagem ubíqua e eventos de domínio.',
@@ -154,7 +154,7 @@ DDD pays off in complex domains. For a simple CRUD it is too much ceremony.`,
   },
   {
     id: 'clean-code-review',
-    cat: 'principles', type: 'code', jobs: ['elastic', 'brainrocket', 'frontend'],
+    cat: 'principles', type: 'code', jobs: ['sr-observability', 'sr-node-react', 'frontend'],
     tags: ['Clean Code', 'code review', 'refactoring', 'naming', 'code smells'],
     q: {
       pt: 'Faça o code review deste trecho como faria num PR de um colega júnior. O que você comenta e como?',
@@ -239,7 +239,7 @@ export async function saveDiscountedOrders(orders: readonly Order[], api: Orders
   },
   {
     id: 'design-patterns-real',
-    cat: 'principles', type: 'concept', jobs: ['brainrocket', 'elastic', 'cv'],
+    cat: 'principles', type: 'concept', jobs: ['sr-node-react', 'sr-observability', 'cv'],
     tags: ['design patterns', 'Strategy', 'Adapter', 'Observer', 'Factory', 'Repository', 'Decorator'],
     q: {
       pt: 'Quais design patterns você usa de verdade no dia a dia? Dê um exemplo concreto de cada.',

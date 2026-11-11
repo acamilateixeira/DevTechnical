@@ -1,7 +1,7 @@
 export default [
   {
     id: 'api-rest-vs-graphql',
-    cat: 'api', type: 'architecture', jobs: ['brainrocket', 'elastic'],
+    cat: 'api', type: 'architecture', jobs: ['sr-node-react', 'sr-observability'],
     tags: ['REST', 'GraphQL', 'Apollo', 'over-fetching', 'caching'],
     q: {
       pt: 'REST ou GraphQL? Quais os trade-offs reais e quando você escolheria cada um?',
@@ -34,7 +34,7 @@ I pick REST for public APIs, system-to-system integrations, webhooks, and simple
   },
   {
     id: 'graphql-n-plus-one',
-    cat: 'api', type: 'code', jobs: ['brainrocket'],
+    cat: 'api', type: 'code', jobs: ['sr-node-react'],
     tags: ['GraphQL', 'N+1', 'DataLoader', 'batching', 'resolvers'],
     q: {
       pt: 'O que é o problema N+1 em GraphQL e como o DataLoader resolve? Mostre em código.',
@@ -98,7 +98,7 @@ Alternatives: a join/lookahead in the parent resolver, or ORM eager loading. Dat
   },
   {
     id: 'api-idempotency',
-    cat: 'api', type: 'architecture', jobs: ['brainrocket', 'elastic', 'cv'],
+    cat: 'api', type: 'architecture', jobs: ['sr-node-react', 'sr-observability', 'cv'],
     tags: ['idempotency', 'Idempotency-Key', 'retries', 'payments', 'HTTP methods'],
     q: {
       pt: 'O cliente faz um POST de pagamento, a rede cai e ele tenta de novo. Como você garante que não cobra duas vezes?',
@@ -141,7 +141,7 @@ This ties into **at-least-once** messaging: retries are unavoidable in distribut
   },
   {
     id: 'api-websockets-scale',
-    cat: 'api', type: 'architecture', jobs: ['brainrocket', 'elastic'],
+    cat: 'api', type: 'architecture', jobs: ['sr-node-react', 'sr-observability'],
     tags: ['WebSockets', 'SSE', 'Socket.IO', 'Redis pub/sub', 'scaling', 'sticky sessions'],
     q: {
       pt: 'Você precisa mostrar atualizações em tempo real para 50 mil usuários conectados. WebSocket, SSE ou polling? E como escala horizontalmente?',
@@ -178,7 +178,7 @@ Other concerns: heartbeats/pings to detect dead connections, reconnection with e
   },
   {
     id: 'api-pagination-compat',
-    cat: 'api', type: 'concept', jobs: ['elastic', 'brainrocket'],
+    cat: 'api', type: 'concept', jobs: ['sr-observability', 'sr-node-react'],
     tags: ['pagination', 'cursor', 'offset', 'backward compatibility', 'versioning'],
     q: {
       pt: 'Paginação por offset ou por cursor? E como você evolui uma API usada por clientes que você não controla sem quebrar ninguém?',
@@ -189,7 +189,7 @@ Other concerns: heartbeats/pings to detect dead connections, reconnection with e
 
 **Cursor/keyset** (\`WHERE (created_at, id) < (:c, :id) ORDER BY created_at DESC, id DESC LIMIT 20\`) usa índice, tem custo constante e é estável com inserções. Desvantagem: não pula para página arbitrária. Ideal para feeds, logs e scroll infinito. O cursor deve ser opaco (base64) para o cliente não depender do formato.
 
-**Compatibilidade retroativa** (a vaga da Elastic cita isso explicitamente):
+**Compatibilidade retroativa** (vagas de plataforma citam isso explicitamente):
 
 - Mudanças aditivas são seguras: novos campos opcionais, novos endpoints. Clientes devem ignorar campos desconhecidos (tolerant reader).
 - Nunca remover ou renomear campo, mudar tipo ou tornar obrigatório sem nova versão.
@@ -201,7 +201,7 @@ Other concerns: heartbeats/pings to detect dead connections, reconnection with e
 
 **Cursor/keyset** (\`WHERE (created_at, id) < (:c, :id) ORDER BY created_at DESC, id DESC LIMIT 20\`) uses an index, has constant cost, and is stable under inserts. Downside: no jumping to an arbitrary page. Ideal for feeds, logs, and infinite scroll. The cursor should be opaque (base64) so clients do not depend on its format.
 
-**Backward compatibility** (Elastic's posting calls this out explicitly):
+**Backward compatibility** (platform job postings call this out explicitly):
 
 - Additive changes are safe: new optional fields, new endpoints. Clients should ignore unknown fields (tolerant reader).
 - Never remove or rename a field, change its type, or make it required without a new version.
@@ -225,7 +225,7 @@ Other concerns: heartbeats/pings to detect dead connections, reconnection with e
   },
   {
     id: 'graphql-schema-apollo-server',
-    cat: 'api', type: 'code', jobs: ['brainrocket'],
+    cat: 'api', type: 'code', jobs: ['sr-node-react'],
     tags: ['GraphQL', 'Apollo Server', 'schema design', 'connections', 'errors', 'authorization'],
     q: {
       pt: 'Desenhe o schema GraphQL de viagens com paginação, uma mutation de aprovação e tratamento de erros. Onde fica a autorização?',
@@ -301,7 +301,7 @@ Production safeguards: depth and complexity limits, persisted queries, introspec
   },
   {
     id: 'socketio-auth-redis-adapter',
-    cat: 'api', type: 'code', jobs: ['brainrocket'],
+    cat: 'api', type: 'code', jobs: ['sr-node-react'],
     tags: ['Socket.IO', 'WebSockets', 'Redis adapter', 'rooms', 'authentication', 'horizontal scaling'],
     q: {
       pt: 'Implemente um servidor Socket.IO que autentica no handshake, coloca o usuário na sala da empresa e funciona com várias instâncias.',

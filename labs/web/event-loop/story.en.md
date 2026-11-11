@@ -160,7 +160,7 @@ Example: `setTimeout(() => console.log("A"), 0); Promise.resolve().then(() => co
 
 **Rule to memorize**: the Event Loop doesn't look at a function and decide whether it deserves the VIP line. The API used to schedule it determines which line it goes into.
 
-## ➕ Three details the picky recruiter asks next
+## ➕ Three details often asked next
 - **`.then()` only enters the line when the Promise resolves.** `fetch(url).then(fn)`: while the network hasn't answered, `fn` isn't in any line. When the response arrives (a macrotask/I/O), the Promise resolves and only then does `fn` enter the VIP line.
 - **A slow microtask freezes everything.** Since the VIP line is emptied completely before any timer, click, or screen repaint, a slow microtask (or a microtask that keeps scheduling another one) freezes the page. Microtasks are priority, not "background".
 - **Node has an even more VIP line: `process.nextTick`**, which runs before Promises (see Node lab 01).

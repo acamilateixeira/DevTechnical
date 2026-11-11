@@ -5,7 +5,7 @@
 ## 🎭 Elenco
 - 👵 **Dona Cida** · a portadora do cartão · decidida, até mudar de ideia
 - 📟 **Maquininha** · o terminal (POS) · pergunta pro emissor se pode
-- 🏦 **Emissor** · quem emitiu o cartão (o papel da Brasil Card) · decide se aprova e cuida do limite e da fatura
+- 🏦 **Emissor** · quem emitiu o cartão (a emissora) · decide se aprova e cuida do limite e da fatura
 - 🔒 **Reserva** · autorização · segura o valor no limite; ainda não é dívida
 - ✅ **Confirmação** · captura · a venda se confirma e vira lançamento na fatura
 - ↩️ **Devolução** · estorno · um lançamento NOVO de crédito, nunca apagar a compra

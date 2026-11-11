@@ -160,7 +160,7 @@ Exemplo: `setTimeout(() => console.log("A"), 0); Promise.resolve().then(() => co
 
 **Regra para decorar**: não é o Event Loop que olha uma função e decide se ela merece a fila VIP. A API usada para agendá-la determina em qual fila ela entra.
 
-## ➕ Três detalhes que o recrutador chato pergunta depois
+## ➕ Três detalhes que costumam perguntar depois
 - **O `.then()` só entra na fila quando a Promise resolve.** `fetch(url).then(fn)`: enquanto a rede não responde, o `fn` não está em fila nenhuma. Quando a resposta chega (uma macrotask/I/O), a Promise resolve e só então o `fn` entra na fila VIP.
 - **Microtask demorada trava tudo.** Como a fila VIP é esvaziada inteira antes de qualquer timer, clique ou redesenho da tela, uma microtask lenta (ou uma microtask que agenda outra sem parar) congela a página. Microtask é prioridade, não é "segundo plano".
 - **No Node existe uma fila ainda mais VIP: `process.nextTick`**, que roda antes das Promises (veja o lab Node 01).

@@ -1,11 +1,11 @@
-// Bloco da vaga Full Stack Pleno (PHP) na Brasil Card (instituição de pagamentos).
+// Bloco de perguntas para Full Stack Pleno (PHP) em instituição de pagamentos (cartões).
 // Requisitos da vaga: PHP 7.4+, HTML/CSS/JS, Java, SQL Server/MySQL/PostgreSQL, CodeIgniter 3+,
 // Laravel, Docker, Git. Diferenciais: Kubernetes, Clean Architecture, DDD, TDD, GCP.
 
 export default [
   {
     id: 'php-oop-abstract-interface-trait',
-    cat: 'php', type: 'code', jobs: ['brasilcard', 'cv'],
+    cat: 'php', type: 'code', jobs: ['php-fintech', 'cv'],
     tags: ['POO', 'OOP', 'interface', 'abstract class', 'trait', 'polimorfismo', 'herança', 'composição'],
     q: {
       pt: 'Qual a diferença entre classe abstrata, interface e trait em PHP? Mostre polimorfismo num exemplo de meios de pagamento.',
@@ -93,7 +93,7 @@ Details that show mastery: \`final\` to block inheritance where it makes no sens
   },
   {
     id: 'php-7-to-8-features',
-    cat: 'php', type: 'code', jobs: ['brasilcard'],
+    cat: 'php', type: 'code', jobs: ['php-fintech'],
     tags: ['PHP 7.4', 'PHP 8', 'typed properties', 'match', 'enum', 'readonly', 'nullsafe', 'named arguments', 'strict_types'],
     q: {
       pt: 'A vaga pede PHP 7.4+. O que mudou do 7.4 para o 8.x que você usa no dia a dia? E como você migraria um sistema legado do 7.4 para o 8?',
@@ -180,7 +180,7 @@ In payments, the comparison change is the riskiest part: a \`==\` that "worked" 
   },
   {
     id: 'php-comparison-money',
-    cat: 'payments', type: 'code', jobs: ['brasilcard'],
+    cat: 'payments', type: 'code', jobs: ['php-fintech'],
     tags: ['==', '===', 'type juggling', 'float', 'dinheiro', 'bcmath', 'centavos', 'arredondamento'],
     q: {
       pt: 'Numa instituição de pagamentos: qual a diferença entre `==` e `===` em PHP, e por que nunca guardar dinheiro em float? Como você calcula 3 parcelas de R$100,00?',
@@ -244,7 +244,7 @@ A \`Money\` value object (amount + currency, immutable) centralizes these rules 
   },
   {
     id: 'codeigniter3-architecture',
-    cat: 'php', type: 'lib', jobs: ['brasilcard'],
+    cat: 'php', type: 'lib', jobs: ['php-fintech'],
     tags: ['CodeIgniter 3', 'MVC', 'Query Builder', 'hooks', 'libraries', 'helpers', 'CSRF', 'XSS'],
     q: {
       pt: 'A vaga pede CodeIgniter 3 e Laravel. Como funciona uma requisição no CodeIgniter 3, quais as peças (controllers, models, libraries, helpers, hooks) e o que muda em relação ao Laravel?',
@@ -339,7 +339,7 @@ if ($this->db->trans_status() === false) { /* rollback já feito; logar e avisar
   },
   {
     id: 'laravel-queues-payments',
-    cat: 'php', type: 'code', jobs: ['brasilcard', 'cv'],
+    cat: 'php', type: 'code', jobs: ['php-fintech', 'cv'],
     tags: ['Laravel', 'queues', 'jobs', 'Horizon', 'retry', 'backoff', 'ShouldBeUnique', 'failed jobs', 'idempotência'],
     q: {
       pt: 'Depois que um pagamento é confirmado, o sistema precisa gerar o comprovante, mandar e-mail e avisar o ERP. Como você faz isso no Laravel sem travar a requisição e sem duplicar nada se o job rodar duas vezes?',
@@ -423,7 +423,7 @@ Details that matter in a payments system:
   },
   {
     id: 'php-security-pdo-password',
-    cat: 'security', type: 'code', jobs: ['brasilcard'],
+    cat: 'security', type: 'code', jobs: ['php-fintech'],
     tags: ['SQL injection', 'PDO', 'prepared statements', 'password_hash', 'XSS', 'htmlspecialchars', 'CSRF', 'PCI'],
     q: {
       pt: 'Mostre como você protege um código PHP contra SQL injection, XSS e senhas vazadas. O que nunca pode aparecer num log de uma empresa de cartões?',
@@ -482,7 +482,7 @@ $logger->info('compra autorizada', ['cartao' => mascararCartao($pan), 'valor' =>
   },
   {
     id: 'sql-three-databases',
-    cat: 'data', type: 'concept', jobs: ['brasilcard', 'cv'],
+    cat: 'data', type: 'concept', jobs: ['php-fintech', 'cv'],
     tags: ['SQL Server', 'MySQL', 'PostgreSQL', 'T-SQL', 'IDENTITY', 'AUTO_INCREMENT', 'SERIAL', 'isolamento', 'stored procedure'],
     q: {
       pt: 'A vaga cita SQL Server, MySQL e PostgreSQL. Quais diferenças práticas você precisa lembrar ao trabalhar com os três no mesmo sistema?',
@@ -552,7 +552,7 @@ To integrate all three, I let each system own its database and integrate via API
   },
   {
     id: 'sql-live-query-faturas',
-    cat: 'data', type: 'code', jobs: ['brasilcard'],
+    cat: 'data', type: 'code', jobs: ['php-fintech'],
     tags: ['SQL', 'JOIN', 'GROUP BY', 'HAVING', 'LEFT JOIN', 'window function', 'subquery', 'live coding'],
     q: {
       pt: 'SQL ao vivo: tabelas `clientes`, `faturas` (cliente_id, vencimento, total_centavos, pago_em). Liste os clientes com faturas vencidas e não pagas, o total devido e há quantos dias está a mais antiga. Depois: clientes sem nenhuma fatura.',
@@ -631,7 +631,7 @@ Ask before writing: "does a null pago_em mean unpaid? Do partial payments exist?
   },
   {
     id: 'docker-php-dev-env',
-    cat: 'devops', type: 'code', jobs: ['brasilcard', 'cv'],
+    cat: 'devops', type: 'code', jobs: ['php-fintech', 'cv'],
     tags: ['Docker', 'docker compose', 'php-fpm', 'nginx', 'volumes', 'Xdebug', 'ambiente de desenvolvimento'],
     q: {
       pt: 'A vaga pede "ambiente de desenvolvimento com Docker". Monte um docker-compose para uma aplicação PHP com Nginx, PHP-FPM e MySQL, e explique imagem, container, volume e rede.',
@@ -710,7 +710,7 @@ Everyday commands: \`docker compose up -d\`, \`logs -f app\`, \`exec app php art
   },
   {
     id: 'git-workflow-conflicts',
-    cat: 'testing', type: 'concept', jobs: ['brasilcard', 'cv'],
+    cat: 'testing', type: 'concept', jobs: ['php-fintech', 'cv'],
     tags: ['Git', 'merge', 'rebase', 'conflito', 'Git Flow', 'trunk-based', 'revert', 'reset', 'cherry-pick', 'hotfix'],
     q: {
       pt: 'Explique merge × rebase, como você resolve um conflito e como faz um hotfix urgente em produção sem levar junto o que ainda não foi homologado.',
@@ -776,7 +776,7 @@ Also: clear commit messages (Conventional Commits), a protected \`main\` with PR
   },
   {
     id: 'java-basics-for-php-dev',
-    cat: 'php', type: 'concept', jobs: ['brasilcard'],
+    cat: 'php', type: 'concept', jobs: ['php-fintech'],
     tags: ['Java', 'JVM', 'tipagem estática', 'exceptions', 'checked', 'collections', 'equals', 'hashCode', 'Spring'],
     q: {
       pt: 'A vaga pede PHP e também Java. Para quem vem do PHP: o que muda em Java? Explique JVM, tipagem, `==` × `.equals()`, exceptions checked × unchecked e as coleções principais.',
@@ -850,7 +850,7 @@ In the ecosystem, **Spring Boot** is the Laravel equivalent (dependency injectio
 
   {
     id: 'clean-architecture-php',
-    cat: 'architecture', type: 'code', jobs: ['brasilcard', 'brainrocket'],
+    cat: 'architecture', type: 'code', jobs: ['php-fintech', 'sr-node-react'],
     tags: ['Clean Architecture', 'casos de uso', 'regra de dependência', 'ports and adapters', 'hexagonal', 'DDD', 'Laravel'],
     q: {
       pt: 'A vaga cita Clean Architecture e DDD como diferencial. Como você organizaria o caso de uso "pagar fatura" num projeto Laravel (ou CodeIgniter) seguindo Clean Architecture?',
@@ -951,7 +951,7 @@ A practitioner's caveat: for simple CRUD this is too much ceremony. I apply it w
   },
   {
     id: 'payments-card-lifecycle',
-    cat: 'payments', type: 'architecture', jobs: ['brasilcard'],
+    cat: 'payments', type: 'architecture', jobs: ['php-fintech'],
     noGloss: ['authz'],   // aqui "autorização" é da compra no cartão, não de permissão
     tags: ['autorização', 'captura', 'estorno', 'chargeback', 'fatura', 'conciliação', 'private label', 'limite de crédito', 'PCI DSS'],
     q: {
@@ -959,7 +959,7 @@ A practitioner's caveat: for simple CRUD this is too much ceremony. I apply it w
       en: 'Explain the lifecycle of a card purchase: authorization, capture, refund, statement, chargeback, and reconciliation. How would you model it in the database so money is never lost or duplicated?',
     },
     a: {
-      pt: `**Ciclo de uma compra** (cartão de crédito, inclusive *private label*, o cartão de loja que a Brasil Card emite):
+      pt: `**Ciclo de uma compra** (cartão de crédito, inclusive *private label*, o cartão de loja que emissoras de cartão emitem):
 
 1. **Autorização**: na hora da compra, o emissor verifica cartão, senha, limite disponível e regras antifraude, e **reserva** o valor no limite. Ainda não é uma dívida.
 2. **Captura (confirmação)**: o lojista confirma a venda; a transação vira lançamento. Autorizações não capturadas expiram e devolvem o limite.
@@ -975,7 +975,7 @@ A practitioner's caveat: for simple CRUD this is too much ceremony. I apply it w
 - **Máquina de estados** explícita (AUTORIZADA → CAPTURADA → ESTORNADA…) com transições validadas.
 - **Transação + lock** ao mexer no limite, para duas compras simultâneas não estourarem o limite.
 - **Auditoria**: quem, quando e por quê, e nunca guardar PAN/CVV (PCI DSS: tokenização).`,
-      en: `**Purchase lifecycle** (credit card, including *private label*, the store card Brasil Card issues):
+      en: `**Purchase lifecycle** (credit card, including *private label*, the store card that card issuers issue):
 
 1. **Authorization**: at purchase time, the issuer checks the card, PIN, available limit, and anti-fraud rules, and **holds** the amount against the limit. It is not a debt yet.
 2. **Capture (confirmation)**: the merchant confirms the sale; the transaction becomes a posting. Uncaptured authorizations expire and release the limit.
@@ -1007,7 +1007,7 @@ A practitioner's caveat: for simple CRUD this is too much ceremony. I apply it w
   },
   {
     id: 'phpunit-tdd-service',
-    cat: 'testing', type: 'code', jobs: ['brasilcard', 'cv'],
+    cat: 'testing', type: 'code', jobs: ['php-fintech', 'cv'],
     tags: ['PHPUnit', 'Pest', 'TDD', 'mock', 'test double', 'teste de caracterização', 'data provider'],
     q: {
       pt: 'TDD é diferencial na vaga. Escreva em PHPUnit os testes do cálculo de encargos de uma fatura em atraso (multa de 2% + juros de 1% ao mês pro rata) e mostre como testar um serviço que depende do banco.',
@@ -1109,7 +1109,7 @@ Signs of maturity in the example:
   },
   {
     id: 'legacy-production-bug',
-    cat: 'php', type: 'behavioral', jobs: ['brasilcard', 'cv'],
+    cat: 'php', type: 'behavioral', jobs: ['php-fintech', 'cv'],
     tags: ['bug em produção', 'legado', 'debug', 'Xdebug', 'logs', 'teste de caracterização', 'hotfix', 'manutenção'],
     q: {
       pt: 'Chega um chamado: "alguns clientes estão vendo o valor da fatura errado". O sistema é PHP legado, sem testes. Passo a passo, o que você faz?',
@@ -1148,7 +1148,7 @@ Signs of maturity in the example:
   },
   {
     id: 'gcp-services-map',
-    cat: 'devops', type: 'concept', jobs: ['brasilcard'],
+    cat: 'devops', type: 'concept', jobs: ['php-fintech'],
     tags: ['GCP', 'Cloud Run', 'GKE', 'Cloud SQL', 'Pub/Sub', 'Cloud Storage', 'Secret Manager', 'IAM', 'AWS', 'Azure'],
     q: {
       pt: 'Serviços GCP são diferencial. Se você conhece AWS e Azure, como faria o deploy de uma aplicação PHP com banco e filas no Google Cloud?',
@@ -1202,17 +1202,17 @@ Care points: each service with a least-privilege **service account**, no public 
     },
   },
   {
-    id: 'behavioral-brasilcard-fit',
-    cat: 'agile', type: 'behavioral', jobs: ['brasilcard'],
+    id: 'behavioral-company-fit',
+    cat: 'agile', type: 'behavioral', jobs: ['php-fintech'],
     tags: ['RH', 'gestor', 'onde se vê em 5 anos', 'por que a empresa', 'pretensão salarial', 'pleno', 'remoto'],
     q: {
-      pt: 'Entrevista com o gestor: "Fale de você. Por que a Brasil Card? Onde você se vê em 5 anos? Você tem experiência de sênior, por que uma vaga pleno?"',
-      en: 'Manager interview: "Tell me about yourself. Why Brasil Card? Where do you see yourself in 5 years? You have senior-level experience, why a mid-level role?"',
+      pt: 'Entrevista com o gestor: "Fale de você. Por que esta empresa? Onde você se vê em 5 anos? Você tem experiência de sênior, por que uma vaga pleno?"',
+      en: 'Manager interview: "Tell me about yourself. Why this company? Where do you see yourself in 5 years? You have senior-level experience, why a mid-level role?"',
     },
     a: {
       pt: `**Fale de você (90 s)**: presente → passado → por que esta vaga. "Sou desenvolvedora full stack com 5 anos em sistemas financeiros, ERP e e-commerce. Hoje trabalho com PHP/Laravel, integrações e Salesforce no Grupo Mysa. Antes, três anos na Sicoob com sistemas de cooperativas de crédito em PHP/Laravel, SQL Server e Docker. O que mais gosto é manter sistemas críticos funcionando e evoluindo sem quebrar a operação, que é o que esta vaga descreve."
 
-**Por que a Brasil Card**: algo específico e verdadeiro. É uma instituição de pagamentos (domínio onde consistência importa e onde você já tem vivência), stack que você domina (PHP, Laravel, SQL Server, MySQL, Docker), trabalho remoto e um sistema real com usuários reais. Pesquise antes: produtos (cartão private label, conta digital), há quanto tempo existe, quantas lojas parceiras.
+**Por que esta empresa**: algo específico e verdadeiro. É uma instituição de pagamentos (domínio onde consistência importa e onde você já tem vivência), stack que você domina (PHP, Laravel, SQL Server, MySQL, Docker), trabalho remoto e um sistema real com usuários reais. Pesquise antes: produtos (cartão private label, conta digital), há quanto tempo existe, quantas lojas parceiras.
 
 **Daqui a 5 anos**: crescimento ligado à empresa, sem soar como "vou embora": "quero ser referência técnica no domínio de pagamentos do time, ajudando a modernizar o legado e a formar outras pessoas".
 
@@ -1221,7 +1221,7 @@ Care points: each service with a least-privilege **service account**, no public 
 **Como conheceu a empresa**: resposta honesta e curta (plataforma de vagas) + o que te chamou atenção na descrição.`,
       en: `**Tell me about yourself (90 s)**: present → past → why this role. "I am a full stack developer with 5 years in financial systems, ERP, and e-commerce. Today I work with PHP/Laravel, integrations, and Salesforce at Grupo Mysa. Before that, three years at Sicoob on credit-union systems in PHP/Laravel, SQL Server, and Docker. What I enjoy most is keeping critical systems running and evolving without breaking operations, which is what this role describes."
 
-**Why Brasil Card**: something specific and true. A payments institution (a domain where consistency matters and where you have experience), a stack you master (PHP, Laravel, SQL Server, MySQL, Docker), remote work, and a real system with real users. Research first: products (private label card, digital account), company age, partner stores.
+**Why this company**: something specific and true. A payments institution (a domain where consistency matters and where you have experience), a stack you master (PHP, Laravel, SQL Server, MySQL, Docker), remote work, and a real system with real users. Research first: products (private label card, digital account), company age, partner stores.
 
 **In 5 years**: growth tied to the company, without sounding like "I will leave": "I want to be a technical reference in the team's payments domain, helping modernize the legacy and mentoring others".
 

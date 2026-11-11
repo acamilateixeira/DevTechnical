@@ -5,7 +5,7 @@
 ## 🎭 Cast
 - 👵 **Mrs. Cida** · the cardholder · decisive, until she changes her mind
 - 📟 **Card machine** · the terminal (POS) · asks the issuer whether it's allowed
-- 🏦 **Issuer** · whoever issued the card (Brasil Card's role) · decides whether to approve and manages the limit and the statement
+- 🏦 **Issuer** · whoever issued the card (the issuer) · decides whether to approve and manages the limit and the statement
 - 🔒 **Hold** · authorization · holds the amount against the limit; not a debt yet
 - ✅ **Confirmation** · capture · the sale is confirmed and becomes a statement entry
 - ↩️ **Return** · refund · a NEW credit entry, never deleting the purchase

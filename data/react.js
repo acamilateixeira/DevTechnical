@@ -1,7 +1,7 @@
 export default [
   {
     id: 'react-reconciliation-keys',
-    cat: 'react', type: 'concept', jobs: ['elastic', 'brainrocket', 'frontend'],
+    cat: 'react', type: 'concept', jobs: ['sr-observability', 'sr-node-react', 'frontend'],
     tags: ['reconciliation', 'virtual dom', 'keys', 'fiber', 'render'],
     q: {
       pt: 'Como funciona a reconciliação no React? Por que usar o índice do array como `key` é um problema?',
@@ -34,7 +34,7 @@ Useful trick: changing a component's \`key\` on purpose forces React to remount 
   },
   {
     id: 'react-useeffect-pitfalls',
-    cat: 'react', type: 'code', jobs: ['elastic', 'brainrocket', 'frontend'],
+    cat: 'react', type: 'code', jobs: ['sr-observability', 'sr-node-react', 'frontend'],
     tags: ['useEffect', 'race condition', 'AbortController', 'cleanup', 'data fetching'],
     q: {
       pt: 'Este componente busca dados num `useEffect`. Encontre os bugs e reescreva como faria em produção.',
@@ -122,7 +122,7 @@ In production I usually would not hand-write this: I would use **TanStack Query*
   },
   {
     id: 'react-performance-memo',
-    cat: 'react', type: 'concept', jobs: ['elastic', 'frontend', 'brainrocket'],
+    cat: 'react', type: 'concept', jobs: ['sr-observability', 'frontend', 'sr-node-react'],
     tags: ['useMemo', 'useCallback', 'React.memo', 'profiler', 'virtualization', 'performance'],
     q: {
       pt: 'Uma tela com uma tabela de 10 mil linhas de logs está lenta. Como você investiga e o que faz? Quando `useMemo`/`useCallback` ajudam de verdade?',
@@ -161,13 +161,13 @@ Actions, from highest to lowest impact:
       en: '"I wrap everything in useMemo just in case." Or optimizing without measuring first.',
     },
     anchor: {
-      pt: 'Para a Elastic (Kibana, Streams) esse é o cenário real: muito dado de log na tela. No Livit você mediu pressão de memória no macOS e ajustou quadros e efeitos: cite como prova de que você mede antes de otimizar.',
-      en: 'For Elastic (Kibana, Streams) this is the real scenario: lots of log data on screen. In Livit you measured macOS memory pressure and adjusted frames and effects: cite it as proof you measure before optimizing.',
+      pt: 'Em vagas de observabilidade (Kibana, Streams) esse é o cenário real: muito dado de log na tela. No Livit você mediu pressão de memória no macOS e ajustou quadros e efeitos: cite como prova de que você mede antes de otimizar.',
+      en: 'In observability roles (Kibana, Streams) this is the real scenario: lots of log data on screen. In Livit you measured macOS memory pressure and adjusted frames and effects: cite it as proof you measure before optimizing.',
     },
   },
   {
     id: 'react-state-management',
-    cat: 'react', type: 'architecture', jobs: ['elastic', 'brainrocket', 'frontend'],
+    cat: 'react', type: 'architecture', jobs: ['sr-observability', 'sr-node-react', 'frontend'],
     tags: ['state management', 'Redux', 'Zustand', 'Context', 'server state', 'TanStack Query'],
     q: {
       pt: 'Context, Redux Toolkit, Zustand ou TanStack Query: como você decide onde vive cada tipo de estado numa aplicação grande?',
@@ -206,7 +206,7 @@ Redux Toolkit pays off with many cross-cutting updates, a need for devtools/time
   },
   {
     id: 'react-custom-hook',
-    cat: 'react', type: 'code', jobs: ['frontend', 'elastic'],
+    cat: 'react', type: 'code', jobs: ['frontend', 'sr-observability'],
     tags: ['custom hook', 'useSyncExternalStore', 'localStorage', 'hooks rules'],
     q: {
       pt: 'Escreva um hook `useLocalStorage` reutilizável e explique as regras dos hooks.',
@@ -269,7 +269,7 @@ To sync across tabs I would listen to the \`storage\` event, or use \`useSyncExt
   },
   {
     id: 'next-rendering-strategies',
-    cat: 'react', type: 'architecture', jobs: ['brainrocket', 'frontend'],
+    cat: 'react', type: 'architecture', jobs: ['sr-node-react', 'frontend'],
     tags: ['Next.js', 'SSR', 'SSG', 'ISR', 'RSC', 'Server Components', 'hydration'],
     q: {
       pt: 'CSR, SSR, SSG, ISR e React Server Components no Next.js: qual a diferença e como você escolhe para cada página?',
@@ -300,8 +300,8 @@ Choosing: public, stable page → SSG/ISR; per-user page → SSR/dynamic RSC; hi
       { pt: 'Como funciona o cache do `fetch` no App Router e como você invalida?', en: 'How does `fetch` caching work in the App Router and how do you invalidate it?' },
     ],
     flags: {
-      pt: 'Dizer que usou Next.js em produção se não usou. A BrainRocket pede Next explicitamente: honestidade + domínio do conceito vale mais que um "sim" que cai no segundo follow-up.',
-      en: 'Claiming production Next.js if you have not used it. BrainRocket asks for Next explicitly: honesty plus a solid grasp of the concepts beats a "yes" that collapses on the second follow-up.',
+      pt: 'Dizer que usou Next.js em produção se não usou. Vagas Node/React costumam pedir Next: honestidade + domínio do conceito vale mais que um "sim" que cai no segundo follow-up.',
+      en: 'Claiming production Next.js if you have not used it. Node/React roles often ask for Next: honesty plus a solid grasp of the concepts beats a "yes" that collapses on the second follow-up.',
     },
     anchor: {
       pt: 'Seu portfólio e o DevTechnical são SPAs estáticas no GitHub Pages (equivalente a SSG sem framework). Laravel com Blade é SSR clássico, que você usa no trabalho. Diga: "Em produção trabalhei com SSR no Laravel e SPAs em React/Vue; estudei o App Router e entendo quando usar cada estratégia."',
@@ -310,7 +310,7 @@ Choosing: public, stable page → SSG/ISR; per-user page → SSR/dynamic RSC; hi
   },
   {
     id: 'react-accessibility',
-    cat: 'react', type: 'concept', jobs: ['elastic', 'frontend'],
+    cat: 'react', type: 'concept', jobs: ['sr-observability', 'frontend'],
     tags: ['a11y', 'accessibility', 'WCAG', 'ARIA', 'keyboard', 'focus'],
     q: {
       pt: 'A vaga fala em componentes acessíveis. O que você verifica ao construir um dropdown ou modal acessível?',
@@ -347,7 +347,7 @@ Plus: WCAG AA contrast (4.5:1 for text), visible focus, never relying on color a
   },
   {
     id: 'apollo-client-cache',
-    cat: 'react', type: 'lib', jobs: ['brainrocket'],
+    cat: 'react', type: 'lib', jobs: ['sr-node-react'],
     tags: ['Apollo Client', 'normalized cache', 'fetchPolicy', 'optimistic response', 'cache update'],
     q: {
       pt: 'Como funciona o cache normalizado do Apollo Client? Depois de aprovar uma viagem, como a lista na tela se atualiza sem refetch?',
@@ -412,13 +412,13 @@ Compared with TanStack Query: Apollo updates per **entity** automatically; TanSt
       en: '"I refetch everything after every mutation." It works, but shows you do not understand the cache.',
     },
     anchor: {
-      pt: 'Apollo não está no seu CV. O raciocínio de "estado do servidor vs estado do cliente" e de UI que reflete o estado real você já aplica no GEMP e no Bora. Um front em React + Apollo consumindo uma API GraphQL própria fecharia essa lacuna para a BrainRocket.',
-      en: 'Apollo is not on your CV. You already apply the "server state vs client state" reasoning and a UI that reflects real state in GEMP and Bora. A React + Apollo frontend consuming your own GraphQL API would close this gap for BrainRocket.',
+      pt: 'Apollo não está no seu CV. O raciocínio de "estado do servidor vs estado do cliente" e de UI que reflete o estado real você já aplica no GEMP e no Bora. Um front em React + Apollo consumindo uma API GraphQL própria fecharia essa lacuna para vagas que pedem GraphQL.',
+      en: 'Apollo is not on your CV. You already apply the "server state vs client state" reasoning and a UI that reflects real state in GEMP and Bora. A React + Apollo frontend consuming your own GraphQL API would close this gap for roles that ask for GraphQL.',
     },
   },
   {
     id: 'next-server-actions-security',
-    cat: 'react', type: 'code', jobs: ['brainrocket', 'frontend'],
+    cat: 'react', type: 'code', jobs: ['sr-node-react', 'frontend'],
     tags: ['Next.js', 'Server Actions', 'revalidatePath', 'Zod', 'security', 'App Router'],
     q: {
       pt: 'Implemente uma Server Action no Next.js que aprova uma viagem. Quais os riscos de segurança que muita gente esquece?',
@@ -500,7 +500,7 @@ Features: \`useActionState\` provides state and pending; the form works without 
   },
   {
     id: 'mui-theming-performance',
-    cat: 'react', type: 'lib', jobs: ['brainrocket', 'frontend', 'cv'],
+    cat: 'react', type: 'lib', jobs: ['sr-node-react', 'frontend', 'cv'],
     tags: ['Material UI', 'MUI', 'theme', 'sx', 'styled', 'design system', 'bundle size'],
     q: {
       pt: 'A vaga pede Material (MUI). Como você estrutura o tema de uma aplicação grande e evita que o MUI pese ou fique lento?',
@@ -573,7 +573,7 @@ import Button from '@mui/material/Button';`,
   },
   {
     id: 'rtl-msw-component-test',
-    cat: 'react', type: 'code', jobs: ['frontend', 'elastic', 'brainrocket'],
+    cat: 'react', type: 'code', jobs: ['frontend', 'sr-observability', 'sr-node-react'],
     tags: ['React Testing Library', 'MSW', 'userEvent', 'Jest', 'Vitest', 'async testing'],
     q: {
       pt: 'Escreva o teste de um componente que lista ofertas da API e mostra erro quando a API falha. Por que testar pelo comportamento e não pela implementação?',
@@ -643,7 +643,7 @@ Cover: loading, success, empty, error, and the retry action. Do not test details
   },
   {
     id: 'react-hooks-catalog',
-    cat: 'react', type: 'concept', jobs: ['frontend', 'elastic', 'brainrocket'],
+    cat: 'react', type: 'concept', jobs: ['frontend', 'sr-observability', 'sr-node-react'],
     tags: ['hooks', 'useState', 'useReducer', 'useRef', 'useLayoutEffect', 'useId', 'useTransition', 'use', 'useOptimistic'],
     q: {
       pt: 'Passe pelos hooks do React e diga quando você usa cada um: useState, useReducer, useRef, useEffect, useLayoutEffect, useMemo, useCallback, useContext, useId, useTransition, useDeferredValue e os do React 19.',
@@ -710,7 +710,7 @@ Cover: loading, success, empty, error, and the retry action. Do not test details
   },
   {
     id: 'react-usereducer-context',
-    cat: 'react', type: 'code', jobs: ['frontend', 'elastic', 'brainrocket'],
+    cat: 'react', type: 'code', jobs: ['frontend', 'sr-observability', 'sr-node-react'],
     tags: ['useReducer', 'Context', 'state machine', 're-render', 'split context', 'dispatch'],
     q: {
       pt: 'Implemente o estado de um carrinho com `useReducer` + Context de forma que um botão "adicionar" não re-renderize a lista inteira.',
@@ -802,7 +802,7 @@ I verify the result in React DevTools with "Highlight updates" and in the Profil
   },
   {
     id: 'react-redux-zustand-code',
-    cat: 'react', type: 'code', jobs: ['brainrocket', 'frontend', 'elastic'],
+    cat: 'react', type: 'code', jobs: ['sr-node-react', 'frontend', 'sr-observability'],
     tags: ['Redux Toolkit', 'createSlice', 'selectors', 'Zustand', 'RTK Query', 'immutability', 'Immer'],
     q: {
       pt: 'Mostre o mesmo estado de filtros implementado em Redux Toolkit e em Zustand. O que muda na prática e como cada um evita re-renders?',
@@ -897,7 +897,7 @@ For a log screen's filters I would likely use the **URL** in either case; a stor
   },
   {
     id: 'react-derived-state-antipatterns',
-    cat: 'react', type: 'code', jobs: ['frontend', 'elastic', 'brainrocket'],
+    cat: 'react', type: 'code', jobs: ['frontend', 'sr-observability', 'sr-node-react'],
     tags: ['derived state', 'lifting state', 'useEffect anti-pattern', 'single source of truth', 'controlled components'],
     q: {
       pt: 'O que há de errado neste componente? Explique estado derivado, "lifting state up" e por que copiar props em estado é um anti-padrão.',
@@ -984,7 +984,7 @@ Related: a **controlled component** (the parent owns the value through \`value\`
   },
   {
     id: 'react-devtools-debugging',
-    cat: 'react', type: 'lib', jobs: ['frontend', 'elastic', 'brainrocket'],
+    cat: 'react', type: 'lib', jobs: ['frontend', 'sr-observability', 'sr-node-react'],
     tags: ['React DevTools', 'Profiler', 'flamegraph', 'highlight updates', 'why did this render', 'Redux DevTools', 'TanStack Query Devtools'],
     q: {
       pt: 'Um usuário diz que digitar no filtro da tela está travando. Mostre como você usa o React DevTools (Components e Profiler) para achar a causa.',
