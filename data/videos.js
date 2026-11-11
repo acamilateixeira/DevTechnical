@@ -4,4 +4,4 @@ const trilhaPhp = ['php-oop-abstract-interface-trait', 'php-comparison-money', '
   'payments-card-lifecycle', 'db-indexes-explain', 'lab-lost-update', 'sec-owasp-web', 'docker-php-dev-env', 'git-workflow-conflicts',
   'clean-architecture-php', 'solid-all-five', 'ddd-core-concepts', 'lab-tdd', 'k8s-core-concepts'];
 
-export const videos = new Set([]); // liga quando os MP4 estiverem gravados: trilhaPhp.map((id) => `${id}.pt`)
+export const videos = new Set(trilhaPhp.map((id) => `${id}.pt`));
