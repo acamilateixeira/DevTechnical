@@ -125,7 +125,8 @@ function pickNext() {
 }
 
 function chips(q) {
-  return `<span class="chip">${escapeHtml(L(cats[q.cat]))}</span>` +
+  return (q.reported ? `<span class="chip reported-chip">${escapeHtml(t('reportedChip'))}</span>` : '') +
+    `<span class="chip">${escapeHtml(L(cats[q.cat]))}</span>` +
     `<span class="chip">${escapeHtml(L(types[q.type]))}</span>` +
     q.jobs.map((j) => `<span class="chip">${escapeHtml(L(jobs[j]).split(' · ')[0])}</span>`).join('');
 }
@@ -174,13 +175,14 @@ function toolsHtml(q) {
     </div>`;
 }
 
-const annotator = () => createAnnotator(state.lang, { inline: state.gloss });
+const annotator = (q) => createAnnotator(state.lang, { inline: state.gloss, skip: q?.noGloss });
 
-function revealHtml(q, ann = annotator()) {
+function revealHtml(q, ann = annotator(q)) {
   const follow = (q.follow || []).map((f) => `<li>${md(L(f), ann).replace(/^<p>|<\/p>$/g, '')}</li>`).join('');
   const lab = labs.find((l) => (l.questions || []).includes(q.id));
   return `
     ${lab ? `<a class="panel lab-link" href="#/lab/${lab.id}"><strong>${t('seeLab')}</strong><span>${escapeHtml(L(lab.title))}</span></a>` : ''}
+    ${q.reported ? `<div class="panel reported"><h3>${t('reportedTitle')}</h3>${md(L(q.reported), ann)}</div>` : ''}
     <div class="panel"><h3>${t('answer')}</h3>${md(L(q.a), ann)}</div>
     ${q.code ? `<div class="panel"><h3>${t('code')}</h3>${codeBlocks(q)}</div>` : ''}
     ${toolsHtml(q)}
@@ -195,7 +197,7 @@ function renderInterview() {
   if (!current || !filtered().includes(current)) { current = pickNext(); revealed = false; }
   if (!current) { view.innerHTML = `<p class="empty">${t('none')}</p>`; return; }
   const q = current;
-  const ann = annotator();
+  const ann = annotator(q);
 
   view.innerHTML = `
     <section class="room">

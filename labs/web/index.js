@@ -170,7 +170,7 @@ It is like subscribing only to the sports section of a newspaper: the newsroom p
     id: 'idempotency',
     cat: 'api', kind: 'js', setup: 'setup.js', main: 'main.js',
     lanes: ['Cliente', 'Rede', 'Servidor', 'Banco'],
-    questions: ['api-idempotency'],
+    questions: ['api-idempotency', 'laravel-queues-payments'],
     title: { pt: 'Idempotência: não cobrar duas vezes quando a rede falha', en: 'Idempotency: never charge twice when the network fails' },
     summary: { pt: 'A rede perde respostas, o cliente tenta de novo e o cartão é cobrado 3 vezes. Conserte.', en: 'The network loses responses, the client retries, and the card is charged 3 times. Fix it.' },
     what: {
@@ -195,7 +195,7 @@ The fix is the **Idempotency-Key**: the client generates a unique code per inten
     id: 'lost-update',
     cat: 'data', kind: 'js', setup: 'setup.js', main: 'main.js',
     lanes: ['Gestor A', 'Gestor B'],
-    questions: ['db-isolation-locks'],
+    questions: ['db-isolation-locks', 'payments-card-lifecycle'],
     title: { pt: 'Transações e locks: dois gestores aprovando ao mesmo tempo', en: 'Transactions and locks: two managers approving at the same time' },
     summary: { pt: 'Orçamento de R$1000, duas viagens de R$800 aprovadas juntas. Veja o lost update e as três correções.', en: 'A R$1000 budget, two R$800 trips approved together. See the lost update and three fixes.' },
     what: {
@@ -251,7 +251,7 @@ The problem shows up when a very popular key **expires**: everyone arriving at t
     id: 'outbox',
     cat: 'messaging', kind: 'js', setup: 'setup.js', main: 'main.js',
     lanes: ['API', 'Relay', 'RabbitMQ', 'Consumidor'],
-    questions: ['mq-outbox-pattern', 'mq-rabbitmq-concepts'],
+    questions: ['mq-outbox-pattern', 'mq-rabbitmq-concepts', 'laravel-queues-payments'],
     title: { pt: 'Outbox: salvar no banco e avisar a fila sem perder nem duplicar', en: 'Outbox: save to the database and notify the queue without losing or duplicating' },
     summary: { pt: 'Derrube o processo em pontos diferentes e veja eventos sumirem ou chegarem duas vezes.', en: 'Crash the process at different points and watch events vanish or arrive twice.' },
     what: {
@@ -332,7 +332,7 @@ O **DataLoader** é como um garçom que, em vez de ir à cozinha a cada pedido, 
     id: 'tdd',
     cat: 'testing', kind: 'js', main: 'main.js',
     lanes: [],
-    questions: ['test-tdd-code', 'test-pyramid-strategy'],
+    questions: ['test-tdd-code', 'test-pyramid-strategy', 'phpunit-tdd-service'],
     title: { pt: 'TDD: vermelho, verde, refatorar', en: 'TDD: red, green, refactor' },
     summary: { pt: 'Uma regra de negócio com testes que rodam aqui. Quebre a regra e veja o teste ficar vermelho.', en: 'A business rule with tests running right here. Break the rule and watch a test turn red.' },
     what: {
@@ -365,7 +365,7 @@ Each test is a sentence like "given this, I expect that". Here the rule is: a tr
     id: 'xss',
     cat: 'security', kind: 'react', preview: true, main: 'main.tsx',
     lanes: ['Usuário', 'Atacante'],
-    questions: ['sec-owasp-web'],
+    questions: ['sec-owasp-web', 'php-security-pdo-password'],
     title: { pt: 'XSS no React: quando o texto do usuário vira código', en: 'XSS in React: when user text becomes code' },
     summary: { pt: 'Publique um comentário malicioso e veja onde o script do atacante roda.', en: 'Post a malicious comment and see where the attacker\'s script runs.' },
     what: {

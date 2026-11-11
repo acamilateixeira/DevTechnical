@@ -8,6 +8,7 @@ import { jobs, cats, types } from '../data/meta.js';
 import { md } from '../assets/md.js';
 import { labs } from '../labs/web/index.js';
 import { glossary } from '../data/glossary.js';
+import { extraJobs, reported as reportedMap } from '../data/evidence.js';
 import { existsSync, readFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 
@@ -39,6 +40,7 @@ for (const q of questions) {
     });
   }
   if (q.type === 'code' && !q.code) err(id, 'tipo "code" sem bloco de código');
+  if (q.reported && !bilingual(q.reported)) err(id, 'reported precisa de pt e en');
 
   const r = rubrics[q.id];
   if (!r) err(id, 'sem rubrica em data/rubrics.js');
@@ -57,6 +59,10 @@ for (const q of questions) {
 }
 
 for (const id of Object.keys(rubrics)) if (!ids.has(id)) err(id, 'rubrica órfã (sem pergunta)');
+
+// ---- evidências
+for (const id of [...Object.keys(extraJobs), ...Object.keys(reportedMap)]) if (!ids.has(id)) err(`evidence:${id}`, 'pergunta inexistente');
+for (const [id, js] of Object.entries(extraJobs)) js.forEach((j) => { if (!jobs[j]) err(`evidence:${id}`, `vaga desconhecida "${j}"`); });
 
 // ---- labs do navegador
 const labIds = new Set();

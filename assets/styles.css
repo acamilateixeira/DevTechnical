@@ -238,3 +238,10 @@ pre code { background: none; padding: 0; font-size: inherit; color: inherit; }
 .node-labs { list-style: none; padding: 0 !important; display: grid; gap: 10px; margin: 10px 0 0; }
 .node-labs li { display: grid; gap: 2px; border-top: 1px dashed var(--line); padding-top: 8px; }
 .node-labs code { font-size: .8rem; justify-self: start; overflow-wrap: anywhere; }
+.panel.reported { border-left: 4px solid #4f8fd6; }
+.reported-chip { border-color: #4f8fd6 !important; color: #4f8fd6 !important; opacity: 1 !important; }
+.recruiter .reported-chip { color: #9cc3f0 !important; border-color: #9cc3f0 !important; }
+.md-table { overflow-x: auto; margin: 10px 0; }
+.md-table table { border-collapse: collapse; font-size: .88rem; width: 100%; }
+.md-table th, .md-table td { border-bottom: 1px solid var(--line); padding: 6px 8px; text-align: left; vertical-align: top; }
+.md-table th { font-family: var(--mono); font-size: .75rem; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }

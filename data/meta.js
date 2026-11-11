@@ -4,6 +4,8 @@ export const jobs = {
   elastic: { pt: 'Elastic · Sr Full Stack (Observability)', en: 'Elastic · Sr Full Stack (Observability)' },
   brainrocket: { pt: 'BrainRocket · Sr Full Stack (Node/React)', en: 'BrainRocket · Sr Full Stack (Node/React)' },
   frontend: { pt: 'Frontend Sr (React)', en: 'Senior Frontend (React)' },
+  kwan: { pt: 'KWAN · consultoria (Portugal)', en: 'KWAN · consultancy (Portugal)' },
+  brasilcard: { pt: 'Brasil Card · Full Stack Pleno (PHP)', en: 'Brasil Card · Mid-level Full Stack (PHP)' },
   cv: { pt: 'Meu CV / portfólio', en: 'My CV / portfolio' },
 };
 
@@ -22,6 +24,8 @@ export const cats = {
   security: { pt: 'Segurança', en: 'Security' },
   php: { pt: 'PHP & Laravel', en: 'PHP & Laravel' },
   agile: { pt: 'Scrum & comportamental', en: 'Scrum & behavioral' },
+  payments: { pt: 'Meios de pagamento', en: 'Payments domain' },
+  algorithms: { pt: 'Algoritmos (live coding)', en: 'Algorithms (live coding)' },
 };
 
 export const types = {
@@ -59,6 +63,7 @@ export const ui = {
     toolsTitle: 'Ferramentas, libs e técnicas para citar', metricsTitle: 'Métricas que provam domínio',
     avg: 'nota média', pctGot: 'acerto', pctPartial: 'parcial', pctMiss: 'erro', pending: 'não avaliadas',
     best: 'Ponto forte', worst: 'Estudar primeiro',
+    reportedTitle: 'Isso é perguntado de verdade?', reportedChip: '✓ relatada',
     navStart: 'Comece aqui', navLab: 'Laboratório', seeLab: '▶ Ver funcionando no Laboratório', navGlossary: 'Glossário',
     glossToggle: 'Mostrar definições entre parênteses', glossOn: 'Definições entre parênteses: ligadas (toque para desligar)', glossOff: 'Definições entre parênteses: desligadas (toque para ligar)',
   },
@@ -88,6 +93,7 @@ export const ui = {
     toolsTitle: 'Tools, libraries and techniques to mention', metricsTitle: 'Metrics that prove mastery',
     avg: 'average score', pctGot: 'correct', pctPartial: 'partial', pctMiss: 'wrong', pending: 'not scored',
     best: 'Strongest topic', worst: 'Study first',
+    reportedTitle: 'Is this really asked?', reportedChip: '✓ reported',
     navStart: 'Start here', navLab: 'Lab', seeLab: '▶ See it running in the Lab', navGlossary: 'Glossary',
     glossToggle: 'Show definitions in parentheses', glossOn: 'Definitions in parentheses: on (tap to turn off)', glossOff: 'Definitions in parentheses: off (tap to turn on)',
   },

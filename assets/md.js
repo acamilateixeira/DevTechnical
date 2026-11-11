@@ -1,4 +1,4 @@
-// Markdown mínimo: parágrafos, listas "- " e "1.", **negrito**, `código` e blocos ``` .
+// Markdown mínimo: parágrafos, listas "- " e "1.", tabelas |a|b|, **negrito**, `código` e blocos ``` .
 // Escapa HTML antes de formatar, então o conteúdo nunca injeta tags.
 
 export function escapeHtml(s) {
@@ -30,6 +30,14 @@ export function md(text, ann) {
   let list = null;
   let ordered = false;
   let fence = null;
+  let table = null;
+  const flushTable = () => {
+    if (!table) return;
+    const [head, ...rows] = table;
+    out.push(`<div class="md-table"><table><thead><tr>${head.map((c) => `<th>${inline(c, ann)}</th>`).join('')}</tr></thead>` +
+      `<tbody>${rows.map((r) => `<tr>${r.map((c) => `<td>${inline(c, ann)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`);
+    table = null;
+  };
 
   const flushPara = () => {
     if (para.length) out.push(`<p>${inline(para.join(' '), ann)}</p>`);
@@ -52,6 +60,14 @@ export function md(text, ann) {
     }
     const t = line.trim();
     if (t.startsWith('```')) { flushPara(); flushList(); fence = []; continue; }
+    if (t.startsWith('|') && t.endsWith('|')) {
+      flushPara(); flushList();
+      const cells = t.slice(1, -1).split('|').map((c) => c.trim());
+      if (cells.every((c) => /^:?-{3,}:?$/.test(c))) continue;      // linha separadora
+      (table ||= []).push(cells);
+      continue;
+    }
+    flushTable();
     if (t === '') { flushPara(); flushList(); continue; }
     const item = t.match(/^(-|\d+\.)\s+(.*)$/);
     if (item) {
@@ -65,5 +81,6 @@ export function md(text, ann) {
   if (fence) out.push(`<pre><code>${escapeHtml(fence.join('\n'))}</code></pre>`);
   flushPara();
   flushList();
+  flushTable();
   return out.join('');
 }

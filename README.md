@@ -4,7 +4,7 @@
 
 **Site:** https://acamilateixeira.github.io/DevTechnical/
 
-Um recrutador chato, em forma de app. Ele faz perguntas técnicas de nível sênior sobre a stack que aparece no meu currículo e no [portfólio](https://acamilateixeira.github.io/camilat/), e sobre o que as vagas-alvo pedem: Elastic (Senior Full Stack, Observability), BrainRocket (Senior Full Stack Node/React) e vagas de Frontend Sênior em React.
+Um recrutador chato, em forma de app. Ele faz perguntas técnicas sobre a stack que aparece no meu currículo e no [portfólio](https://acamilateixeira.github.io/camilat/), e sobre o que as vagas-alvo pedem: Elastic (Senior Full Stack, Observability), BrainRocket (Senior Full Stack Node/React), KWAN (consultoria em Portugal), vagas de Frontend Sênior em React e Brasil Card (Full Stack Pleno PHP).
 
 ## Como funciona
 
@@ -12,7 +12,7 @@ O caminho sugerido é **ver funcionando → explicar com suas palavras → respo
 
 - **Comece aqui**: como é um processo seletivo sênior e como estudar com o app, um tema por vez.
 - **Laboratório**: 14 exemplos que rodam no navegador, sem instalar nada. Cada um explica o conceito com uma analogia e tem código editável, botão **Rodar**, contadores, uma **linha do tempo** mostrando o que rodou em cada parte do sistema (cliente, API, banco, fila…) e quando, além de uma lista "Experimente mudar". Mais 5 labs de Node.js para rodar no terminal (servidor HTTP, threads, SIGTERM e SQLite reais). Detalhes em [`labs/node/README.md`](labs/node/README.md).
-- **Glossário**: 190 termos técnicos em linguagem simples. Nas respostas e nos labs, a definição curta aparece **entre parênteses** na primeira vez que o termo surge (dá para desligar no botão "( ) definições") e tocar no termo mostra a explicação maior.
+- **Glossário**: 224 termos técnicos em linguagem simples. Nas respostas e nos labs, a definição curta aparece **entre parênteses** na primeira vez que o termo surge (dá para desligar no botão "( ) definições") e tocar no termo mostra a explicação maior.
 
 - **Entrevista**: uma pergunta por vez, sorteada com prioridade para as que eu ainda não respondi ou em que tirei nota baixa. Respondo em voz alta ou escrevo (o rascunho fica no navegador), com cronômetro opcional de 3 minutos.
 - **Resposta modelo**: explicação completa, código quando a pergunta pede, ferramentas/libs/técnicas para citar, métricas que provam domínio, follow-ups que o recrutador faria, red flags (o que não dizer) e como ancorar a resposta na minha experiência real, sem inventar.
@@ -24,7 +24,7 @@ O progresso fica só no `localStorage` do navegador; não há back-end nem colet
 
 ## Conteúdo
 
-69 perguntas e 354 pontos de rubrica, todos em português e inglês. O lote 2 cobre as lacunas entre o meu CV e as vagas (GraphQL/Apollo, NestJS, MongoDB, Next.js, Docker/Kubernetes, Elasticsearch, OpenTelemetry), sempre indicando com honestidade o que é estudo e o que é experiência.
+92 perguntas e 473 pontos de rubrica, todos em português e inglês. O lote 2 cobre as lacunas entre o meu CV e as vagas (GraphQL/Apollo, NestJS, MongoDB, Next.js, Docker/Kubernetes, Elasticsearch, OpenTelemetry), sempre indicando com honestidade o que é estudo e o que é experiência.
 
 | Tema | Exemplos |
 | --- | --- |
@@ -41,7 +41,23 @@ O progresso fica só no `localStorage` do navegador; não há back-end nem colet
 | Observabilidade | logs/métricas/traces, SLO e alertas, React Flow, fundamentos do Elasticsearch, OpenTelemetry no Node |
 | Segurança | OWASP, autenticação (JWT, OAuth/OIDC, PKCE) |
 | PHP & Laravel / Salesforce | ciclo do Laravel e Eloquent, governor limits no Apex |
-| Scrum & comportamental | Scrum e estimativa, incidente (STAR), discordância técnica, IA, "por que sênior?" |
+| Scrum & comportamental | Scrum e estimativa, incidente (STAR), discordância técnica, IA, "por que sênior?", projeto que te orgulha, trabalho remoto assíncrono, realocação e consultoria |
+| Meios de pagamento | `==` × `===` e dinheiro em centavos, ciclo da compra no cartão (autorização, captura, estorno, chargeback, conciliação) |
+| Algoritmos (live coding) | top-K de logs, two sum, parênteses balanceados, anagramas, com complexidade |
+
+### Vaga Brasil Card (Full Stack Pleno PHP)
+
+Filtre por **Vaga → Brasil Card** para ver as 39 perguntas ligadas aos requisitos e diferenciais da vaga: POO em PHP, novidades do PHP 7.4 → 8, CodeIgniter 3 × Laravel, filas no Laravel, segurança (PDO, senhas, PCI DSS), diferenças entre SQL Server, MySQL e PostgreSQL, SQL ao vivo, Docker para PHP, Git, Java para quem vem do PHP, Clean Architecture, TDD com PHPUnit, bug em produção no legado, GCP e a entrevista com RH e gestor.
+
+### Isso é perguntado de verdade?
+
+Perguntas marcadas com **✓ relatada** têm evidência pública de que aparecem em entrevistas reais; a resposta abre com a fonte. A pesquisa (Glassdoor, TabNews e guias públicos do processo da Elastic) está registrada em [`data/evidence.js`](data/evidence.js). Resumo do que os relatos descrevem:
+
+- **Elastic**: triagem com RH, rodadas técnicas com problemas "fáceis estilo LeetCode", concorrência e system design, exercício com code review ao vivo, comportamental "mais sério que o esperado" (STAR) e aprofundamento na sua experiência.
+- **BrainRocket**: conversa com recrutador, teste no HackerRank, entrevista técnica com o head da área e perguntas sobre realocação.
+- **KWAN**: RH (motivo para ir a Portugal, valores, inglês), teste técnico de 1 hora na sua linguagem, entrevista com especialista e depois com o cliente.
+- **Brasil Card**: os relatos públicos são de outras áreas, mas mostram o formato: contato rápido do RH, entrevista com recrutador e depois com o gestor ("onde se vê em 5 anos?", "como conheceu a empresa?").
+- **PHP pleno no Brasil**: "como o Laravel processa uma requisição", classe abstrata × interface, polimorfismo, SOLID, design patterns, índices e live coding.
 
 ## Laboratório
 
@@ -79,7 +95,10 @@ assets/styles.css     # tema claro/escuro, responsivo
 data/meta.js          # vagas, temas, tipos e textos da interface (PT/EN)
 data/<tema>.js        # perguntas por tema
 data/rubrics.js       # checklist, ferramentas e métricas por pergunta
-data/glossary.js      # 190 termos com definição curta e longa (PT/EN)
+data/glossary.js      # 224 termos com definição curta e longa (PT/EN)
+data/brasilcard.js    # perguntas da vaga Brasil Card (PHP pleno)
+data/research.js      # perguntas acrescentadas a partir de relatos reais
+data/evidence.js      # fontes da pesquisa e vagas extras por pergunta
 labs/web/             # labs do navegador: index.js (textos) + código de cada lab
 labs/node/            # labs para rodar com Node 22.13+
 scripts/validate.mjs  # valida perguntas, rubricas, labs e glossário
@@ -116,6 +135,7 @@ A picky interviewer, as an app. It asks senior-level technical questions about t
 - **Study**: every question with search and filters by role, topic, and type.
 - **Start here**: what a senior hiring process looks like and how to study with the app.
 - **Lab**: 14 in-browser examples (editable code, Run button, counters, and a timeline showing what ran in each part of the system and when) plus 5 Node.js labs for the terminal ([`labs/node/README.md`](labs/node/README.md)).
-- **Glossary**: 190 terms in plain language; the short definition appears in parentheses the first time a term shows up (toggle with "( ) definitions").
+- **Glossary**: 224 terms in plain language; the short definition appears in parentheses the first time a term shows up (toggle with "( ) definitions").
+- **Is this really asked?**: questions marked **✓ reported** have public evidence (Glassdoor, TabNews, Elastic process guides) that they come up in real interviews; sources live in [`data/evidence.js`](data/evidence.js). There is also a dedicated set for the Brasil Card mid-level PHP role.
 
-69 questions and 354 rubric points in Portuguese and English, including a second batch on the gaps between my CV and the target roles (GraphQL/Apollo, NestJS, MongoDB, Next.js, Docker/Kubernetes, Elasticsearch, OpenTelemetry). No build step, no dependencies, no backend: progress lives only in the browser's `localStorage`. Run it with any static server and validate the question bank with `node scripts/validate.mjs`.
+92 questions and 473 rubric points in Portuguese and English, including a second batch on the gaps between my CV and the target roles (GraphQL/Apollo, NestJS, MongoDB, Next.js, Docker/Kubernetes, Elasticsearch, OpenTelemetry). No build step, no dependencies, no backend: progress lives only in the browser's `localStorage`. Run it with any static server and validate the question bank with `node scripts/validate.mjs`.

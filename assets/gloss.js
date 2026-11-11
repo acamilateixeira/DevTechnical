@@ -34,8 +34,10 @@ function index(lang) {
 /**
  * Cria um anotador para um contexto (ex.: uma pergunta aberta).
  * inline: mostra a definição curta entre parênteses; se false, só sublinha e mostra ao tocar.
+ * skip: ids do glossário a ignorar neste contexto (termos ambíguos, ex.: "autorização" de cartão).
  */
-export function createAnnotator(lang, { inline = true, seen = new Set() } = {}) {
+export function createAnnotator(lang, { inline = true, seen = new Set(), skip = [] } = {}) {
+  const skipSet = new Set(skip);
   const idx = index(lang);
   const wrap = (labelHtml, e, withShort) => {
     const short = e.short[lang] ?? e.short.pt;
@@ -61,7 +63,7 @@ export function createAnnotator(lang, { inline = true, seen = new Set() } = {}) 
     for (const h of hits) {
       if (h.start < pos) continue; // sobreposto a um termo mais longo
       const e = idx.byTerm.get(h.word.toLowerCase());
-      if (!e) continue;
+      if (!e || skipSet.has(e.id)) continue;
       const first = !seen.has(e.id);
       seen.add(e.id);
       out += esc(raw.slice(pos, h.start)) + wrap(esc(h.word), e, inline && first);
@@ -74,7 +76,7 @@ export function createAnnotator(lang, { inline = true, seen = new Set() } = {}) 
   function code(raw) {
     const html = `<code>${esc(raw)}</code>`;
     const e = idx.code.get(raw.trim().replace(/\(\)$/, '').toLowerCase());
-    if (!e) return html;
+    if (!e || skipSet.has(e.id)) return html;
     const first = !seen.has(e.id);
     seen.add(e.id);
     return wrap(html, e, inline && first);
