@@ -245,3 +245,9 @@ pre code { background: none; padding: 0; font-size: inherit; color: inherit; }
 .md-table table { border-collapse: collapse; font-size: .88rem; width: 100%; }
 .md-table th, .md-table td { border-bottom: 1px solid var(--line); padding: 6px 8px; text-align: left; vertical-align: top; }
 .md-table th { font-family: var(--mono); font-size: .75rem; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+.panel.story { border-left: 4px solid #d6609a; }
+.panel.story > summary { cursor: pointer; list-style: none; }
+.panel.story > summary::-webkit-details-marker { display: none; }
+.panel.story > summary::before { content: '▸ '; color: var(--muted); }
+.panel.story[open] > summary::before { content: '▾ '; }
+.panel.story #story p { margin: 6px 0; }

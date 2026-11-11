@@ -76,6 +76,7 @@ for (const l of labs) {
   if (!Array.isArray(l.try) || !l.try.length) err(id, 'precisa de itens em "try"');
   else l.try.forEach((x, i) => { if (!bilingual(x)) err(id, `try[${i}] precisa de pt e en`); });
   (l.questions || []).forEach((q) => { if (!ids.has(q)) err(id, `pergunta inexistente "${q}"`); });
+  if (l.story && !existsSync(`labs/web/${l.id}/${l.story.file}`)) err(id, `história não existe: ${l.story.file}`);
   for (const file of [l.main, l.setup].filter(Boolean)) {
     const path = `labs/web/${l.id}/${file}`;
     if (!existsSync(path)) { err(id, `arquivo não existe: ${path}`); continue; }

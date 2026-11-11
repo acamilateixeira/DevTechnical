@@ -63,7 +63,7 @@ Perguntas marcadas com **✓ relatada** têm evidência pública de que aparecem
 
 | Lab | Tipo | O que mostra |
 | --- | --- | --- |
-| Event loop | JS | Cada `console.log` cai na coluna síncrono, microtask ou macrotask |
+| Event loop | JS | Cada `console.log` cai na coluna síncrono, microtask ou macrotask; inclui "a história do event loop" em forma de conversa |
 | Closure e debounce | JS + tela | 11 chamadas à API sem debounce contra 1 com debounce |
 | Keys em listas | React | O texto digitado "pula" de item com `key={index}` |
 | useEffect e race condition | React | A resposta antiga sobrescreve a nova; `AbortController` corrige |

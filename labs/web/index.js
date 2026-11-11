@@ -9,6 +9,7 @@ export const labs = [
   {
     id: 'event-loop',
     cat: 'typescript', kind: 'js', instrument: 'eventloop', main: 'main.js',
+    story: { file: 'story.pt.md', author: 'Camila Teixeira' }, // a história em forma de conversa
     lanes: ['Síncrono (call stack)', 'Microtasks', 'Macrotasks (timers)'],
     questions: ['js-event-loop', 'node-event-loop-blocking'],
     title: { pt: 'Event loop: em que ordem o JavaScript roda', en: 'Event loop: the order JavaScript runs in' },
@@ -35,6 +36,7 @@ The teller's rule: finish the current customer, then serve the **whole** priorit
     },
     try: [
       { pt: 'Dentro do `setTimeout`, adicione `Promise.resolve().then(() => console.log("H"))`. Onde o H aparece? (Antes de qualquer outro timer: a fila preferencial é olhada depois de cada macrotask.)', en: 'Inside the `setTimeout`, add `Promise.resolve().then(() => console.log("H"))`. Where does H appear? (Before any other timer: the priority line is checked after every macrotask.)' },
+      { pt: 'Apague a linha `await null`. O F passa a sair logo depois do E, na coluna Síncrono. Por quê? (Uma função `async` roda síncrona até o primeiro `await`; sem `await`, nada pausa.)', en: 'Delete the `await null` line. F now prints right after E, in the Synchronous column. Why? (An `async` function runs synchronously until its first `await`; without `await`, nothing pauses.)' },
       { pt: 'Troque `await null` por `await sleep(0)`. O F muda de coluna. Por quê? (`sleep` usa setTimeout.)', en: 'Replace `await null` with `await sleep(0)`. F changes column. Why? (`sleep` uses setTimeout.)' },
       { pt: 'Crie dois `setTimeout`, um de 10 ms e um de 0 ms, e veja a ordem e a coluna "ms" com o tempo real.', en: 'Create two `setTimeout`s, one at 10 ms and one at 0 ms, and check the order and the real time in the "ms" column.' },
       { pt: 'Coloque um loop pesado no síncrono: `const fim = Date.now() + 500; while (Date.now() < fim) {}`. Veja que o B só roda depois de ~500 ms: é isso que "travar o event loop" significa.', en: 'Add a heavy synchronous loop: `const end = Date.now() + 500; while (Date.now() < end) {}`. B only runs after ~500 ms: that is what "blocking the event loop" means.' },

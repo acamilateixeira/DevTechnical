@@ -14,7 +14,7 @@ queueMicrotask(() => console.log('D: queueMicrotask'));
 
 (async () => {
   console.log('E: dentro da função async, antes do await');
-  await null;
+  await null; // apague esta linha e veja o F virar síncrono: async roda na hora até o 1º await
   console.log('F: depois do await (virou microtask)');
 })();
 
