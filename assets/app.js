@@ -5,6 +5,7 @@ import { labs } from '../labs/web/index.js';
 import { renderStart } from './start.js';
 import { createAnnotator } from './gloss.js';
 import { renderGlossary } from './glossary-page.js';
+import { initGlossPopover } from './gloss-pop.js';
 import { sources, evidenceSummary } from '../data/evidence.js';
 import { storyForQuestion, storyButton, bindStoryButtons, renderStories, renderStoryPage } from './story.js';
 
@@ -420,6 +421,7 @@ if (typeof document !== 'undefined') {
       state.filters[key] = e.target.value; save(); renderChrome(); route();
     }));
   window.addEventListener('hashchange', route);
+  initGlossPopover();
   renderChrome();
   route();
 }

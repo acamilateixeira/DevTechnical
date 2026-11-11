@@ -224,7 +224,7 @@ pre code { background: none; padding: 0; font-size: inherit; color: inherit; }
   box-shadow: 0 6px 24px rgba(0,0,0,.25); text-align: left; white-space: normal; }
 .gloss-pop strong { display: block; margin-bottom: 4px; }
 .gloss-pop a { display: inline-block; margin-top: 6px; color: var(--accent); font-weight: 600; }
-.term:hover > .gloss-pop, .term:focus > .gloss-pop, .term:focus-within > .gloss-pop { display: block; }
+.gloss-pop { display: none !important; } /* só guarda o conteúdo; quem aparece é o .gloss-float */
 .recruiter .gloss-pop { background: var(--surface); color: var(--ink); }
 .gloss-toggle { border: 1px solid var(--line); background: transparent; color: var(--muted); padding: 5px 12px; border-radius: 999px; cursor: pointer; font-size: .8rem; font-family: var(--mono); }
 .gloss-toggle[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
@@ -340,3 +340,20 @@ pre code { background: none; padding: 0; font-size: inherit; color: inherit; }
 .st-moral { background: color-mix(in srgb, var(--good) 8%, var(--surface)); border: 1px solid var(--line); border-left: 4px solid var(--good); border-radius: var(--radius); padding: 14px 16px; }
 .st-extra { border-left: 4px solid var(--muted); }
 @media (max-width: 600px) { .st-state { margin-left: 0; } .st-state-row { grid-template-columns: 1fr; gap: 0; } }
+
+/* Balão das definições: posicionado por assets/gloss-pop.js para nunca sair da tela */
+.gloss-float { position: fixed; z-index: 1000; width: max-content; max-width: min(360px, calc(100vw - 16px)); overflow-y: auto; overscroll-behavior: contain;
+  background: var(--ink); color: var(--bg); border-radius: 10px; padding: 10px 12px; font: .9rem/1.5 var(--sans); font-style: normal; text-transform: none; letter-spacing: normal;
+  box-shadow: 0 8px 28px rgba(0,0,0,.35); text-align: left; white-space: normal; overflow-wrap: anywhere; }
+.gloss-float[data-dark="0"] { background: var(--surface); color: var(--ink); border: 1px solid var(--line); }
+.gloss-float strong { display: block; margin-bottom: 4px; }
+.gloss-float a { display: inline-block; margin-top: 6px; color: var(--accent); font-weight: 600; }
+.gloss-float[hidden] { display: none; }
+
+/* Nada pode alargar a página em tela pequena: colunas de grid encolhem e blocos largos rolam por dentro */
+.room, .reveal, .list, .lab-text, .st-zone { grid-template-columns: minmax(0, 1fr); }
+.room > *, .reveal > *, .panel, .bubble { min-width: 0; }
+.panel pre, .bubble pre, .st pre { max-width: 100%; overflow-x: auto; }
+.md-table { max-width: 100%; overflow-x: auto; }
+.filters label { min-width: 0; }
+.filters select { width: 100%; max-width: 100%; min-width: 0; }
