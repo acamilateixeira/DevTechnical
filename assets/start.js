@@ -17,7 +17,7 @@ const C = {
     lead: 'Se as perguntas parecem um idioma estranho, é normal: elas resumem anos de prática em poucas linhas. O caminho aqui é **entender com uma história, ver funcionando no lab, saber medir** e só então responder como na entrevista.',
     pathTitle: 'Sua trilha de estudo', pathHint: 'Escolha a vaga. Cada parada junta a história, o lab, o guia de medição e as perguntas do mesmo assunto, na ordem que mais ajuda.',
     progress: (d, n) => `${d} de ${n} perguntas com nota de acerto (80%+)`, next: 'Continuar de onde parei', start: 'Começar a trilha', done: 'Trilha completa! Repita as que caíram abaixo de 80%.',
-    kinds: { story: '😂 História', lab: '▶ Lab', measure: '📏 Medir' },
+    kinds: { story: '😂 História', video: '🎬 Vídeo', lab: '▶ Lab', measure: '📏 Medir' },
     mapTitle: 'O que tem em cada aba',
     map: [
       ['stories', '😂 Histórias', 'Cada conceito vira uma conversa engraçada, com "quem é quem" no código e o estado do programa a cada cena.'],
@@ -61,7 +61,7 @@ const C = {
     lead: 'If the questions feel like a foreign language, that is normal: they compress years of practice into a few lines. The path here is to **understand it through a story, see it running in the lab, know how to measure it**, and only then answer as you would in the interview.',
     pathTitle: 'Your study path', pathHint: 'Pick the role. Each stop brings together the story, the lab, the measuring guide, and the questions on the same topic, in the order that helps most.',
     progress: (d, n) => `${d} of ${n} questions scored as correct (80%+)`, next: 'Continue where I left off', start: 'Start the path', done: 'Path complete! Repeat the ones below 80%.',
-    kinds: { story: '😂 Story', lab: '▶ Lab', measure: '📏 Measure' },
+    kinds: { story: '😂 Story', video: '🎬 Video', lab: '▶ Lab', measure: '📏 Measure' },
     mapTitle: 'What each tab has',
     map: [
       ['stories', '😂 Stories', 'Each concept becomes a funny conversation, with "who is who" in the code and the program\'s state in every scene.'],
@@ -140,7 +140,7 @@ export function renderStart(view, { lang, gloss = true, L, questions, scores = {
       const m = measureCards.find((x) => x.id === it.id);
       return `<a class="path-item path-chip" href="#/measure/${it.id}">${c.kinds.measure}${m ? `: ${escapeHtml(L(m.title))}` : ''}</a>`;
     }
-    return `<a class="path-item path-chip path-story" data-story-id="${it.id}" href="#/story/${it.id}">${c.kinds.story}</a>`;
+    return `<a class="path-item path-chip path-story" data-story-id="${it.id}" href="#/story/${it.id}">${c.kinds.story}</a><a class="path-item path-chip" href="#/story/${it.id}/play">${c.kinds.video}</a>`;
   };
 
   const pathHtml = (key) => {

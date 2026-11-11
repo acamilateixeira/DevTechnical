@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DevTechnical · vídeo da história</title>
+  <link rel="stylesheet" href="assets/styles.css" />
+  <style>
+    html, body { margin: 0; background: #1e1f29; }
+    .cap .pl-viewport { width: 1280px !important; height: 720px !important; border-radius: 0; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="module">
+    // Página só do player. ?story=<id>&lang=pt|en&capture=1 (capture: sem controles, para gravar quadro a quadro)
+    import { stories, loadStory } from './assets/story.js';
+    import { mountPlayer } from './assets/story-player.js';
+    const p = new URLSearchParams(location.search);
+    const lang = p.get('lang') === 'en' ? 'en' : 'pt';
+    const capture = p.has('capture');
+    const s = stories.find((x) => x.id === p.get('story'));
+    const root = document.getElementById('root');
+    if (capture) document.body.classList.add('cap');
+    if (!s) root.textContent = 'história não encontrada';
+    else loadStory(s, lang).then((story) => {
+      const player = mountPlayer(root, story, { lang, capture, meta: lang === 'pt' ? 'Trilha Brasil Card · DevTechnical' : 'Brasil Card path · DevTechnical' });
+      window.__player = player;
+      window.__ready = true;
+    });
+  </script>
+</body>
+</html>

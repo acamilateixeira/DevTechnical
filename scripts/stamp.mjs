@@ -31,4 +31,12 @@ html = html
   .replace(/(href="assets\/styles\.css)"/, `$1${q}"`)
   .replace('<script type="module"', `<script>window.__V = ${JSON.stringify(version)};</script>\n  <script type="module"`);
 writeFileSync(idx, html);
+// player.html: imports dentro do <script type="module">
+const ph = join(dir, 'player.html');
+try {
+  const src = readFileSync(ph, 'utf8');
+  writeFileSync(ph, src.replace(/(\bfrom\s*)(['"])(\.{1,2}\/[^'"?]+?\.js)\2/g, `$1$2$3${q}$2`)
+    .replace('<script type="module">', `<script>window.__V = ${JSON.stringify(version)};</script>\n  <script type="module">`)
+    .replace(/(href="assets\/styles\.css)"/, `$1${q}"`));
+} catch { /* sem player.html */ }
 console.log(`versão ${version}: ${files} módulos carimbados + index.html`);

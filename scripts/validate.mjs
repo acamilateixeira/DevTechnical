@@ -12,6 +12,7 @@ import { extraJobs, reported as reportedMap, sources } from '../data/evidence.js
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { storyIds } from '../data/stories/index.js';
 import { paths } from '../data/paths.js';
+import { videos } from '../data/videos.js';
 import { cards as measureCards, areas as measureAreas, method as measureMethod } from '../data/measure.js';
 import { parseStory, findCast, STATE, stories as allStories } from '../assets/story.js';
 import { execFileSync } from 'node:child_process';
@@ -170,6 +171,13 @@ for (const [k, p] of Object.entries(paths)) {
   });
 }
 
+// ---- vídeos MP4
+for (const v of videos) {
+  const [sid] = v.split('.');
+  if (!storyAll.has(sid)) err(`vídeo:${v}`, 'história inexistente');
+  if (!existsSync(`media/videos/${v}.mp4`)) err(`vídeo:${v}`, `falta media/videos/${v}.mp4 (rode scripts/render-videos.mjs)`);
+}
+
 // ---- glossário
 const gIds = new Set();
 for (const g of glossary) {
@@ -200,5 +208,5 @@ console.log(`✓ ${questions.length} perguntas válidas, ${Object.values(rubrics
 console.log('  por tema:', byCat);
 console.log('  por vaga:', byJob);
 console.log(`✓ ${withStory}/${questions.length} perguntas com história (pt + en)`);
-console.log(`✓ ${measureCards.length} guias de medição, ${Object.keys(paths).length} trilhas por vaga`);
+console.log(`✓ ${measureCards.length} guias de medição, ${Object.keys(paths).length} trilhas por vaga, ${videos.size} vídeos MP4`);
 console.log(`✓ ${labs.length} labs no navegador, ${glossary.length} termos no glossário, 5 labs Node`);

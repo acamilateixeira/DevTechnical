@@ -44,7 +44,7 @@ jobs:
       - name: Prepare site
         run: |
           mkdir -p _site
-          cp -r index.html assets data labs .nojekyll _site/
+          cp -r index.html player.html assets data labs media .nojekyll _site/
           node scripts/stamp.mjs _site "${GITHUB_SHA::7}"
       - uses: actions/upload-pages-artifact@v5
         with:

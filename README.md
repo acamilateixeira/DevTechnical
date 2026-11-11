@@ -121,6 +121,26 @@ Toda história segue o mesmo formato, para não misturar a brincadeira com a par
 
 Na pergunta e no lab, o botão **"😂 Não entendeu? Leia a história"** abre a história por cima da tela, sem perder o que você estava escrevendo. No lab, o "Quem é quem" também aparece acima do código.
 
+### Mini vídeos
+
+Toda história tem um **mini vídeo animado** no topo da página dela. A trilha do Comece aqui tem o botão "🎬 Vídeo", que já abre tocando. O vídeo mostra, em sequência:
+
+1. A abertura.
+2. O "quem é quem".
+3. Cada cena com as falas aparecendo e o painel 📋 mudando.
+4. A resposta pronta da entrevista.
+
+Os controles são: play/pausa, linha do tempo, velocidade, tela cheia e **🔊 narração** com a voz do próprio navegador. Em telas estreitas o vídeo fica em pé, com a conversa em cima e o painel embaixo. O player fica em `assets/story-player.js` e funciona em PT e EN, porque lê o próprio arquivo da história.
+
+As 15 histórias da trilha Brasil Card também têm **MP4** (1280×720, em português) para baixar e compartilhar, em `media/videos/`. Eles são gravados quadro a quadro a partir do mesmo player:
+
+```bash
+python3 -m http.server 8765 &
+node scripts/render-videos.mjs http://localhost:8765 pt <id da história> ...   # precisa de Playwright e ffmpeg
+```
+
+Depois, inclua os ids gravados em `data/videos.js` para aparecer o link de download.
+
 ## Laboratório
 
 | Lab | Tipo | O que mostra |
@@ -167,6 +187,12 @@ data/research.js      # perguntas acrescentadas a partir de relatos reais
 data/evidence.js      # fontes da pesquisa e vagas extras por pergunta
 data/measure.js       # guias de medição: métrica, ferramenta, passo a passo e frase de entrevista
 data/paths.js         # trilhas de estudo por vaga (Comece aqui)
+data/videos.js        # quais histórias já têm MP4 gravado
+media/videos/         # MP4 dos mini vídeos (trilha Brasil Card)
+player.html           # página só do player (usada para gravar os MP4)
+assets/story-player.js # mini vídeo animado das histórias
+scripts/render-videos.mjs # grava os MP4 quadro a quadro
+scripts/stamp.mjs     # carimba a versão nos arquivos publicados (evita cache misturado)
 data/stories/         # histórias das perguntas: <id>.pt.md + <id>.en.md e index.js
 labs/web/             # labs do navegador: index.js (textos) + código e história (story.pt.md, story.en.md) de cada lab
 labs/node/            # labs para rodar com Node 22.13+
@@ -202,6 +228,7 @@ A picky interviewer, as an app. It asks senior-level technical questions about t
 - **Model answer**: full explanation, code where needed, tools/libraries/techniques to mention, metrics that prove mastery, the interviewer's follow-ups, red flags, and how to anchor the answer in my real experience without inventing any.
 - **Objective score**: each question has a checklist of points a 100% answer must cover. I tick only what I actually said: **≥ 80% correct, 40–79% partial, < 40% wrong**.
 - **Progress**: average score and correct/partial/wrong percentages, overall and per topic, plus strongest and weakest topic.
+- **Mini videos**: every story plays as an animated video (scenes, the 📋 state panel changing, the interview answer) with browser narration; the 15 Brasil Card path stories also have downloadable MP4s.
 - **Start here**: a study path per role (Brasil Card, Elastic, BrainRocket, Frontend, KWAN) that ties stories, labs, measuring guides, and questions together, with progress and a "continue where I left off" button, plus a map of the app.
 - **Colored code**: Dracula theme everywhere, with bracket pair colorization (matching pair lights up on hover or at the cursor), rainbow indentation, and a color legend in the lab.
 - **How to measure**: 16 guides (React DevTools, INP/LCP/CLS, Node event loop and memory, load tests, RED/SLOs, slow queries, N+1, locks, Xdebug/Telescope, RabbitMQ/Kafka/Redis, DORA) with the metric, the good value, the tools, where to click step by step, and the interview line.

@@ -10,7 +10,7 @@ import { codeBlock, initBracketHover } from './highlight.js';
 import { renderMeasure } from './measure-page.js';
 import { cardsForQuestion } from '../data/measure.js';
 import { sources, evidenceSummary } from '../data/evidence.js';
-import { storyForQuestion, storyButton, bindStoryButtons, renderStories, renderStoryPage } from './story.js';
+import { storyForQuestion, storyButton, bindStoryButtons, renderStories, renderStoryPage, setStoryLeave } from './story.js';
 
 const STORE = 'devtechnical:v1';
 const $ = (s, el = document) => el.querySelector(s);
@@ -104,7 +104,7 @@ function route() {
   $('.filters').hidden = ['lab', 'start', 'glossary', 'stories', 'story', 'measure'].includes(name);
   if (name === 'measure') { if (!arg) window.scrollTo(0, 0); return renderMeasure($('#view'), { lang: state.lang, gloss: state.gloss, L, questions, focus: arg && decodeURIComponent(arg) }); }
   if (name === 'stories') { window.scrollTo(0, 0); return renderStories($('#view'), { lang: state.lang, L, questions, cats }); }
-  if (name === 'story') { window.scrollTo(0, 0); return renderStoryPage($('#view'), decodeURIComponent(arg || ''), { lang: state.lang, L, questions }); }
+  if (name === 'story') { window.scrollTo(0, 0); setStoryLeave(onLeave); return renderStoryPage($('#view'), decodeURIComponent(arg || ''), { lang: state.lang, L, questions, autoplay: location.hash.split('/')[3] === 'play' }); }
   if (name === 'glossary') { return renderGlossary($('#view'), { lang: state.lang, focus: arg && decodeURIComponent(arg) }); }
   if (name === 'start') { window.scrollTo(0, 0); return renderStart($('#view'), { lang: state.lang, gloss: state.gloss, L, questions, scores: state.scores }); }
   if (name === 'lab') {
