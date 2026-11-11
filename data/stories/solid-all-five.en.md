@@ -1,27 +1,60 @@
-**`OrderController`** (doing EVERYTHING): "I validate, calculate tax, save to the database, and send email!" 🤹
+# 🧰 Auntie SOLID's five pieces of advice
 
-**S (Single Responsibility)**: "And when tax changes, when email changes, when the database changes… you change for FOUR reasons. Split it!" ✂️
+> An ordering system grew on "I'll fix it later". Auntie SOLID came for a visit.
 
-**Checkout** (full of `if`s): "If pix… else if card… else if boleto…"
+## 🎭 Cast
+- 🤹 **Do-it-all** · a giant `PedidoController` · validates, calculates tax, saves, and sends email
+- ✂️ **S** · Single Responsibility · "one class, one reason to change"
+- 🚪 **O** · Open/Closed · "extend without touching what already works"
+- 🤥 **Impostor** · `ReadOnlyRepository` with a `save()` that throws · pretends to be something it isn't
+- 🙅 **L** · Liskov Substitution · "a substitute has to honor the contract"
+- 🐘 **Mega-interface** · `UsuarioService` with 30 methods · everyone depends on all of it
+- 🧩 **I** · Interface Segregation · "small interfaces, by role"
+- 🔌 **D** · Dependency Inversion · "the rule depends on an abstraction, not on MySQL"
+- 🤓 **Overexcited architect** · wants an interface for everything
 
-**O (Open/Closed)**: "You edit me for every new payment method? Create a new CLASS that follows the `PaymentMethod` interface and leave me alone." 🚪
+- 🛒 **Checkout** · the payment code full of `if`s
+- 📏 **Approval rule** · a business rule · glued to MySQL
+- 👵 **Auntie SOLID** · all five principles together · the voice of experience
+## 🎬 Scene 1 · The do-it-all
+**Do-it-all**: "I validate, calculate tax, save to the database, and send email! I'm a multitasker!" 🤹
+**S**: "Sweetie, when the tax changes, the email changes, or the database changes, you change for FOUR reasons. Split that up." ✂️
 
-**`ReadOnlyRepository`** (pretending to be a normal repository): "I have `save()`… but I throw 'not supported'." 🤥
+## 🎬 Scene 2 · The checkout full of ifs
+**Checkout**: "If it's Pix… else if it's a card… else if it's a boleto…"
+**O**: "And for every new payment method you'll edit this again? Create a new class that follows the `MeioDePagamento` contract and leave the checkout alone." 🚪
+**Impostor**: "I'm a repository! I have `save()`… but it throws 'not supported'." 🤥
+**L**: "Whoever uses a repository expects `save()` to work. If you don't honor the contract, don't pretend to be one." 🙅
 
-**L (Liskov)**: "Whoever uses a repository expects `save()` to work. If you don't honor the contract, don't pretend to be one." 🙅
+## 🎬 Scene 3 · The mega-interface and the glued-on database
+**Mega-interface**: "Whoever just wants to read a user's name has to depend on my 30 methods." 🐘
+**I**: "Break it into pieces: `LeitorDeUsuario`, `RedefinidorDeSenha`. Each one takes only what it uses." 🧩
+**Approval rule**: "I call MySQL directly, it's faster."
+**D**: "Depend on a repository interface. In tests they'll give you an in-memory version and, if the database changes, you won't even know." 🔌
+**Overexcited architect**: "THEN I'LL CREATE AN INTERFACE FOR EVERYTHING! EVEN FOR `console.log`!" 🤓
+**Auntie SOLID**: "Easy, son. Unnecessary abstraction is a cost too." 😅
 
-**`UserService`** (with 30 methods): "Whoever just wants to read the name has to depend on all of me."
+## 💻 Translating to code
+```ts
+interface MeioDePagamento { cobrar(valor: Money): Promise<Recibo>; }      // 🚪 O + 🔌 D
+class Pix implements MeioDePagamento { /* ... */ }
+class Cartao implements MeioDePagamento { /* ... */ }                     // new method = new class
 
-**I (Interface Segregation)**: "Small role interfaces: `UserReader`, `PasswordResetter`." 🧩
+class Checkout {
+  constructor(private readonly meios: Map<string, MeioDePagamento>) {}   // depends on the abstraction
+  pagar(tipo: string, valor: Money) { return this.meios.get(tipo)!.cobrar(valor); }
+}
 
-**Approval rule**: "I call MySQL directly…"
+interface LeitorDeUsuario { buscarNome(id: string): Promise<string>; }   // 🧩 I: small and by role
+```
 
-**D (Dependency Inversion)**: "Depend on a repository **interface**. Then in tests you get an in-memory version and, if the database changes, you won't even notice." 🔌
+| Letter | In one sentence | Symptom it's missing |
+| --- | --- | --- |
+| S | One reason to change | A class that touches everything |
+| O | Extend without editing | A growing `if/else` by type |
+| L | Honor the contract | A subclass that throws "not supported" |
+| I | Small interfaces | A class implementing methods it doesn't use |
+| D | The rule depends on abstractions | A rule that imports the database driver |
 
-**Excited architect**: "SO I'LL CREATE AN INTERFACE FOR EVERYTHING!"
-
-**SOLID**: "Easy. Unnecessary abstraction is a cost too." 😅
-
-**🧠 Interview takeaway**
-
-"SOLID fights coupling: SRP = one reason to change; OCP = extend without editing; LSP = honor the contract; ISP = small interfaces; DIP = rules depend on abstractions, not details. It's a tool, not a rule: unnecessary abstraction is a cost."
+## 🎤 For the interview
+"SOLID targets coupling: SRP is having one reason to change; OCP is extending without editing what works; LSP is a subclass honoring the contract; ISP is small, role-based interfaces; DIP is business rules depending on abstractions, not details. It's a tool, not dogma: unnecessary abstraction is a cost too."

@@ -1,29 +1,69 @@
-**Você** (pro Kubernetes): "Quero **3 cópias** da minha API rodando, sempre."
+# 🚢 O capataz que nunca dorme
 
-**Deployment** 📋: "Anotado. Se uma cair, eu subo outra."
+> Você entrega sua API pro Kubernetes e diz: "quero 3 cópias rodando, sempre". Ele leva isso MUITO a sério.
 
-**Pod** 📦: "Eu sou uma dessas cópias. Sou descartável: posso morrer e renascer em outra máquina."
+## 🎭 Elenco
+- 🙋 **Você** · o manifesto YAML · diz o estado desejado, não o passo a passo
+- 📋 **Capataz** · Deployment · garante que sempre existam N cópias e faz a troca de versão
+- 📦 **Peão** · Pod · uma cópia rodando; é descartável, morre e renasce em outra máquina
+- 📞 **Telefone fixo** · Service · um endereço estável que distribui as ligações entre os pods saudáveis
+- 🚦 **Porteiro** · readiness probe · "já pode receber gente?"
+- 💓 **Enfermeiro** · liveness probe · "tá vivo?" Se travou, reinicia
+- 🍔 **Peão comilão** · pod que passou do `limits.memory` · leva OOMKilled
+- 💀 **Kernel** · o sistema operacional · quem mata o comilão
 
-**Service** 📞: "E eu sou o número fixo. Ninguém precisa saber em qual pod liga: eu distribuo entre os saudáveis."
+- 🛒 **Clientes** · os usuários · nem percebem o deploy
+- 👷 **Todos os peões** · todos os pods ao mesmo tempo
+## 🎬 Cena 1 · O combinado
+**Você**: "Quero 3 cópias da minha API rodando, sempre."
+**Capataz**: "Anotado. Caiu uma? Subo outra. Não discuto, só obedeço." 📋
+**Peão**: "Eu sou uma das cópias. Hoje tô nessa máquina, amanhã sei lá." 📦
+**Telefone fixo**: "E ninguém precisa saber em qual peão liga: liga em mim que eu distribuo entre os que estão bem." 📞
 
-**Deploy da versão nova** (rolling update):
+## 🎬 Cena 2 · Trocando a versão sem ninguém perceber
+**Capataz**: "Versão nova! Subo UM peão novo…"
+**Porteiro**: "Peraí, ele já tá pronto pra receber gente? …Agora sim!" 🚦
+**Capataz**: "…então mando UM velho embora, com aviso pra ele terminar o que estava fazendo. E repito até trocar todos." 🔄
+**Clientes**: "Teve deploy? Nem vi." 😎
 
-**Deployment**: "Subo UM pod novo…"
+## 🎬 Cena 3 · Os perrengues
+**Enfermeiro**: "Tá vivo? Tá vivo? Travou? Reinicio." 💓
+**Enfermeiro mal configurado**: "Eu checo se o BANCO tá vivo. Se o banco cair…"
+**Todos os peões**: "…a gente reinicia em loop sem motivo! Socorro!" 😵
+**Peão comilão**: "Comi mais memória do que o meu limite…" 🍔
+**Kernel**: "OOMKilled. Tchau, querido." 💀
 
-**Readiness probe** 🚦: "Ele já está pronto pra receber gente? …Agora sim!"
+## 💻 Traduzindo pro código
+```yaml
+apiVersion: apps/v1
+kind: Deployment                       # 📋
+metadata: { name: api }
+spec:
+  replicas: 3
+  strategy: { rollingUpdate: { maxUnavailable: 0, maxSurge: 1 } }
+  template:
+    spec:
+      containers:
+        - name: api                    # 📦
+          image: api:3f9c2e1
+          resources: { requests: { memory: 256Mi }, limits: { memory: 512Mi } } # 🍔
+          readinessProbe: { httpGet: { path: /ready, port: 3000 } }   # 🚦 pode checar dependências
+          livenessProbe:  { httpGet: { path: /live,  port: 3000 } }   # 💓 só "o processo responde?"
+---
+apiVersion: v1
+kind: Service                          # 📞
+metadata: { name: api }
+spec: { selector: { app: api }, ports: [{ port: 80, targetPort: 3000 }] }
+```
 
-**Deployment**: "…então desligo UM antigo (com SIGTERM, pra ele terminar o que estava fazendo). E repito até trocar todos." 🔄
+| Peça | Para quê |
+| --- | --- |
+| Pod | Uma ou mais containers rodando juntos, descartável |
+| Deployment | Mantém N réplicas e faz rolling update |
+| Service | Endereço estável e balanceamento |
+| Readiness | Decide se recebe tráfego |
+| Liveness | Decide se reinicia |
+| HPA | Aumenta e diminui réplicas por métrica |
 
-**Liveness probe** 💓: "E eu fico perguntando 'tá vivo?'. Se travou, reinicio."
-
-**Liveness mal configurada**: "Eu checo o BANCO. Se o banco cair…"
-
-**Todos os pods**: "…a gente reinicia em loop! 😵"
-
-**Pod comilão** 🍔: "Usei mais memória que o meu limite…"
-
-**Kernel**: "**OOMKilled.** Tchau." 💀
-
-**🧠 Moral da história para entrevista**
-
-"Deployment mantém N réplicas de pods; Service dá um endereço estável. No rolling update, cada pod novo só recebe tráfego quando a readiness passa, e o antigo sai com graceful shutdown. Liveness reinicia o travado (não deve checar o banco). Passar do limite de memória dá OOMKilled."
+## 🎤 Pra entrevista
+"Deployment mantém N réplicas de pods e Service dá um endereço estável. No rolling update, cada pod novo só recebe tráfego quando a readiness passa, e o antigo sai com graceful shutdown. Liveness reinicia o processo travado e não deve checar o banco, senão um problema no banco reinicia tudo em loop. Passar do limite de memória dá OOMKilled."

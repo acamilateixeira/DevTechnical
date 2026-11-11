@@ -5,7 +5,7 @@ import { labs } from '../labs/web/index.js';
 import { renderStart } from './start.js';
 import { createAnnotator } from './gloss.js';
 import { renderGlossary } from './glossary-page.js';
-import { storyIds } from '../data/stories/index.js';
+import { storyForQuestion, storyButton, bindStoryButtons, renderStories, renderStoryPage } from './story.js';
 
 const STORE = 'devtechnical:v1';
 const $ = (s, el = document) => el.querySelector(s);
@@ -85,13 +85,16 @@ let labModule = null;
 function route() {
   const [, name = defaultRoute(), arg] = location.hash.split('/');
   document.querySelectorAll('[data-route]').forEach((a) => {
-    const on = a.dataset.route === (name === 'q' ? 'interview' : name);
+    const on = a.dataset.route === (name === 'q' ? 'interview' : name === 'story' ? 'stories' : name);
     if (on) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
   });
   stopTimer();
+  document.getElementById('story-drawer')?.close();
   leave.forEach((fn) => fn()); leave = [];
   // Filtros só fazem sentido nas telas de perguntas.
-  $('.filters').hidden = ['lab', 'start', 'glossary'].includes(name);
+  $('.filters').hidden = ['lab', 'start', 'glossary', 'stories', 'story'].includes(name);
+  if (name === 'stories') { window.scrollTo(0, 0); return renderStories($('#view'), { lang: state.lang, L, questions, cats }); }
+  if (name === 'story') { window.scrollTo(0, 0); return renderStoryPage($('#view'), decodeURIComponent(arg || ''), { lang: state.lang }); }
   if (name === 'glossary') { return renderGlossary($('#view'), { lang: state.lang, focus: arg && decodeURIComponent(arg) }); }
   if (name === 'start') { window.scrollTo(0, 0); return renderStart($('#view'), { lang: state.lang, gloss: state.gloss }); }
   if (name === 'lab') {
@@ -178,33 +181,10 @@ function toolsHtml(q) {
 
 const annotator = (q) => createAnnotator(state.lang, { inline: state.gloss, skip: q?.noGloss });
 
-/* História: a da própria pergunta (data/stories) ou a do lab ligado a ela. */
-const storyCache = new Map();
-function storyPath(q, lang) {
-  if (storyIds.has(q.id)) return `data/stories/${q.id}.${lang}.md`;
-  const lab = labs.find((l) => l.story && (l.questions || []).includes(q.id));
-  return lab ? `labs/web/${lab.id}/story.${lang}.md` : null;
-}
-function getText(path) {
-  if (!storyCache.has(path)) storyCache.set(path, fetch(path).then((r) => { if (!r.ok) throw new Error(path); return r.text(); }));
-  return storyCache.get(path);
-}
-function fillStories(scope) {
-  scope.querySelectorAll('.story[data-q]:not([data-done])').forEach((box) => {
-    box.dataset.done = '1';
-    const q = questions.find((x) => x.id === box.dataset.q);
-    const lang = state.lang;
-    getText(storyPath(q, lang)).catch(() => getText(storyPath(q, 'pt'))).then((txt) => {
-      box.querySelector('.story-body').innerHTML = md(txt, createAnnotator(lang, { inline: false }));
-    }).catch(() => box.remove());
-  });
-}
-
 function revealHtml(q, ann = annotator(q)) {
   const follow = (q.follow || []).map((f) => `<li>${md(L(f), ann).replace(/^<p>|<\/p>$/g, '')}</li>`).join('');
   const lab = labs.find((l) => (l.questions || []).includes(q.id));
   return `
-    ${storyPath(q, state.lang) ? `<details class="panel story" data-q="${q.id}" open><summary><h3 style="display:inline">${t('storyTitle')}</h3> <span class="hint">${t('storyHint')}</span></summary><div class="story-body"></div></details>` : ''}
     ${lab ? `<a class="panel lab-link" href="#/lab/${lab.id}"><strong>${t('seeLab')}</strong><span>${escapeHtml(L(lab.title))}</span></a>` : ''}
     ${q.reported ? `<div class="panel reported"><h3>${t('reportedTitle')}</h3>${md(L(q.reported), ann)}</div>` : ''}
     <div class="panel"><h3>${t('answer')}</h3>${md(L(q.a), ann)}</div>
@@ -231,6 +211,7 @@ function renderInterview() {
         </div>
         <p class="question">${ann.text(L(q.q))}</p>
         <div class="chips">${chips(q)}</div>
+        ${storyButton(storyForQuestion(q.id), state.lang)}
       </article>
 
       <div class="bubble answer-box">
@@ -260,7 +241,7 @@ function renderInterview() {
   });
   $('#timer').addEventListener('click', toggleTimer);
   bindChecklist(view, q);
-  fillStories(view);
+  bindStoryButtons(view, state.lang, { question: null });
 }
 
 function bindChecklist(scope, q) {
@@ -330,9 +311,9 @@ function renderStudy() {
     $('#list').querySelectorAll('details').forEach((d) => d.addEventListener('toggle', () => {
       if (!d.open || d.dataset.ready) return;
       const q = questions.find((x) => x.id === d.dataset.id);
-      d.querySelector('.body').innerHTML = revealHtml(q);
+      d.querySelector('.body').innerHTML = storyButton(storyForQuestion(q.id), state.lang) + revealHtml(q);
+      bindStoryButtons(d, state.lang, { question: q.id });
       bindChecklist(d, q);
-      fillStories(d);
       d.dataset.ready = '1';
     }));
   };

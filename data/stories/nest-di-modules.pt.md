@@ -1,19 +1,60 @@
-**`ApproveTripUseCase`**: "Pra trabalhar eu preciso de um repositório de viagens e de um barramento de eventos."
+# 🤵 O mordomo que entrega tudo pronto
 
-**Jeito antigo** (criando tudo sozinho): "`new TypeOrmTripRepository(new Connection(...))`… e no teste? Vou ter que subir um banco de verdade? 😩"
+> Um caso de uso chegou pra trabalhar e precisa de ferramentas. Ele pode montar tudo sozinho… ou chamar o mordomo.
 
-**Container de injeção de dependência do Nest** 🤵: "Deixa comigo. Você só **declara no construtor** do que precisa. Eu monto e te entrego pronto."
+## 🎭 Elenco
+- 🧑‍💼 **Caso de uso** · `ApproveTripUseCase` · a regra: aprovar uma viagem
+- 🗃️ **Repositório** · interface `TripRepository` · "alguém que guarda viagens", sem dizer qual banco
+- 🐘 **Repositório de verdade** · `TypeOrmTripRepository` · a implementação que fala com o banco
+- 🧸 **Repositório de brinquedo** · `InMemoryTripRepository` · a implementação falsa, em memória, para teste
+- 🤵 **Mordomo** · o container de injeção de dependência do Nest · monta as dependências e entrega prontas
+- 📒 **Lista do mordomo** · `@Module({ providers: [...] })` · diz qual implementação entregar pra cada pedido
+- 🧪 **Teste** · `Test.createTestingModule()` · pede pro mordomo trocar a peça de verdade pela de brinquedo
 
-**Módulo**: "E eu digo pro container: quando alguém pedir `TripRepository`, entrega o `TypeOrmTripRepository`."
+## 🎬 Cena 1 · Fazendo tudo sozinho
+**Caso de uso**: "Preciso de um repositório. Vou criar: `new TypeOrmTripRepository(new Connection(...))`…"
+**Teste**: "E pra me rodar? Vou ter que subir um banco de verdade, com Docker e tudo?" 😩
+**Caso de uso**: "…é."
+**Teste**: "Fui."
 
-**Teste** 🧪: "E quando EU estiver rodando, entrega um repositório falso em memória, por favor."
+## 🎬 Cena 2 · Chama o mordomo
+**Mordomo**: "Patrão, você só diz no construtor DO QUE precisa. Eu monto e te entrego prontinho." 🤵
+**Lista do mordomo**: "Quando alguém pedir `TripRepository`, entrega o Repositório de verdade."
+**Caso de uso**: "Que vida boa. Nem sei de onde veio, só uso."
 
-**Container**: "Feito. O caso de uso nem percebe a troca." 😉
+## 🎬 Cena 3 · Dia de teste
+**Teste**: "Mordomo, hoje entrega o Repositório de brinquedo, por favor."
+**Mordomo**: "Pois não." _(troca a peça)_
+**Caso de uso**: "Ué, mudou alguma coisa? Nem percebi." 😉
+**Teste**: "Rodei em 3 milissegundos, sem banco. Tô chique."
 
-**Requisição HTTP** passando pelo Nest: "Middleware 👋 → Guard (pode entrar?) 🛂 → Interceptor ⏱️ → Pipe (dados válidos?) 🧪 → Controller → Interceptor de novo → se der erro, Exception Filter 🧯."
+## 💻 Traduzindo pro código
+```ts
+@Injectable()
+export class ApproveTripUseCase {
+  constructor(@Inject(TRIP_REPOSITORY) private readonly trips: TripRepository) {} // pede, não cria
+}
 
-**Laravel** (do outro lado da rua): "Ué, eu faço igualzinho: service container, middleware, Form Request, policies." 😏
+@Module({
+  providers: [ApproveTripUseCase, { provide: TRIP_REPOSITORY, useClass: TypeOrmTripRepository }], // 📒
+})
+export class TripsModule {}
 
-**🧠 Moral da história para entrevista**
+const mod = await Test.createTestingModule({ providers: [ApproveTripUseCase] }) // 🧪
+  .overrideProvider(TRIP_REPOSITORY).useValue(new InMemoryTripRepository())     // 🧸
+  .compile();
+```
 
-"No Nest eu declaro dependências no construtor e o container de IoC monta e injeta; módulos dizem qual implementação entregar. Isso facilita trocar implementação no teste (Dependency Inversion). O ciclo é middleware → guard → interceptor → pipe → handler → filter, e mapeia quase um para um no Laravel."
+| Etapa de uma requisição no Nest | Para que serve |
+| --- | --- |
+| Middleware | Logs, correlação, CORS |
+| Guard | Pode entrar? (autenticação e permissão) |
+| Interceptor | Antes e depois do handler (tempo, cache, formato) |
+| Pipe | Valida e transforma os dados |
+| Controller → caso de uso | A regra |
+| Exception filter | Transforma erro em resposta HTTP |
+
+No Laravel é quase igual: service container, middleware, Form Request e policies.
+
+## 🎤 Pra entrevista
+"No Nest eu declaro as dependências no construtor e o container de IoC monta e injeta; os módulos dizem qual implementação entregar para cada token. Isso é Dependency Inversion: o caso de uso depende de uma interface, então no teste troco por uma implementação em memória. O ciclo da requisição é middleware, guard, interceptor, pipe, handler e exception filter."

@@ -1,21 +1,46 @@
-**Dado da API** (lista de viagens) 🌐: "Eu moro no servidor. A tela só tem uma CÓPIA de mim, que pode ficar velha."
+# 🏠 Cada coisa no seu lugar
 
-**TanStack Query** 🗃️: "Deixa comigo: eu busco, guardo em cache, atualizo quando volta o foco, cancelo e deduplico. Isso é **server state**."
+> A tela de viagens tem um monte de "estado". O dev guardava tudo na mesma gaveta e nada se achava.
 
-**Filtro "só pendentes"** 🔗: "Eu moro na **URL**: `?status=pendente`. Assim dá pra compartilhar o link e sobrevivo ao F5."
+## 🎭 Elenco
+- 🌐 **Lista de viagens** · dado da API · mora no servidor; a tela só tem uma cópia, que pode ficar velha
+- 🗃️ **Despensa inteligente** · TanStack Query (ou SWR, Apollo) · busca, guarda em cache, atualiza e deduplica o server state
+- 🔗 **Bilhete na porta** · estado na URL (`?status=pendente`) · sobrevive ao F5 e dá pra mandar o link
+- 🪟 **Modal aberto** · `useState` · coisa de um componente só
+- 🌙 **Tema escuro** · Context · global, mas quase nunca muda
+- 🛒 **Carrinho cheio de regra** · Zustand ou Redux Toolkit · global, muda toda hora, muita gente lê
+- 🦖 **Redux da vovó** · store guardando resposta da API · sincronizava tudo na mão
 
-**Modal aberto** 🪟: "Eu sou só desse componente. `useState` e pronto."
+- 🐻 **Zustand** · `create()` + seletor · a store global pequena e rápida
+## 🎬 Cena 1 · A gaveta bagunçada
+**Redux da vovó**: "Eu guardo TUDO: a lista da API, o filtro, o modal, o tema… e sincronizo na mão!" 🦖
+**Lista de viagens**: "Vovó, eu fiquei velha há 10 minutos e ninguém me atualizou." 🌐
+**Despensa inteligente**: "Deixa comigo, querida: eu busco, guardo, atualizo quando a aba volta pro foco, cancelo e não busco duas vezes a mesma coisa." 🗃️
+**Despensa inteligente** _(baixinho)_: "Uns 80% do seu 'estado global' era só cache do servidor, viu?" 😏
 
-**Tema escuro** 🌙: "Eu sou global mas mudo pouco: **Context** resolve."
+## 🎬 Cena 2 · Cada um na sua casa
+**Bilhete na porta**: "Eu sou o filtro 'só pendentes'. Moro na URL: aperta F5 e eu continuo aqui, manda o link e a Bia vê o mesmo filtro." 🔗
+**Modal aberto**: "Eu sou só desse componente. `useState` e pronto, não incomodo ninguém." 🪟
+**Tema escuro**: "Eu sou de todo mundo, mas mudo uma vez na vida. Context me resolve." 🌙
+**Carrinho cheio de regra**: "Eu mudo toda hora e tem um monte de componente me olhando…" 🛒
+**Zustand**: "Então vem comigo: cada um assina só o pedaço que usa, e só quem precisa redesenha."
 
-**Carrinho com 15 regras** 🛒: "Eu mudo toda hora e muita gente me lê…"
+## 💻 Traduzindo pro código
+```tsx
+const { data: viagens } = useQuery({ queryKey: ['viagens', status], queryFn: buscarViagens }); // 🗃️
+const [params, setParams] = useSearchParams(); const status = params.get('status');            // 🔗
+const [aberto, setAberto] = useState(false);                                                   // 🪟
+const tema = useContext(TemaContext);                                                          // 🌙
+const total = useCarrinho((s) => s.total);                                                     // 🛒 seletor
+```
 
-**Zustand / Redux Toolkit** 🏪: "Então vem comigo: cada componente assina só o pedaço que usa (seletor)."
+| Tipo de estado | Onde mora | Ferramenta |
+| --- | --- | --- |
+| Server state | No servidor (a tela tem cópia) | TanStack Query, SWR, Apollo |
+| URL state | Na query string | Router (`useSearchParams`) |
+| Local | No componente | `useState`, `useReducer` |
+| Global que muda pouco | Na árvore | Context |
+| Global que muda muito | Fora do React | Zustand, Redux Toolkit |
 
-**App antigo com Redux** 🦖: "Eu guardava a resposta da API no store e sincronizava tudo na mão…"
-
-**TanStack Query**: "…e 80% do seu 'estado global' era cache de servidor. Eu cuido disso agora." 😏
-
-**🧠 Moral da história para entrevista**
-
-"Separo o estado pela natureza: server state com TanStack Query/SWR/Apollo; estado de URL na query string; estado local com `useState`; global de cliente com Context se muda pouco, Zustand ou Redux Toolkit se muda muito e precisa de seletores."
+## 🎤 Pra entrevista
+"Separo o estado pela natureza: server state com TanStack Query, SWR ou Apollo; estado de URL na query string, para sobreviver ao F5 e ser compartilhável; estado local com `useState`; global de cliente com Context se muda pouco, e Zustand ou Redux Toolkit com seletores se muda muito. Muito 'estado global' antigo era só cache de servidor."

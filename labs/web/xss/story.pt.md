@@ -1,23 +1,51 @@
-**Atacante** 🦹: "Vou deixar um comentário 'inocente': `Ótima viagem! <img src=x onerror="roubarTudo()">`"
+# 🦹 O comentário que tinha um bicho dentro
 
-**Quadro 1, `{comentario}`**: "Chegou texto? Mostro como TEXTO. Os `<` e `>` viram símbolos na tela. Não executo nada." 🛡️
+> Um site de viagens com comentários dos clientes. Um "cliente" muito educado deixa um elogio ao hotel.
 
-**Atacante**: "Droga, apareceu meu código na tela feito bobo. 😒"
+## 🎭 Elenco
+- 🦹 **Pilantra** · o atacante · esconde código dentro do texto do comentário
+- 🖼️ **Isca** · `<img src=x onerror="...">` · a imagem quebrada que dispara o script quando falha
+- 🛡️ **Mural seguro** · `<p>{comentario}</p>` · o React escapando: mostra tudo como texto
+- 🕳️ **Mural sem porteiro** · `dangerouslySetInnerHTML` · cola o HTML direto na página
+- 🧹 **Peneira** · sanitizar (DOMPurify) · tira `<script>`, `onerror`, `javascript:` e deixa o resto
+- 🌐 **Navegador** · o browser · obedece o HTML que recebe
+- 🍪 **Biscoito** · cookie `httpOnly` · a sessão, que o JavaScript não consegue ler
 
-**Quadro 2, `dangerouslySetInnerHTML`** (sem sanitizar): "Chegou HTML? Coloco direto na página!"
+- ⚛️ **React** · a biblioteca · escapa tudo, a não ser que mandem não escapar
+## 🎬 Cena 1 · O elogio "inocente"
+**Pilantra**: "Ótima viagem! Adorei o hotel! E aqui uma imagenzinha de presente…" _(com a isca escondida)_ 😇
+**Mural seguro**: "Chegou texto? Mostro como TEXTO. Os `<` e `>` viram letrinhas na tela. Não executo nada." 🛡️
+**Pilantra**: "Droga, meu código apareceu na tela feito bobo." 😒
 
-**Navegador**: "Opa, uma imagem! Vou carregar `x`… não existe… então rodo o `onerror`!"
+## 🎬 Cena 2 · O mural sem porteiro
+**Mural sem porteiro**: "Chegou HTML? Colo direto na página, sem nem olhar!"
+**Navegador**: "Opa, uma imagem! Vou carregar… não existe… então rodo o `onerror`!"
+**Isca**: "DEU CERTO! O script do Pilantra tá rodando!" 💥
+**Pilantra**: "Agora tô DENTRO da página, com a Bia logada. Posso ler a tela, fazer pedidos no nome dela…" 😈
+**React** _(revirando os olhos)_: "Eu avisei, gente. Tá escrito DANGEROUSLY no nome!" 🙄
+> 🚨 Texto do usuário virou código: isso é XSS.
 
-**Script do atacante**: "RODEI! Agora estou DENTRO da sua página, com a sessão da usuária logada. Posso ler a tela, fazer pedidos em nome dela…" 😈 **← XSS**
+## 🎬 Cena 3 · Com peneira e biscoito blindado
+**Peneira**: "Chegou HTML? Antes de mostrar, passo na peneira: tchau `<script>`, tchau `onerror`, tchau `javascript:`. O negrito pode ficar, é gente boa." 🧹
+**Pilantra**: "Sobrou só a imagem quebrada. Que fase." 😭
+**Biscoito**: "E mesmo se algum script entrasse, não ia conseguir me ler. JavaScript não encosta em mim." 🍪🔒
 
-**React** (olhando o nome da propriedade): "Eu avisei: está escrito **dangerously** no nome!" 🙄
+## 💻 Traduzindo pro código
+```tsx
+<p>{comentario}</p>                                            {/* 🛡️ React escapa: vira texto */}
+<p dangerouslySetInnerHTML={{ __html: comentario }} />          {/* 🕳️ executa a isca */}
+<p dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(comentario) }} /> {/* 🧹 peneirado */}
+```
+```http
+Set-Cookie: session=abc; HttpOnly; Secure; SameSite=Lax     # 🍪 o JS não lê
+Content-Security-Policy: script-src 'self'                  # só roda script do próprio site
+```
 
-**Quadro 3, `dangerouslySetInnerHTML` + sanitização**: "Chegou HTML? Antes de mostrar, passo na peneira: tiro `<script>`, tiro `onerror`, tiro `javascript:`. O negrito pode ficar." 🧹
+| Lugar perigoso no React | Por quê |
+| --- | --- |
+| `dangerouslySetInnerHTML` | Cola HTML sem escapar |
+| `<a href={url}>` com `javascript:` | O clique executa código |
+| Libs que mexem no DOM direto | Passam por fora do React |
 
-**Atacante**: "Sobrou só a imagem quebrada. 😭"
-
-**Cookie `httpOnly`** (do lado de fora): "E mesmo se algum script entrasse, ele não conseguiria me ler: JavaScript não tem acesso a mim." 🍪🔒
-
-**🧠 Moral da história para entrevista**
-
-"O React escapa tudo que vai entre `{ }`, então texto do usuário vira texto. O risco aparece com `dangerouslySetInnerHTML`, `href` com `javascript:` e libs que mexem no DOM direto. Se precisar mostrar HTML do usuário, sanitizo (DOMPurify), e uso CSP e cookie `httpOnly` como defesa em profundidade."
+## 🎤 Pra entrevista
+"XSS é quando texto do usuário vira código na página de outra pessoa. O React escapa tudo que vai entre chaves, então o risco aparece com `dangerouslySetInnerHTML`, `href` com `javascript:` e bibliotecas que mexem no DOM direto. Se preciso mostrar HTML do usuário, sanitizo com DOMPurify, e uso CSP e cookie `httpOnly` como defesa em profundidade."

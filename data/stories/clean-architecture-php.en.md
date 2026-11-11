@@ -1,23 +1,70 @@
-**Business rule** 💎 ("a paid invoice can't be paid"): "I'm the heart of the system. I don't want to know about Laravel, SQL Server, or HTTP."
+# 💎 The heart and the shell
 
-**`PayInvoice` use case** 🎬: "I orchestrate: load the invoice, ask it to pay itself, save, and notify whoever needs it. But I only know **interfaces**: 'someone who stores invoices', 'someone who publishes events'."
+> The company decided to migrate from CodeIgniter to Laravel. Half the team panicked. The business rule didn't.
 
-**Eloquent** 🧰: "I'm one of those 'someones': I implement the `InvoiceRepository` interface."
+## 🎭 Cast
+- 💎 **Heart** · the domain entities and rules (`Fatura::pagar()`) · "a paid invoice can't be paid again"
+- 🎬 **Conductor** · the `PagarFatura` (PayInvoice) use case · orchestrates: load, pay, save, and notify
+- 🔌 **Socket** · the `FaturaRepository` interface (port) · "someone who stores invoices", without saying how
+- 🧰 **Eloquent** · `EloquentFaturaRepository` (adapter) · implements the socket by talking to the database
+- 🚪 **Receptionist** · the controller · turns HTTP into a use-case call, with no rules at all
+- ⬇️ **Law of gravity** · the dependency rule · everything points inward; the inside never knows the outside
+- 🧪 **Test** · a unit test of the use case · runs without a database, with an in-memory repository
+- 📝 **Simple form** · a CRUD · doesn't need any of this
 
-**Controller** 🚪: "And I just translate HTTP into a use-case call. No rules in here."
+- 🏢 **Company** · decides on the migration
+- 😱 **Team** · the devs · afraid of breaking everything
+- 👩‍🏫 **Experienced architect** · knows where the architecture is worth it
+## 🎬 Scene 1 · Who's in charge of whom
+**Heart**: "I'm the center of the system. I don't want to know about Laravel, SQL Server, or HTTP. I only know a paid invoice can't be paid again." 💎
+**Conductor**: "I load the invoice, ask it to pay itself, save it, and notify whoever needs to know. But I only know sockets: 'someone who stores invoices', 'someone who publishes events'." 🎬
+**Eloquent**: "I'm one of those 'someones'. Plug me into the socket." 🧰
+**Receptionist**: "And I just translate the HTTP request. Rules? Not here, dear." 🚪
+**Law of gravity**: "Everyone points INWARD. The outside knows the inside; the inside never knows the outside." ⬇️
 
-**Dependency rule** ⬇️: "Everyone points INWARD. The outside knows the inside; the inside never knows the outside."
+## 🎬 Scene 2 · The framework switch
+**Company**: "We're moving from CodeIgniter to Laravel!"
+**Team**: "HELP, EVERYTHING WILL BREAK!" 😱
+**Heart**: "Go ahead, I'll come along without changing a line. Just swap the shell." 😎
+**Test**: "And I test the rule in milliseconds, without a database. I couldn't care less about the framework." 🧪
 
-**Company**: "Let's move from CodeIgniter to Laravel!"
+## 🎬 Scene 3 · Without overdoing it
+**Simple form**: "Do I need four layers, an interface, and an adapter too?"
+**Experienced architect**: "No, angel. Clean Architecture where the rules are rich, like payments and invoices. Everything else stays simple." 😅
 
-**Business rule**: "Go ahead, I'll come along without changing a line. Just swap the shell." 😎
+## 💻 Translating to code
+```php
+// 💎 domain: imports nothing from the framework
+final class Fatura {
+    public function pagar(Money $valor): void {
+        if ($this->status === Status::Paga) throw new FaturaJaPaga();
+        $this->status = Status::Paga;
+    }
+}
 
-**Test** 🧪: "And I test the rule in milliseconds, without starting a database."
+// 🔌 port
+interface FaturaRepository { public function buscar(int $id): Fatura; public function salvar(Fatura $f): void; }
 
-**Simple sign-up screen** 📝: "Do I need four layers too?"
+// 🎬 use case
+final class PagarFatura {
+    public function __construct(private FaturaRepository $faturas) {}
+    public function executar(int $id, Money $valor): void {
+        $fatura = $this->faturas->buscar($id);
+        $fatura->pagar($valor);
+        $this->faturas->salvar($fatura);
+    }
+}
 
-**Experienced architect**: "No. Clean Architecture where the rules are rich (payments, invoices). Everything else stays simple." 😅
+// 🧰 adapter (infrastructure)
+final class EloquentFaturaRepository implements FaturaRepository { /* uses Eloquent in here */ }
+```
 
-**🧠 Interview takeaway**
+| Layer | Knows about | Example |
+| --- | --- | --- |
+| Domain | Nothing outside | `Fatura`, `Money` |
+| Application (use cases) | Domain and ports | `PagarFatura` |
+| Adapters | Application and the world | Controller, `EloquentFaturaRepository` |
+| Frameworks and drivers | Everything | Laravel, SQL Server |
 
-"Clean Architecture is the dependency rule: domain and use cases at the center, unaware of framework, database, or HTTP; infrastructure implements interfaces (ports). I gain testability and can swap frameworks without rewriting rules. I apply it where the domain is rich."
+## 🎤 For the interview
+"Clean Architecture is the dependency rule: the domain and use cases at the center, unaware of framework, database, or HTTP; infrastructure implements interfaces, the ports, and the controller only translates HTTP. I gain testability and can switch frameworks without rewriting the rules. I apply it where the domain is rich, like payments; for simple CRUD I keep it simple."

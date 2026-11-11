@@ -1,25 +1,61 @@
-**Dev nova no time**: "Como eu rodo o projeto?"
+# 🐳 "Na minha máquina funciona"
 
-**Time sem Docker**: "Instala PHP 7.4… não, 8.1… a extensão X… o MySQL 5.7… e reza." 🙏
+> Primeiro dia da dev nova no time de PHP. Ela pergunta como roda o projeto e todo mundo olha pro chão.
 
-**Time com Docker** 🐳: "`docker compose up`. Pronto."
+## 🎭 Elenco
+- 🙋‍♀️ **Dev nova** · quem acabou de chegar · quer rodar o projeto hoje, não semana que vem
+- 🙏 **Tutorial de 47 passos** · instalar tudo na mão · PHP certo, extensões, MySQL certo, e reza
+- 📀 **Receita** · a imagem (`Dockerfile`) · sistema + PHP 8.3 + extensões, igual em todo computador
+- 📦 **Bolo** · o container · a receita rodando; pode jogar fora e fazer outro
+- 💾 **Pote da geladeira** · o volume · guarda os dados fora do container, pra sobreviver
+- 🕸️ **Lista de ramais** · a rede do `docker compose` · cada serviço se acha pelo nome
+- 🚪 **Porteiro** · Nginx · recebe o HTTP e passa os `.php` pro PHP-FPM
+- 🐞 **Lupa** · Xdebug · só no ambiente de desenvolvimento, nunca na imagem de produção
 
-**Imagem** 📀: "Eu sou a receita congelada: sistema + PHP 8.3 + extensões. Igual em todo computador."
+- 🤷 **Colega** · o dev veterano · "na minha máquina funciona"
+- 🗄️ **Banco** · o container do MySQL · onde os dados moram se ninguém der um volume
+- 🐘 **App PHP** · o container da aplicação · precisa achar o banco
+## 🎬 Cena 1 · Antes do Docker
+**Dev nova**: "Como eu rodo o projeto?"
+**Tutorial de 47 passos**: "Instala o PHP 7.4… não, 8.1… a extensão X… o MySQL 5.7, não o 8… e reza pra ninguém ter atualizado nada." 🙏
+**Colega**: "Na minha máquina funciona." 🤷
 
-**Container** 📦: "E eu sou a receita rodando. Pode me apagar e me recriar quantas vezes quiser."
+## 🎬 Cena 2 · Com Docker
+**Dev nova**: "`docker compose up`."
+**Receita**: "Saindo o mesmo ambiente pra todo mundo, igualzinho ao de produção." 📀
+**Bolo**: "Tô rodando! E se der ruim, me apaga e faz outro, sem dó." 📦
+**Banco** _(sem pote)_: "Apagaram meu container… PERDI TODOS OS DADOS!" 😱
+**Pote da geladeira**: "Por isso os dados moram em mim. O bolo vai e vem, eu fico." 💾
 
-**Banco, sem volume**: "Apagaram meu container… perdi TODOS os dados!" 😱
+## 🎬 Cena 3 · O localhost
+**App PHP**: "Vou falar com o banco em `localhost`…"
+**Lista de ramais**: "`localhost` é você mesmo, dentro do SEU container, minha filha! O banco é o ramal **`db`**." 🕸️
+**App PHP**: "Ahhh. Faz sentido."
+**Porteiro**: "E quem chega pela porta 80 sou eu que recebo e passo pro PHP." 🚪
+**Lupa**: "E eu só apareço no dev. Em produção, nem me convida." 🐞
 
-**Volume** 💾: "Por isso os dados moram em mim, fora do container. O container vai e volta, eu fico."
+## 💻 Traduzindo pro código
+```yaml
+# docker-compose.yml
+services:
+  app:                                   # 📦 PHP-FPM
+    build: .                             # 📀 Dockerfile
+    environment: { DB_HOST: db }         # 🕸️ o ramal, não localhost
+    volumes: [ "./:/var/www/html" ]      # o código da sua máquina dentro do container
+  nginx:                                 # 🚪
+    image: nginx:1.27
+    ports: [ "8080:80" ]
+  db:
+    image: mysql:8.0
+    volumes: [ "dbdata:/var/lib/mysql" ] # 💾
+volumes:
+  dbdata:
+```
 
-**App PHP**: "Quero falar com o banco em `localhost`…"
+| | Imagem | Container | Volume |
+| --- | --- | --- | --- |
+| É | A receita | A receita rodando | O pote de dados |
+| Muda? | Não (imutável) | É descartável | Persiste |
 
-**Rede do compose** 🕸️: "`localhost` é você mesmo, dentro do seu container! O banco se chama **`db`**, pelo nome do serviço."
-
-**Nginx** 🚪: "Eu recebo o HTTP e passo os `.php` pro PHP-FPM executar."
-
-**Xdebug** 🐞: "E eu fico só no ambiente de desenvolvimento, nunca na imagem de produção."
-
-**🧠 Moral da história para entrevista**
-
-"Imagem é a receita imutável; container é a imagem rodando; volume guarda o que precisa sobreviver; os serviços do compose se acham pelo nome. Com Docker, todo mundo roda o mesmo ambiente que produção, e o ambiente de dev é diferente da imagem de produção."
+## 🎤 Pra entrevista
+"Imagem é a receita imutável; container é a imagem rodando, descartável; volume guarda o que precisa sobreviver; os serviços do compose se acham pelo nome, não por `localhost`. Com Docker todo mundo roda o mesmo ambiente de produção, e o ambiente de desenvolvimento, com Xdebug e código montado, é diferente da imagem de produção."

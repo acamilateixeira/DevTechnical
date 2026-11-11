@@ -61,7 +61,17 @@ Perguntas marcadas com **✓ relatada** têm evidência pública de que aparecem
 
 ## Histórias
 
-Conceito abstrato fica mais fácil quando vira conversa engraçada. Cada lab e 28 perguntas têm uma **história em forma de diálogo**, em português e em inglês, mostrada antes da resposta modelo e terminando com a frase pronta para a entrevista. As perguntas ligadas a um lab usam a história do lab, então 47 das 92 perguntas têm história. A do event loop foi escrita por mim.
+Conceito abstrato fica mais fácil quando vira conversa engraçada. A aba **Histórias** tem 42 histórias (as 14 dos labs e mais 28 de perguntas), todas em português e em inglês. Elas cobrem 47 das 92 perguntas, porque as perguntas ligadas a um lab usam a história do lab. A do event loop foi escrita por mim.
+
+Toda história segue o mesmo formato, para não misturar a brincadeira com a parte técnica:
+
+1. **Título e cenário**: onde a história acontece (uma balada, uma padaria, um condomínio).
+2. **🎭 Quem é quem**: cada personagem com emoji, cor e o pedaço de código ou termo técnico que ele representa (⏰ **B** = `setTimeout`).
+3. **🎬 Cenas**: as falas, como conversa de WhatsApp, em linguagem do dia a dia. Cada fala mostra o código do personagem do lado.
+4. **💻 Agora o lado técnico**: o código comentado com os mesmos personagens, tabelas e o que o recrutador pergunta depois.
+5. **🎤 Pra entrevista**: a resposta pronta, em um parágrafo.
+
+Na pergunta e no lab, o botão **"😂 Não entendeu? Leia a história"** abre a história por cima da tela, sem perder o que você estava escrevendo. No lab, o "Quem é quem" também aparece acima do código.
 
 ## Laboratório
 
@@ -93,6 +103,7 @@ assets/lab.js         # motor do Laboratório: editor, iframe isolado, linha do 
 assets/gloss.js       # anota termos do glossário no texto (definição entre parênteses)
 assets/start.js       # página "Comece aqui"
 assets/glossary-page.js # página do glossário
+assets/story.js       # histórias: formato, página, gaveta e "quem é quem"
 assets/vendor/        # React 19 e TypeScript empacotados para rodar os labs
 assets/md.js          # markdown mínimo que escapa HTML
 assets/styles.css     # tema claro/escuro, responsivo
@@ -123,7 +134,7 @@ node scripts/validate.mjs     # valida o banco de perguntas
 
 1. Inclua o objeto no arquivo do tema em `data/` (`id`, `cat`, `type`, `jobs`, `q`, `a`, `follow`, `flags`, `anchor` e, se for o caso, `code`), sempre com `pt` e `en`.
 2. Inclua a rubrica com o mesmo `id` em `data/rubrics.js` (3+ pontos, ferramentas e métricas).
-3. Opcional: escreva a história em `data/stories/<id>.pt.md` e `<id>.en.md` e inclua o id em `data/stories/index.js`.
+3. Opcional: escreva a história em `data/stories/<id>.pt.md` e `<id>.en.md` no formato acima (descrito no topo de `assets/story.js`) e inclua o id em `data/stories/index.js`. O validador confere o formato e se toda fala é de alguém do elenco.
 4. Rode `node scripts/validate.mjs`. O CI roda a mesma validação em todo PR e publica no GitHub Pages a cada push na `main`.
 
 ---
@@ -138,7 +149,7 @@ A picky interviewer, as an app. It asks senior-level technical questions about t
 - **Model answer**: full explanation, code where needed, tools/libraries/techniques to mention, metrics that prove mastery, the interviewer's follow-ups, red flags, and how to anchor the answer in my real experience without inventing any.
 - **Objective score**: each question has a checklist of points a 100% answer must cover. I tick only what I actually said: **≥ 80% correct, 40–79% partial, < 40% wrong**.
 - **Progress**: average score and correct/partial/wrong percentages, overall and per topic, plus strongest and weakest topic.
-- **Stories**: every lab and 28 questions have a funny dialogue-style story, in Portuguese and English, shown before the model answer and ending with the one-line interview answer (47 of 92 questions in total).
+- **Stories**: 42 funny dialogue-style stories (every lab plus 28 questions), in Portuguese and English, covering 47 of 92 questions. Each starts with **Who is who** (every character is a piece of code), plays out in chat-style scenes in plain language, then moves to a separate technical section and ends with the one-paragraph interview answer. They open from the **Stories** tab or from a button on each question and lab.
 - **Study**: every question with search and filters by role, topic, and type.
 - **Start here**: what a senior hiring process looks like and how to study with the app.
 - **Lab**: 14 in-browser examples (editable code, Run button, counters, and a timeline showing what ran in each part of the system and when) plus 5 Node.js labs for the terminal ([`labs/node/README.md`](labs/node/README.md)).

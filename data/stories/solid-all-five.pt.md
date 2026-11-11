@@ -1,27 +1,60 @@
-**`PedidoController`** (fazendo TUDO): "Eu valido, calculo imposto, salvo no banco e mando e-mail!" 🤹
+# 🧰 Os cinco conselhos da tia SOLID
 
-**S (Responsabilidade Única)**: "E quando o imposto mudar, quando o e-mail mudar, quando o banco mudar… você muda por QUATRO motivos. Separa!" ✂️
+> Um sistema de pedidos cresceu na base do "depois eu arrumo". A tia SOLID veio fazer uma visita.
 
-**Checkout** (cheio de `if`): "Se for pix… senão se for cartão… senão se for boleto…"
+## 🎭 Elenco
+- 🤹 **Faz-tudo** · `PedidoController` gigante · valida, calcula imposto, salva e manda e-mail
+- ✂️ **S** · Single Responsibility · "uma classe, um motivo pra mudar"
+- 🚪 **O** · Open/Closed · "estende sem mexer no que já funciona"
+- 🤥 **Impostor** · `ReadOnlyRepository` com `save()` que lança erro · finge ser o que não é
+- 🙅 **L** · Liskov Substitution · "quem substitui tem que honrar o contrato"
+- 🐘 **Interfaceçona** · `UsuarioService` com 30 métodos · todo mundo depende dela inteira
+- 🧩 **I** · Interface Segregation · "interfaces pequenas, por papel"
+- 🔌 **D** · Dependency Inversion · "a regra depende de uma abstração, não do MySQL"
+- 🤓 **Arquiteto empolgado** · quem quer interface pra tudo
 
-**O (Aberto/Fechado)**: "Pra cada meio de pagamento novo você mexe em mim? Cria uma CLASSE nova que segue a interface `MeioDePagamento` e me deixa em paz." 🚪
+- 🛒 **Checkout** · o código de pagamento cheio de `if`
+- 📏 **Regra de aprovação** · uma regra de negócio · grudada no MySQL
+- 👵 **Tia SOLID** · os cinco princípios juntos · a voz da experiência
+## 🎬 Cena 1 · O faz-tudo
+**Faz-tudo**: "Eu valido, calculo imposto, salvo no banco e mando e-mail! Sou multitarefa!" 🤹
+**S**: "Meu bem, quando o imposto mudar, o e-mail mudar ou o banco mudar, você muda por QUATRO motivos. Separa isso aí." ✂️
 
-**`ReadOnlyRepository`** (fingindo ser um repositório normal): "Tenho o método `save()`… mas lanço 'não suportado'." 🤥
+## 🎬 Cena 2 · O checkout cheio de if
+**Checkout**: "Se for Pix… senão se for cartão… senão se for boleto…"
+**O**: "E pra cada forma de pagamento nova você vai mexer aqui de novo? Cria uma classe nova que segue o contrato `MeioDePagamento` e deixa o checkout em paz." 🚪
+**Impostor**: "Eu sou um repositório! Tenho `save()`… mas ele lança 'não suportado'." 🤥
+**L**: "Quem usa repositório espera que `save()` funcione. Se não honra o contrato, não finge ser um." 🙅
 
-**L (Liskov)**: "Quem usa repositório espera que `save()` funcione. Se você não honra o contrato, não finja ser um." 🙅
+## 🎬 Cena 3 · A interfaceçona e o banco grudado
+**Interfaceçona**: "Quem só quer ler o nome do usuário tem que depender dos meus 30 métodos." 🐘
+**I**: "Quebra em pedaços: `LeitorDeUsuario`, `RedefinidorDeSenha`. Cada um pega só o que usa." 🧩
+**Regra de aprovação**: "Eu chamo o MySQL direto, é mais rápido."
+**D**: "Depende de uma interface de repositório. No teste te dão uma versão em memória e, se o banco mudar, você nem fica sabendo." 🔌
+**Arquiteto empolgado**: "ENTÃO VOU CRIAR INTERFACE PRA TUDO! ATÉ PRO `console.log`!" 🤓
+**Tia SOLID**: "Calma, filho. Abstração sem necessidade também é custo." 😅
 
-**`UsuarioService`** (com 30 métodos): "Quem só quer ler o nome tem que depender de mim inteiro."
+## 💻 Traduzindo pro código
+```ts
+interface MeioDePagamento { cobrar(valor: Money): Promise<Recibo>; }      // 🚪 O + 🔌 D
+class Pix implements MeioDePagamento { /* ... */ }
+class Cartao implements MeioDePagamento { /* ... */ }                     // nova forma = nova classe
 
-**I (Segregação de Interfaces)**: "Interfaces pequenas por papel: `LeitorDeUsuario`, `RedefinidorDeSenha`." 🧩
+class Checkout {
+  constructor(private readonly meios: Map<string, MeioDePagamento>) {}   // depende da abstração
+  pagar(tipo: string, valor: Money) { return this.meios.get(tipo)!.cobrar(valor); }
+}
 
-**Regra de aprovação**: "Eu chamo o MySQL direto…"
+interface LeitorDeUsuario { buscarNome(id: string): Promise<string>; }   // 🧩 I: pequena e por papel
+```
 
-**D (Inversão de Dependência)**: "Dependa de uma **interface** de repositório. Aí no teste te dão uma versão em memória e, se o banco mudar, você nem percebe." 🔌
+| Letra | Em uma frase | Sintoma de que falta |
+| --- | --- | --- |
+| S | Um motivo para mudar | Classe que mexe em tudo |
+| O | Estender sem editar | `if/else` por tipo crescendo |
+| L | Honrar o contrato | Subclasse que lança "não suportado" |
+| I | Interfaces pequenas | Classe implementando método que não usa |
+| D | Regra depende de abstração | Regra que importa o driver do banco |
 
-**Arquiteto empolgado**: "ENTÃO VOU CRIAR INTERFACE PRA TUDO!"
-
-**SOLID**: "Calma. Abstração sem necessidade também é custo." 😅
-
-**🧠 Moral da história para entrevista**
-
-"SOLID ataca acoplamento: SRP = um motivo para mudar; OCP = estender sem editar; LSP = honrar o contrato; ISP = interfaces pequenas; DIP = regra depende de abstração, não de detalhe. É ferramenta, não regra: abstração sem necessidade é custo."
+## 🎤 Pra entrevista
+"SOLID ataca acoplamento: SRP é ter um motivo para mudar; OCP é estender sem editar o que funciona; LSP é a subclasse honrar o contrato; ISP é ter interfaces pequenas por papel; DIP é a regra de negócio depender de abstração, não de detalhe. É ferramenta, não dogma: abstração sem necessidade também é custo."

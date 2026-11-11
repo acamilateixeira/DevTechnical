@@ -1,21 +1,46 @@
-**API data** (the trip list) 🌐: "I live on the server. The screen only has a COPY of me, which can go stale."
+# 🏠 A place for everything
 
-**TanStack Query** 🗃️: "Leave it to me: I fetch, cache, refresh when focus returns, cancel, and dedupe. That's **server state**."
+> The trips screen has a lot of "state". The dev used to keep it all in the same drawer and nothing could be found.
 
-**"Pending only" filter** 🔗: "I live in the **URL**: `?status=pending`. That way the link can be shared and I survive F5."
+## 🎭 Cast
+- 🌐 **Trip list** · API data · lives on the server; the screen only has a copy, which can go stale
+- 🗃️ **Smart pantry** · TanStack Query (or SWR, Apollo) · fetches, caches, refreshes, and dedupes server state
+- 🔗 **Note on the door** · URL state (`?status=pending`) · survives F5 and can be shared as a link
+- 🪟 **Open modal** · `useState` · belongs to one component only
+- 🌙 **Dark theme** · Context · global, but almost never changes
+- 🛒 **Rule-packed cart** · Zustand or Redux Toolkit · global, changes all the time, read by many
+- 🦖 **Grandma's Redux** · a store holding API responses · synced everything by hand
 
-**Open modal** 🪟: "I belong to this one component. `useState` and done."
+- 🐻 **Zustand** · `create()` + selector · a small, fast global store
+## 🎬 Scene 1 · The messy drawer
+**Grandma's Redux**: "I keep EVERYTHING: the API list, the filter, the modal, the theme… and I sync it by hand!" 🦖
+**Trip list**: "Grandma, I went stale 10 minutes ago and nobody refreshed me." 🌐
+**Smart pantry**: "Leave it to me, dear: I fetch, store, refresh when the tab regains focus, cancel, and never fetch the same thing twice." 🗃️
+**Smart pantry** _(whispering)_: "About 80% of your 'global state' was just server cache, you know?" 😏
 
-**Dark theme** 🌙: "I'm global but rarely change: **Context** does the job."
+## 🎬 Scene 2 · Everyone in their own home
+**Note on the door**: "I'm the 'pending only' filter. I live in the URL: hit F5 and I'm still here, send the link and Bia sees the same filter." 🔗
+**Open modal**: "I belong to this one component. `useState` and done, I don't bother anyone." 🪟
+**Dark theme**: "I belong to everyone, but I change once in a lifetime. Context handles me." 🌙
+**Rule-packed cart**: "I change all the time and loads of components are watching me…" 🛒
+**Zustand**: "Then come with me: each one subscribes only to the piece it uses, and only whoever needs to re-renders."
 
-**Cart with 15 rules** 🛒: "I change all the time and lots of people read me…"
+## 💻 Translating to code
+```tsx
+const { data: trips } = useQuery({ queryKey: ['trips', status], queryFn: fetchTrips });       // 🗃️
+const [params, setParams] = useSearchParams(); const status = params.get('status');            // 🔗
+const [open, setOpen] = useState(false);                                                       // 🪟
+const theme = useContext(ThemeContext);                                                        // 🌙
+const total = useCart((s) => s.total);                                                         // 🛒 selector
+```
 
-**Zustand / Redux Toolkit** 🏪: "Then come with me: each component subscribes only to the piece it uses (a selector)."
+| Kind of state | Where it lives | Tool |
+| --- | --- | --- |
+| Server state | On the server (the screen has a copy) | TanStack Query, SWR, Apollo |
+| URL state | In the query string | Router (`useSearchParams`) |
+| Local | In the component | `useState`, `useReducer` |
+| Global, rarely changes | In the tree | Context |
+| Global, changes often | Outside React | Zustand, Redux Toolkit |
 
-**Old app with Redux** 🦖: "I used to store API responses in the store and sync everything by hand…"
-
-**TanStack Query**: "…and 80% of your 'global state' was server cache. I handle that now." 😏
-
-**🧠 Interview takeaway**
-
-"I split state by nature: server state with TanStack Query/SWR/Apollo; URL state in the query string; local state with `useState`; global client state with Context if it changes rarely, Zustand or Redux Toolkit if it changes often and needs selectors."
+## 🎤 For the interview
+"I split state by its nature: server state with TanStack Query, SWR, or Apollo; URL state in the query string, so it survives F5 and can be shared; local state with `useState`; global client state with Context if it rarely changes, and Zustand or Redux Toolkit with selectors if it changes often. A lot of old 'global state' was just server cache."

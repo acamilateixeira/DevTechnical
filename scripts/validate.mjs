@@ -11,6 +11,7 @@ import { glossary } from '../data/glossary.js';
 import { extraJobs, reported as reportedMap } from '../data/evidence.js';
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { storyIds } from '../data/stories/index.js';
+import { parseStory, findCast, stories as allStories } from '../assets/story.js';
 import { execFileSync } from 'node:child_process';
 
 const errors = [];
@@ -94,6 +95,24 @@ for (const f of storyFiles) { const sid = f.replace(/\.(pt|en)\.md$/, ''); if (!
 for (const sid of storyIds) {
   if (!ids.has(sid)) err(`história:${sid}`, 'pergunta inexistente');
   for (const lg of ['pt', 'en']) if (!existsSync(`data/stories/${sid}.${lg}.md`)) err(`história:${sid}`, `falta ${sid}.${lg}.md`);
+}
+// formato das histórias: título, elenco, cenas, entrevista e toda fala de alguém do elenco
+for (const st of allStories) for (const lg of ['pt', 'en']) {
+  const path = `${st.base}.${lg}.md`;
+  if (!existsSync(path)) continue;
+  const text = readFileSync(path, 'utf8');
+  const s = parseStory(text);
+  const id = `história:${path}`;
+  if (!s.title) err(id, 'sem título (# ...)');
+  if (s.cast.length < 2) err(id, 'elenco com menos de 2 personagens (## 🎭 ...)');
+  const castLines = (text.split('## 🎭')[1] || '').split('\n## ')[0].split('\n').filter((l) => l.startsWith('- ')).length;
+  if (castLines !== s.cast.length) err(id, 'linha do elenco fora do formato "- emoji **Nome** · código · quem é"');
+  if (!s.scenes.length) err(id, 'sem cenas (## 🎬 ...)');
+  if (!s.interview) err(id, 'sem a seção 🎤');
+  for (const sc of s.scenes) for (const l of sc.lines) {
+    const m = l.match(/^\*\*(.+?)\*\*(?:\s*_\((.+?)\)_)?\s*:/);
+    if (m && !findCast(s, m[1])) err(id, `"${m[1]}" fala mas não está no elenco`);
+  }
 }
 const withStory = questions.filter((q) => storyIds.has(q.id) || labs.some((l) => l.story && (l.questions || []).includes(q.id))).length;
 

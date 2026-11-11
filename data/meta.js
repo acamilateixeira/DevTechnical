@@ -64,7 +64,7 @@ export const ui = {
     avg: 'nota média', pctGot: 'acerto', pctPartial: 'parcial', pctMiss: 'erro', pending: 'não avaliadas',
     best: 'Ponto forte', worst: 'Estudar primeiro',
     reportedTitle: 'Isso é perguntado de verdade?', reportedChip: '✓ relatada',
-    navStart: 'Comece aqui', navLab: 'Laboratório', seeLab: '▶ Ver funcionando no Laboratório', storyTitle: '😂 Entenda em forma de história', storyHint: 'leia antes da resposta modelo', navGlossary: 'Glossário',
+    navStart: 'Comece aqui', navStories: 'Histórias', navLab: 'Laboratório', seeLab: '▶ Ver funcionando no Laboratório', navGlossary: 'Glossário',
     glossToggle: 'Mostrar definições entre parênteses', glossOn: 'Definições entre parênteses: ligadas (toque para desligar)', glossOff: 'Definições entre parênteses: desligadas (toque para ligar)',
   },
   en: {
@@ -94,7 +94,7 @@ export const ui = {
     avg: 'average score', pctGot: 'correct', pctPartial: 'partial', pctMiss: 'wrong', pending: 'not scored',
     best: 'Strongest topic', worst: 'Study first',
     reportedTitle: 'Is this really asked?', reportedChip: '✓ reported',
-    navStart: 'Start here', navLab: 'Lab', seeLab: '▶ See it running in the Lab', storyTitle: '😂 The story version', storyHint: 'read it before the model answer', navGlossary: 'Glossary',
+    navStart: 'Start here', navStories: 'Stories', navLab: 'Lab', seeLab: '▶ See it running in the Lab', navGlossary: 'Glossary',
     glossToggle: 'Show definitions in parentheses', glossOn: 'Definitions in parentheses: on (tap to turn off)', glossOff: 'Definitions in parentheses: off (tap to turn on)',
   },
 };

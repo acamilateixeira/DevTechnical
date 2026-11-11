@@ -1,25 +1,51 @@
-**Store** (guardando o estado fora do React): "Eu tenho TUDO: `busca`, `servico`, `nivel`. Quem quiser alguma coisa, se inscreve e me diz o QUÊ quer."
+# 🍕 A pizzaria que só avisa quem pediu
 
-**CampoBusca**: "Eu quero só a `busca`." *(seletor: `s => s.busca`)*
+> Uma pizzaria que guarda todos os pedidos num quadro fora da cozinha. Cada cliente só quer saber da própria pizza.
 
-**SeletorServico**: "Eu quero só o `servico`."
+## 🎭 Elenco
+- 🧑‍🍳 **Store** · `create()` · a pizzaria: guarda o estado fora do React e avisa quem se inscreveu
+- 🔎 **CampoBusca** · `useFiltros((s) => s.busca)` · cliente que só quer saber da `busca`
+- 🗂️ **SeletorServico** · `useFiltros((s) => s.servico)` · cliente que só quer saber do `servico`
+- 🔴 **BotaoNivel** · `useFiltros((s) => s.nivel)` · cliente que só quer saber do `nivel`
+- 🍽️ **Seletor** · `(s) => s.busca` · o pedido: diz qual pedaço do estado o componente quer
+- 🟰 **`===`** · comparação por referência · o garçom que confere se o pedaço mudou
+- 🧾 **`useShallow`** · comparação campo a campo · o garçom caprichoso que confere item por item
 
-**BotaoNivel**: "Eu quero só o `nivel`."
+## 🎬 Cena 1 · Cada um pede a sua fatia
+**Store**: "Tenho TUDO aqui: busca, serviço e nível. Quem quiser alguma coisa, se inscreve e diz o QUÊ."
+**CampoBusca**: "Quero só a busca."
+**SeletorServico**: "Só o serviço, por favor."
+**BotaoNivel**: "Só o nível. E sem cebola."
 
-**Usuária** (digita "a" na busca)
+## 🎬 Cena 2 · A Bia digita "a"
+**Store**: "MUDOU ALGUMA COISA! Vou avisar TODO MUNDO que se inscreveu!" 📣
+**`===`** _(conferindo a busca)_: "`''` virou `'a'`. Mudou!"
+**CampoBusca**: "Então me redesenho." ✅
+**`===`** _(conferindo o serviço)_: "`'trips-api'` e `'trips-api'`. Igualzinho."
+**SeletorServico**: "Volto a dormir." 😴
+**BotaoNivel**: "Também. Zzz." 😴
 
-**Store**: "MUDEI! Vou avisar TODO MUNDO que se inscreveu!" 📣
+## 🎬 Cena 3 · O pedido que sempre parece novo
+**CampoBusca**: "Agora quero assim: `{ busca }`, embrulhado num objeto."
+**`===`**: "`{busca:'a'}` e `{busca:'a'}`… são duas caixas DIFERENTES! Mudou!"
+**CampoBusca**: "Me redesenho! E de novo! E DE NOVO!" 🔁💥
+**`useShallow`**: "Deixa comigo: eu abro a caixa e comparo campo por campo. Igual? Ninguém acorda."
 
-**CampoBusca**: "Meu pedaço mudou? `''` → `'a'`. MUDOU! Me redesenho." ✅
+## 💻 Traduzindo pro código
+```ts
+function create(init) {
+  let state; const listeners = new Set();
+  const set = (partial) => { state = { ...state, ...partial }; listeners.forEach((l) => l()); }; // 📣 avisa todo mundo
+  state = init(set, () => state);
+  const subscribe = (l) => { listeners.add(l); return () => listeners.delete(l); };
+  return (selector) => useSyncExternalStore(subscribe, () => selector(state)); // 🟰 re-renderiza se o pedaço mudar (===)
+}
+const busca = useFiltros((s) => s.busca);           // ✅ string: compara bem
+const ruim  = useFiltros((s) => ({ busca: s.busca })); // ❌ objeto novo a cada leitura
+const bom   = useFiltros(useShallow((s) => ({ busca: s.busca, nivel: s.nivel }))); // ✅
+```
 
-**SeletorServico**: "Meu pedaço mudou? `'trips-api'` → `'trips-api'`. Igual (`===`). Volto a dormir." 😴
+O Zustand de verdade e o `useSelector` do Redux funcionam assim por dentro. A peça do React que faz isso é o `useSyncExternalStore`.
 
-**BotaoNivel**: "Igual também. Zzz." 😴
-
-**CampoBusca** (com um seletor que cria objeto novo: `s => ({ busca: s.busca })`): "Meu pedaço mudou? `{busca:'a'}` → `{busca:'a'}`… são objetos DIFERENTES (não é o mesmo `===`)! MUDOU! E de novo! E de novo!" 🔁💥
-
-**Zustand**: "É por isso que eu tenho o `useShallow`: ele compara campo a campo."
-
-**🧠 Moral da história para entrevista**
-
-"Zustand e o `useSelector` do Redux guardam o estado fora do React. Cada componente assina só a fatia que usa (seletor) e só re-renderiza quando essa fatia muda, comparando por `===`. Por baixo, é o `useSyncExternalStore` do React."
+## 🎤 Pra entrevista
+"Zustand e o `useSelector` do Redux guardam o estado fora do React. Cada componente assina só a fatia que usa com um seletor e só re-renderiza quando essa fatia muda, comparando por `===`. Por baixo é o `useSyncExternalStore`. Seletor que cria objeto novo re-renderiza sempre; para isso existe o `useShallow`."

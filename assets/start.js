@@ -18,6 +18,7 @@ const C = {
     ],
     howTitle: 'Como estudar com o DevTechnical (um tema por vez)',
     how: [
+      ['Leia a história', 'Na aba **Histórias**, cada conceito vira uma conversa engraçada. Comece pelo **Quem é quem**: cada personagem é um pedaço de código. Depois leia as cenas sem se preocupar com termos técnicos; eles ficam separados lá embaixo, em "Agora o lado técnico".'],
       ['Abra um lab no Laboratório', 'Leia "O que é" e aperte **Rodar**. Não mude nada ainda: só observe a tela, os contadores e a linha do tempo.'],
       ['Mexa no código', 'Faça os itens de "Experimente mudar", um de cada vez. Quebre de propósito e veja o que acontece. Se travar, aperte "Restaurar original".'],
       ['Explique para você mesma', 'Em voz alta: "o que acontece é que…". Se não conseguir, volte ao lab. Esse é o teste real.'],
@@ -43,6 +44,7 @@ const C = {
     ],
     howTitle: 'How to study with DevTechnical (one topic at a time)',
     how: [
+      ['Read the story', 'In the **Stories** tab, each concept becomes a funny conversation. Start with **Who is who**: each character is a piece of code. Then read the scenes without worrying about technical terms; they are kept separate below, under "Now the technical side".'],
       ['Open a lab', 'Read "What it is" and press **Run**. Do not change anything yet: just watch the screen, the counters, and the timeline.'],
       ['Change the code', 'Do the "Try changing" items one at a time. Break it on purpose and see what happens. If you get stuck, press "Restore original".'],
       ['Explain it to yourself', 'Out loud: "what happens is…". If you cannot, go back to the lab. That is the real test.'],

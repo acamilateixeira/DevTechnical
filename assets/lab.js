@@ -1,6 +1,7 @@
 // Motor do Laboratório: carrega o código de cada lab, deixa editar, roda num iframe isolado
 // e mostra o que aconteceu em quatro painéis: tela, contadores, linha do tempo e console.
 
+import { storyForLab, storyButton, bindStoryButtons, loadStory, castHtml } from './story.js';
 import { md, escapeHtml } from './md.js';
 import { labs } from '../labs/web/index.js';
 import { cats } from '../data/meta.js';
@@ -29,7 +30,7 @@ const T = {
     edited: 'editado', compileError: 'Erro de sintaxe', runtimeError: 'Erro ao rodar',
     ready: 'Pronto: agora use a tela acima ↑',
     nodeTitle: 'Para rodar no seu computador (Node.js)', seeCode: 'ver código',
-    storyTitle: '😂 Entenda em forma de história', storyBy: (a) => `por ${a}`,
+    castInCode: 'Quem é quem neste código',
     nodeIntro: 'Estes rodam de verdade no Node 22.13+: servidor HTTP, threads, sinais do sistema e banco SQLite. Clone o repositório e rode no terminal; cada arquivo explica o que acontece. Sem a flag mostrada, você vê o problema; com ela, a correção (ou o contrário, quando a flag começa com `--sem`).',
   },
   en: {
@@ -44,7 +45,7 @@ const T = {
     edited: 'edited', compileError: 'Syntax error', runtimeError: 'Runtime error',
     ready: 'Ready: now use the screen above ↑',
     nodeTitle: 'Run on your computer (Node.js)', seeCode: 'see code',
-    storyTitle: '😂 The story version', storyBy: (a) => `by ${a}`,
+    castInCode: 'Who is who in this code',
     nodeIntro: 'These run for real on Node 22.13+: HTTP server, threads, OS signals, and a SQLite database. Clone the repo and run them in a terminal; each file explains what happens. Without the flag shown you see the problem; with it, the fix (or the reverse when the flag starts with `--sem`).',
   },
 };
@@ -116,11 +117,12 @@ export async function renderLab(view, id, ctx) {
     <section class="lab-head">
       <span class="lab-kind">${lab.kind === 'react' ? 'React' : 'JavaScript'} · ${escapeHtml(L(cats[lab.cat]))}</span>
       <h1>${escapeHtml(L(lab.title))}</h1>
+      ${storyButton(storyForLab(lab.id), lang, 'lab')}
     </section>
+    <div id="lab-cast"></div>
     <div class="lab-text">
       <div class="panel"><h3>${t.what}</h3>${md(L(lab.what), ann)}</div>
       <div class="panel anchor"><h3>${t.watch}</h3>${md(L(lab.watch), ann)}</div>
-      ${lab.story ? `<details class="panel story" id="story-box" open><summary><h3 style="display:inline">${t.storyTitle}</h3>${lab.story.author ? ` <span class="hint">${t.storyBy(escapeHtml(lab.story.author))}</span>` : ''}</summary><div id="story"></div></details>` : ''}
     </div>
 
     ${lab.setup ? `
@@ -157,8 +159,10 @@ export async function renderLab(view, id, ctx) {
     ${related.length ? `<div class="panel"><h3>${t.related}</h3><ul>${related.map((q) =>
       `<li><a href="#/q/${q.id}">${escapeHtml(L(q.q))}</a></li>`).join('')}</ul></div>` : ''}`;
 
-  if (lab.story) {
-    source(lab, `story.${lang}.md`).catch(() => source(lab, 'story.pt.md')).then((txt) => { const el = view.querySelector('#story'); if (el) el.innerHTML = md(txt, createAnnotator(lang, { inline: false })); });
+  const st = storyForLab(lab.id);
+  if (st) {
+    bindStoryButtons(view, lang, {});
+    loadStory(st, lang).then((story) => { const el = view.querySelector('#lab-cast'); if (el) el.innerHTML = castHtml(story, lang, t.castInCode); }).catch(() => {});
   }
 
   // Carrega o código (versão editada, se houver).

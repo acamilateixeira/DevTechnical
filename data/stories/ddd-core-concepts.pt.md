@@ -1,25 +1,65 @@
-**Especialista do negócio**: "O solicitante abre uma **solicitação**; o despacho faz a **atribuição** de um motorista."
+# 🗺️ Cada um fala a sua língua
 
-**Código antigo**: "Aqui chamamos tudo de `Order` e `Job`." 🤷
+> Uma empresa de transporte corporativo. O pessoal do negócio fala uma coisa, o código diz outra, e ninguém se entende.
 
-**Linguagem ubíqua** 🗣️: "Então o código fala outra língua que o negócio! Usa as MESMAS palavras: `Solicitacao`, `Atribuicao`."
+## 🎭 Elenco
+- 👷‍♀️ **Especialista** · a pessoa do negócio · sabe como o trabalho funciona de verdade
+- 🤷 **Código antigo** · classes `Order` e `Job` · nomes que ninguém do negócio usa
+- 🗣️ **Dicionário** · linguagem ubíqua · as MESMAS palavras no negócio e no código
+- 🗺️ **Territórios** · bounded contexts (Vendas, Faturamento) · cada área com o seu modelo e o seu significado
+- 💰 **Dinheiro** · value object `Money(100, 'BRL')` · sem ID, definido pelo valor, imutável
+- 👑 **Rainha** · agregado `Viagem` (a raiz) · ninguém muda nada dela por fora; protege as regras
+- 📣 **Fofoqueiro** · evento de domínio `ViagemAprovada` · avisa que algo importante aconteceu
+- 😴 **CRUD** · um cadastro simples · não precisa de nada disso
 
-**Vendas**: "Pra mim, cliente é um lead com oportunidade."
+- 💼 **Vendas** · bounded context de Vendas · cliente = lead
+- 🧾 **Faturamento** · bounded context de Faturamento · cliente = CNPJ e imposto
+- 👨‍💻 **Dev** · quem escreve o código
+- 🧭 **DDD** · Domain-Driven Design · a abordagem toda
+## 🎬 Cena 1 · Ninguém se entende
+**Especialista**: "O solicitante abre uma solicitação; o despacho faz a atribuição de um motorista."
+**Código antigo**: "Aqui é tudo `Order` e `Job`, ué." 🤷
+**Dicionário**: "Então o código fala outra língua! Usa as MESMAS palavras: `Solicitacao`, `Atribuicao`." 🗣️
 
-**Faturamento**: "Pra mim, cliente é CNPJ, endereço fiscal e impostos."
+## 🎬 Cena 2 · O que é um cliente?
+**Vendas**: "Cliente pra mim é um lead com oportunidade."
+**Faturamento**: "Pra mim é CNPJ, endereço fiscal e imposto."
+**Territórios**: "Os dois têm razão, cada um no seu pedaço do mapa. Na fronteira a gente traduz." 🗺️
 
-**Bounded context** 🗺️: "Os dois têm razão, cada um no seu território. Cada contexto tem o seu modelo de cliente; na fronteira, a gente traduz."
+## 🎬 Cena 3 · As regras do reino
+**Dinheiro**: "Não tenho documento. Sou o que valho, não mudo, e não deixo ninguém me criar negativo." 💰
+**Dev**: "Vou mudar o status da viagem direto na tabela…"
+**Rainha**: "NO MEU REINO NÃO! Quer aprovar? Fala comigo: `viagem.aprovar()`. Eu confiro se pode." 👑
+**Fofoqueiro**: "APROVOU! Quem se interessar, e-mail, ERP, que reaja!" 📣
+**CRUD** _(bocejando)_: "E eu, preciso de rainha, fofoqueiro e território?"
+**DDD**: "Não, querido. Eu valho a pena onde o domínio é complicado." 😅
 
-**`Money(100, 'BRL')`** 💰 (value object): "Não tenho ID. Sou definido pelo meu valor, sou imutável e não deixo ninguém me criar negativo."
+## 💻 Traduzindo pro código
+```ts
+class Money {                                          // 💰 value object
+  private constructor(readonly centavos: number, readonly moeda: 'BRL') {}
+  static of(centavos: number) { if (centavos < 0) throw new Error('negativo'); return new Money(centavos, 'BRL'); }
+}
 
-**`Viagem`** (agregado, a raiz) 👑: "Ninguém muda meu status por fora! Quer aprovar? Fala comigo: `viagem.aprovar()`. Eu confiro as regras."
+class Viagem {                                         // 👑 raiz do agregado
+  private status: 'PENDENTE' | 'APROVADA' = 'PENDENTE';
+  private eventos: DomainEvent[] = [];
+  aprovar(por: Gestor) {
+    if (this.status !== 'PENDENTE') throw new Error('só pendente pode ser aprovada');
+    this.status = 'APROVADA';
+    this.eventos.push(new ViagemAprovada(this.id, por.id)); // 📣
+  }
+}
+```
 
-**`ViagemAprovada`** (evento de domínio) 📣: "Aconteceu! Quem se interessar (e-mail, ERP), que reaja."
+| Conceito | Em uma frase |
+| --- | --- |
+| Linguagem ubíqua | As mesmas palavras no negócio e no código |
+| Bounded context | Um território onde cada palavra tem um significado só |
+| Entidade | Tem identidade (ID) e muda ao longo do tempo |
+| Value object | Definido pelo valor, imutável |
+| Agregado | Grupo alterado só pela raiz, que protege as regras |
+| Evento de domínio | Algo importante que aconteceu, no passado |
 
-**CRUD simples**: "E eu? Também preciso de tudo isso?"
-
-**DDD**: "Não. Eu vale a pena onde o domínio é complexo." 😅
-
-**🧠 Moral da história para entrevista**
-
-"DDD é desenhar o código pelo domínio: linguagem ubíqua, bounded contexts com tradução nas fronteiras, agregados que protegem as invariantes, value objects imutáveis e eventos de domínio. Vale para domínios complexos; para CRUD simples é cerimônia demais."
+## 🎤 Pra entrevista
+"DDD é desenhar o código pelo domínio: linguagem ubíqua, bounded contexts com tradução nas fronteiras, agregados que protegem as invariantes e só mudam pela raiz, value objects imutáveis e eventos de domínio para avisar outros contextos. Vale para domínios complexos; para CRUD simples é cerimônia demais."

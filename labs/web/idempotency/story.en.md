@@ -1,39 +1,68 @@
-**Client** (the app): "Server, charge R$150 to the card, please!"
+# 💳 The sneakers that got charged three times
 
-**Server**: "Charged! ✅ Here's the response: 201 Created!"
+> Bia bought R$150 sneakers in the app, on bus-station 4G. The signal was just lovely.
 
-**Network** (eating the response on the way): "Nom nom. 😋"
+## 🎭 Cast
+- 📱 **App** · `pagarComRetry()` · the client: asks for the charge and, if it hears nothing back, asks again (the retry)
+- 🏪 **Server** · `servidorPagamentos()` · the payments API: makes the real charge
+- 🐊 **Network** · `rede()` · the internet: sometimes swallows the response halfway
+- 💳 **Bia's card** · `cobrarCartao()` · the statement, where the charge shows up
+- 🎫 **abc-123** · `Idempotency-Key` header · the order number: the SAME in every attempt
+- 📒 **Notebook** · table with `UNIQUE(key)` · where the server writes down each order number and the response it gave
 
-**Client** (waiting…): "No response. Must have failed. I'LL TRY AGAIN!" 🔁
+## 🎬 Scene 1 · No order number
+**App**: "Server, charge Bia R$150, please!"
+**Server**: "Charged! ✅ Here's the response: it worked!"
+**Network** _(chewing)_: "Nom. 😋"
+**App** _(checking the clock)_: "Huh, nothing came back. Something must have broken. I'll just send it again, right?"
+**Server**: "A R$150 order? Sure, charged! ✅"
+**Network**: "Nom. 😋"
+**App**: "AGAIN!"
+**Server**: "Charged! ✅"
+**Bia's card**: "R$450?! ARE YOU KIDDING ME?! SHE BOUGHT SNEAKERS, NOT A CENTIPEDE! 😱"
+> 🚨 The server had no way of knowing it was the same order.
 
-**Server**: "New R$150 request? Charged again! ✅"
+## 🎬 Scene 2 · With an order number
+**App**: "Charge R$150. Order number **abc-123**."
+**Server**: "abc-123? Never seen it. I'll charge and write it in the notebook with the response."
+**Notebook**: "Noted: abc-123 → it worked. ✍️"
+**Network**: "Nom. 😋"
+**App**: "Charge R$150. Order **abc-123**." _(the same number, on purpose)_
+**Server** _(flipping pages)_: "Hold on… abc-123 is already here! I won't charge again, I'll just give you the same response."
+**Bia's card**: "R$150. Exactly right. You can breathe now." 😌
 
-**Network**: "Nom nom. 😋"
+## 🎬 Scene 3 · The clever app
+**App**: "What if I make up a new number on every attempt? Order **xyz-999**!"
+**Server**: "New number means new order. Charged! ✅"
+**Bia's card**: "NOT AGAIN, FOR THE LOVE OF GOD!" 🤦
+**abc-123**: "The number belongs to the PURCHASE, sweetie. Not to the attempt."
 
-**Client**: "AGAIN!"
+## 💻 Translating to code
+```js
+// App: ONE key per purchase, reused in every retry
+const key = uuid();                         // abc-123
+for (let i = 1; i <= 4; i++) {
+  try { return await rede(servidor, { headers: { 'Idempotency-Key': key }, body }); }
+  catch { await sleep(100 * 2 ** (i - 1)); } // backoff: 100, 200, 400 ms
+}
 
-**Server**: "Charged again! ✅"
+// Server: checks the notebook before charging
+const salvo = db.idempotencia.get(key);
+if (salvo) return salvo.response;           // already done: return the same response
+cobrarCartao(body.valor);
+db.idempotencia.set(key, { response });     // in real life: INSERT with UNIQUE(key) in the same transaction
+```
 
-**Customer's card**: "R$450?! I ONLY BOUGHT ONE THING! 😱"
+| In the lab, change | What happens |
+| --- | --- |
+| `USAR_CHAVE = false` | 3 charges (Scene 1) |
+| `USAR_CHAVE = true` | 1 charge (Scene 2) |
+| `NOVA_CHAVE_POR_TENTATIVA = true` | multiple charges again (Scene 3) |
 
-**Now with an Idempotency-Key:**
+## ➕ What the recruiter asks next
+- **Same key with a different amount?** The server stores a hash of the body and responds `422`: it's a client bug, not a retry.
+- **Two attempts arriving at the same time?** The `UNIQUE(key)` in the database ensures only one writes; the other waits or gets `409`.
+- **How long to keep it?** A few hours or days (Stripe keeps it for 24h), with automatic cleanup.
 
-**Client**: "Charge R$150. My order number is **abc-123**." 🎫
-
-**Server**: "First time I see abc-123: I charge and **write the number down with the response**."
-
-**Network**: "Nom nom. 😋"
-
-**Client**: "Charge R$150, order **abc-123**." *(the SAME number)*
-
-**Server**: "abc-123? Already done! I won't charge again: here's the same response I saved." 📋
-
-**Card**: "R$150. Just right." 😌
-
-**Too-clever client** (generating a new number on every attempt): "Order **xyz-999**!"
-
-**Server**: "New number = new order = new charge. The key must belong to the **intent to pay**, not to the attempt!" 🤦
-
-**🧠 Interview takeaway**
-
-"Retries are unavoidable because the network loses responses. The client sends one **Idempotency-Key** per operation intent; the server stores the key under a unique constraint along with the response and, if it comes back, returns the saved response without executing again."
+## 🎤 For the interview
+"Retries are inevitable because the network loses responses. The client sends an **Idempotency-Key** per operation intent (not per attempt); the server stores the key with a unique constraint along with the response, in the same transaction as the charge, and if the key comes back it returns the saved response without running again. A repeated key with a different body becomes `422`."

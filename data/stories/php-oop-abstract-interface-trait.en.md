@@ -1,19 +1,60 @@
-**Checkout** 🛒: "I just want someone who knows how to `charge()`. I don't care whether it's Pix or card."
+# 🛒 The contract, the blueprint, and the kit
 
-**`PaymentMethod` interface** 📜 (the contract): "Whoever signs with me PROMISES to have `charge()`. I don't say how. And a class can sign several contracts."
+> A store's checkout takes Pix and card. Next week boleto arrives. The checkout couldn't care less.
 
-**`PaymentWithFee` abstract class** 🏗️ (the house blueprint): "I come with part of it ready: I compute the total with the fee. Each child just says WHICH fee and HOW to process. Nobody lives in me directly, only in houses built from me. And each class gets only ONE blueprint."
+## 🎭 Cast
+- 🛒 **Checkout** · the code that charges · just wants someone who knows how to `cobrar()` (charge)
+- 📜 **Contract** · the `MeioDePagamento` (payment method) interface · whoever signs PROMISES to have `cobrar()`; doesn't say how. A class can sign several
+- 🏗️ **House blueprint** · the abstract class `PagamentoComTaxa` (payment with fee) · comes partly built; nobody lives in it directly. Each class gets only ONE blueprint
+- 🧩 **Ready-made kit** · the `RegistraLog` trait · a bundle of methods any class can "paste in", even if unrelated
+- ⚡ **Pix** · `class Pix implements MeioDePagamento` · charges its own way
+- 💳 **Card** · `class CartaoDeCredito extends PagamentoComTaxa` · charges its own way, with a fee
+- 🧾 **Boleto** · the new class that arrives later
+- 🎭 **Chameleon** · polymorphism · the same code working with different classes
 
-**`LogsActivity` trait** 🧩 (the ready-made kit): "I'm a bundle of methods any class can 'paste in', even without being related."
+## 🎬 Scene 1 · The contract
+**Checkout**: "I just want someone who knows how to charge. Pix, card, whatever." 🛒
+**Contract**: "Whoever signs with me PROMISES to have `cobrar()`. How they charge is their own business." 📜
+**Pix**: "Signed! I charge instantly, no fee." ⚡
+**Card**: "Signed too!" 💳
 
-**`Pix`** and **`CreditCard`**: "We both know how to `charge()`, each in our own way!"
+## 🎬 Scene 2 · The blueprint and the kit
+**House blueprint**: "And I come half-built: I compute the total with the fee. Each child just says WHICH fee. Nobody lives in me directly, okay? Only in houses built from me." 🏗️
+**Card**: "I was built from that blueprint. I just said my fee is 3%."
+**Ready-made kit**: "And I'm a bundle of logging methods anyone can paste in, even if they're not family." 🧩
+**Pix**: "I pasted the kit in and I'm not even related to Card. Fancy."
 
-**Checkout**: "Then whoever comes, I call `charge()` and it works." **← polymorphism** 🎭
+## 🎬 Scene 3 · Boleto arrives
+**Boleto**: "Hi, everyone! May I come in?" 🧾
+**Checkout**: "Signed the contract? Then come in. I don't even need to change." 😎
+**Chameleon**: "That's it: the checkout calls `cobrar()` and each one answers its own way." 🎭
 
-**Boleto** (arriving later): "May I come in?"
+## 💻 Translating to code
+```php
+interface MeioDePagamento { public function cobrar(int $cents): Recibo; }           // 📜
 
-**Checkout**: "Sign the contract and come in. I don't even need to change." 😎
+abstract class PagamentoComTaxa implements MeioDePagamento {                         // 🏗️
+    abstract protected function taxa(): float;
+    public function cobrar(int $cents): Recibo {
+        return $this->processar((int) round($cents * (1 + $this->taxa())));
+    }
+    abstract protected function processar(int $total): Recibo;
+}
 
-**🧠 Interview takeaway**
+trait RegistraLog { public function log(string $msg): void { error_log(static::class . ": $msg"); } } // 🧩
 
-"An interface is a contract (many per class); an abstract class is contract + shared code (single inheritance); a trait is horizontal reuse of methods. Polymorphism is the same code working with different classes that follow the same contract, which lets you add behavior without touching the caller."
+final class Pix implements MeioDePagamento { use RegistraLog; public function cobrar(int $c): Recibo { /* ... */ } } // ⚡
+final class CartaoDeCredito extends PagamentoComTaxa { protected function taxa(): float { return 0.03; } /* ... */ } // 💳
+
+function checkout(MeioDePagamento $method, int $cents) { return $method->cobrar($cents); } // 🛒 + 🎭
+```
+
+| | Interface | Abstract class | Trait |
+| --- | --- | --- | --- |
+| What it is | A contract | Contract + shared code | A bundle of methods |
+| How many per class | Several | One (single inheritance) | Several |
+| Can be instantiated? | No | No | No |
+| Use when | You want to guarantee a behavior | Children share code and state | Reuse across unrelated classes |
+
+## 🎤 For the interview
+"An interface is a contract, and a class can implement several; an abstract class is a contract with shared code, and you can only extend one; a trait is horizontal reuse of methods across unrelated classes. Polymorphism is the same code working with different classes that follow the same contract, which lets me add a new payment method without touching the caller."

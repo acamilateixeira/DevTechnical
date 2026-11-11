@@ -1,33 +1,57 @@
-**API**: "Preciso de ofertas de crédito. Vou perguntar pros três provedores **ao mesmo tempo**." 📞📞📞
+# 🐌 O primo lerdo que atrasa a família toda
 
-**Alpha**: "Oferta em 100ms!" ⚡
+> A API vai buscar ofertas de crédito em três bancos parceiros. Dois são rapidinhos. O terceiro… é o Beta.
 
-**Gamma**: "Oferta em 150ms!" ⚡
+## 🎭 Elenco
+- 🖥️ **API** · `Promise.allSettled([...])` · quem pergunta pros três ao mesmo tempo e monta a resposta
+- ⚡ **Alpha** · provedor rápido · responde em 100ms
+- ⚡ **Gamma** · provedor rápido · responde em 150ms
+- 🐌 **Beta** · provedor lento e instável · demora segundos e às vezes devolve erro 500
+- ⏱️ **Cronômetro** · `TIMEOUT_MS = 400` · o tempo máximo que a API espera cada um
+- 🔌 **Disjuntor** · `CircuitBreaker` · depois de falhas seguidas, para de chamar o Beta por um tempo
+- 👩 **Bia** · a usuária · quem fica olhando a tela carregar
 
-**Beta**: "Hmmm… deixa eu ver… peraí… 3 segundos… e… erro 500." 🐌💥
+## 🎬 Cena 1 · Esperando todo mundo
+**API**: "Bora ver ofertas! Liguei pros três ao mesmo tempo." 📞📞📞
+**Alpha**: "Toma, 100ms!" ⚡
+**Gamma**: "Toma, 150ms!" ⚡
+**Beta**: "Hmmm… deixa eu ver… peraí, tô procurando o óculos… 3 segundos… e… erro 500." 🐌💥
+**Bia**: "TRÊS SEGUNDOS PRA ISSO?! Vou no concorrente!" 😤
+> 🚨 A tela é tão lenta quanto o mais lento da turma.
 
-**Usuária**: "POR QUE A TELA DEMOROU 3 SEGUNDOS?! 😤"
-
-**Agora com timeout por provedor:**
-
-**API**: "Cada um tem **400ms**. Passou disso, sigo sem você."
-
+## 🎬 Cena 2 · Com cronômetro
+**Cronômetro**: "Cada um tem 400ms. Passou disso, a gente segue sem você."
 **Beta**: "Mas eu ia—"
+**Cronômetro**: "TEMPO! ⏱️"
+**API**: "Respondo com Alpha e Gamma e aviso que o Beta não veio." ✂️
+**Bia**: "Duas ofertas em meio segundo? Tá ótimo."
 
-**API**: "TIMEOUT. Respondo com Alpha e Gamma e aviso que o Beta falhou." **← resposta parcial** ✂️
+## 🎬 Cena 3 · Com disjuntor
+**Disjuntor**: "Beta falhou duas vezes seguidas? DESARMEI. Por 1,5 s ninguém liga pro Beta: eu já respondo 'indisponível' na hora, sem gastar os 400ms." 🔌
+**Bia**: "Ficou rapidinho de novo!" ⚡
+**Disjuntor** _(1,5 s depois, desconfiado)_: "Vou deixar passar UMA ligação de teste pro Beta…"
+**Beta**: "Voltei! Oferta em 120ms, novinho em folha!"
+**Disjuntor**: "Tá bom, tá perdoado. Religado." ✅
 
-**Agora com circuit breaker (o disjuntor):**
+## 💻 Traduzindo pro código
+```js
+const comTimeout = (p, ms) => Promise.race([p, sleep(ms).then(() => { throw new Error('timeout'); })]);
 
-**Breaker do Beta**: "Duas falhas seguidas? **Desarmei.** Pelos próximos 1,5 s ninguém liga pro Beta: eu respondo 'indisponível' na hora, sem gastar os 400ms." 🔌
+const resultados = await Promise.allSettled([                 // 📞 os três ao mesmo tempo
+  comTimeout(alpha(), TIMEOUT_MS),
+  comTimeout(gamma(), TIMEOUT_MS),
+  breakerBeta.chamar(() => comTimeout(beta(), TIMEOUT_MS)),   // 🔌 aberto? falha na hora
+]);
+const ofertas = resultados.filter((r) => r.status === 'fulfilled'); // ✂️ resposta parcial
+```
 
-**Usuária**: "Ficou rápido de novo!" ⚡
+| Estado do disjuntor | O que acontece |
+| --- | --- |
+| Fechado | Chama normalmente e conta as falhas |
+| Aberto | Não chama; falha na hora |
+| Meio-aberto | Deixa passar 1 chamada de teste; se der certo, fecha |
 
-**Breaker** (depois de 1,5 s): "Vou deixar passar UMA chamada de teste pro Beta… (half-open)"
+Retry só em operação idempotente, com backoff e jitter, senão você vira o próprio estouro da boiada no provedor que já está mal.
 
-**Beta**: "Voltei! Oferta em 120ms!"
-
-**Breaker**: "Rearmado. Pode ligar pro Beta normalmente." ✅
-
-**🧠 Moral da história para entrevista**
-
-"Um dependente lento não pode derrubar tudo. Chamo em paralelo com **timeout por dependência**, devolvo **resposta parcial**, faço retry só em operação idempotente com backoff e jitter, e uso **circuit breaker** para parar de chamar quem está falhando."
+## 🎤 Pra entrevista
+"Uma dependência lenta não pode derrubar tudo. Chamo as dependências em paralelo com timeout por dependência, devolvo resposta parcial quando faz sentido, faço retry só em operação idempotente com backoff exponencial e jitter, e uso circuit breaker para parar de chamar quem está falhando e testar a volta aos poucos (half-open)."

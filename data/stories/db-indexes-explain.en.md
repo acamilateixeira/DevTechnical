@@ -1,21 +1,53 @@
-**Query**: "I want company 42's pending trips, newest first."
+# 📚 The librarian who read the whole collection
 
-**Database without an index** 📚: "I'll read all 20 MILLION rows, one by one, and pick the ones that fit…" *(Seq Scan)* 🐌
+> A library with 20 million trip cards. Bia wants company 42's pending trips, newest first.
 
-**User**: "The screen took 8 seconds!" 😤
+## 🎭 Cast
+- 🙋 **Request** · the query `SELECT ... WHERE company_id = 42 AND status = 'pendente' ORDER BY created_at DESC LIMIT 50` · what the screen wants
+- 👵 **Librarian** · the database · whoever looks for the cards
+- 🐌 **Read everything** · Seq Scan · going card by card, all 20 million
+- 🔦 **Flashlight** · `EXPLAIN ANALYZE` · shows the path the database took and how long it took
+- 📇 **Card index** · composite index `(company_id, status, created_at)` · a catalog already sorted by company → status → date
+- ✍️ **New entry** · `INSERT` / `UPDATE` · every new card must also go into the catalog
+- 🎭 **Disguise** · `WHERE DATE(created_at) = ...` · a function on the column: the index no longer recognizes it
 
-**`EXPLAIN ANALYZE`** 🔦: "Look at the plan: it read the whole table and then sorted everything on disk. Found the culprit."
+- 👩 **Bia** · the user · waiting for the screen to load
+## 🎬 Scene 1 · No catalog
+**Request**: "I want company 42's pending ones, newest first, just 50."
+**Librarian**: "I'll read all 20 MILLION cards, one by one, pick the right ones, and then sort…" 🐌
+**Bia**: "The screen took 8 seconds! I had time to make coffee!" 😤
+**Flashlight**: "Found the culprit: it read the whole table and then sorted everything on disk." 🔦
 
-**Composite index `(company_id, status, created_at)`** 📇: "I'm the book's index. I'm already organized by company → status → date. I go straight to the right page, already sorted, and stop at 50."
+## 🎬 Scene 2 · With a catalog
+**Card index**: "I'm already sorted by company, then status, then date. I go straight to drawer 42, pending, already in order, and stop at 50." 📇
+**Librarian**: "I read 50 cards instead of 20 million. I feel like an athlete." ⚡
 
-**Database**: "I read 50 rows instead of 20 million." ⚡
+## 🎬 Scene 3 · Not all roses
+**New entry**: "And every time a new card comes in, I have to update the catalog too. Too many catalogs make me slow!" 🐢
+**Disguise**: "What if I ask by creation DATE, with a function around it?"
+**Card index**: "Then I don't recognize you, dear. Not using it." 🙅
 
-**INSERT** ✍️: "And every time I write, I have to update the index too. Too many indexes make me slow!" 🐢
+## 💻 Translating to code
+```sql
+EXPLAIN ANALYZE                                         -- 🔦
+SELECT id, title FROM trips
+WHERE company_id = 42 AND status = 'pendente'           -- equality first
+ORDER BY created_at DESC LIMIT 50;                      -- then the ordering
 
-**`WHERE DATE(created_at) = ...`**: "What if I apply a function to the column?"
+CREATE INDEX CONCURRENTLY idx_trips_company_status_created   -- 📇 without locking the table (PostgreSQL)
+  ON trips (company_id, status, created_at DESC);
 
-**Index**: "Then I don't recognize you anymore. Not used." 🙅
+-- 🎭 ❌ doesn't use the index       ✅ uses it
+WHERE DATE(created_at) = '2026-11-10'
+WHERE created_at >= '2026-11-10' AND created_at < '2026-11-11'
+```
 
-**🧠 Interview takeaway**
+| Rule | Why |
+| --- | --- |
+| Leftmost prefix | Index `(a, b, c)` serves `a`, `a+b`, `a+b+c`, not just `b` |
+| Equality first, ordering after | It delivers in order and stops at `LIMIT` |
+| Indexes cost on writes | Every `INSERT` updates every index |
+| A function on the column voids the index | Rewrite it as a range |
 
-"I investigate with `EXPLAIN ANALYZE` and the slow query log. A composite index follows the leftmost prefix: equality columns first, then the sort column. Indexes speed up reads but cost on writes, and functions on the column prevent their use. In production, I create them without locking the table."
+## 🎤 For the interview
+"I investigate with `EXPLAIN ANALYZE` and the slow query log. A composite index follows the leftmost prefix: equality columns first, then the ordering column, so it returns rows already sorted and stops at the `LIMIT`. Indexes speed up reads but cost on writes, and a function on the column prevents their use. In production I create them without locking the table."

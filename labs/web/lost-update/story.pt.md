@@ -1,31 +1,62 @@
-**Centro de custo**: "Tenho R$1000 de orçamento."
+# 💸 Os dois gestores e o mesmo orçamento
 
-**Gestor A**: "Deixa eu ver o saldo… R$1000. Cabe a viagem de R$800!" 👀
+> Sexta-feira, 17h59. O centro de custo tem R$1000. Dois gestores querem aprovar uma viagem de R$800 cada antes de ir embora.
 
-**Gestor B** (no mesmo milissegundo): "Deixa eu ver o saldo… R$1000. Cabe a viagem de R$800!" 👀
+## 🎭 Elenco
+- 🏦 **Orçamento** · linha `cc1` com `saldo = 1000` · o dinheiro disponível no banco de dados
+- 👨‍💼 **Gestor A** · `aprovarViagem('Gestor A', 800)` · primeira transação
+- 👩‍💼 **Gestor B** · `aprovarViagem('Gestor B', 800)` · segunda transação, no mesmo milissegundo
+- 👀 **Olhadinha** · `SELECT` · lê o saldo sem travar nada
+- 🔒 **Cadeado** · `SELECT ... FOR UPDATE` · lê e tranca a linha até o `COMMIT`
+- ⚡ **Atômico** · `UPDATE ... WHERE saldo >= 800` · confere e desconta numa tacada só, dentro do banco
+- 😱 **Financeiro** · o relatório do mês · quem descobre a bagunça depois
 
-**Gestor A**: "Aprovo! Saldo = 1000 − 800 = **200**." ✍️
+## 🎬 Cena 1 · Só olhando
+**Gestor A**: "Deixa eu dar uma olhadinha… R$1000. Cabe minha viagem de R$800!" 👀
+**Gestor B** _(no mesmo milissegundo)_: "Deixa eu dar uma olhadinha… R$1000. Cabe a minha também!" 👀
+**Gestor A**: "Aprovo! Saldo = 1000 − 800 = 200." ✍️
+**Gestor B**: "Aprovo! Saldo = 1000 − 800 = 200." ✍️ _(apagando o que o A escreveu, sem saber)_
+**Orçamento**: "Saldo final: R$200. Tudo nos conformes!" 🙂
+**Financeiro**: "NOS CONFORMES?! Aprovaram R$1600 com R$1000! Quem foi o gênio?!" 😱
+> 🚨 A segunda escrita apagou a primeira: lost update.
 
-**Gestor B**: "Aprovo! Saldo = 1000 − 800 = **200**." ✍️ *(apagando a escrita do A sem saber)*
-
-**Banco**: "Saldo final: R$200. Tudo certo!" 🙂
-
-**Financeiro**: "TUDO CERTO?! Aprovaram R$1600 com R$1000! 😱" **← lost update**
-
-**Agora com `SELECT ... FOR UPDATE`:**
-
-**Gestor A**: "Quero ver o saldo **e já tranco** essa linha pra mim." 🔒
-
+## 🎬 Cena 2 · Com cadeado
+**Gestor A**: "Quero ver o saldo e já trancar essa linha pra mim." 🔒
 **Gestor B**: "Também quero ver o saldo…"
+**Cadeado**: "Tá ocupado, meu querido. Espera na porta." ⏳
+**Gestor A**: "Aprovo, saldo 200, COMMIT. Pode entrar!" 🔓
+**Gestor B**: "Minha vez… R$200? Não cabe R$800. Recuso." ✅
+**Financeiro**: "Agora sim. Pode ir pro happy hour."
 
-**Banco**: "Tá trancado pelo A. Espera na porta." ⏳
+## 🎬 Cena 3 · O jeito curtinho
+**Atômico**: "Eu nem olho antes. Mando o banco conferir e descontar de uma vez só. Se não tiver saldo, nenhuma linha muda e eu sei que não deu."
+**Gestor B**: "Simples assim?"
+**Atômico**: "Simples assim, mô." 😎
 
-**Gestor A**: "Aprovo, saldo 200, COMMIT. Destranquei!" 🔓
+## 💻 Traduzindo pro código
+```sql
+-- ❌ olhadinha: os dois leem 1000
+SELECT saldo FROM centro_custo WHERE id = 'cc1';
+UPDATE centro_custo SET saldo = 200 WHERE id = 'cc1';
 
-**Gestor B**: "Minha vez. Saldo… **200**. Não cabe R$800. Recuso." ✅
+-- 🔒 cadeado (lock pessimista): o segundo espera o COMMIT do primeiro
+SELECT saldo FROM centro_custo WHERE id = 'cc1' FOR UPDATE;
 
-**Update atômico** (o jeito mais curto): "Eu nem leio antes. Mando o banco fazer tudo de uma vez: `UPDATE ... SET saldo = saldo - 800 WHERE saldo >= 800`. Se voltar 0 linhas, não tinha saldo."
+-- ⚡ atômico: confere e desconta numa instrução
+UPDATE centro_custo SET saldo = saldo - 800 WHERE id = 'cc1' AND saldo >= 800;
+-- 0 linhas afetadas = não tinha saldo
 
-**🧠 Moral da história para entrevista**
+-- 🔢 lock otimista: falha se alguém mudou desde a leitura
+UPDATE centro_custo SET saldo = 200, version = version + 1 WHERE id = 'cc1' AND version = 7;
+```
 
-"Duas transações leram o mesmo valor e a segunda escrita apagou a primeira: **lost update**. Resolvo com lock pessimista (`SELECT ... FOR UPDATE`), update condicional atômico ou lock otimista com coluna de versão. Transação curta e nunca chamar API externa com o lock aberto."
+| `MODO` no lab | Viagens aprovadas |
+| --- | --- |
+| `'sem-lock'` | 2 (R$1600 com R$1000) |
+| `'for-update'` | 1 |
+| `'atomico'` | 1 |
+
+Cuidados: transação curta e nunca chamar API externa com o lock aberto.
+
+## 🎤 Pra entrevista
+"Duas transações leram o mesmo valor e a segunda escrita apagou a primeira: é um lost update. Resolvo com lock pessimista (`SELECT ... FOR UPDATE`), com update condicional atômico (`WHERE saldo >= valor`) ou com lock otimista por coluna de versão. Mantenho a transação curta e nunca chamo API externa com o lock aberto."

@@ -1,21 +1,53 @@
-**Query**: "Quero as viagens pendentes da empresa 42, das mais novas para as mais antigas."
+# 📚 A bibliotecária que lia o acervo inteiro
 
-**Banco sem índice** 📚: "Vou ler as 20 MILHÕES de linhas, uma por uma, e separar as que servem…" *(Seq Scan)* 🐌
+> Uma biblioteca com 20 milhões de fichas de viagem. A Bia quer as viagens pendentes da empresa 42, das mais novas para as mais antigas.
 
-**Usuária**: "A tela demorou 8 segundos!" 😤
+## 🎭 Elenco
+- 🙋 **Pedido** · a query `SELECT ... WHERE company_id = 42 AND status = 'pendente' ORDER BY created_at DESC LIMIT 50` · o que a tela quer
+- 👵 **Bibliotecária** · o banco · quem procura as fichas
+- 🐌 **Ler tudo** · Seq Scan · passar ficha por ficha, as 20 milhões
+- 🔦 **Lanterna** · `EXPLAIN ANALYZE` · mostra o caminho que o banco fez e quanto tempo levou
+- 📇 **Índice remissivo** · índice composto `(company_id, status, created_at)` · fichário já organizado por empresa → status → data
+- ✍️ **Cadastro** · `INSERT` / `UPDATE` · cada ficha nova precisa entrar também no fichário
+- 🎭 **Disfarce** · `WHERE DATE(created_at) = ...` · função na coluna: o índice não reconhece mais
 
-**`EXPLAIN ANALYZE`** 🔦: "Olha aqui o plano: leu a tabela inteira e ainda ordenou tudo em disco. Achei o culpado."
+- 👩 **Bia** · a usuária · esperando a tela carregar
+## 🎬 Cena 1 · Sem fichário
+**Pedido**: "Quero as pendentes da empresa 42, mais novas primeiro, só 50."
+**Bibliotecária**: "Vou ler as 20 MILHÕES de fichas, uma por uma, separar as que servem e depois ordenar…" 🐌
+**Bia**: "A tela demorou 8 segundos! Deu tempo de passar um café!" 😤
+**Lanterna**: "Achei o culpado: leu a tabela inteira e ainda ordenou tudo em disco." 🔦
 
-**Índice composto `(company_id, status, created_at)`** 📇: "Eu sou o índice remissivo do livro. Já estou organizado por empresa → status → data. Vou direto na página certa, já ordenado, e paro quando der 50."
+## 🎬 Cena 2 · Com fichário
+**Índice remissivo**: "Eu já tô organizado por empresa, depois status, depois data. Vou direto na gaveta 42, pendentes, já na ordem, e paro quando der 50." 📇
+**Bibliotecária**: "Li 50 fichas em vez de 20 milhões. Tô me sentindo uma atleta." ⚡
 
-**Banco**: "Li 50 linhas em vez de 20 milhões." ⚡
+## 🎬 Cena 3 · Nem tudo são flores
+**Cadastro**: "E toda vez que entra ficha nova, eu tenho que atualizar o fichário também. Fichário demais me deixa lerdo!" 🐢
+**Disfarce**: "E se eu pedir pela DATA da criação, com uma função em volta?"
+**Índice remissivo**: "Aí eu não te reconheço, querida. Não uso." 🙅
 
-**INSERT** ✍️: "E toda vez que eu gravo, preciso atualizar o índice também. Índice demais me deixa lento!" 🐢
+## 💻 Traduzindo pro código
+```sql
+EXPLAIN ANALYZE                                         -- 🔦
+SELECT id, title FROM trips
+WHERE company_id = 42 AND status = 'pendente'           -- igualdade primeiro
+ORDER BY created_at DESC LIMIT 50;                      -- depois a ordenação
 
-**`WHERE DATE(created_at) = ...`**: "E se eu aplicar uma função na coluna?"
+CREATE INDEX CONCURRENTLY idx_trips_company_status_created   -- 📇 sem travar a tabela (PostgreSQL)
+  ON trips (company_id, status, created_at DESC);
 
-**Índice**: "Aí eu não te reconheço mais. Não uso." 🙅
+-- 🎭 ❌ não usa o índice           ✅ usa
+WHERE DATE(created_at) = '2026-11-10'
+WHERE created_at >= '2026-11-10' AND created_at < '2026-11-11'
+```
 
-**🧠 Moral da história para entrevista**
+| Regra | Por quê |
+| --- | --- |
+| Prefixo mais à esquerda | O índice `(a, b, c)` serve para `a`, `a+b`, `a+b+c`, não só para `b` |
+| Igualdade antes, ordenação depois | Assim ele já entrega na ordem e para no `LIMIT` |
+| Índice custa na escrita | Cada `INSERT` atualiza todos os índices |
+| Função na coluna anula o índice | Reescreva como intervalo |
 
-"Investigo com `EXPLAIN ANALYZE` e slow query log. Índice composto segue o prefixo mais à esquerda: colunas de igualdade primeiro, depois a de ordenação. Índice acelera leitura mas custa na escrita, e funções na coluna impedem o uso. Em produção, crio sem travar a tabela."
+## 🎤 Pra entrevista
+"Investigo com `EXPLAIN ANALYZE` e o slow query log. Índice composto segue o prefixo mais à esquerda: colunas de igualdade primeiro e depois a de ordenação, para entregar já ordenado e parar no `LIMIT`. Índice acelera leitura mas custa na escrita, e função aplicada na coluna impede o uso. Em produção, crio sem travar a tabela."

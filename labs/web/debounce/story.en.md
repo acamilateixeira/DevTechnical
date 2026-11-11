@@ -1,23 +1,53 @@
-**User** (typing "react hooks"): "R… E… A… C… T…"
+# ⌨️ The girl who called on every letter
 
-**Box without debounce**: "NEW LETTER? CALL THE API! NEW LETTER? CALL THE API AGAIN!" 📞📞📞
+> Bia is typing "react hooks" into the search box. On the other end, the API picks up the phone.
 
-**API**: "MA'AM, THAT'S 11 CALLS FOR ONE WORD! 😩"
+## 🎭 Cast
+- 👩‍💻 **Bia** · `input` event · the one typing: every key fires an event
+- 🤪 **Jumpy field** · listener without debounce · calls the API on every letter
+- 😌 **Chill field** · `buscarDepois = debounce(fn, 300)` · waits for Bia to stop typing before calling
+- ☎️ **API** · `searchApi()` · the search server, answering every call
+- 🎒 **`timer`** · `let timer` (the closure) · the variable kept in the function's backpack between keys
+- 🚦 **Throttle** · `throttle(fn, ms)` · the cousin: lets at most one call through every X ms
 
-**Box with debounce**: "Easy. I'll wait 300ms. If another letter arrives first, I **throw away the timer** and start counting again."
+## 🎬 Scene 1 · The jumpy field
+**Bia** _(typing)_: "R… E… A… C… T…"
+**Jumpy field**: "NEW LETTER? CALL THE API! ANOTHER ONE? CALL AGAIN! 📞📞📞"
+**API**: "Hello? 'r'. Hello? 're'. Hello? 'rea'… LADY, FOR THE LOVE OF GOD, THAT'S 11 CALLS FOR ONE WORD! 😩"
+> 🚨 11 searches, and nobody wanted 10 of them.
 
-**`timer`** (the variable inside the closure): "And I live in the function's backpack! Every call touches THE SAME timer, that's how I can cancel the previous one." 🎒
+## 🎬 Scene 2 · The chill field
+**Bia**: "R… E… A…"
+**Chill field**: "Relax, darling. I'll wait 300ms. If another letter comes first, I tear up the timer and start counting again."
+**`timer`** _(from inside the backpack)_: "And I stay tucked in here! Every key touches THIS SAME timer, that's why the previous one can be canceled." 🎒
+**Bia**: "…H-O-O-K-S." _(stops typing)_
+**Chill field**: "One, two, three… 300ms of silence! NOW: one call, with the whole word."
+**API**: "Now THAT is good manners! 🙏"
 
-**User**: "…H-O-O-K-S." *(stops typing)*
+## 🎬 Scene 3 · The cousin shows up
+**Throttle**: "I'm different, okay? I don't wait for anyone to stop. I let ONE call through every X ms, and the rest wait for the next window."
+**Chill field**: "So what are you good for?"
+**Throttle**: "Scrolling, and when someone keeps resizing the window like crazy. 🌀"
 
-**Debounce**: "300ms of silence! NOW: a single call, with the whole word."
+## 💻 Translating to code
+```js
+function debounce(fn, ms) {
+  let timer;                       // 🎒 the backpack (closure)
+  return (...args) => {
+    clearTimeout(timer);           // tear up the previous timer
+    timer = setTimeout(() => fn(...args), ms); // start counting again
+  };
+}
+const buscarDepois = debounce(searchApi, 300);   // the chill field
+input.addEventListener('input', (e) => buscarDepois(e.target.value));
+```
 
-**API**: "NOW THAT'S GOOD MANNERS! 🙏"
+| | When it runs | Typical use |
+| --- | --- | --- |
+| Debounce | Only after calls stop for X ms | Search, autosave |
+| Throttle | At most once every X ms | Scroll, resize |
 
-**Throttle** (debounce's cousin, joining in): "I'm different: I don't wait for a pause. I let through at most **one** call every X ms. I'm for scroll and window resize."
+A **closure** is a function remembering the variables from where it was born: `timer` stays alive between keystrokes because it lives inside the function `debounce` returned.
 
-**🧠 Interview takeaway**
-
-- **Closure**: "the function remembers the variables from where it was born; `timer` is kept between calls."
-- **Debounce**: "runs only after calls stop for X ms (search)."
-- **Throttle**: "runs at most once every X ms (scroll, resize)."
+## 🎤 For the interview
+"A closure is when a function keeps access to the variables of the scope where it was created. Debounce uses that: it keeps the `timer` and, on each call, cancels the previous one and schedules another, so it only runs after calls stop for X ms. Throttle limits it to at most one run every X ms. Debounce for search, throttle for scroll and resize."

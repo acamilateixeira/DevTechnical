@@ -1,25 +1,61 @@
-**New dev on the team**: "How do I run the project?"
+# 🐳 "It works on my machine"
 
-**Team without Docker**: "Install PHP 7.4… no, 8.1… extension X… MySQL 5.7… and pray." 🙏
+> The new dev's first day on the PHP team. She asks how to run the project and everyone stares at the floor.
 
-**Team with Docker** 🐳: "`docker compose up`. Done."
+## 🎭 Cast
+- 🙋‍♀️ **New dev** · just arrived · wants to run the project today, not next week
+- 🙏 **47-step tutorial** · installing everything by hand · the right PHP, extensions, the right MySQL, and a prayer
+- 📀 **Recipe** · the image (`Dockerfile`) · OS + PHP 8.3 + extensions, identical on every computer
+- 📦 **Cake** · the container · the recipe running; throw it away and bake another
+- 💾 **Fridge container** · the volume · keeps data outside the container so it survives
+- 🕸️ **Extension list** · the `docker compose` network · each service finds the others by name
+- 🚪 **Doorman** · Nginx · receives HTTP and passes `.php` files to PHP-FPM
+- 🐞 **Magnifying glass** · Xdebug · only in development, never in the production image
 
-**Image** 📀: "I'm the frozen recipe: OS + PHP 8.3 + extensions. Identical on every computer."
+- 🤷 **Coworker** · the veteran dev · "it works on my machine"
+- 🗄️ **Database** · the MySQL container · where data lives if nobody gives it a volume
+- 🐘 **PHP app** · the application container · needs to find the database
+## 🎬 Scene 1 · Before Docker
+**New dev**: "How do I run the project?"
+**47-step tutorial**: "Install PHP 7.4… no, 8.1… extension X… MySQL 5.7, not 8… and pray nobody updated anything." 🙏
+**Coworker**: "It works on my machine." 🤷
 
-**Container** 📦: "And I'm the recipe running. Delete me and recreate me as often as you like."
+## 🎬 Scene 2 · With Docker
+**New dev**: "`docker compose up`."
+**Recipe**: "Coming out the same environment for everyone, just like production." 📀
+**Cake**: "I'm running! And if something breaks, delete me and bake another, no regrets." 📦
+**Database** _(no fridge)_: "They deleted my container… I LOST ALL THE DATA!" 😱
+**Fridge container**: "That's why data lives in me. The cake comes and goes; I stay." 💾
 
-**Database, without a volume**: "They deleted my container… I lost ALL the data!" 😱
+## 🎬 Scene 3 · The localhost
+**PHP app**: "I'll talk to the database at `localhost`…"
+**Extension list**: "`localhost` is you, inside YOUR own container, sweetie! The database is extension **`db`**." 🕸️
+**PHP app**: "Ohhh. Makes sense."
+**Doorman**: "And whoever comes in through port 80, I receive and pass to PHP." 🚪
+**Magnifying glass**: "And I only show up in dev. In production, don't even invite me." 🐞
 
-**Volume** 💾: "That's why data lives in me, outside the container. The container comes and goes; I stay."
+## 💻 Translating to code
+```yaml
+# docker-compose.yml
+services:
+  app:                                   # 📦 PHP-FPM
+    build: .                             # 📀 Dockerfile
+    environment: { DB_HOST: db }         # 🕸️ the service name, not localhost
+    volumes: [ "./:/var/www/html" ]      # your machine's code inside the container
+  nginx:                                 # 🚪
+    image: nginx:1.27
+    ports: [ "8080:80" ]
+  db:
+    image: mysql:8.0
+    volumes: [ "dbdata:/var/lib/mysql" ] # 💾
+volumes:
+  dbdata:
+```
 
-**PHP app**: "I want to reach the database at `localhost`…"
+| | Image | Container | Volume |
+| --- | --- | --- | --- |
+| Is | The recipe | The recipe running | The data container |
+| Changes? | No (immutable) | Disposable | Persists |
 
-**Compose network** 🕸️: "`localhost` is you, inside your own container! The database is called **`db`**, after the service name."
-
-**Nginx** 🚪: "I receive HTTP and pass the `.php` files to PHP-FPM to run."
-
-**Xdebug** 🐞: "And I only exist in the development environment, never in the production image."
-
-**🧠 Interview takeaway**
-
-"An image is the immutable recipe; a container is the image running; a volume keeps what must survive; compose services find each other by name. With Docker everyone runs the same environment as production, and the dev setup differs from the production image."
+## 🎤 For the interview
+"An image is the immutable recipe; a container is the image running, disposable; a volume keeps whatever must survive; compose services find each other by name, not by `localhost`. With Docker everyone runs the same environment as production, and the development setup, with Xdebug and mounted code, is different from the production image."

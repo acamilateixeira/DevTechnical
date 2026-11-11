@@ -1,22 +1,63 @@
-**Kubernetes** 🚢: "New deploy coming! Old server, **SIGTERM**: time to go."
+# 👋 The server that knew how to slip out quietly
 
-**Server without graceful shutdown**: "BYE!" 💀 *(dies instantly)*
+> A 3 p.m. deploy on a Tuesday. Kubernetes is swapping the old server for the new one, with people mid-purchase.
 
-**3 users mid-purchase**: "ERROR?! Just because of a deploy?!" 😡
+## 🎭 Cast
+- 🚢 **Kubernetes** · the orchestrator · sends the exit notice and, if it takes too long, yanks you out
+- 📨 **Notice** · the `SIGTERM` signal · "time to leave, but politely"
+- 🔪 **Yank** · the `SIGKILL` signal · "time's up": kills immediately, no discussion
+- 🚦 **Sign** · the readiness probe · tells the load balancer whether the server takes new people
+- 🚪 **Door** · `server.close()` · stops accepting new connections and finishes the ones in progress
+- 🐛 **Loose bug** · `unhandledRejection` · a Promise that failed and nobody handled
+- 🛒 **Customers** · in-flight requests · people in the middle of a purchase
 
-**Server with graceful shutdown**: "Heard the SIGTERM. Easy, I'll leave properly:"
+- 💀 **Rude server** · no graceful shutdown · dies on the spot
+- 🤵 **Polite server** · with graceful shutdown · leaves properly
+## 🎬 Scene 1 · Leaves without warning
+**Kubernetes**: "Old server, here's your notice. Time to go."
+**Rude server**: "BYE!" 💀 _(dies on the spot)_
+**Customers**: "ERROR?! Just because of a deploy?! I was paying!" 😡
+> 🚨 Requests cut off halfway.
 
-1. "Readiness, tell the load balancer **I take no new people**." 🚫
-2. "I finish whoever is already being served." ⏳
-3. "I close the database and queue connections (without acking a message I didn't process)." 🔌
-4. "Now: bye!" 👋
+## 🎬 Scene 2 · Slips out quietly
+**Polite server**: "Got the notice. Easy, I'll leave properly."
+**Sign**: "Flipped to 'CLOSED'. Load balancer, don't send anyone else here." 🚫
+**Door**: "Nobody new comes in, but whoever's already inside finishes their purchase." ⏳
+**Polite server**: "Now I'll close the database and the queue, without acknowledging any message I didn't finish." 🔌
+**Polite server**: "All done. Bye, everyone!" 👋
+**Kubernetes**: "Well done. But if you dawdle more than 30 seconds, I'll yank you out." 🔪⏰
 
-**Kubernetes**: "And if you dawdle too long (30 s), I pull you out with SIGKILL." ⏰
+## 🎬 Scene 3 · The loose bug
+**Loose bug**: "I failed and nobody handled me…" 🐛
+**Polite server**: "Unknown state? Better to restart clean than limp along half-broken. I'll log the error and exit."
+**Kubernetes**: "No problem, I'll start another one." ♻️
 
-**Bug error** 🐛 (`unhandledRejection`): "Nobody handled me…"
+## 💻 Translating to code
+```js
+let closing = false;
+app.get('/ready', (req, res) => res.status(closing ? 503 : 200).end()); // 🚦
 
-**Server**: "Unknown state? Better restart clean than keep running half-broken. I log the error and die; Kubernetes starts another." ♻️
+process.on('SIGTERM', async () => {                // 📨
+  closing = true;                                  // 🚦 stop taking new people
+  server.close(async () => {                       // 🚪 finish whoever's inside
+    await db.end(); await channel.close();         // 🔌 close database and queue
+    process.exit(0);                               // 👋
+  });
+  setTimeout(() => process.exit(1), 25_000).unref(); // before Kubernetes' SIGKILL (30 s)
+});
 
-**🧠 Interview takeaway**
+process.on('unhandledRejection', (err) => {        // 🐛
+  logger.fatal({ err }, 'unhandled bug');
+  process.exit(1);                                 // ♻️ the orchestrator starts another one
+});
+```
 
-"I separate expected errors (become 4xx) from bugs (generic 500 + log with trace ID). On SIGTERM: readiness fails, `server.close()` finishes in-flight requests, I close the database and queues and exit, before the orchestrator's deadline. See Node lab 04."
+| Error type | Example | Response |
+| --- | --- | --- |
+| Expected | Invalid data, no permission | 4xx with a clear message |
+| Bug | `undefined is not a function` | Generic 500 + log with trace ID |
+
+In Node lab 04: with graceful shutdown every request finishes; without it, `UND_ERR_SOCKET`.
+
+## 🎤 For the interview
+"I separate expected errors, which become 4xx, from bugs, which become a generic 500 with a log and trace ID. On `SIGTERM` I make readiness fail, call `server.close()` to finish in-flight requests, close the database and queues, and exit before the orchestrator's deadline. On `unhandledRejection` I log and exit the process, because the state is now unknown."
