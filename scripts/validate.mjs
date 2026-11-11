@@ -9,7 +9,8 @@ import { md } from '../assets/md.js';
 import { labs } from '../labs/web/index.js';
 import { glossary } from '../data/glossary.js';
 import { extraJobs, reported as reportedMap } from '../data/evidence.js';
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
+import { storyIds } from '../data/stories/index.js';
 import { execFileSync } from 'node:child_process';
 
 const errors = [];
@@ -76,7 +77,7 @@ for (const l of labs) {
   if (!Array.isArray(l.try) || !l.try.length) err(id, 'precisa de itens em "try"');
   else l.try.forEach((x, i) => { if (!bilingual(x)) err(id, `try[${i}] precisa de pt e en`); });
   (l.questions || []).forEach((q) => { if (!ids.has(q)) err(id, `pergunta inexistente "${q}"`); });
-  if (l.story && !existsSync(`labs/web/${l.id}/${l.story.file}`)) err(id, `história não existe: ${l.story.file}`);
+  if (l.story) for (const lg of ['pt', 'en']) if (!existsSync(`labs/web/${l.id}/story.${lg}.md`)) err(id, `história não existe: story.${lg}.md`);
   for (const file of [l.main, l.setup].filter(Boolean)) {
     const path = `labs/web/${l.id}/${file}`;
     if (!existsSync(path)) { err(id, `arquivo não existe: ${path}`); continue; }
@@ -86,6 +87,15 @@ for (const l of labs) {
     }
   }
 }
+
+// ---- histórias das perguntas (sempre pt + en)
+const storyFiles = readdirSync('data/stories').filter((f) => f.endsWith('.md'));
+for (const f of storyFiles) { const sid = f.replace(/\.(pt|en)\.md$/, ''); if (!storyIds.has(sid)) err(`história:${f}`, 'não está em data/stories/index.js'); }
+for (const sid of storyIds) {
+  if (!ids.has(sid)) err(`história:${sid}`, 'pergunta inexistente');
+  for (const lg of ['pt', 'en']) if (!existsSync(`data/stories/${sid}.${lg}.md`)) err(`história:${sid}`, `falta ${sid}.${lg}.md`);
+}
+const withStory = questions.filter((q) => storyIds.has(q.id) || labs.some((l) => l.story && (l.questions || []).includes(q.id))).length;
 
 // ---- glossário
 const gIds = new Set();
@@ -116,4 +126,5 @@ if (errors.length) {
 console.log(`✓ ${questions.length} perguntas válidas, ${Object.values(rubrics).reduce((s, r) => s + r.points.length, 0)} pontos de rubrica`);
 console.log('  por tema:', byCat);
 console.log('  por vaga:', byJob);
+console.log(`✓ ${withStory}/${questions.length} perguntas com história (pt + en)`);
 console.log(`✓ ${labs.length} labs no navegador, ${glossary.length} termos no glossário, 5 labs Node`);

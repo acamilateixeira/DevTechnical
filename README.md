@@ -59,6 +59,10 @@ Perguntas marcadas com **✓ relatada** têm evidência pública de que aparecem
 - **Brasil Card**: os relatos públicos são de outras áreas, mas mostram o formato: contato rápido do RH, entrevista com recrutador e depois com o gestor ("onde se vê em 5 anos?", "como conheceu a empresa?").
 - **PHP pleno no Brasil**: "como o Laravel processa uma requisição", classe abstrata × interface, polimorfismo, SOLID, design patterns, índices e live coding.
 
+## Histórias
+
+Conceito abstrato fica mais fácil quando vira conversa engraçada. Cada lab e 28 perguntas têm uma **história em forma de diálogo**, em português e em inglês, mostrada antes da resposta modelo e terminando com a frase pronta para a entrevista. As perguntas ligadas a um lab usam a história do lab, então 47 das 92 perguntas têm história. A do event loop foi escrita por mim.
+
 ## Laboratório
 
 | Lab | Tipo | O que mostra |
@@ -95,13 +99,14 @@ assets/styles.css     # tema claro/escuro, responsivo
 data/meta.js          # vagas, temas, tipos e textos da interface (PT/EN)
 data/<tema>.js        # perguntas por tema
 data/rubrics.js       # checklist, ferramentas e métricas por pergunta
-data/glossary.js      # 224 termos com definição curta e longa (PT/EN)
+data/glossary.js      # 225 termos com definição curta e longa (PT/EN)
 data/brasilcard.js    # perguntas da vaga Brasil Card (PHP pleno)
 data/research.js      # perguntas acrescentadas a partir de relatos reais
 data/evidence.js      # fontes da pesquisa e vagas extras por pergunta
-labs/web/             # labs do navegador: index.js (textos) + código de cada lab
+data/stories/         # histórias das perguntas: <id>.pt.md + <id>.en.md e index.js
+labs/web/             # labs do navegador: index.js (textos) + código e história (story.pt.md, story.en.md) de cada lab
 labs/node/            # labs para rodar com Node 22.13+
-scripts/validate.mjs  # valida perguntas, rubricas, labs e glossário
+scripts/validate.mjs  # valida perguntas, rubricas, labs, histórias (pt + en) e glossário
 ```
 
 Sem build e sem dependências para instalar: o site é HTML, CSS e JavaScript em módulos ES.
@@ -118,7 +123,8 @@ node scripts/validate.mjs     # valida o banco de perguntas
 
 1. Inclua o objeto no arquivo do tema em `data/` (`id`, `cat`, `type`, `jobs`, `q`, `a`, `follow`, `flags`, `anchor` e, se for o caso, `code`), sempre com `pt` e `en`.
 2. Inclua a rubrica com o mesmo `id` em `data/rubrics.js` (3+ pontos, ferramentas e métricas).
-3. Rode `node scripts/validate.mjs`. O CI roda a mesma validação em todo PR e publica no GitHub Pages a cada push na `main`.
+3. Opcional: escreva a história em `data/stories/<id>.pt.md` e `<id>.en.md` e inclua o id em `data/stories/index.js`.
+4. Rode `node scripts/validate.mjs`. O CI roda a mesma validação em todo PR e publica no GitHub Pages a cada push na `main`.
 
 ---
 
@@ -132,6 +138,7 @@ A picky interviewer, as an app. It asks senior-level technical questions about t
 - **Model answer**: full explanation, code where needed, tools/libraries/techniques to mention, metrics that prove mastery, the interviewer's follow-ups, red flags, and how to anchor the answer in my real experience without inventing any.
 - **Objective score**: each question has a checklist of points a 100% answer must cover. I tick only what I actually said: **≥ 80% correct, 40–79% partial, < 40% wrong**.
 - **Progress**: average score and correct/partial/wrong percentages, overall and per topic, plus strongest and weakest topic.
+- **Stories**: every lab and 28 questions have a funny dialogue-style story, in Portuguese and English, shown before the model answer and ending with the one-line interview answer (47 of 92 questions in total).
 - **Study**: every question with search and filters by role, topic, and type.
 - **Start here**: what a senior hiring process looks like and how to study with the app.
 - **Lab**: 14 in-browser examples (editable code, Run button, counters, and a timeline showing what ran in each part of the system and when) plus 5 Node.js labs for the terminal ([`labs/node/README.md`](labs/node/README.md)).

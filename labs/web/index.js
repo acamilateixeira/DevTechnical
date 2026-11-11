@@ -9,7 +9,7 @@ export const labs = [
   {
     id: 'event-loop',
     cat: 'typescript', kind: 'js', instrument: 'eventloop', main: 'main.js',
-    story: { file: 'story.pt.md', author: 'Camila Teixeira' }, // a história em forma de conversa
+    story: { file: 'story.pt.md', author: 'Camila Teixeira' },
     lanes: ['Síncrono (call stack)', 'Microtasks', 'Macrotasks (timers)'],
     questions: ['js-event-loop', 'node-event-loop-blocking'],
     title: { pt: 'Event loop: em que ordem o JavaScript roda', en: 'Event loop: the order JavaScript runs in' },
@@ -45,6 +45,7 @@ The teller's rule: finish the current customer, then serve the **whole** priorit
 
   {
     id: 'debounce',
+    story: { file: 'story.pt.md' },
     cat: 'typescript', kind: 'js', preview: true, setup: 'setup.js', main: 'main.js',
     lanes: ['Usuário', 'Debounce', 'API'],
     questions: ['js-closures-this'],
@@ -70,6 +71,7 @@ The teller's rule: finish the current customer, then serve the **whole** priorit
   },
   {
     id: 'react-keys',
+    story: { file: 'story.pt.md' },
     cat: 'react', kind: 'react', preview: true, main: 'main.tsx',
     lanes: ['Usuário'],
     questions: ['react-reconciliation-keys'],
@@ -95,6 +97,7 @@ Think of name badges in a room: if the badge says "person in chair 1" (the **ind
   },
   {
     id: 'react-effect-race',
+    story: { file: 'story.pt.md' },
     cat: 'react', kind: 'react', preview: true, setup: 'setup.js', main: 'main.tsx',
     lanes: ['Componente', 'API'],
     questions: ['react-useeffect-pitfalls', 'react-hooks-catalog'],
@@ -120,6 +123,7 @@ If you order three pizzas in a row from different places, the last to arrive is 
   },
   {
     id: 'react-rerenders',
+    story: { file: 'story.pt.md' },
     cat: 'react', kind: 'react', preview: true, main: 'main.tsx',
     lanes: [],
     questions: ['react-usereducer-context', 'react-state-management', 'react-performance-memo'],
@@ -145,6 +149,7 @@ Context is like a loudspeaker: everyone listening (\`useContext\`) reacts to eve
   },
   {
     id: 'mini-zustand',
+    story: { file: 'story.pt.md' },
     cat: 'react', kind: 'react', preview: true, main: 'main.tsx',
     lanes: ['Store'],
     questions: ['react-redux-zustand-code', 'react-state-management'],
@@ -170,6 +175,7 @@ It is like subscribing only to the sports section of a newspaper: the newsroom p
   },
   {
     id: 'idempotency',
+    story: { file: 'story.pt.md' },
     cat: 'api', kind: 'js', setup: 'setup.js', main: 'main.js',
     lanes: ['Cliente', 'Rede', 'Servidor', 'Banco'],
     questions: ['api-idempotency', 'laravel-queues-payments'],
@@ -195,6 +201,7 @@ The fix is the **Idempotency-Key**: the client generates a unique code per inten
   },
   {
     id: 'lost-update',
+    story: { file: 'story.pt.md' },
     cat: 'data', kind: 'js', setup: 'setup.js', main: 'main.js',
     lanes: ['Gestor A', 'Gestor B'],
     questions: ['db-isolation-locks', 'payments-card-lifecycle'],
@@ -226,6 +233,7 @@ Picture two people looking at the same R$1000 balance on different screens. Both
   },
   {
     id: 'cache-stampede',
+    story: { file: 'story.pt.md' },
     cat: 'data', kind: 'js', setup: 'setup.js', main: 'main.js',
     lanes: ['Usuário 1', 'Usuário 2', 'Usuário 3', 'Cache', 'Banco'],
     questions: ['redis-cache-patterns'],
@@ -251,6 +259,7 @@ The problem shows up when a very popular key **expires**: everyone arriving at t
   },
   {
     id: 'outbox',
+    story: { file: 'story.pt.md' },
     cat: 'messaging', kind: 'js', setup: 'setup.js', main: 'main.js',
     lanes: ['API', 'Relay', 'RabbitMQ', 'Consumidor'],
     questions: ['mq-outbox-pattern', 'mq-rabbitmq-concepts', 'laravel-queues-payments'],
@@ -276,6 +285,7 @@ The **Outbox** fixes this by storing the notification in a table **in the same t
   },
   {
     id: 'resilience',
+    story: { file: 'story.pt.md' },
     cat: 'architecture', kind: 'js', setup: 'setup.js', main: 'main.js',
     lanes: ['API', 'Alpha', 'Beta', 'Gamma', 'Breaker'],
     questions: ['arch-resilience-partial'],
@@ -307,6 +317,7 @@ Like the breaker panel at home: when one appliance shorts, it trips only that ci
   },
   {
     id: 'dataloader',
+    story: { file: 'story.pt.md' },
     cat: 'api', kind: 'js', setup: 'setup.js', main: 'main.js',
     lanes: ['Banco'],
     questions: ['graphql-n-plus-one', 'api-rest-vs-graphql'],
@@ -332,6 +343,7 @@ O **DataLoader** é como um garçom que, em vez de ir à cozinha a cada pedido, 
   },
   {
     id: 'tdd',
+    story: { file: 'story.pt.md' },
     cat: 'testing', kind: 'js', main: 'main.js',
     lanes: [],
     questions: ['test-tdd-code', 'test-pyramid-strategy', 'phpunit-tdd-service'],
@@ -365,6 +377,7 @@ Each test is a sentence like "given this, I expect that". Here the rule is: a tr
   },
   {
     id: 'xss',
+    story: { file: 'story.pt.md' },
     cat: 'security', kind: 'react', preview: true, main: 'main.tsx',
     lanes: ['Usuário', 'Atacante'],
     questions: ['sec-owasp-web', 'php-security-pdo-password'],
