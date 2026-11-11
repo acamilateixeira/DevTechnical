@@ -60,14 +60,14 @@ export const storyForLab = (labId) => stories.find((s) => s.lab === labId) || nu
 
 const cache = new Map();
 function fetchText(path) {
-  if (!cache.has(path)) cache.set(path, fetch(path).then((r) => { if (!r.ok) throw new Error(path); return r.text(); }));
+  if (!cache.has(path)) cache.set(path, fetch(path + (globalThis.__V ? `?v=${globalThis.__V}` : '')).then((r) => { if (!r.ok) throw new Error(path); return r.text(); }));
   return cache.get(path);
 }
 export const loadStory = (s, lang) => fetchText(`${s.base}.${lang}.md`).catch(() => fetchText(`${s.base}.pt.md`)).then(parseStory);
 
 /* ---------- parser ---------- */
 
-const SPEECH = /^\*\*(.+?)\*\*(?:\s*_\((.+?)\)_)?\s*:\s*(.+)$/;
+export const SPEECH = /^\*\*(.+?)\*\*(?:\s*_\((.+?)\)_)?\s*:\s*(.+)$/;
 const CAST = /^-\s+(\S+)\s+\*\*(.+?)\*\*\s*·\s*(?:(.*?)\s*·\s*)?(.+)$/;
 
 const KINDS = { '🎭': 'cast', '🎬': 'scene', '🧠': 'moral', '💻': 'tech', '🎤': 'interview' };
@@ -108,10 +108,10 @@ export function parseStory(text) {
 
 /* ---------- render ---------- */
 
-const COLORS = 8;
+export const COLORS = 8;
 // Código (com crase) vira etiqueta monoespaçada; termo técnico em palavras vira etiqueta normal.
-const chip = (code) => (code.includes('`') ? `<span class="st-code">${inline(code)}</span>` : `<span class="st-term">${inline(code)}</span>`); // classes .c0 ... .c7
-const inline = (s) => md(s).replace(/^<p>|<\/p>\s*$/g, '').replace(/(^|\s)_\((.+?)\)_/g, '$1<em class="st-dir">($2)</em>');
+export const chip = (code) => (code.includes('`') ? `<span class="st-code">${inline(code)}</span>` : `<span class="st-term">${inline(code)}</span>`); // classes .c0 ... .c7
+export const inline = (s) => md(s).replace(/^<p>|<\/p>\s*$/g, '').replace(/(^|\s)_\((.+?)\)_/g, '$1<em class="st-dir">($2)</em>');
 
 function linesHtml(lines, who, t, prev, strict = false) {
   const out = [];

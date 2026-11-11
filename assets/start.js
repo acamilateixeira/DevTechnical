@@ -7,6 +7,7 @@ import { paths } from '../data/paths.js';
 import { jobs } from '../data/meta.js';
 import { labs } from '../labs/web/index.js';
 import { cards as measureCards } from '../data/measure.js';
+import { stories, loadStory } from './story.js';
 
 const KEY = 'devtechnical.path';
 
@@ -104,11 +105,21 @@ const C = {
 const getPath = () => { try { return localStorage.getItem(KEY); } catch { return null; } };
 const setPath = (v) => { try { localStorage.setItem(KEY, v); } catch { /* sem storage: tudo bem */ } };
 
+// Troca "😂 História" pelo título de cada história (o título fica no arquivo da história)
+function fillStoryTitlesIn(view, lang) {
+  view.querySelectorAll('.path-story[data-story-id]').forEach((a) => {
+    const s = stories.find((x) => x.id === a.dataset.storyId);
+    if (!s) return;
+    loadStory(s, lang).then((st) => { a.textContent = `😂 ${st.title.replace(/^\p{Extended_Pictographic}\uFE0F?\s*/u, '')}`; }).catch(() => {});
+  });
+}
+
 export function renderStart(view, { lang, gloss = true, L, questions, scores = {} }) {
   const c = C[lang];
   const ann = createAnnotator(lang, { inline: gloss });
   const current = paths[getPath()] ? getPath() : 'brasilcard';
   const strip = (h) => h.replace(/^<p>|<\/p>$/g, '');
+  const fillStoryTitles = () => fillStoryTitlesIn(view, lang);
 
   const qStatus = (id) => {
     const s = scores[id];
@@ -129,7 +140,7 @@ export function renderStart(view, { lang, gloss = true, L, questions, scores = {
       const m = measureCards.find((x) => x.id === it.id);
       return `<a class="path-item path-chip" href="#/measure/${it.id}">${c.kinds.measure}${m ? `: ${escapeHtml(L(m.title))}` : ''}</a>`;
     }
-    return `<a class="path-item path-chip" href="#/story/${it.id}">${c.kinds.story}</a>`;
+    return `<a class="path-item path-chip path-story" data-story-id="${it.id}" href="#/story/${it.id}">${c.kinds.story}</a>`;
   };
 
   const pathHtml = (key) => {
@@ -184,7 +195,9 @@ export function renderStart(view, { lang, gloss = true, L, questions, scores = {
     setPath(b.dataset.path);
     view.querySelectorAll('[data-path]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
     view.querySelector('#path-body').innerHTML = pathHtml(b.dataset.path);
+    fillStoryTitles();
   }));
+  fillStoryTitles();
   // âncoras da trilha sem mexer na rota (#/start)
   view.addEventListener('click', (e) => {
     const a = e.target.closest('a[href^="#path-stop-"]');

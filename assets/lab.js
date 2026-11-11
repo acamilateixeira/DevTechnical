@@ -56,7 +56,7 @@ const sources = new Map();
 async function source(lab, file) {
   const key = `${lab.id}/${file}`;
   if (!sources.has(key)) {
-    sources.set(key, fetch(new URL(`labs/web/${lab.id}/${file}`, BASE)).then((r) => {
+    sources.set(key, fetch(new URL(`labs/web/${lab.id}/${file}${globalThis.__V ? `?v=${globalThis.__V}` : ''}`, BASE)).then((r) => {
       if (!r.ok) throw new Error(`${file}: HTTP ${r.status}`);
       return r.text();
     }));
