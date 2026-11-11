@@ -87,12 +87,16 @@ let leave = [];
 const onLeave = (fn) => leave.push(fn);
 let labModule = null;
 
+const TITLES = { start: 'navStart', stories: 'navStories', story: 'navStories', lab: 'navLab', measure: 'navMeasure', interview: 'navInterview', q: 'navInterview', study: 'navStudy', progress: 'navProgress', glossary: 'navGlossary' };
 function route() {
   const [, name = defaultRoute(), arg] = location.hash.split('/');
+  document.title = `${t(TITLES[name] || 'navInterview')}${arg ? ` · ${decodeURIComponent(arg)}` : ''} · DevTechnical`;
   document.querySelectorAll('[data-route]').forEach((a) => {
     const on = a.dataset.route === (name === 'q' ? 'interview' : name === 'story' ? 'stories' : name);
     if (on) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
   });
+  // no celular o menu rola de lado: mantém a aba atual visível
+  document.querySelector('.tabs [aria-current]')?.scrollIntoView({ block: 'nearest', inline: 'center' });
   stopTimer();
   document.getElementById('story-drawer')?.close();
   leave.forEach((fn) => fn()); leave = [];
@@ -100,9 +104,9 @@ function route() {
   $('.filters').hidden = ['lab', 'start', 'glossary', 'stories', 'story', 'measure'].includes(name);
   if (name === 'measure') { if (!arg) window.scrollTo(0, 0); return renderMeasure($('#view'), { lang: state.lang, gloss: state.gloss, L, questions, focus: arg && decodeURIComponent(arg) }); }
   if (name === 'stories') { window.scrollTo(0, 0); return renderStories($('#view'), { lang: state.lang, L, questions, cats }); }
-  if (name === 'story') { window.scrollTo(0, 0); return renderStoryPage($('#view'), decodeURIComponent(arg || ''), { lang: state.lang }); }
+  if (name === 'story') { window.scrollTo(0, 0); return renderStoryPage($('#view'), decodeURIComponent(arg || ''), { lang: state.lang, L, questions }); }
   if (name === 'glossary') { return renderGlossary($('#view'), { lang: state.lang, focus: arg && decodeURIComponent(arg) }); }
-  if (name === 'start') { window.scrollTo(0, 0); return renderStart($('#view'), { lang: state.lang, gloss: state.gloss }); }
+  if (name === 'start') { window.scrollTo(0, 0); return renderStart($('#view'), { lang: state.lang, gloss: state.gloss, L, questions, scores: state.scores }); }
   if (name === 'lab') {
     window.scrollTo(0, 0);
     labModule ||= import('./lab.js');
@@ -140,6 +144,20 @@ function reportedChip(q) {
   const label = sum.kind === 'relato' ? t('reportedChip') : sum.kind === 'guia' ? t('chipGuide') : t('chipJob');
   const who = sum.companies?.length ? ` · ${sum.companies.join(', ')}` : '';
   return `<span class="chip reported-chip" data-kind="${sum.kind}">${escapeHtml(label + who)}</span>`;
+}
+
+function labButton(q) {
+  const lab = labs.find((l) => (l.questions || []).includes(q.id));
+  return lab ? `<a class="btn lab-btn" href="#/lab/${lab.id}">${t('seeLabShort')}</a>` : '';
+}
+
+/** Ícones do que a pergunta tem: história, lab, guia de medição, relato. */
+function helpIcons(q) {
+  const icons = [];
+  if (storyForQuestion(q.id)) icons.push(['😂', t('hasStory')]);
+  if (labs.some((l) => (l.questions || []).includes(q.id))) icons.push(['▶', t('hasLab')]);
+  if (cardsForQuestion(q.id).length) icons.push(['📏', t('hasMeasure')]);
+  return icons.length ? `<span class="help-icons">${icons.map(([i, label]) => `<span title="${escapeHtml(label)}" aria-label="${escapeHtml(label)}">${i}</span>`).join('')}</span>` : '';
 }
 
 function measureLinks(q) {
@@ -248,7 +266,7 @@ function renderInterview() {
         </div>
         <p class="question">${ann.text(L(q.q))}</p>
         <div class="chips">${chips(q)}</div>
-        ${storyButton(storyForQuestion(q.id), state.lang)}
+        <div class="q-help">${storyButton(storyForQuestion(q.id), state.lang)}${labButton(q)}</div>
       </article>
 
       <div class="bubble answer-box">
@@ -338,7 +356,7 @@ function renderStudy() {
       return `
       <details class="item" data-id="${q.id}">
         <summary>
-          <span class="title">${escapeHtml(L(q.q))}</span>
+          <span class="title">${escapeHtml(L(q.q))} ${helpIcons(q)}</span>
           <span class="meta"><span class="status" data-id="${q.id}" data-r="${level(s)}"></span>
             ${s != null ? `<span class="chip">${pct(s)}</span>` : ''}${chips(q)}</span>
         </summary>
@@ -348,7 +366,7 @@ function renderStudy() {
     $('#list').querySelectorAll('details').forEach((d) => d.addEventListener('toggle', () => {
       if (!d.open || d.dataset.ready) return;
       const q = questions.find((x) => x.id === d.dataset.id);
-      d.querySelector('.body').innerHTML = storyButton(storyForQuestion(q.id), state.lang) + revealHtml(q);
+      d.querySelector('.body').innerHTML = `<div class="q-help">${storyButton(storyForQuestion(q.id), state.lang)}${labButton(q)}</div>` + revealHtml(q);
       bindStoryButtons(d, state.lang, { question: q.id });
       bindChecklist(d, q);
       d.dataset.ready = '1';
@@ -401,7 +419,8 @@ function renderProgress() {
       </div>
       ${total.n ? bar(total) : ''}
       ${best && rated.length > 1 ? `<p class="hint" style="margin-top:12px">${t('best')}: <strong>${escapeHtml(L(cats[best[0]]))}</strong> (${pct(best[1].avg)}) · ${t('worst')}: <strong>${escapeHtml(L(cats[worst[0]]))}</strong> (${pct(worst[1].avg)})</p>` : ''}
-      <div class="row"><button type="button" class="btn ghost" id="reset">${t('reset')}</button></div>
+      ${total.done ? '' : `<p class="empty-hint">${t('progressEmpty')} <a href="#/start">${t('navStart')} →</a></p>`}
+      ${total.done ? `<div class="row"><button type="button" class="btn ghost" id="reset">${t('reset')}</button></div>` : ''}
     </section>
     <div class="grid">${groups.map(([id, c]) => `
       <a class="stat" href="#/study" data-cat="${id}" style="text-decoration:none;color:inherit">
@@ -409,7 +428,7 @@ function renderProgress() {
         <small>${c.done ? `${pct(c.avg)} · ` : ''}${t('pctGot')} ${c.got} · ${t('pctPartial')} ${c.partial} · ${t('pctMiss')} ${c.miss} · ${c.done}/${c.n}</small>
       </a>`).join('')}</div>`;
 
-  $('#reset').addEventListener('click', () => {
+  $('#reset')?.addEventListener('click', () => {
     if (!confirm(t('resetConfirm'))) return;
     state.scores = {}; state.checks = {}; state.drafts = {}; save(); renderProgress();
   });

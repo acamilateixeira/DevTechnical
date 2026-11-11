@@ -32,7 +32,7 @@ const T = {
     edited: 'editado', compileError: 'Erro de sintaxe', runtimeError: 'Erro ao rodar',
     ready: 'Pronto: agora use a tela acima ↑',
     nodeTitle: 'Para rodar no seu computador (Node.js)', seeCode: 'ver código',
-    castInCode: 'Quem é quem neste código', legend: '🎨 O que cada cor significa', measure: '📏 Como medir isso fora do lab (ferramentas reais)',
+    castInCode: 'Quem é quem neste código', hasStory: '😂 história', questionsN: 'perguntas', hasMeasure: '📏 como medir', legend: '🎨 O que cada cor significa', measure: '📏 Como medir isso fora do lab (ferramentas reais)',
     nodeIntro: 'Estes rodam de verdade no Node 22.13+: servidor HTTP, threads, sinais do sistema e banco SQLite. Clone o repositório e rode no terminal; cada arquivo explica o que acontece. Sem a flag mostrada, você vê o problema; com ela, a correção (ou o contrário, quando a flag começa com `--sem`).',
   },
   en: {
@@ -47,7 +47,7 @@ const T = {
     edited: 'edited', compileError: 'Syntax error', runtimeError: 'Runtime error',
     ready: 'Ready: now use the screen above ↑',
     nodeTitle: 'Run on your computer (Node.js)', seeCode: 'see code',
-    castInCode: 'Who is who in this code', legend: '🎨 What each color means', measure: '📏 How to measure this outside the lab (real tools)',
+    castInCode: 'Who is who in this code', hasStory: '😂 story', questionsN: 'questions', hasMeasure: '📏 how to measure', legend: '🎨 What each color means', measure: '📏 How to measure this outside the lab (real tools)',
     nodeIntro: 'These run for real on Node 22.13+: HTTP server, threads, OS signals, and a SQLite database. Clone the repo and run them in a terminal; each file explains what happens. Without the flag shown you see the problem; with it, the fix (or the reverse when the flag starts with `--sem`).',
   },
 };
@@ -84,6 +84,7 @@ export function renderLabIndex(view, { lang, L }) {
           <span class="lab-kind">${l.kind === 'react' ? 'React' : 'JavaScript'}</span>
           <strong>${escapeHtml(L(l.title))}</strong>
           <span>${escapeHtml(L(l.summary))}</span>
+          <span class="lab-meta">${storyForLab(l.id) ? `<span>${t.hasStory}</span>` : ''}${(l.questions || []).length ? `<span>❓ ${(l.questions || []).length} ${t.questionsN}</span>` : ''}${measureCards.some((c) => c.labs.includes(l.id)) ? `<span>${t.hasMeasure}</span>` : ''}</span>
         </a>`).join('')}
       </div>`).join('')}
     <h2 class="lab-group">${t.nodeTitle}</h2>

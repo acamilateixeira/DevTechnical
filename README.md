@@ -22,6 +22,21 @@ O caminho sugerido é **ver funcionando → explicar com suas palavras → respo
 
 O progresso fica só no `localStorage` do navegador; não há back-end nem coleta de dados.
 
+## Comece aqui e trilhas por vaga
+
+A primeira tela é o **Comece aqui**. Ela traz:
+
+- **Trilha de estudo por vaga:** Brasil Card, Elastic, BrainRocket, Frontend Sr e KWAN. Cada parada junta a história, o lab, o guia de medição e as perguntas do mesmo assunto, na ordem que mais ajuda.
+  - Mostra quantas perguntas da trilha já estão com nota de acerto.
+  - Destaca a próxima parada, com o botão "Continuar de onde parei".
+  - A vaga escolhida fica salva no navegador.
+- **Mapa do app:** o que tem em cada aba, com link.
+- **O ciclo de estudo:** história → lab → explicar em voz alta → medir → responder.
+- **Botões do topo e selos:** o que significam "( ) definições", PT/EN, "✓ relatada" e as cores do código.
+- **Para ler com calma**, em blocos recolhidos: como ler a linha do tempo dos labs, como é o processo de uma vaga sênior e a dica de sinceridade.
+
+As trilhas ficam em [`data/paths.js`](data/paths.js) e o validador confere se cada história, lab, guia e pergunta citada existe.
+
 ## Conteúdo
 
 92 perguntas e 473 pontos de rubrica, todos em português e inglês. O lote 2 cobre as lacunas entre o meu CV e as vagas (GraphQL/Apollo, NestJS, MongoDB, Next.js, Docker/Kubernetes, Elasticsearch, OpenTelemetry), sempre indicando com honestidade o que é estudo e o que é experiência.
@@ -151,6 +166,7 @@ data/brasilcard.js    # perguntas da vaga Brasil Card (PHP pleno)
 data/research.js      # perguntas acrescentadas a partir de relatos reais
 data/evidence.js      # fontes da pesquisa e vagas extras por pergunta
 data/measure.js       # guias de medição: métrica, ferramenta, passo a passo e frase de entrevista
+data/paths.js         # trilhas de estudo por vaga (Comece aqui)
 data/stories/         # histórias das perguntas: <id>.pt.md + <id>.en.md e index.js
 labs/web/             # labs do navegador: index.js (textos) + código e história (story.pt.md, story.en.md) de cada lab
 labs/node/            # labs para rodar com Node 22.13+
@@ -186,6 +202,7 @@ A picky interviewer, as an app. It asks senior-level technical questions about t
 - **Model answer**: full explanation, code where needed, tools/libraries/techniques to mention, metrics that prove mastery, the interviewer's follow-ups, red flags, and how to anchor the answer in my real experience without inventing any.
 - **Objective score**: each question has a checklist of points a 100% answer must cover. I tick only what I actually said: **≥ 80% correct, 40–79% partial, < 40% wrong**.
 - **Progress**: average score and correct/partial/wrong percentages, overall and per topic, plus strongest and weakest topic.
+- **Start here**: a study path per role (Brasil Card, Elastic, BrainRocket, Frontend, KWAN) that ties stories, labs, measuring guides, and questions together, with progress and a "continue where I left off" button, plus a map of the app.
 - **Colored code**: Dracula theme everywhere, with bracket pair colorization (matching pair lights up on hover or at the cursor), rainbow indentation, and a color legend in the lab.
 - **How to measure**: 16 guides (React DevTools, INP/LCP/CLS, Node event loop and memory, load tests, RED/SLOs, slow queries, N+1, locks, Xdebug/Telescope, RabbitMQ/Kafka/Redis, DORA) with the metric, the good value, the tools, where to click step by step, and the interview line.
 - **Stories**: 42 funny dialogue-style stories (every lab plus 28 questions), in Portuguese and English, covering 47 of 92 questions. Each starts with **Who is who** (every character is a piece of code), plays out in chat-style scenes in plain language, with a **📋 State right now** panel closing every scene (output so far, queues, what's left), then a separate moral, technical section, and extras, and ends with the one-paragraph interview answer. They open from the **Stories** tab or from a button on each question and lab.

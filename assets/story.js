@@ -24,7 +24,7 @@ const T = {
     seeLab: '▶ Ver rodando no Laboratório', train: '🎤 Treinar a pergunta', close: 'Fechar', all: 'Todas as histórias',
     open: '😂 Não entendeu? Leia a história', openLab: '😂 Ler a história deste lab', pageTitle: 'Histórias',
     pageIntro: 'Cada conceito vira uma conversa engraçada entre personagens. Primeiro você entende a ideia, depois vê **quem é quem no código**, e no fim leva a frase pronta para a entrevista. Ordem que funciona: **história → laboratório → entrevista**.',
-    labs: 'Histórias com laboratório', questions: 'Histórias de perguntas', fail: 'Não consegui carregar a história.',
+    related: '🎤 Treinar as perguntas deste assunto', labs: 'Histórias com laboratório', questions: 'Histórias de perguntas', fail: 'Não consegui carregar a história.',
     zoneStory: '📖 A história', zoneStoryHint: 'cada cena acompanha o código; o painel 📋 mostra como o programa está naquele momento (em destaque o que acabou de mudar)',
     stateTitle: '📋 Como está agora', moral: '🧠 Moral da história', moralHint: 'o resumo, já fora das cenas',
     extras: '➕ Extras', extrasHint: 'vai além do código desta história', changed: 'mudou',
@@ -35,7 +35,7 @@ const T = {
     seeLab: '▶ See it running in the Lab', train: '🎤 Practice the question', close: 'Close', all: 'All stories',
     open: '😂 Lost? Read the story', openLab: '😂 Read this lab\'s story', pageTitle: 'Stories',
     pageIntro: 'Each concept becomes a funny conversation between characters. First you get the idea, then you see **who is who in the code**, and you finish with the line to say in the interview. The order that works: **story → lab → interview**.',
-    labs: 'Stories with a lab', questions: 'Question stories', fail: 'Could not load the story.',
+    related: '🎤 Practice this topic\'s questions', labs: 'Stories with a lab', questions: 'Question stories', fail: 'Could not load the story.',
     zoneStory: '📖 The story', zoneStoryHint: 'each scene follows the code; the 📋 panel shows the program\'s state at that moment (what just changed is highlighted)',
     stateTitle: '📋 State right now', moral: '🧠 Moral of the story', moralHint: 'the recap, outside the scenes',
     extras: '➕ Extras', extrasHint: 'goes beyond this story\'s code', changed: 'changed',
@@ -264,13 +264,15 @@ export async function renderStories(view, { lang, L, questions, cats }) {
     group(titled.filter(([s]) => s.lab), t.labs) + group(titled.filter(([s]) => !s.lab), t.questions);
 }
 
-export async function renderStoryPage(view, id, { lang }) {
+export async function renderStoryPage(view, id, { lang, L, questions }) {
   const t = T[lang];
   const s = stories.find((x) => x.id === id);
   if (!s) { view.innerHTML = `<p class="empty"><a href="#/stories">${t.all}</a></p>`; return; }
   view.innerHTML = `<p><a href="#/stories" class="back">← ${t.all}</a></p><div class="st-page"><p class="hint">…</p></div>`;
   try {
     const st = await loadStory(s, lang);
-    view.querySelector('.st-page').innerHTML = storyHtml(st, lang, { author: s.author, lab: s.lab, question: s.questions[0] });
+    const related = (s.lab ? s.questions : []).map((qid) => questions?.find((q) => q.id === qid)).filter(Boolean);
+    view.querySelector('.st-page').innerHTML = storyHtml(st, lang, { author: s.author, lab: s.lab, question: s.lab ? null : s.questions[0] }) +
+      (related.length && L ? `<section class="panel"><h3>${t.related}</h3><ul>${related.map((q) => `<li><a href="#/q/${q.id}">${escapeHtml(L(q.q))}</a></li>`).join('')}</ul></section>` : '');
   } catch { view.querySelector('.st-page').innerHTML = `<p class="empty">${t.fail}</p>`; }
 }

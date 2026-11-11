@@ -11,6 +11,7 @@ import { glossary } from '../data/glossary.js';
 import { extraJobs, reported as reportedMap, sources } from '../data/evidence.js';
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { storyIds } from '../data/stories/index.js';
+import { paths } from '../data/paths.js';
 import { cards as measureCards, areas as measureAreas, method as measureMethod } from '../data/measure.js';
 import { parseStory, findCast, STATE, stories as allStories } from '../assets/story.js';
 import { execFileSync } from 'node:child_process';
@@ -153,6 +154,22 @@ for (const c of measureCards) {
   c.questions.forEach((q) => { if (!ids.has(q)) err(id, `pergunta inexistente "${q}"`); });
 }
 
+// ---- trilhas por vaga
+const storyAll = new Set(allStories.map((x) => x.id));
+for (const [k, p] of Object.entries(paths)) {
+  const id = `trilha:${k}`;
+  if (!jobs[k]) err(id, 'vaga desconhecida');
+  if (!bilingual(p.why)) err(id, 'why precisa de pt e en');
+  p.stops.forEach((st, i) => {
+    if (!bilingual(st.title)) err(id, `parada ${i + 1} sem título pt/en`);
+    if (!st.items.some((x) => x.kind === 'q')) err(id, `parada ${i + 1} sem pergunta`);
+    st.items.forEach((x) => {
+      const ok = { q: ids, lab: labIds, story: storyAll, measure: mIds }[x.kind];
+      if (!ok?.has(x.id)) err(id, `parada ${i + 1}: ${x.kind} inexistente "${x.id}"`);
+    });
+  });
+}
+
 // ---- glossário
 const gIds = new Set();
 for (const g of glossary) {
@@ -183,5 +200,5 @@ console.log(`✓ ${questions.length} perguntas válidas, ${Object.values(rubrics
 console.log('  por tema:', byCat);
 console.log('  por vaga:', byJob);
 console.log(`✓ ${withStory}/${questions.length} perguntas com história (pt + en)`);
-console.log(`✓ ${measureCards.length} guias de medição`);
+console.log(`✓ ${measureCards.length} guias de medição, ${Object.keys(paths).length} trilhas por vaga`);
 console.log(`✓ ${labs.length} labs no navegador, ${glossary.length} termos no glossário, 5 labs Node`);
