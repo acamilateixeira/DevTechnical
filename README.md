@@ -4,7 +4,7 @@
 
 **Site:** https://acamilateixeira.github.io/DevTechnical/
 
-Um entrevistador técnico em forma de app. Ele faz perguntas técnicas sobre a stack que aparece no meu currículo e no [portfólio](https://acamilateixeira.github.io/camilat/), organizadas por perfil de vaga: Sênior Full Stack (Observabilidade), Sênior Full Stack Node/React, Frontend Sênior em React, consultoria internacional e Full Stack Pleno PHP (pagamentos).
+Um entrevistador técnico em forma de app. Ele faz perguntas técnicas sobre a stack que aparece no meu currículo e no [portfólio](https://acamilateixeira.github.io/camilat/), organizadas por perfil de vaga: Sênior Full Stack (Observabilidade), Sênior Full Stack Node/React, Frontend Sênior em React, consultoria internacional, Full Stack Pleno PHP (pagamentos), Backend Sênior PHP + Node (financeiro) e a defesa de um desafio técnico de carteira digital.
 
 ## Como funciona
 
@@ -26,6 +26,7 @@ O progresso fica só no `localStorage` do navegador; não há back-end nem colet
 
 A primeira tela é o **Comece aqui**. Ela traz:
 
+- **Trilhas em foco:** as trilhas marcadas com `featured: true` em `data/paths.js` aparecem primeiro, com ⭐, em "Em foco agora". Hoje são a **defesa do desafio técnico de carteira digital** (dinheiro, livro-razão, trava antes da idempotência, falha no meio, privilégio mínimo no banco, erros, cookies, UTC, Docker, escopo) e **Backend Sr · PHP + Node (financeiro)** (webhook seguro e idempotente, máquina de estados, banco × serviço externo, emissão fiscal com retry e DLQ, exactly-once, migração PHP → Node, métricas de negócio).
 - **Trilha de estudo por perfil de vaga:** PHP (pagamentos), Observabilidade, Node/React, Frontend Sr e Consultoria. Cada parada junta a história, o lab, o guia de medição e as perguntas do mesmo assunto, na ordem que mais ajuda.
   - Mostra quantas perguntas da trilha já estão com nota de acerto.
   - Destaca a próxima parada, com o botão "Continuar de onde parei".
@@ -39,7 +40,7 @@ As trilhas ficam em [`data/paths.js`](data/paths.js) e o validador confere se ca
 
 ## Conteúdo
 
-92 perguntas e 473 pontos de rubrica, todos em português e inglês. O lote 2 cobre as lacunas entre o meu CV e as vagas (GraphQL/Apollo, NestJS, MongoDB, Next.js, Docker/Kubernetes, Elasticsearch, OpenTelemetry), sempre indicando com honestidade o que é estudo e o que é experiência.
+110 perguntas e 550 pontos de rubrica, todos em português e inglês. O lote 2 cobre as lacunas entre o meu CV e as vagas (GraphQL/Apollo, NestJS, MongoDB, Next.js, Docker/Kubernetes, Elasticsearch, OpenTelemetry), sempre indicando com honestidade o que é estudo e o que é experiência.
 
 | Tema | Exemplos |
 | --- | --- |
@@ -106,7 +107,7 @@ Cada guia traz a métrica, o valor bom, as ferramentas, **onde clicar passo a pa
 
 ## Histórias
 
-Conceito abstrato fica mais fácil quando vira conversa engraçada. A aba **Histórias** tem 42 histórias (as 14 dos labs e mais 28 de perguntas), todas em português e em inglês. Elas cobrem 47 das 92 perguntas, porque as perguntas ligadas a um lab usam a história do lab. A do event loop foi escrita por mim.
+Conceito abstrato fica mais fácil quando vira conversa engraçada. A aba **Histórias** tem 42 histórias (as 14 dos labs e mais 28 de perguntas), todas em português e em inglês. Elas cobrem 47 das 110 perguntas, porque as perguntas ligadas a um lab usam a história do lab. A do event loop foi escrita por mim.
 
 Toda história segue o mesmo formato, para não misturar a brincadeira com a parte técnica:
 
@@ -183,6 +184,8 @@ data/rubrics.js       # checklist, ferramentas e métricas por pergunta
 data/glossary.js      # 267 termos com definição curta e longa (PT/EN)
 data/php-fintech.js   # perguntas do perfil PHP pleno (pagamentos)
 data/research.js      # perguntas acrescentadas a partir de relatos reais
+data/wallet-defense.js # defesa de um desafio técnico de carteira digital
+data/backend-finance.js # backend PHP + Node em financeiro / back-office
 data/evidence.js      # fontes da pesquisa e vagas extras por pergunta
 data/measure.js       # guias de medição: métrica, ferramenta, passo a passo e frase de entrevista
 data/paths.js         # trilhas de estudo por vaga (Comece aqui)

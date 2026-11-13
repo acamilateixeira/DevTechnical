@@ -15,7 +15,7 @@ const C = {
   pt: {
     title: 'Comece aqui',
     lead: 'Se as perguntas parecem um idioma estranho, é normal: elas resumem anos de prática em poucas linhas. O caminho aqui é **entender com uma história, ver funcionando no lab, saber medir** e só então responder como na entrevista.',
-    pathTitle: 'Sua trilha de estudo', pathHint: 'Escolha a vaga. Cada parada junta a história, o lab, o guia de medição e as perguntas do mesmo assunto, na ordem que mais ajuda.',
+    pathTitle: 'Sua trilha de estudo', focusLabel: 'Em foco agora', otherLabel: 'Outras trilhas', pathHint: 'Escolha a vaga. Cada parada junta a história, o lab, o guia de medição e as perguntas do mesmo assunto, na ordem que mais ajuda.',
     progress: (d, n) => `${d} de ${n} perguntas com nota de acerto (80%+)`, next: 'Continuar de onde parei', start: 'Começar a trilha', done: 'Trilha completa! Repita as que caíram abaixo de 80%.',
     kinds: { story: '😂 História', video: '🎬 Vídeo', lab: '▶ Lab', measure: '📏 Medir' },
     mapTitle: 'O que tem em cada aba',
@@ -59,7 +59,7 @@ const C = {
   en: {
     title: 'Start here',
     lead: 'If the questions feel like a foreign language, that is normal: they compress years of practice into a few lines. The path here is to **understand it through a story, see it running in the lab, know how to measure it**, and only then answer as you would in the interview.',
-    pathTitle: 'Your study path', pathHint: 'Pick the role. Each stop brings together the story, the lab, the measuring guide, and the questions on the same topic, in the order that helps most.',
+    pathTitle: 'Your study path', focusLabel: 'In focus now', otherLabel: 'Other paths', pathHint: 'Pick the role. Each stop brings together the story, the lab, the measuring guide, and the questions on the same topic, in the order that helps most.',
     progress: (d, n) => `${d} of ${n} questions scored as correct (80%+)`, next: 'Continue where I left off', start: 'Start the path', done: 'Path complete! Repeat the ones below 80%.',
     kinds: { story: '😂 Story', video: '🎬 Video', lab: '▶ Lab', measure: '📏 Measure' },
     mapTitle: 'What each tab has',
@@ -117,7 +117,8 @@ function fillStoryTitlesIn(view, lang) {
 export function renderStart(view, { lang, gloss = true, L, questions, scores = {} }) {
   const c = C[lang];
   const ann = createAnnotator(lang, { inline: gloss });
-  const current = paths[getPath()] ? getPath() : 'php-fintech';
+  const featured = Object.keys(paths).filter((k) => paths[k].featured);
+  const current = paths[getPath()] ? getPath() : (featured[0] || Object.keys(paths)[0]);
   const strip = (h) => h.replace(/^<p>|<\/p>$/g, '');
   const fillStoryTitles = () => fillStoryTitlesIn(view, lang);
 
@@ -171,7 +172,9 @@ export function renderStart(view, { lang, gloss = true, L, questions, scores = {
       <section class="panel path-box">
         <h2>${c.pathTitle}</h2>
         <p class="hint">${c.pathHint}</p>
-        <div class="path-tabs" role="tablist">${Object.keys(paths).map((k) => `<button type="button" role="tab" class="chip-btn" data-path="${k}" aria-pressed="${k === current}">${escapeHtml(L(jobs[k]).split(' · ')[0])}</button>`).join('')}</div>
+        ${featured.length ? `<p class="path-focus-label">${c.focusLabel}</p><div class="path-tabs path-tabs-focus" role="tablist">${featured.map((k) => `<button type="button" role="tab" class="chip-btn is-focus" data-path="${k}" aria-pressed="${k === current}">⭐ ${escapeHtml(L(jobs[k]))}</button>`).join('')}</div>` : ''}
+        <p class="path-focus-label">${c.otherLabel}</p>
+        <div class="path-tabs" role="tablist">${Object.keys(paths).filter((k) => !paths[k].featured).map((k) => `<button type="button" role="tab" class="chip-btn" data-path="${k}" aria-pressed="${k === current}">${escapeHtml(L(jobs[k]))}</button>`).join('')}</div>
         <div id="path-body">${pathHtml(current)}</div>
       </section>
 

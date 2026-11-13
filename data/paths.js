@@ -10,6 +10,44 @@ const Q = (...ids) => ids.map((id) => ({ kind: 'q', id }));
 const stop = (title, ...items) => ({ title, items: items.flat() });
 
 export const paths = {
+  // Em foco: as duas trilhas em estudo agora aparecem primeiro e marcadas na página inicial.
+  'desafio-carteira': {
+    featured: true,
+    why: r('Defesa de um desafio técnico de carteira digital (PHP 7.4 + Laravel 8 + MySQL 8) num code review: dinheiro, livro-razão, concorrência, banco, erros, sessão, datas, Docker e o que ficou de fora. Cada parada é uma pergunta que o avaliador faz sobre o próprio código.',
+      'Defending a digital wallet take-home (PHP 7.4 + Laravel 8 + MySQL 8) in a code review: money, ledger, concurrency, database, errors, session, dates, Docker, and what was left out. Each stop is a question the reviewer asks about your own code.'),
+    stops: [
+      stop(r('Dinheiro: centavos, imutável, regra no domínio', 'Money: cents, immutable, rule in the domain'), S('php-comparison-money'), Q('wallet-money-bigint-decimal', 'php-comparison-money')),
+      stop(r('Livro-razão e estorno (não soft delete)', 'Ledger and reversal (not soft delete)'), S('payments-card-lifecycle'), Q('wallet-ledger-reversal')),
+      stop(r('Trava antes da idempotência', 'Lock before idempotency'), S('lab-idempotency'), Lb('idempotency'), S('lab-lost-update'), Lb('lost-update'), M('locks'), Q('wallet-lock-then-idempotency', 'api-idempotency', 'db-isolation-locks')),
+      stop(r('Servidor cai no meio da transferência', 'Server crashes mid-transfer'), Q('wallet-crash-mid-transfer')),
+      stop(r('Banco: privilégio mínimo e chaves estrangeiras', 'Database: least privilege and foreign keys'), Q('db-least-privilege-ledger')),
+      stop(r('Erro de negócio × bug', 'Business error × bug'), Q('laravel-renderable-exceptions')),
+      stop(r('Sessão e cookies', 'Session and cookies'), S('sec-owasp-web'), Q('web-session-cookie-flags', 'php-security-pdo-password')),
+      stop(r('Datas em UTC', 'Dates in UTC'), Q('datetime-utc-timezones')),
+      stop(r('Docker, CI e portabilidade', 'Docker, CI, and portability'), S('docker-php-dev-env'), Q('docker-uid-ci-portability', 'docker-php-dev-env')),
+      stop(r('Arquitetura: actions, sem repositórios, SOLID honesto', 'Architecture: actions, no repositories, honest SOLID'), S('clean-architecture-php'), Q('laravel-actions-no-repositories', 'clean-architecture-php')),
+      stop(r('Testes que provam a regra', 'Tests that prove the rule'), S('lab-tdd'), Lb('tdd'), Q('phpunit-tdd-service')),
+      stop(r('Escopo, versão e o que ficou de fora', 'Scope, version, and what was left out'), Q('project-scope-tradeoffs')),
+    ],
+  },
+  'backend-php-node': {
+    featured: true,
+    why: r('Backend sênior com PHP e Node.js em financeiro / back-office: pagamentos, webhooks, emissão fiscal, integrações, sustentação de sistemas críticos e modernização gradual de PHP para Node.js.',
+      'Senior backend with PHP and Node.js in finance / back office: payments, webhooks, invoice issuing, integrations, keeping critical systems running, and gradual modernization from PHP to Node.js.'),
+    stops: [
+      stop(r('Webhook seguro e idempotente', 'Secure, idempotent webhooks'), S('lab-idempotency'), Lb('idempotency'), Q('webhook-idempotent-signature', 'api-idempotency')),
+      stop(r('Idempotência × transação × exactly-once', 'Idempotency × transaction × exactly-once'), Q('idempotency-transaction-exactly-once')),
+      stop(r('Estados de pedido, pagamento e nota', 'Order, payment, and invoice states'), Q('order-state-machine')),
+      stop(r('Banco × serviço externo: o rollback não desfaz a cobrança', 'Database × external service: rollback does not undo the charge'), S('lab-outbox'), Lb('outbox'), Q('external-call-vs-db-transaction', 'mq-outbox-pattern')),
+      stop(r('Emissão fiscal assíncrona: retry, backoff, DLQ', 'Async invoice issuing: retry, backoff, DLQ'), S('mq-rabbitmq-concepts'), M('queues'), Q('async-fiscal-emission-retry-dlq', 'mq-rabbitmq-concepts')),
+      stop(r('Integração lenta: timeout e circuit breaker', 'Slow integration: timeout and circuit breaker'), S('lab-resilience'), Lb('resilience'), Q('arch-resilience-partial')),
+      stop(r('Concorrência e locks', 'Concurrency and locks'), S('lab-lost-update'), Lb('lost-update'), M('locks'), Q('db-isolation-locks')),
+      stop(r('Migrar de PHP para Node sem parar', 'Migrating PHP to Node without stopping'), Q('migration-php-to-node-strangler', 'arch-monolith-microservices', 'legacy-production-bug')),
+      stop(r('Node: event loop, NestJS ou Express', 'Node: event loop, NestJS or Express'), S('lab-event-loop'), Lb('event-loop'), M('node-eventloop'), Q('js-event-loop', 'node-event-loop-blocking', 'nest-di-modules')),
+      stop(r('Query lenta e índices', 'Slow queries and indexes'), S('db-indexes-explain'), M('slow-queries'), Q('db-indexes-explain')),
+      stop(r('Métricas de negócio e rastreio PHP → Node → fila', 'Business metrics and tracing PHP → Node → queue'), S('obs-three-pillars'), M('red'), Q('finance-business-metrics-tracing', 'otel-node-instrumentation', 'obs-three-pillars')),
+    ],
+  },
   'php-fintech': {
     why: r('Full Stack pleno PHP em pagamentos: PHP 7.4+, CodeIgniter 3 e Laravel, SQL Server/MySQL/PostgreSQL, Docker, Git e, como diferencial, Clean Architecture, DDD, TDD, Kubernetes e GCP. Em empresa de cartão, dinheiro, limite e fatura aparecem em tudo.',
       'Mid-level PHP Full Stack in payments: PHP 7.4+, CodeIgniter 3 and Laravel, SQL Server/MySQL/PostgreSQL, Docker, Git, and, as differentiators, Clean Architecture, DDD, TDD, Kubernetes, and GCP. At a card company, money, limits, and statements show up everywhere.'),

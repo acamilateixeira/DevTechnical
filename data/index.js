@@ -14,12 +14,14 @@ import php from './php.js';
 import agile from './agile.js';
 import phpFintech from './php-fintech.js';
 import research from './research.js';
+import walletDefense from './wallet-defense.js';
+import backendFinance from './backend-finance.js';
 import { rubrics } from './rubrics.js';
 import { extraJobs, reported } from './evidence.js';
 
 const all = [
   ...typescript, ...react, ...node, ...api, ...databases, ...messaging,
-  ...architecture, ...principles, ...testing, ...devops, ...observability, ...security, ...php, ...agile, ...phpFintech, ...research,
+  ...architecture, ...principles, ...testing, ...devops, ...observability, ...security, ...php, ...agile, ...phpFintech, ...research, ...walletDefense, ...backendFinance,
 ];
 
 // Cada pergunta recebe sua rubrica (pontos obrigatórios, ferramentas, métricas).

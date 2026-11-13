@@ -1034,4 +1034,189 @@ export const rubrics = {
     tools: ['Pitch em inglês / English pitch', 'STAR'],
     metrics: [],
   },
+  'wallet-money-bigint-decimal': {
+    points: [
+      p('PHP recebe DECIMAL como string; bigint chega como int', 'PHP gets DECIMAL as a string; bigint arrives as int'),
+      p('Quando DECIMAL(19,4): frações de centavo', 'When DECIMAL(19,4): fractions of a cent'),
+      p('Imutável: operações devolvem um novo objeto', 'Immutable: operations return a new object'),
+      p('Regra no domínio vale em qualquer porta de entrada', 'Domain rule holds at every entry point'),
+    ],
+    tools: ['bigint', 'DECIMAL(19,4)', 'brick/money', 'bcmath'],
+    metrics: [],
+  },
+  'wallet-ledger-reversal': {
+    points: [
+      p('Livro-razão com lançamentos que só se acrescentam', 'Append-only ledger entries'),
+      p('Estorno é operação nova ligada à original, uma vez só', 'Reversal is a new operation linked to the original, once'),
+      p('Saldo negativo vem do estorno; depósito soma', 'Negative balance comes from reversal; deposit adds up'),
+      p('Reconciliação detecta; correção é humana, com motivo', 'Reconciliation detects; fixing is human, with a reason'),
+    ],
+    tools: ['ledger_entries', 'reverses_id UNIQUE', 'wallet:reconcile', 'wallet:reverse'],
+    metrics: ['Divergência saldo × livro-razão / balance × ledger mismatch'],
+  },
+  'wallet-lock-then-idempotency': {
+    points: [
+      p('Travar antes de conferir a chave', 'Lock before checking the key'),
+      p('Narrar as duas requisições: uma espera a trava', 'Walk through both requests: one waits for the lock'),
+      p('REPEATABLE READ: snapshot; conferir com leitura que trava', 'REPEATABLE READ: snapshot; check with a locking read'),
+      p('UNIQUE como garantia final e devolver a existente', 'UNIQUE as final guarantee and return the existing one'),
+      p('Ordem de id evita deadlock', 'Id order avoids deadlock'),
+    ],
+    tools: ['lockForUpdate', 'DB::transaction($fn, 3)', 'UNIQUE', 'request_hash'],
+    metrics: ['Operações duplicadas / duplicate operations'],
+  },
+  'wallet-crash-mid-transfer': {
+    points: [
+      p('Tudo na mesma transação: nada fica gravado', 'Everything in one transaction: nothing is left'),
+      p('Recuperação do InnoDB desfaz o não confirmado', 'InnoDB recovery rolls back uncommitted work'),
+      p('Teste que força exceção no meio e confere saldos', 'Test forcing a mid-way exception and checking balances'),
+      p('Eventos e logs só depois do commit', 'Events and logs only after commit'),
+    ],
+    tools: ['DB::transaction', 'InnoDB undo log', 'afterCommit', 'PHPUnit'],
+    metrics: [],
+  },
+  'db-least-privilege-ledger': {
+    points: [
+      p('Sem UPDATE/DELETE: o banco recusa mesmo com bug', 'No UPDATE/DELETE: the database refuses even with a bug'),
+      p('Protege contra credencial da app, não contra root/migrator', 'Protects against app credentials, not root/migrator'),
+      p('Próximas camadas: auditoria, backups, hash encadeado', 'Next layers: audit, backups, chained hash'),
+      p('RESTRICT: histórico financeiro não some em cascata', 'RESTRICT: financial history does not cascade away'),
+    ],
+    tools: ['GRANT', 'REVOKE', 'ON DELETE RESTRICT', 'audit log'],
+    metrics: [],
+  },
+  'laravel-renderable-exceptions': {
+    points: [
+      p('Erro de negócio é esperado; bug não', 'Business errors are expected; bugs are not'),
+      p('Sem report(): ERROR com stack trace a cada tentativa', 'Without report(): ERROR with stack trace each time'),
+      p('WARNING com código estável e contexto', 'WARNING with a stable code and context'),
+      p('render(): volta ao formulário / 422 em JSON', 'render(): back to the form / 422 for JSON'),
+    ],
+    tools: ['report()', 'render()', 'Log::warning', '$dontReport'],
+    metrics: [],
+  },
+  'web-session-cookie-flags': {
+    points: [
+      p('Sem Secure: cookie vai em HTTP e pode ser interceptado', 'Without Secure: cookie goes over HTTP and can be intercepted'),
+      p('HttpOnly protege contra XSS, não contra a rede', 'HttpOnly protects against XSS, not the network'),
+      p('SameSite contra CSRF, junto com o token', 'SameSite against CSRF, with the token'),
+      p('HTTPS + HSTS e sessão regenerada no login', 'HTTPS + HSTS and session regenerated on login'),
+    ],
+    tools: ['SESSION_SECURE_COOKIE', 'HttpOnly', 'SameSite', 'HSTS'],
+    metrics: [],
+  },
+  'datetime-utc-timezones': {
+    points: [
+      p('UTC: sem horário de verão, mesma hora em qualquer servidor', 'UTC: no DST, same time on any server'),
+      p('Converter só na exibição', 'Convert only for display'),
+      p('TIMESTAMP converte pelo fuso da sessão; DATETIME não', 'TIMESTAMP converts by session zone; DATETIME does not'),
+      p('Fuso de exibição numa configuração só', 'Display zone in a single config'),
+    ],
+    tools: ['UTC', 'TIMESTAMP', 'DATETIME', 'Carbon setTimezone'],
+    metrics: [],
+  },
+  'docker-uid-ci-portability': {
+    points: [
+      p('UID do host: arquivos com o seu dono, sem root', 'Host UID: files owned by you, no root'),
+      p('GID 20/dialout não dá permissão real sem dispositivo', 'GID 20/dialout grants nothing without a device'),
+      p('CI prova só o ambiente que executa', 'CI only proves the environment it runs'),
+      p('eol=lf força LF no checkout', 'eol=lf forces LF on checkout'),
+      p('Windows: WSL2 + Docker Desktop; runner Windows não reproduz', 'Windows: WSL2 + Docker Desktop; Windows runner does not reproduce it'),
+    ],
+    tools: ['UID/GID build args', '.gitattributes eol=lf', 'WSL2', 'Docker Desktop'],
+    metrics: [],
+  },
+  'laravel-actions-no-repositories': {
+    points: [
+      p('Actions: uma operação por classe, reaproveitável', 'Actions: one operation per class, reusable'),
+      p('Regra do saldo no model, num lugar só', 'Balance rule in the model, in one place'),
+      p('Sem repositório: Eloquent já é a camada de dados', 'No repository: Eloquent already is the data layer'),
+      p('SOLID honesto: dizer onde o D não está', 'Honest SOLID: say where D is missing'),
+    ],
+    tools: ['app/Actions', 'Eloquent', 'Policy', 'Form Request'],
+    metrics: [],
+  },
+  'project-scope-tradeoffs': {
+    points: [
+      p('Laravel 8: avisos liberados um a um, com motivo', 'Laravel 8: advisories allowed one by one, with reasons'),
+      p('Cortes não afetam o que é avaliado', 'Cuts do not affect what is evaluated'),
+      p('Concorrência antes de vitrine', 'Concurrency before showcase items'),
+      p('Nuvem: custo e risco; dizer o que não demonstra', 'Cloud: cost and risk; say what it does not show'),
+    ],
+    tools: ['composer audit', 'ignore-id', 'ADR', 'make up / make test'],
+    metrics: [],
+  },
+  'webhook-idempotent-signature': {
+    points: [
+      p('HMAC sobre o corpo cru, comparação em tempo constante', 'HMAC over the raw body, constant-time comparison'),
+      p('Timestamp contra replay', 'Timestamp against replay'),
+      p('UNIQUE(event_id) antes de processar', 'UNIQUE(event_id) before processing'),
+      p('Responder rápido e processar na fila', 'Respond fast and process in a queue'),
+      p('Consumidor idempotente', 'Idempotent consumer'),
+    ],
+    tools: ['HMAC SHA-256', 'crypto.timingSafeEqual', 'UNIQUE(event_id)', 'fila / queue'],
+    metrics: ['Webhooks duplicados descartados / duplicate webhooks dropped'],
+  },
+  'order-state-machine': {
+    points: [
+      p('Tabela de transições permitidas', 'Table of allowed transitions'),
+      p('UPDATE condicional pelo estado atual', 'Conditional UPDATE on the current state'),
+      p('Histórico de transições', 'Transition history'),
+      p('Estados de falha listáveis e reprocessáveis', 'Failure states that can be listed and reprocessed'),
+    ],
+    tools: ['UPDATE ... WHERE status', 'optimistic locking', 'order_status_history', 'enum'],
+    metrics: [],
+  },
+  'migration-php-to-node-strangler': {
+    points: [
+      p('Strangler Fig: fatia por fatia', 'Strangler Fig: slice by slice'),
+      p('Testes de caracterização antes de mexer', 'Characterization tests before changing'),
+      p('Um sistema escreve cada tabela', 'One system writes each table'),
+      p('Feature flag, sombra, métricas e rollback', 'Feature flag, shadow, metrics, and rollback'),
+    ],
+    tools: ['Strangler Fig', 'characterization tests', 'feature flags', 'shadow traffic'],
+    metrics: [],
+  },
+  'external-call-vs-db-transaction': {
+    points: [
+      p('Rollback não desfaz cobrança externa', 'Rollback does not undo an external charge'),
+      p('Intenção pendente + chave de idempotência', 'Pending intent + idempotency key'),
+      p('Chamada externa fora da transação', 'External call outside the transaction'),
+      p('Timeout: consulta de status e reconciliação', 'Timeout: status query and reconciliation'),
+      p('Compensação (estorno) e outbox', 'Compensation (refund) and outbox'),
+    ],
+    tools: ['idempotency key', 'Transactional Outbox', 'saga', 'reconciliação / reconciliation'],
+    metrics: [],
+  },
+  'async-fiscal-emission-retry-dlq': {
+    points: [
+      p('Estado pendente e emissão assíncrona', 'Pending state and async issuing'),
+      p('Chave única por pedido: sem duas notas', 'Unique key per order: no duplicate invoice'),
+      p('Temporário × definitivo; backoff com jitter', 'Transient × permanent; backoff with jitter'),
+      p('DLQ, estado de falha e alerta', 'DLQ, failure state, and alert'),
+      p('Ack só depois de gravar', 'Ack only after recording'),
+    ],
+    tools: ['backoff + jitter', 'DLQ', 'circuit breaker', 'outbox'],
+    metrics: ['Pedidos pagos sem nota / paid orders without invoice', 'Tamanho da DLQ / DLQ size'],
+  },
+  'idempotency-transaction-exactly-once': {
+    points: [
+      p('Transação: só dentro do mesmo banco', 'Transaction: only within one database'),
+      p('Idempotência: repetir dá o mesmo resultado', 'Idempotency: repeating gives the same result'),
+      p('At-most / at-least / exactly-once', 'At-most / at-least / exactly-once'),
+      p('Efeito uma vez = at-least-once + consumidor idempotente', 'Effectively once = at-least-once + idempotent consumer'),
+    ],
+    tools: ['UNIQUE(event_id)', 'at-least-once', 'Kafka transactions', 'dedup table'],
+    metrics: [],
+  },
+  'finance-business-metrics-tracing': {
+    points: [
+      p('Métricas de negócio, não só técnicas', 'Business metrics, not only technical'),
+      p('Pedidos pagos sem nota como alerta', 'Paid orders without invoice as an alert'),
+      p('traceparent em HTTP e nas mensagens da fila', 'traceparent in HTTP and queue messages'),
+      p('Logs com trace_id e ids de negócio, sem dados sensíveis', 'Logs with trace_id and business ids, no sensitive data'),
+    ],
+    tools: ['OpenTelemetry', 'W3C traceparent', 'Prometheus', 'Grafana'],
+    metrics: ['Tempo pagamento → nota / payment → invoice time', 'Divergências de conciliação / reconciliation mismatches'],
+  },
 };

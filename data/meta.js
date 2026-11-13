@@ -6,6 +6,8 @@ export const jobs = {
   frontend: { pt: 'Frontend Sr (React)', en: 'Senior Frontend (React)' },
   consulting: { pt: 'Consultoria internacional', en: 'International consultancy' },
   'php-fintech': { pt: 'Full Stack Pleno · PHP (pagamentos)', en: 'Mid-level Full Stack · PHP (payments)' },
+  'desafio-carteira': { pt: 'Desafio técnico · carteira digital', en: 'Take-home · digital wallet' },
+  'backend-php-node': { pt: 'Backend Sr · PHP + Node (financeiro)', en: 'Senior Backend · PHP + Node (finance)' },
   cv: { pt: 'Meu CV / portfólio', en: 'My CV / portfolio' },
 };
 

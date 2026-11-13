@@ -561,3 +561,8 @@ a.btn { text-decoration: none; }
 /* falas antigas que não cabem somem por cima, com esmaecimento, sem invadir a barra do título */
 .pl-chat { overflow: hidden; -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 70px); mask-image: linear-gradient(to bottom, transparent 0, #000 70px); padding-top: 4px; }
 .pl-row-l code { background: rgba(248,248,242,.1); color: #f1fa8c; border-radius: 5px; padding: 0 5px; font-size: .9em; }
+
+/* Trilhas em foco na página inicial */
+.path-focus-label { margin: 12px 0 6px; font-size: .78rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+.path-tabs-focus .chip-btn.is-focus { border-color: var(--accent); font-weight: 600; }
+.path-tabs-focus .chip-btn.is-focus[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); }
