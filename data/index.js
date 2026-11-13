@@ -16,12 +16,13 @@ import phpFintech from './php-fintech.js';
 import research from './research.js';
 import walletDefense from './wallet-defense.js';
 import backendFinance from './backend-finance.js';
+import backendQuality from './backend-quality.js';
 import { rubrics } from './rubrics.js';
 import { extraJobs, reported } from './evidence.js';
 
 const all = [
   ...typescript, ...react, ...node, ...api, ...databases, ...messaging,
-  ...architecture, ...principles, ...testing, ...devops, ...observability, ...security, ...php, ...agile, ...phpFintech, ...research, ...walletDefense, ...backendFinance,
+  ...architecture, ...principles, ...testing, ...devops, ...observability, ...security, ...php, ...agile, ...phpFintech, ...research, ...walletDefense, ...backendFinance, ...backendQuality,
 ];
 
 // Cada pergunta recebe sua rubrica (pontos obrigatórios, ferramentas, métricas).

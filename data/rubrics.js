@@ -1219,4 +1219,80 @@ export const rubrics = {
     tools: ['OpenTelemetry', 'W3C traceparent', 'Prometheus', 'Grafana'],
     metrics: ['Tempo pagamento → nota / payment → invoice time', 'Divergências de conciliação / reconciliation mismatches'],
   },
+  'perf-measure-before-optimize': {
+    points: [
+      p('Medir antes: entrada fixa, tempo, memória, profiler', 'Measure first: fixed input, time, memory, profiler'),
+      p('Achar o gargalo real antes de escolher a solução', 'Find the real bottleneck before choosing a fix'),
+      p('Provar saída igual + testes de regressão nas bordas', 'Prove identical output + edge regression tests'),
+      p('Medir de novo e dizer para onde o gargalo foi', 'Measure again and say where the bottleneck moved'),
+      p('Commit com problema, causa, números e garantia', 'Commit with problem, cause, numbers, and guarantee'),
+    ],
+    tools: ['Xdebug / Blackfire / SPX', 'node --cpu-prof', 'memory_get_peak_usage', 'benchmark'],
+    metrics: ['Tempo total / total time', 'Pico de memória / peak memory'],
+  },
+  'php-streaming-large-files': {
+    points: [
+      p('Ler por linha/bloco, nunca o arquivo inteiro', 'Read by line/block, never the whole file'),
+      p('Generator: um registro por vez', 'Generator: one record at a time'),
+      p('Lotes com checkpoint na mesma transação', 'Batches with checkpoint in the same transaction'),
+      p('Idempotência pelo id externo', 'Idempotency by external id'),
+      p('Node: streams + pipeline com backpressure', 'Node: streams + pipeline with backpressure'),
+    ],
+    tools: ['SplFileObject', 'yield', 'fgetcsv', 'stream.pipeline'],
+    metrics: ['Pico de memória estável / flat peak memory'],
+  },
+  'php-exceptions-assertions': {
+    points: [
+      p('Tipo de exceção indica de quem é a culpa', 'Exception type says whose fault it is'),
+      p('Mensagem com esperado, recebido e onde', 'Message with expected, received, and where'),
+      p('Encadear a causa com $previous', 'Chain the cause with $previous'),
+      p('assert só para invariante, sem efeito colateral', 'assert only for invariants, no side effects'),
+      p('Conferir retorno de I/O e JSON_THROW_ON_ERROR', 'Check I/O returns and JSON_THROW_ON_ERROR'),
+    ],
+    tools: ['InvalidArgumentException', 'UnexpectedValueException', 'RuntimeException', 'zend.assertions'],
+    metrics: [],
+  },
+  'php-static-analysis-strict': {
+    points: [
+      p('strict_types por arquivo, sem coerção de escalares', 'strict_types per file, no scalar coercion'),
+      p('O que os níveis altos pegam (mixed, generics)', 'What high levels catch (mixed, generics)'),
+      p('Baseline e subir nível aos poucos no legado', 'Baseline and gradual level increase in legacy'),
+      p('Supressões justificadas, CI como portão', 'Justified suppressions, CI as the gate'),
+    ],
+    tools: ['PHPStan', 'Larastan', 'strict-rules', 'composer validate'],
+    metrics: [],
+  },
+  'testing-parsers-cli-boundaries': {
+    points: [
+      p('Casos inválidos e de borda da implementação', 'Invalid and implementation-edge cases'),
+      p('Buffer pequeno nos testes para forçar fronteiras', 'Small buffer in tests to force boundaries'),
+      p('Data providers nomeados e atributos do PHPUnit', 'Named data providers and PHPUnit attributes'),
+      p('Executável em processo separado: saída e código', 'Executable in a separate process: output and exit code'),
+      p('Teste funcional instalando o pacote', 'Functional test installing the package'),
+    ],
+    tools: ['PHPUnit 10', 'DataProvider', 'proc_open', 'TestDox'],
+    metrics: [],
+  },
+  'node-ssrf-user-url': {
+    points: [
+      p('Nomear SSRF e o alvo (metadados, rede interna)', 'Name SSRF and the target (metadata, internal network)'),
+      p('Allowlist e só https', 'Allowlist and https only'),
+      p('Bloquear IP privado e cuidar de DNS rebinding', 'Block private IPs and handle DNS rebinding'),
+      p('Redirects, timeout e limite de tamanho', 'Redirects, timeout, and size limit'),
+      p('Buffer.from no lugar de new Buffer', 'Buffer.from instead of new Buffer'),
+    ],
+    tools: ['URL', 'dns.lookup', 'AbortSignal.timeout', 'egress proxy'],
+    metrics: [],
+  },
+  'data-anonymization-non-prod': {
+    points: [
+      p('Dado pessoal real não sai de produção', 'Real personal data does not leave production'),
+      p('Anonimizar o dump em stream, não UPDATE no banco', 'Anonymize the dump as a stream, not UPDATE'),
+      p('Manter formato, unicidade e relações', 'Keep format, uniqueness, and relations'),
+      p('Semente fixa e especificação versionada', 'Fixed seed and versioned spec'),
+      p('Controles de acesso e descarte', 'Access controls and disposal'),
+    ],
+    tools: ['Faker (seed)', 'mysqldump', 'LGPD', 'spec por coluna / per-column spec'],
+    metrics: [],
+  },
 };
