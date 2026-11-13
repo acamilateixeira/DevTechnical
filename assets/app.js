@@ -18,6 +18,7 @@ const $ = (s, el = document) => el.querySelector(s);
 const state = load();
 let current = null;   // pergunta em exibição no modo entrevista
 let revealed = false;
+let fromLink = false;  // pergunta aberta por link (#/q/:id): aparece mesmo fora dos filtros
 let timer = null;
 
 function defaultRoute() {
@@ -71,6 +72,10 @@ function renderChrome() {
   gt.setAttribute('aria-label', t('glossToggle'));
   gt.textContent = state.lang === 'pt' ? '( ) definições' : '( ) definitions';
 
+  // Filtro salvo com um valor que não existe mais (ex.: id antigo de vaga) zeraria a lista.
+  [['job', jobs], ['cat', cats], ['type', types]].forEach(([key, map]) => {
+    if (state.filters[key] && !(state.filters[key] in map)) { state.filters[key] = ''; save(); }
+  });
   fill($('#f-job'), jobs, t('allJobs'), state.filters.job);
   fill($('#f-cat'), cats, t('all'), state.filters.cat);
   fill($('#f-type'), types, t('all'), state.filters.type);
@@ -115,9 +120,10 @@ function route() {
   }
   if (name === 'study') return renderStudy();
   if (name === 'progress') return renderProgress();
+  if (name !== 'q') fromLink = false;
   if (name === 'q' && arg) {
     const q = questions.find((x) => x.id === decodeURIComponent(arg));
-    if (q) { current = q; revealed = false; }
+    if (q) { current = q; revealed = false; fromLink = true; }
   }
   return renderInterview();
 }
@@ -253,7 +259,7 @@ function revealHtml(q, ann = annotator(q)) {
 
 function renderInterview() {
   const view = $('#view');
-  if (!current || !filtered().includes(current)) { current = pickNext(); revealed = false; }
+  if (!current || (!fromLink && !filtered().includes(current))) { current = pickNext(); revealed = false; }
   if (!current) { view.innerHTML = `<p class="empty">${t('none')}</p>`; return; }
   const q = current;
   const ann = annotator(q);
@@ -290,7 +296,7 @@ function renderInterview() {
     $('#reveal-area').scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
   $('#next').addEventListener('click', () => {
-    current = pickNext(); revealed = false;
+    current = pickNext(); revealed = false; fromLink = false;
     if (location.hash.startsWith('#/q/')) history.replaceState(null, '', '#/interview');
     renderInterview(); window.scrollTo({ top: 0, behavior: 'smooth' });
   });
@@ -448,7 +454,7 @@ if (typeof document !== 'undefined') {
   }));
   [['#f-job', 'job'], ['#f-cat', 'cat'], ['#f-type', 'type']].forEach(([sel, key]) =>
     $(sel).addEventListener('change', (e) => {
-      state.filters[key] = e.target.value; save(); renderChrome(); route();
+      state.filters[key] = e.target.value; fromLink = false; save(); renderChrome(); route();
     }));
   window.addEventListener('hashchange', route);
   initGlossPopover();
