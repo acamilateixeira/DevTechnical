@@ -464,3 +464,20 @@ if (typeof document !== 'undefined') {
   renderChrome();
   route();
 }
+
+/* ---------- cabeçalho no celular: some ao rolar para baixo, volta ao rolar para cima ---------- */
+(() => {
+  const top = document.querySelector('.top');
+  if (!top) return;
+  const mq = window.matchMedia('(max-width: 720px)');
+  let last = window.scrollY;
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    if (!mq.matches || y < 120) top.classList.remove('is-hidden');
+    else if (y > last + 8) top.classList.add('is-hidden');
+    else if (y < last - 8) top.classList.remove('is-hidden');
+    last = y;
+  }, { passive: true });
+  top.addEventListener('focusin', () => top.classList.remove('is-hidden'));
+  window.addEventListener('hashchange', () => top.classList.remove('is-hidden'));
+})();
