@@ -100,13 +100,13 @@ export function renderReview(view, { lang, L, questions, jobs }) {
           <p class="rv-progress" aria-live="polite">${T.progress(knownCount, list.length)}</p>
           <p class="rv-tip">${T.tip}</p>
         </header>
-        <ol class="rv-list">
+        <ol class="rv-list" role="list">
           ${shown.map((q) => {
             const n = list.indexOf(q) + 1;
             const anchor = L(q.anchor);
             return `
-            <li class="rv-card ${s.known[q.id] ? 'is-known' : ''}" value="${n}">
-              <h3>${inline(L(q.q))}</h3>
+            <li class="rv-card ${s.known[q.id] ? 'is-known' : ''}">
+              <h3><span class="rv-n">${n}.</span> ${inline(L(q.q))}</h3>
               <p class="rv-label">${T.say}</p>
               <ul class="rv-points">${(q.points || []).map((p) => `<li>${inline(L(p))}</li>`).join('')}</ul>
               ${anchor ? `<p class="rv-label">${T.yours}</p><p class="rv-anchor">${inline(anchor)}</p>` : ''}

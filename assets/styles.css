@@ -571,12 +571,14 @@ a.btn { text-decoration: none; }
 .review-head h2 { font-family: var(--serif); margin: 0 0 6px; }
 .review-tools { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; margin: 14px 0 6px; }
 .review-tools select { margin-left: 6px; padding: 6px 8px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); max-width: 100%; }
-.rv-check { display: inline-flex; gap: 6px; align-items: center; cursor: pointer; }
+.rv-check { display: inline-flex; gap: 8px; align-items: center; cursor: pointer; min-height: 40px; }
+.rv-check input { width: 20px; height: 20px; accent-color: var(--accent); margin: 0; }
+.rv-actions a { display: inline-block; padding: 10px 0; }
 .rv-progress { font-weight: 600; margin: 8px 0 2px; }
 .rv-tip { color: var(--muted); font-size: 0.95em; margin: 0 0 14px; }
-.rv-list { list-style: decimal; padding-left: 1.4em; margin: 0; display: grid; gap: 14px; }
+.rv-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 14px; }
 .rv-card { min-width: 0; overflow-wrap: anywhere; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 18px; }
-.rv-card::marker { font-weight: 700; color: var(--accent); }
+.rv-n { color: var(--accent); margin-right: 2px; }
 .rv-card h3 { font-size: 1.05em; margin: 0 0 8px; line-height: 1.35; }
 .rv-card.is-known { opacity: 0.6; }
 .rv-label { font-size: 0.78em; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin: 10px 0 4px; font-weight: 600; }
@@ -589,4 +591,28 @@ a.btn { text-decoration: none; }
   .top, .review-tools, .rv-actions, .rv-tip, .tabs, .filters, .foot { display: none !important; }
   .rv-card { break-inside: avoid; border-color: #bbb; }
   .rv-card.is-known { opacity: 1; }
+}
+
+/* ---------- celular ---------- */
+.top { transition: transform .2s ease; }
+.top.is-hidden { transform: translateY(-100%); }
+@media (prefers-reduced-motion: reduce) { .top { transition: none; } }
+@media (max-width: 720px) {
+  .top-inner { padding: 8px 0; gap: 8px; }
+  .brand { font-size: 1.05rem; gap: 8px; }
+  .brand-mark { width: 28px; height: 28px; }
+  .gloss-toggle { margin-left: auto; padding: 6px 10px; min-height: 36px; }
+  .lang button { min-height: 36px; min-width: 40px; }
+  .tabs { -webkit-mask-image: linear-gradient(to right, #000 85%, transparent); mask-image: linear-gradient(to right, #000 85%, transparent); }
+  .tabs a { padding: 8px 12px; }
+  .chip { font-size: .76rem; padding: 3px 9px; }
+  .rv-card { padding: 14px; }
+  .review-tools { gap: 8px; }
+  .review-tools label:first-child { width: 100%; display: grid; gap: 4px; }
+  .review-tools select { margin-left: 0; width: 100%; padding: 10px; font-size: 1rem; }
+  .review-tools .rv-check { width: 100%; }
+}
+@media (max-width: 440px) {
+  .brand > span:last-child { display: none; }
+  .review-tools .btn { flex: 1 1 0; padding: 9px 10px; }
 }
