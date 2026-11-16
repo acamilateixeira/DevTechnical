@@ -11,6 +11,7 @@ Um entrevistador técnico em forma de app. Ele faz perguntas técnicas sobre a s
 O caminho sugerido é **ver funcionando → explicar com suas palavras → responder a pergunta**:
 
 - **Comece aqui**: como é um processo seletivo sênior e como estudar com o app, um tema por vez.
+- **Revisão rápida**: para os dias de entrevista. Escolho a trilha da vaga e vejo, numa página só, cada pergunta com os pontos que a resposta precisa cobrir e o meu exemplo real, sem a resposta longa. Marco "já sei", escondo o que já domino e imprimo ou salvo em PDF.
 - **Laboratório**: 14 exemplos que rodam no navegador, sem instalar nada. Cada um explica o conceito com uma analogia e tem código editável, botão **Rodar**, contadores, uma **linha do tempo** mostrando o que rodou em cada parte do sistema (cliente, API, banco, fila…) e quando, além de uma lista "Experimente mudar". Mais 5 labs de Node.js para rodar no terminal (servidor HTTP, threads, SIGTERM e SQLite reais). Detalhes em [`labs/node/README.md`](labs/node/README.md).
 - **Glossário**: 224 termos técnicos em linguagem simples. Nas respostas e nos labs, a definição curta aparece **entre parênteses** na primeira vez que o termo surge (dá para desligar no botão "( ) definições") e tocar no termo mostra a explicação maior.
 
@@ -238,6 +239,7 @@ A technical interviewer, as an app. It asks technical questions about the stack 
 - **Stories**: 42 funny dialogue-style stories (every lab plus 28 questions), in Portuguese and English, covering 47 of 92 questions. Each starts with **Who is who** (every character is a piece of code), plays out in chat-style scenes in plain language, with a **📋 State right now** panel closing every scene (output so far, queues, what's left), then a separate moral, technical section, and extras, and ends with the one-paragraph interview answer. They open from the **Stories** tab or from a button on each question and lab.
 - **Study**: every question with search and filters by role, topic, and type.
 - **Start here**: what a senior hiring process looks like and how to study with the app.
+- **Quick review**: for interview days. I pick the role's track and see, on a single page, each question with the points the answer must cover and my real example, without the long answer. I mark "I know this", hide what I already know, and print or save it as PDF.
 - **Lab**: 14 in-browser examples (editable code, Run button, counters, and a timeline showing what ran in each part of the system and when) plus 5 Node.js labs for the terminal ([`labs/node/README.md`](labs/node/README.md)).
 - **Glossary**: 224 terms in plain language; the short definition appears in parentheses the first time a term shows up (toggle with "( ) definitions").
 - **Is this really asked?**: each question's chip says where it comes from and which company (**✓ reported · an observability company**, **📘 public guide**, or **📋 in the job ad**). The answer lists each source with company, candidate role, date, stage, quote, and link; sources live in [`data/evidence.js`](data/evidence.js). There is also a dedicated set for mid-level PHP roles in payments.

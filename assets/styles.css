@@ -566,3 +566,27 @@ a.btn { text-decoration: none; }
 .path-focus-label { margin: 12px 0 6px; font-size: .78rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
 .path-tabs-focus .chip-btn.is-focus { border-color: var(--accent); font-weight: 600; }
 .path-tabs-focus .chip-btn.is-focus[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); }
+
+/* ---------- revisão rápida ---------- */
+.review-head h2 { font-family: var(--serif); margin: 0 0 6px; }
+.review-tools { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; margin: 14px 0 6px; }
+.review-tools select { margin-left: 6px; padding: 6px 8px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); max-width: 100%; }
+.rv-check { display: inline-flex; gap: 6px; align-items: center; cursor: pointer; }
+.rv-progress { font-weight: 600; margin: 8px 0 2px; }
+.rv-tip { color: var(--muted); font-size: 0.95em; margin: 0 0 14px; }
+.rv-list { list-style: decimal; padding-left: 1.4em; margin: 0; display: grid; gap: 14px; }
+.rv-card { min-width: 0; overflow-wrap: anywhere; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 18px; }
+.rv-card::marker { font-weight: 700; color: var(--accent); }
+.rv-card h3 { font-size: 1.05em; margin: 0 0 8px; line-height: 1.35; }
+.rv-card.is-known { opacity: 0.6; }
+.rv-label { font-size: 0.78em; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin: 10px 0 4px; font-weight: 600; }
+.rv-points { margin: 0; padding-left: 1.2em; }
+.rv-points li { margin: 2px 0; }
+.rv-anchor { margin: 0; border-left: 3px solid var(--accent); padding-left: 10px; }
+.rv-actions { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 10px; flex-wrap: wrap; }
+
+@media print {
+  .top, .review-tools, .rv-actions, .rv-tip, .tabs, .filters, .foot { display: none !important; }
+  .rv-card { break-inside: avoid; border-color: #bbb; }
+  .rv-card.is-known { opacity: 1; }
+}

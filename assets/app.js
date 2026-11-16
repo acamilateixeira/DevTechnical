@@ -10,6 +10,7 @@ import { codeBlock, initBracketHover } from './highlight.js';
 import { renderMeasure } from './measure-page.js';
 import { cardsForQuestion } from '../data/measure.js';
 import { sources, evidenceSummary } from '../data/evidence.js';
+import { renderReview } from './review.js';
 import { storyForQuestion, storyButton, bindStoryButtons, renderStories, renderStoryPage, setStoryLeave } from './story.js';
 
 const STORE = 'devtechnical:v1';
@@ -92,7 +93,7 @@ let leave = [];
 const onLeave = (fn) => leave.push(fn);
 let labModule = null;
 
-const TITLES = { start: 'navStart', stories: 'navStories', story: 'navStories', lab: 'navLab', measure: 'navMeasure', interview: 'navInterview', q: 'navInterview', study: 'navStudy', progress: 'navProgress', glossary: 'navGlossary' };
+const TITLES = { start: 'navStart', stories: 'navStories', story: 'navStories', lab: 'navLab', measure: 'navMeasure', interview: 'navInterview', q: 'navInterview', study: 'navStudy', progress: 'navProgress', glossary: 'navGlossary', review: 'navReview' };
 function route() {
   const [, name = defaultRoute(), arg] = location.hash.split('/');
   document.title = `${t(TITLES[name] || 'navInterview')}${arg ? ` · ${decodeURIComponent(arg)}` : ''} · DevTechnical`;
@@ -106,7 +107,8 @@ function route() {
   document.getElementById('story-drawer')?.close();
   leave.forEach((fn) => fn()); leave = [];
   // Filtros só fazem sentido nas telas de perguntas.
-  $('.filters').hidden = ['lab', 'start', 'glossary', 'stories', 'story', 'measure'].includes(name);
+  $('.filters').hidden = ['lab', 'start', 'glossary', 'stories', 'story', 'measure', 'review'].includes(name);
+  if (name === 'review') { window.scrollTo(0, 0); return renderReview($('#view'), { lang: state.lang, L, questions, jobs }); }
   if (name === 'measure') { if (!arg) window.scrollTo(0, 0); return renderMeasure($('#view'), { lang: state.lang, gloss: state.gloss, L, questions, focus: arg && decodeURIComponent(arg) }); }
   if (name === 'stories') { window.scrollTo(0, 0); return renderStories($('#view'), { lang: state.lang, L, questions, cats }); }
   if (name === 'story') { window.scrollTo(0, 0); setStoryLeave(onLeave); return renderStoryPage($('#view'), decodeURIComponent(arg || ''), { lang: state.lang, L, questions, autoplay: location.hash.split('/')[3] === 'play' }); }
