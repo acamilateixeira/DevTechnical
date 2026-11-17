@@ -41,10 +41,6 @@ What I check most in review:
       pt: '"Uso React, então não tenho XSS." Ou validar permissão só no front.',
       en: '"I use React, so I have no XSS." Or checking permissions only on the frontend.',
     },
-    anchor: {
-      pt: 'Bora: políticas no PostgreSQL controlam acesso pelo vínculo no órgão e o segredo do push fica no Vault (fora do código). TripFlow: escopo por empresa + testes de isolamento (proteção contra IDOR entre tenants). Em sistemas financeiros na Sicoob, segurança é requisito do dia a dia.',
-      en: 'Bora: PostgreSQL policies control access by department membership and the push secret lives in Vault (outside the code). TripFlow: company scoping + isolation tests (protection against cross-tenant IDOR). In financial systems at Sicoob, security is a daily requirement.',
-    },
   },
   {
     id: 'sec-auth-jwt-oauth',
@@ -79,10 +75,6 @@ What I check most in review:
     flags: {
       pt: 'Colocar dados sensíveis no payload do JWT achando que está criptografado. Ou access token de 30 dias.',
       en: 'Putting sensitive data in the JWT payload thinking it is encrypted. Or a 30-day access token.',
-    },
-    anchor: {
-      pt: 'Bora usa Supabase Auth (JWT + RLS no PostgreSQL); Laravel tem Sanctum/Passport e policies; no Salesforce há perfis, permission sets e OAuth para integrações (Connected Apps). Cite o que você realmente configurou.',
-      en: 'Bora uses Supabase Auth (JWT + PostgreSQL RLS); Laravel has Sanctum/Passport and policies; Salesforce has profiles, permission sets, and OAuth for integrations (Connected Apps). Mention what you actually configured.',
     },
   },
 ];

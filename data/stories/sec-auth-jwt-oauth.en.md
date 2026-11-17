@@ -1,6 +1,6 @@
 # 🎟️ The club, the wristband, and the ticket
 
-> Camila wants to log in and approve a trip. There's security at the door, and each one checks something different.
+> Ana wants to log in and approve a trip. There's security at the door, and each one checks something different.
 
 ## 🎭 Cast
 - 🪪 **Reception** · authentication · checks WHO you are (password, Google, biometrics)
@@ -13,14 +13,14 @@
 - 🧩 **One-time code** · PKCE · protects the flow in browser and mobile apps, which can't keep secrets
 - 🦹 **Gatecrasher** · the attacker
 
-- 👩 **Camila** · the user · wants to log in and approve a trip
+- 👩 **Ana** · the user · wants to log in and approve a trip
 - 📱 **Travel app** · a third-party app · wants access to her calendar
 ## 🎬 Scene 1 · Who you are and what you can do
-**Camila**: "Hi, I'm Camila, my password is…"
-**Reception**: "Confirmed: you're Camila." 🪪
-**Camila**: "Then I'll approve the Marketing cost center's trip!"
-**VIP-area security**: "Whoa, whoa. Being Camila doesn't make you a Marketing manager. Not here." 🛂
-= 🪪 Authentication: ✅ it's Camila
+**Ana**: "Hi, I'm Ana, my password is…"
+**Reception**: "Confirmed: you're Ana." 🪪
+**Ana**: "Then I'll approve the Marketing cost center's trip!"
+**VIP-area security**: "Whoa, whoa. Being Ana doesn't make you a Marketing manager. Not here." 🛂
+= 🪪 Authentication: ✅ it's Ana
 = 🛂 Authorization for Marketing: ❌ 403 (she isn't a manager there)
 
 ## 🎬 Scene 2 · Wristband or ticket?
@@ -41,7 +41,7 @@
 **One-time code**: "And since you're a browser app that can't keep secrets, I'll protect the code exchange." 🧩
 = 🔑 Flow: Authorization Code + PKCE
 = 📱 The app received: a token with calendar scope only
-= 🔒 Camila's password: never went through the app ✅
+= 🔒 Ana's password: never went through the app ✅
 
 ## 💻 Translating to code
 ```http

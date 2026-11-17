@@ -73,10 +73,6 @@ app.post('/webhooks/gateway', express.raw({ type: 'application/json' }), async (
       { pt: 'Por que a assinatura precisa do corpo cru e não do JSON já interpretado?', en: 'Why does the signature need the raw body and not the parsed JSON?' },
       { pt: 'O que você responde ao gateway se o banco estiver fora do ar?', en: 'What do you return to the gateway if the database is down?' },
     ],
-    anchor: {
-      pt: 'No TripFlow você já reaproveita a resposta salva para a mesma Idempotency-Key, e no MeterTrail devolve 409 para o mesmo ID com conteúdo diferente: é a base desta resposta. Assinatura HMAC de webhook, se você não implementou em produção, apresente como estudo.',
-      en: 'In TripFlow you already reuse the stored response for the same Idempotency-Key, and MeterTrail returns 409 for the same id with different content: that is the base of this answer. If you have not implemented webhook HMAC signatures in production, present it as study.',
-    },
     flags: {
       pt: 'Processar o pagamento dentro da requisição do webhook, sem assinatura, ou deduplicar com um SELECT antes do INSERT.',
       en: 'Processing the payment inside the webhook request, no signature, or deduplicating with a SELECT before the INSERT.',
@@ -85,6 +81,7 @@ app.post('/webhooks/gateway', express.raw({ type: 'application/json' }), async (
 
   {
     id: 'order-state-machine',
+    noGloss: ['react-reconciliation'], // aqui é conciliação financeira, não a do React
     cat: 'architecture', type: 'code', jobs: ['backend-php-node', 'php-fintech'],
     tags: ['máquina de estados', 'state machine', 'transição', 'transition', 'pedido', 'order', 'nota fiscal', 'optimistic locking'],
     q: {
@@ -141,10 +138,6 @@ In PHP the design is the same: an enum or constants, a \`transitionTo()\` method
     follow: [
       { pt: 'Quando você usaria uma biblioteca de máquina de estados em vez de uma tabela simples?', en: 'When would you use a state machine library instead of a simple table?' },
     ],
-    anchor: {
-      pt: 'Se não modelou máquina de estados de pedido em produção, diga que estudou e mostre o desenho. O cuidado com consistência que você aprendeu na Sicoob é a ponte honesta.',
-      en: 'If you have not modeled an order state machine in production, say you studied it and show the design. The consistency care you learned at Sicoob is the honest bridge.',
-    },
     flags: {
       pt: 'Status como string livre alterado em vários lugares, ou "if status != X" espalhado pelo código.',
       en: 'Status as a free string changed in many places, or "if status != X" scattered around the code.',
@@ -189,10 +182,6 @@ In PHP the design is the same: an enum or constants, a \`transitionTo()\` method
       { pt: 'Que métricas diriam que a migração de uma fatia deu certo?', en: 'Which metrics would tell you a slice\'s migration succeeded?' },
       { pt: 'Como você lida com uma regra de negócio que só existe no código PHP e ninguém sabe explicar?', en: 'How do you deal with a business rule that only exists in the PHP code and nobody can explain?' },
     ],
-    anchor: {
-      pt: 'Modernização de legado em produção é sua vivência real: legado PHP MVC na ZR System e refatoração e hotfixes na Sicoob. Conte um caso de mudança feita sem quebrar a operação.',
-      en: 'Legacy modernization in production is your real experience: PHP MVC legacy at ZR System and refactoring and hotfixes at Sicoob. Tell a case of a change made without breaking operations.',
-    },
     flags: {
       pt: '"Reescrevo tudo em Node e troco num fim de semana." Ou os dois sistemas escrevendo as mesmas tabelas.',
       en: '"I rewrite everything in Node and switch over a weekend." Or both systems writing the same tables.',
@@ -201,6 +190,7 @@ In PHP the design is the same: an enum or constants, a \`transitionTo()\` method
 
   {
     id: 'external-call-vs-db-transaction',
+    noGloss: ['react-reconciliation'], // aqui é conciliação financeira, não a do React
     cat: 'architecture', type: 'architecture', jobs: ['backend-php-node', 'php-fintech'],
     tags: ['transação', 'transaction', 'gateway', 'saga', 'compensação', 'compensation', 'reconciliação', 'reconciliation', 'outbox'],
     q: {
@@ -234,10 +224,6 @@ To publish events from those changes without losing any, I use the **Transaction
     follow: [
       { pt: 'Qual a diferença entre saga por orquestração e por coreografia?', en: 'What is the difference between orchestrated and choreographed sagas?' },
     ],
-    anchor: {
-      pt: 'O TripFlow usa lock sem segurar a transação durante a chamada ao fornecedor e grava estado + evento na outbox na mesma transação: é exatamente esse problema. Conte com detalhe.',
-      en: 'TripFlow uses a lock without holding the transaction during the supplier call and writes state + event to the outbox in the same transaction: that is exactly this problem. Tell it in detail.',
-    },
     flags: {
       pt: 'Chamar o gateway dentro de DB::transaction e achar que o rollback desfaz a cobrança.',
       en: 'Calling the gateway inside DB::transaction and believing the rollback undoes the charge.',
@@ -285,10 +271,6 @@ To publish events from those changes without losing any, I use the **Transaction
     follow: [
       { pt: 'Quando um circuit breaker ajuda aqui, além do retry?', en: 'When does a circuit breaker help here, beyond retries?' },
     ],
-    anchor: {
-      pt: 'O TripFlow publica no RabbitMQ depois do commit e o consumidor deduplica reentregas pelo ID. Emissão fiscal em si, se não fez, apresente como aplicação desse mesmo desenho.',
-      en: 'TripFlow publishes to RabbitMQ after commit and the consumer deduplicates redeliveries by id. If you have not done invoice issuing itself, present it as an application of the same design.',
-    },
     flags: {
       pt: 'Emitir a nota dentro da requisição de pagamento, ou retry infinito sem separar erro temporário de definitivo.',
       en: 'Issuing the invoice inside the payment request, or infinite retries without separating transient from permanent errors.',
@@ -328,10 +310,6 @@ Some platforms talk about exactly-once inside their own ecosystem (e.g. Kafka tr
     follow: [
       { pt: 'Onde você guarda as chaves de deduplicação e por quanto tempo?', en: 'Where do you store deduplication keys and for how long?' },
     ],
-    anchor: {
-      pt: 'Use o TripFlow (outbox + consumidor que deduplica pelo ID) e o MeterTrail (reprocessamento sem contar duas vezes) como exemplos de "efeito uma vez só".',
-      en: 'Use TripFlow (outbox + consumer deduplicating by id) and MeterTrail (reprocessing without double counting) as examples of "effectively once".',
-    },
     flags: {
       pt: '"Uso uma fila com exactly-once, então não preciso me preocupar com duplicidade."',
       en: '"I use a queue with exactly-once, so I do not need to worry about duplicates."',
@@ -340,6 +318,7 @@ Some platforms talk about exactly-once inside their own ecosystem (e.g. Kafka tr
 
   {
     id: 'finance-business-metrics-tracing',
+    noGloss: ['react-reconciliation'], // aqui é conciliação financeira, não a do React
     cat: 'observability', type: 'architecture', jobs: ['backend-php-node', 'sr-observability'],
     tags: ['métricas de negócio', 'business metrics', 'OpenTelemetry', 'traceparent', 'correlation id', 'Prometheus', 'alertas', 'alerts'],
     q: {
@@ -383,10 +362,6 @@ Some platforms talk about exactly-once inside their own ecosystem (e.g. Kafka tr
     follow: [
       { pt: 'Qual alerta você criaria primeiro, e qual seria o limite?', en: 'Which alert would you create first, and what would the threshold be?' },
     ],
-    anchor: {
-      pt: 'Instrumentar com OpenTelemetry um trace atravessando API → banco → RabbitMQ → consumidor é o plano do PulseOps. Até existir, apresente como plano, não como experiência.',
-      en: 'Instrumenting with OpenTelemetry a trace across API → database → RabbitMQ → consumer is the PulseOps plan. Until it exists, present it as a plan, not as experience.',
-    },
     flags: {
       pt: 'Só métricas de CPU e memória, ou log sem nenhum id para ligar as partes.',
       en: 'Only CPU and memory metrics, or logs with no id to connect the pieces.',

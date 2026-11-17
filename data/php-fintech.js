@@ -86,10 +86,6 @@ Details that show mastery: \`final\` to block inheritance where it makes no sens
       pt: '"Interface e classe abstrata são a mesma coisa." Ou usar herança só para reaproveitar código entre classes que não têm relação.',
       en: '"Interfaces and abstract classes are the same thing." Or using inheritance just to reuse code between unrelated classes.',
     },
-    anchor: {
-      pt: 'Você usa isso em Laravel no Grupo Mysa e usou na Sicoob (SOLID, código modular). No GEMP, a interface `Provider` é exatamente esse polimorfismo: a comparação não sabe de qual provedor vem a oferta.',
-      en: 'You use this in Laravel at Grupo Mysa and did at Sicoob (SOLID, modular code). In GEMP the `Provider` interface is exactly this polymorphism: the comparison does not know which provider the offer came from.',
-    },
   },
   {
     id: 'php-7-to-8-features',
@@ -173,10 +169,6 @@ In payments, the comparison change is the riskiest part: a \`==\` that "worked" 
       pt: 'Não saber nenhuma novidade do PHP 8 trabalhando com PHP hoje. Ou "migro mudando a versão no servidor e vejo o que quebra".',
       en: 'Not knowing any PHP 8 feature while working with PHP today. Or "I migrate by changing the server version and seeing what breaks".',
     },
-    anchor: {
-      pt: 'Seu TripFlow está em PHP 8.3 + Laravel 12 com Larastan/PHPStan nível 8: mostre os recursos do PHP 8 que você usou lá. A modernização de legado na Sicoob (refatoração, bugs, hotfixes) e na ZR System é a história para "como migraria".',
-      en: 'Your TripFlow runs PHP 8.3 + Laravel 12 with Larastan/PHPStan level 8: show the PHP 8 features you used there. Legacy modernization at Sicoob (refactoring, bugs, hotfixes) and ZR System is your story for "how would you migrate".',
-    },
   },
   {
     id: 'php-comparison-money',
@@ -236,10 +228,6 @@ A \`Money\` value object (amount + currency, immutable) centralizes these rules 
     flags: {
       pt: '`round($valor * 1.0299, 2)` com float em cálculo financeiro, ou coluna `FLOAT` para saldo.',
       en: '`round($valor * 1.0299, 2)` with floats in financial math, or a `FLOAT` column for balances.',
-    },
-    anchor: {
-      pt: 'Você trabalhou em sistemas financeiros na Sicoob, e GEMP e TripFlow guardam dinheiro em centavos inteiros. Esta é uma pergunta em que você tem prova concreta: cite os dois.',
-      en: 'You worked on financial systems at Sicoob, and GEMP and TripFlow store money as integer cents. You have concrete proof for this one: cite both.',
     },
   },
   {
@@ -332,10 +320,6 @@ if ($this->db->trans_status() === false) { /* rollback já feito; logar e avisar
       pt: '"CodeIgniter é ultrapassado, eu reescreveria tudo em Laravel." A vaga é de manutenção contínua: reescrever tudo de uma vez é o maior risco possível num sistema de pagamentos.',
       en: '"CodeIgniter is outdated, I would rewrite everything in Laravel." The role is ongoing maintenance: a big-bang rewrite is the biggest possible risk in a payments system.',
     },
-    anchor: {
-      pt: 'Na ZR System você evoluiu um sistema legado em PHP com arquitetura MVC, preservando o que já estava em uso: é exatamente o trabalho desta vaga. CodeIgniter não aparece no seu CV; se não usou, a ponte honesta é: "trabalho com Laravel e com PHP MVC legado; o CI3 é o mesmo modelo, mais enxuto, e já mantive legado sem quebrar a operação".',
-      en: 'At ZR System you evolved a legacy PHP MVC system while preserving what was already in use: exactly the work this role describes. CodeIgniter is not on your CV; if you have not used it, the honest bridge: "I work with Laravel and legacy PHP MVC; CI3 is the same model, leaner, and I have maintained legacy without breaking operations".',
-    },
   },
   {
     id: 'laravel-queues-payments',
@@ -416,10 +400,6 @@ Details that matter in a payments system:
       pt: 'Chamar o ERP direto dentro da requisição (e da transação). Ou retry sem nenhuma checagem de "já fiz isso?".',
       en: 'Calling the ERP directly inside the request (and the transaction). Or retrying with no "have I already done this?" check.',
     },
-    anchor: {
-      pt: 'Integrações com ERP são o seu dia a dia no Grupo Mysa (ERP ↔ Salesforce ↔ e-commerce). No TripFlow você tem Redis, RabbitMQ, outbox e consumidor que deduplica: é a mesma ideia, em produção de portfólio. Abra o lab "Outbox" e o "Idempotência" antes da entrevista.',
-      en: 'ERP integrations are your daily work at Grupo Mysa (ERP ↔ Salesforce ↔ e-commerce). TripFlow has Redis, RabbitMQ, an outbox, and a deduplicating consumer: same idea in a portfolio project. Open the "Outbox" and "Idempotency" labs before the interview.',
-    },
   },
   {
     id: 'php-security-pdo-password',
@@ -474,10 +454,6 @@ $logger->info('compra autorizada', ['cartao' => mascararCartao($pan), 'valor' =>
     flags: {
       pt: 'Usar `addslashes`/`mysql_real_escape_string` como proteção principal. Ou logar o request inteiro de pagamento "para debugar".',
       en: 'Using `addslashes`/`mysql_real_escape_string` as the main protection. Or logging the whole payment request "for debugging".',
-    },
-    anchor: {
-      pt: 'Sistemas financeiros na Sicoob: fale de como dados sensíveis eram tratados lá (mascaramento, acesso restrito, auditoria), sem expor nada confidencial. Veja o lab "XSS" para a parte de front.',
-      en: 'Financial systems at Sicoob: talk about how sensitive data was handled there (masking, restricted access, auditing), without exposing anything confidential. See the "XSS" lab for the front-end part.',
     },
   },
   {
@@ -544,10 +520,6 @@ To integrate all three, I let each system own its database and integrate via API
     flags: {
       pt: '"SQL é tudo igual." Ou não saber o que é collation quando uma busca por e-mail falha em produção.',
       en: '"SQL is all the same." Or not knowing what collation is when an email lookup fails in production.',
-    },
-    anchor: {
-      pt: 'Você trabalhou com os três: SQL Server e MySQL na Sicoob, MySQL na ZR System e no TripFlow, PostgreSQL no Bora (Supabase, com testes de RLS) e ainda Oracle/PL/SQL na Easy Process. Poucos candidatos de pleno têm isso: cite um caso real de diferença que já te pegou.',
-      en: 'You have used all three: SQL Server and MySQL at Sicoob, MySQL at ZR System and in TripFlow, PostgreSQL in Bora (Supabase, with RLS tests), plus Oracle/PL/SQL at Easy Process. Few mid-level candidates have that: cite a real difference that once bit you.',
     },
   },
   {
@@ -624,10 +596,6 @@ Ask before writing: "does a null pago_em mean unpaid? Do partial payments exist?
       pt: 'Colocar condição de agregação no WHERE, ou trazer tudo para o PHP e somar num foreach.',
       en: 'Putting an aggregate condition in WHERE, or loading everything into PHP and summing in a foreach.',
     },
-    anchor: {
-      pt: 'Relatórios gerenciais em Oracle na Easy Process e extrações de dados são sua prova. Treine escrevendo a consulta no papel em 10 minutos, falando em voz alta.',
-      en: 'Management reports in Oracle at Easy Process and data extracts are your proof. Practice writing the query on paper in 10 minutes, talking out loud.',
-    },
   },
   {
     id: 'docker-php-dev-env',
@@ -703,10 +671,6 @@ Everyday commands: \`docker compose up -d\`, \`logs -f app\`, \`exec app php art
       pt: 'Confundir imagem com container, ou guardar os dados do banco dentro do container sem volume.',
       en: 'Confusing images with containers, or keeping database data inside the container without a volume.',
     },
-    anchor: {
-      pt: 'Docker na Sicoob (deploy, Linux, incidentes) e o TripFlow inteiro em containers (PHP 8.3, MySQL, Redis, RabbitMQ), com demo no Codespaces. Abra o compose do TripFlow e explique cada serviço: é a melhor prova possível.',
-      en: 'Docker at Sicoob (deployment, Linux, incidents) and all of TripFlow in containers (PHP 8.3, MySQL, Redis, RabbitMQ), with a Codespaces demo. Open TripFlow\'s compose file and explain each service: the best proof you can offer.',
-    },
   },
   {
     id: 'git-workflow-conflicts',
@@ -768,10 +732,6 @@ Also: clear commit messages (Conventional Commits), a protected \`main\` with PR
     flags: {
       pt: '`git push --force` na main. Ou resolver conflito apagando a mudança do colega sem conversar.',
       en: '`git push --force` on main. Or resolving a conflict by deleting a colleague\'s change without talking.',
-    },
-    anchor: {
-      pt: 'Hotfixes em produção na Sicoob (GitLab CI/CD) e GitLab Issue Boards. No seu portfólio há template de PR, validação de PR e proteção com CI: são evidências de fluxo de Git maduro.',
-      en: 'Production hotfixes at Sicoob (GitLab CI/CD) and GitLab Issue Boards. Your portfolio has a PR template, PR validation, and CI protection: evidence of a mature Git workflow.',
     },
   },
   {
@@ -841,10 +801,6 @@ In the ecosystem, **Spring Boot** is the Laravel equivalent (dependency injectio
     flags: {
       pt: 'Dizer que tem experiência forte em Java sem ter. Para pleno PHP, Java costuma ser apoio: seja honesta sobre o nível e mostre que os conceitos você domina.',
       en: 'Claiming strong Java experience you do not have. For a PHP mid-level role, Java is usually supporting: be honest about your level and show you master the concepts.',
-    },
-    anchor: {
-      pt: 'Você tem C#/ASP.NET da Sicoob, que é muito parecido com Java (JVM ≈ CLR, tipagem estática, interfaces, exceptions). Ponte honesta: "Java eu uso em nível básico; C# e TypeScript me deram a base de tipagem estática, então leio e mantenho código Java com tranquilidade".',
-      en: 'You have C#/ASP.NET from Sicoob, which is very similar to Java (JVM ≈ CLR, static typing, interfaces, exceptions). Honest bridge: "I use Java at a basic level; C# and TypeScript gave me the static-typing foundation, so I can read and maintain Java code comfortably".',
     },
   },
 
@@ -944,15 +900,11 @@ A practitioner's caveat: for simple CRUD this is too much ceremony. I apply it w
       pt: 'Desenhar as quatro camadas sem saber explicar a regra de dependência. Ou "Clean Architecture é ter pastas Domain/Application/Infra".',
       en: 'Drawing the four layers without being able to explain the dependency rule. Or "Clean Architecture means having Domain/Application/Infra folders".',
     },
-    anchor: {
-      pt: 'O TripFlow usa Pest com testes de arquitetura e Larastan nível 8: é a prova de que você não só conhece a teoria, como faz o CI barrar dependência na direção errada. O caso de uso de aprovação com lock e outbox é o exemplo para contar.',
-      en: 'TripFlow uses Pest with architecture tests and Larastan level 8: proof that you not only know the theory but make CI block dependencies in the wrong direction. Its approval use case with locking and an outbox is the example to tell.',
-    },
   },
   {
     id: 'payments-card-lifecycle',
     cat: 'payments', type: 'architecture', jobs: ['php-fintech'],
-    noGloss: ['authz'],   // aqui "autorização" é da compra no cartão, não de permissão
+    noGloss: ['authz', 'react-reconciliation'],   // aqui "autorização" é da compra no cartão, não de permissão
     tags: ['autorização', 'captura', 'estorno', 'chargeback', 'fatura', 'conciliação', 'private label', 'limite de crédito', 'PCI DSS'],
     q: {
       pt: 'Explique o ciclo de uma compra no cartão: autorização, captura, estorno, fatura, chargeback e conciliação. Como você modelaria isso no banco para não perder nem duplicar dinheiro?',
@@ -999,10 +951,6 @@ A practitioner's caveat: for simple CRUD this is too much ceremony. I apply it w
     flags: {
       pt: 'Atualizar o saldo com `UPDATE saldo = saldo - x` sem histórico de lançamentos. Ou apagar a transação para "estornar".',
       en: 'Updating the balance with `UPDATE balance = balance - x` without a postings history. Or deleting the transaction to "refund" it.',
-    },
-    anchor: {
-      pt: 'Sicoob (cooperativas de crédito) é a sua experiência mais próxima desse domínio: fale do cuidado com consistência que você aprendeu lá ("consistência antes de velocidade", como diz seu portfólio). O lab "Transações e locks" mostra o limite sendo estourado e a correção.',
-      en: 'Sicoob (credit unions) is your closest experience to this domain: talk about the consistency discipline you learned there ("consistency before speed", as your portfolio says). The "Transactions and locks" lab shows the limit being exceeded and the fix.',
     },
   },
   {
@@ -1102,10 +1050,6 @@ Signs of maturity in the example:
       pt: 'Teste que usa a data de hoje, ou mockar o próprio banco em tudo e nunca ter um teste de integração.',
       en: 'Tests that depend on today\'s date, or mocking the database everywhere and never having an integration test.',
     },
-    anchor: {
-      pt: 'PHPUnit na Sicoob; Pest (inclusive testes de arquitetura) e teste de concorrência com duas conexões MySQL no TripFlow. O lab "TDD" do app roda esse ciclo ao vivo em JavaScript: pratique lá e traduza para PHP.',
-      en: 'PHPUnit at Sicoob; Pest (including architecture tests) and a two-connection MySQL concurrency test in TripFlow. The app\'s "TDD" lab runs this cycle live in JavaScript: practice there and translate to PHP.',
-    },
   },
   {
     id: 'legacy-production-bug',
@@ -1140,10 +1084,6 @@ Signs of maturity in the example:
     flags: {
       pt: 'Ir direto ao código e "consertar" sem reproduzir nem medir o impacto. Ou corrigir o dado na mão em produção.',
       en: 'Jumping straight into code and "fixing" it without reproducing or sizing the impact. Or editing data by hand in production.',
-    },
-    anchor: {
-      pt: 'Sustentação em produção é o seu dia a dia: hotfixes e investigação de incidentes na Sicoob, legado PHP MVC na ZR System, sustentação no Grupo Mysa. Prepare um caso real nesse roteiro (STAR) com 2 minutos.',
-      en: 'Production support is your daily work: hotfixes and incident investigation at Sicoob, legacy PHP MVC at ZR System, support at Grupo Mysa. Prepare one real case in this outline (STAR) in 2 minutes.',
     },
   },
   {
@@ -1196,10 +1136,6 @@ Care points: each service with a least-privilege **service account**, no public 
       pt: 'Dizer que tem experiência em GCP sem ter. É diferencial, não requisito: mostrar que mapeia o que já sabe é suficiente.',
       en: 'Claiming GCP experience you do not have. It is a plus, not a requirement: showing you can map what you already know is enough.',
     },
-    anchor: {
-      pt: 'Você tem AWS (Grupo Mysa) e Azure (Sicoob). Frase pronta: "Em produção usei AWS e Azure; GCP eu conheço pelo mapeamento dos serviços, e a parte que importa (containers, banco gerenciado, filas, IAM) é a mesma".',
-      en: 'You have AWS (Grupo Mysa) and Azure (Sicoob). Ready line: "In production I have used AWS and Azure; I know GCP through service mapping, and what matters (containers, managed databases, queues, IAM) is the same".',
-    },
   },
   {
     id: 'behavioral-company-fit',
@@ -1210,18 +1146,18 @@ Care points: each service with a least-privilege **service account**, no public 
       en: 'Manager interview: "Tell me about yourself. Why this company? Where do you see yourself in 5 years? You have senior-level experience, why a mid-level role?"',
     },
     a: {
-      pt: `**Fale de você (90 s)**: presente → passado → por que esta vaga. "Sou desenvolvedora full stack com 5 anos em sistemas financeiros, ERP e e-commerce. Hoje trabalho com PHP/Laravel, integrações e Salesforce no Grupo Mysa. Antes, três anos na Sicoob com sistemas de cooperativas de crédito em PHP/Laravel, SQL Server e Docker. O que mais gosto é manter sistemas críticos funcionando e evoluindo sem quebrar a operação, que é o que esta vaga descreve."
+      pt: `**Fale de você (90 s)**: presente → passado → por que esta vaga. Modelo: "Sou dev back-end há X anos, a maior parte em sistemas financeiros. Hoje trabalho com [stack] em [tipo de empresa], cuidando de [o que você mantém]. Antes, [experiência anterior em uma frase]. O que mais gosto é manter sistemas críticos funcionando e evoluindo sem quebrar a operação, que é o que esta vaga descreve."
 
-**Por que esta empresa**: algo específico e verdadeiro. É uma instituição de pagamentos (domínio onde consistência importa e onde você já tem vivência), stack que você domina (PHP, Laravel, SQL Server, MySQL, Docker), trabalho remoto e um sistema real com usuários reais. Pesquise antes: produtos (cartão private label, conta digital), há quanto tempo existe, quantas lojas parceiras.
+**Por que esta empresa**: algo específico e verdadeiro. Por exemplo: o domínio (pagamentos, onde consistência importa), a stack que você domina, o modelo de trabalho e um produto com usuários reais. Pesquise antes: produtos, há quanto tempo existe, tamanho e clientes.
 
 **Daqui a 5 anos**: crescimento ligado à empresa, sem soar como "vou embora": "quero ser referência técnica no domínio de pagamentos do time, ajudando a modernizar o legado e a formar outras pessoas".
 
 **Sênior em vaga pleno**: sem se desvalorizar nem parecer que está de passagem. "Quero estar num domínio financeiro com essa stack; o nível do cargo importa menos que o problema. Sei que a experiência ajuda a entregar rápido e espero crescer aqui por mérito." Se perguntarem salário, tenha uma **faixa** pesquisada para pleno PHP remoto e responda com ela.
 
 **Como conheceu a empresa**: resposta honesta e curta (plataforma de vagas) + o que te chamou atenção na descrição.`,
-      en: `**Tell me about yourself (90 s)**: present → past → why this role. "I am a full stack developer with 5 years in financial systems, ERP, and e-commerce. Today I work with PHP/Laravel, integrations, and Salesforce at Grupo Mysa. Before that, three years at Sicoob on credit-union systems in PHP/Laravel, SQL Server, and Docker. What I enjoy most is keeping critical systems running and evolving without breaking operations, which is what this role describes."
+      en: `**Tell me about yourself (90 s)**: present → past → why this role. Template: "I have been a back-end developer for X years, mostly on financial systems. Today I work with [stack] at [kind of company], looking after [what you maintain]. Before that, [previous experience in one sentence]. What I enjoy most is keeping critical systems running and evolving without breaking operations, which is what this role describes."
 
-**Why this company**: something specific and true. A payments institution (a domain where consistency matters and where you have experience), a stack you master (PHP, Laravel, SQL Server, MySQL, Docker), remote work, and a real system with real users. Research first: products (private label card, digital account), company age, partner stores.
+**Why this company**: something specific and true. For example: the domain (payments, where consistency matters), a stack you master, the work model, and a product with real users. Research first: products, company age, size and customers.
 
 **In 5 years**: growth tied to the company, without sounding like "I will leave": "I want to be a technical reference in the team's payments domain, helping modernize the legacy and mentoring others".
 
@@ -1231,15 +1167,11 @@ Care points: each service with a least-privilege **service account**, no public 
     },
     follow: [
       { pt: 'Qual foi o maior desafio técnico do seu trabalho atual?', en: 'What was the biggest technical challenge in your current job?' },
-      { pt: 'Você trabalha bem sozinha, remota? Como se organiza?', en: 'Do you work well alone, remotely? How do you organize yourself?' },
+      { pt: 'Você trabalha bem sozinho(a), remoto? Como se organiza?', en: 'Do you work well alone, remotely? How do you organize yourself?' },
     ],
     flags: {
       pt: 'Responder "onde se vê em 5 anos" com "em outra empresa/no exterior". Ou falar mal do emprego atual.',
       en: 'Answering "where in 5 years" with "at another company/abroad". Or badmouthing your current job.',
-    },
-    anchor: {
-      pt: 'Use os dados reais do seu portfólio: 5 anos, Sicoob (financeiro), Grupo Mysa (atual), ZR System (legado PHP MVC), Easy Process (Oracle). Ensaie em voz alta com o cronômetro de 3 minutos do app.',
-      en: 'Use the real facts from your portfolio: 5 years, Sicoob (finance), Grupo Mysa (current), ZR System (legacy PHP MVC), Easy Process (Oracle). Rehearse out loud with the app\'s 3-minute timer.',
     },
   },
 ];

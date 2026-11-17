@@ -41,10 +41,6 @@ To detect it: \`monitorEventLoopDelay\` from \`perf_hooks\`, clinic.js, or the e
       pt: '"Node não serve para nada pesado." A resposta sênior é: serve, desde que o trabalho de CPU saia do event loop.',
       en: '"Node is useless for anything heavy." The senior answer: it works fine as long as CPU work leaves the event loop.',
     },
-    anchor: {
-      pt: 'No Livit, um único worker Node, iniciado sob demanda, roda as regras dos jogos separado do servidor Python: é o padrão de isolar processamento em outro processo. No TripFlow, a publicação no RabbitMQ sai da requisição via outbox + relay.',
-      en: 'In Livit, a single on-demand Node worker runs game rules separately from the Python server: the pattern of isolating processing in another process. In TripFlow, publishing to RabbitMQ leaves the request via outbox + relay.',
-    },
   },
   {
     id: 'node-streams-backpressure',
@@ -99,10 +95,6 @@ For truly large exports, the sturdier option is asynchronous: enqueue a job, wri
     flags: {
       pt: 'Aumentar `--max-old-space-size` como solução. Ou usar `.pipe()` sem tratar erros.',
       en: 'Raising `--max-old-space-size` as the fix. Or using `.pipe()` without handling errors.',
-    },
-    anchor: {
-      pt: 'Na Easy Process você criou extrações de dados e relatórios gerenciais em Oracle; no Grupo Mysa lida com ERP e e-commerce de grande porte. Conte um caso real de relatório pesado e explique como faria hoje com streaming ou job assíncrono.',
-      en: 'At Easy Process you built data extracts and management reports in Oracle; at Grupo Mysa you deal with large ERP and e-commerce systems. Tell a real heavy-report story and explain how you would do it today with streaming or an async job.',
     },
   },
   {
@@ -166,10 +158,6 @@ setTimeout(() => process.exit(1), 25_000).unref(); // não passe do terminationG
     flags: {
       pt: '`catch (e) { console.log(e) }` engolindo o erro, ou devolver `err.stack` na resposta da API.',
       en: '`catch (e) { console.log(e) }` swallowing the error, or returning `err.stack` in the API response.',
-    },
-    anchor: {
-      pt: 'Na Sicoob você participou de deploy, Docker, Linux e investigação de incidentes; no Grupo Mysa faz sustentação em produção. No TripFlow, o consumidor deduplica reentregas pelo ID: é a garantia de que um shutdown no meio do processamento não gera efeito duplicado.',
-      en: 'At Sicoob you worked on deployments, Docker, Linux, and incident investigation; at Grupo Mysa you do production support. In TripFlow the consumer deduplicates redeliveries by ID: that guarantees a shutdown mid-processing does not produce duplicate effects.',
     },
   },
   {
@@ -260,10 +248,6 @@ The senior caveat: keep business rules out of controllers and do not couple the 
       pt: 'Fingir experiência com Nest. Se não usou em produção, diga e mostre que o modelo mental é o mesmo do Laravel e do ASP.NET, que você já usou.',
       en: 'Faking Nest experience. If you have not used it in production, say so and show the mental model is the same as Laravel and ASP.NET, which you have used.',
     },
-    anchor: {
-      pt: 'Laravel tem service container, service providers, middleware, form requests (≈ pipes) e policies/gates (≈ guards). ASP.NET (que você usou na Sicoob) tem DI nativa e filtros. Frase pronta: "O ciclo do Nest mapeia quase um para um no Laravel e no ASP.NET, que uso há anos."',
-      en: 'Laravel has a service container, service providers, middleware, form requests (≈ pipes), and policies/gates (≈ guards). ASP.NET (which you used at Sicoob) has built-in DI and filters. Ready line: "Nest\'s lifecycle maps almost one-to-one to Laravel and ASP.NET, which I have used for years."',
-    },
   },
   {
     id: 'nest-guard-decorator-test',
@@ -342,10 +326,6 @@ RBAC's limit: roles do not handle contextual rules ("a manager only approves tri
     flags: {
       pt: 'Checar papel dentro de cada controller com `if`. Ou confundir 401 com 403.',
       en: 'Checking roles inside every controller with an `if`. Or mixing up 401 and 403.',
-    },
-    anchor: {
-      pt: 'No Laravel você usa middleware de rota e Policies/Gates, que são o mesmo conceito. Diga: "no Laravel faço isso com Policies e middleware `can:`; no Nest o equivalente é guard + decorator com Reflector". A separação entre papel e regra contextual aparece no TripFlow (aprovação depende do centro de custo).',
-      en: 'In Laravel you use route middleware and Policies/Gates, which are the same concept. Say: "in Laravel I do this with Policies and `can:` middleware; in Nest the equivalent is a guard + decorator with Reflector". The split between role and contextual rule shows up in TripFlow (approval depends on the cost center).',
     },
   },
   {
@@ -427,10 +407,6 @@ Production concerns Nest does not solve for you:
     flags: {
       pt: 'Usar `send` (request-response) para tudo e chamar isso de arquitetura orientada a eventos.',
       en: 'Using `send` (request-response) for everything and calling it event-driven architecture.',
-    },
-    anchor: {
-      pt: 'A parte difícil você já resolveu no TripFlow (outbox, relay, RabbitMQ, consumidor deduplicando por ID). Frase pronta: "O transporte do Nest é a parte fácil; a garantia de entrega e a idempotência eu implementei no TripFlow e levaria para o Nest do mesmo jeito".',
-      en: 'You already solved the hard part in TripFlow (outbox, relay, RabbitMQ, consumer deduplicating by ID). Ready line: "Nest\'s transport is the easy part; delivery guarantees and idempotency I implemented in TripFlow and would carry into Nest the same way".',
     },
   },
 ];

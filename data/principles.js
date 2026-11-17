@@ -61,10 +61,6 @@ The senior point: SOLID is a tool against coupling, not a rule to add an interfa
       pt: 'Recitar as siglas sem exemplo. Ou dizer que SRP é "uma classe deve fazer uma coisa só" (é sobre motivo de mudança).',
       en: 'Reciting the acronyms without examples. Or saying SRP means "a class should do only one thing" (it is about reasons to change).',
     },
-    anchor: {
-      pt: 'Seu CV da Sicoob diz que você aplicou SOLID e código modular com PHPUnit e Jest. O GEMP tem a interface `Provider` separando a comparação da origem das ofertas: isso é DIP + OCP em produção de portfólio. Tenha um "antes e depois" de refatoração de legado pronto.',
-      en: 'Your Sicoob CV says you applied SOLID and modular code with PHPUnit and Jest. GEMP has a `Provider` interface separating comparison from where offers come from: DIP + OCP in a portfolio project. Have a legacy refactoring "before and after" ready.',
-    },
   },
   {
     id: 'ddd-core-concepts',
@@ -147,10 +143,6 @@ DDD pays off in complex domains. For a simple CRUD it is too much ceremony.`,
       pt: '"DDD é organizar pastas em domain/application/infra." Isso é estrutura, não design orientado a domínio.',
       en: '"DDD is organizing folders into domain/application/infra." That is structure, not domain-driven design.',
     },
-    anchor: {
-      pt: 'O Bora tem um exemplo perfeito de modelagem de domínio: você separou **solicitação** de **atribuição** (o solicitante e o trajeto ficam com a solicitação mesmo quando muda o motorista) e **vínculo operacional** de **presença** (aprovado e offline são coisas diferentes). Integração Salesforce ↔ ERP é bounded context com tradução na prática.',
-      en: 'Bora has a perfect domain-modeling example: you separated **request** from **assignment** (requester and route stay with the request when the driver changes) and **operational membership** from **presence** (approved and offline are different things). Salesforce ↔ ERP integration is bounded contexts with translation in practice.',
-    },
   },
   {
     id: 'clean-code-review',
@@ -232,10 +224,6 @@ export async function saveDiscountedOrders(orders: readonly Order[], api: Orders
       pt: 'Focar só em estilo (ponto e vírgula, espaços) e não ver o I/O misturado nem o float em dinheiro.',
       en: 'Focusing only on style (semicolons, spacing) and missing the mixed I/O and floats for money.',
     },
-    anchor: {
-      pt: 'Você fez code review na Sicoob, e seu portfólio tem template de PR, workflow de validação de PR e revisão assistida por IA no GitHub Actions. O GEMP e o TripFlow guardam dinheiro em centavos inteiros: cite isso no ponto do float.',
-      en: 'You did code review at Sicoob, and your portfolio has a PR template, a PR validation workflow, and AI-assisted review in GitHub Actions. GEMP and TripFlow store money as integer cents: mention it on the float point.',
-    },
   },
   {
     id: 'design-patterns-real',
@@ -278,10 +266,6 @@ The senior point: a pattern is vocabulary to communicate a solution, not a goal.
     flags: {
       pt: 'Listar os 23 do GoF sem nenhum exemplo vivido.',
       en: 'Listing all 23 GoF patterns without a single lived example.',
-    },
-    anchor: {
-      pt: 'GEMP: `Provider` é Strategy/Adapter para cada provedor de crédito. Integrações Salesforce ↔ ERP ↔ e-commerce no Grupo Mysa são Adapters e ACL. TripFlow: Repository + eventos de domínio na outbox. Middlewares e listeners do Laravel você usa no trabalho.',
-      en: 'GEMP: `Provider` is Strategy/Adapter for each credit provider. Salesforce ↔ ERP ↔ e-commerce integrations at Grupo Mysa are Adapters and an ACL. TripFlow: Repository + domain events in the outbox. You use Laravel middleware and listeners at work.',
     },
   },
 ];

@@ -19,6 +19,7 @@ import backendFinance from './backend-finance.js';
 import backendQuality from './backend-quality.js';
 import { rubrics } from './rubrics.js';
 import { extraJobs, reported } from './evidence.js';
+import { examples } from './examples.js';
 
 const all = [
   ...typescript, ...react, ...node, ...api, ...databases, ...messaging,
@@ -33,4 +34,5 @@ export const questions = all.map((q) => ({
   points: rubrics[q.id]?.points ?? [],
   tools: rubrics[q.id]?.tools ?? [],
   metrics: rubrics[q.id]?.metrics ?? [],
+  example: examples[q.id],
 }));

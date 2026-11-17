@@ -61,10 +61,6 @@ The same image, tagged with the commit SHA, is promoted from staging to producti
       pt: 'Imagem com `FROM node:latest`, rodando como root, com `.env` copiado para dentro. Ou `COPY . .` antes do `npm install`.',
       en: 'An image `FROM node:latest`, running as root, with `.env` copied inside. Or `COPY . .` before `npm install`.',
     },
-    anchor: {
-      pt: 'Docker aparece na Sicoob (deploy, Linux, investigação de incidentes) e no TripFlow (PHP 8.3 + MySQL + Redis + RabbitMQ em containers, com demo no Codespaces). Abra o Dockerfile e o compose do TripFlow antes da entrevista e explique as escolhas que estão lá.',
-      en: 'Docker shows up at Sicoob (deployment, Linux, incident investigation) and in TripFlow (PHP 8.3 + MySQL + Redis + RabbitMQ in containers, with a Codespaces demo). Open TripFlow\'s Dockerfile and compose file before the interview and explain the choices in them.',
-    },
   },
   {
     id: 'k8s-core-concepts',
@@ -132,10 +128,6 @@ spec:
     flags: {
       pt: 'Dizer que tem experiência com Kubernetes em produção sem ter. Muitas vagas listam K8s como "nice to have": conceito sólido + honestidade bastam.',
       en: 'Claiming production Kubernetes experience you do not have. Many roles list K8s as a nice-to-have: solid concepts plus honesty are enough.',
-    },
-    anchor: {
-      pt: 'Kubernetes não está no seu CV. Ponte honesta: você já fez deploy com Docker e GitLab CI na Sicoob e trabalha com AWS e Azure. O PulseOps e o portfolio-infra são o lugar natural para praticar (por exemplo, k3s numa VM do Oracle Cloud Always Free). Diga só o que já tiver feito de fato.',
-      en: 'Kubernetes is not on your CV. Honest bridge: you have deployed with Docker and GitLab CI at Sicoob and work with AWS and Azure. PulseOps and portfolio-infra are the natural place to practice (e.g. k3s on an Oracle Cloud Always Free VM). Only claim what you have actually done.',
     },
   },
 ];

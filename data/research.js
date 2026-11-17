@@ -62,10 +62,6 @@ What counts: code that runs, clear names, explained complexity, and tested edge 
       pt: 'Começar a digitar sem perguntar nada, ou dizer "terminei" sem rodar nenhum caso de teste.',
       en: 'Starting to type without asking anything, or saying "done" without running a single test case.',
     },
-    anchor: {
-      pt: 'Treine em voz alta no lab "Event loop" (edite o código para contar algo) ou no Node local. O MeterTrail (ingestão e agregação de uso) é um bom gancho para a parte de escala.',
-      en: 'Practice out loud in the "Event loop" lab (edit the code to count something) or in local Node. MeterTrail (usage ingestion and aggregation) is a good hook for the scaling part.',
-    },
   },
   {
     id: 'algo-classic-hackerrank',
@@ -137,10 +133,6 @@ In a timed test: read every prompt first, solve the easiest first, run the given
       pt: 'Entregar O(n²) sem comentar que existe solução melhor. Ou não testar com entrada vazia.',
       en: 'Submitting O(n²) without mentioning a better solution exists. Or not testing with empty input.',
     },
-    anchor: {
-      pt: 'Algoritmos clássicos não aparecem no CV de ninguém; aparecem no treino. Faça 2 ou 3 problemas fáceis por dia no HackerRank em JavaScript/TypeScript (e em PHP para vagas PHP) durante a semana da entrevista.',
-      en: 'Classic algorithms show up in practice, not on anyone\'s CV. Do 2 or 3 easy HackerRank problems a day in JavaScript/TypeScript (and PHP for PHP roles) during interview week.',
-    },
   },
   {
     id: 'obs-alerting-design',
@@ -186,10 +178,6 @@ Trade-offs: **polling** evaluation (simple, delay equals the interval) vs **stre
       pt: 'Notificar a cada avaliação (spam), ou mandar a notificação de forma síncrona dentro do avaliador.',
       en: 'Notifying on every evaluation (spam), or sending notifications synchronously inside the evaluator.',
     },
-    anchor: {
-      pt: 'Os labs "Resiliência" (retry, backoff, breaker) e "Outbox" (fila, idempotência) mostram em funcionamento as peças da notificação confiável. A máquina de estados lembra os estados do GEMP e do Bora (presença, solicitação, atribuição).',
-      en: 'The "Resilience" (retry, backoff, breaker) and "Outbox" (queue, idempotency) labs show the reliable-notification pieces running. The state machine echoes the states in GEMP and Bora (presence, request, assignment).',
-    },
   },
   {
     id: 'behavioral-proud-project-deepdive',
@@ -229,10 +217,6 @@ Prepare answers for the "dig": why not the obvious alternative, how you tested, 
       pt: 'Falar só "a gente" sem deixar claro o seu papel. Ou escolher um projeto que você não consegue defender no detalhe.',
       en: 'Saying only "we" without making your role clear. Or picking a project you cannot defend in detail.',
     },
-    anchor: {
-      pt: 'O Bora é o mais forte: React Native + Supabase usado de verdade pela Prefeitura de Conceição do Mato Dentro, com decisões claras (separar solicitação de atribuição, presença com expiração, políticas no PostgreSQL com testes). Para a Elastic, o GEMP (concorrência e resiliência) também funciona.',
-      en: 'Bora is your strongest: React Native + Supabase used for real by the Conceição do Mato Dentro municipality, with clear decisions (separating request from assignment, expiring presence, tested PostgreSQL policies). For Elastic, GEMP (concurrency and resilience) also works.',
-    },
   },
   {
     id: 'behavioral-remote-async',
@@ -268,10 +252,6 @@ Give a real example of when this prevented a problem or sped up a delivery.`,
       pt: '"Prefiro resolver tudo numa call." Ou ficar dias travada sem avisar ninguém.',
       en: '"I prefer to solve everything on a call." Or staying stuck for days without telling anyone.',
     },
-    anchor: {
-      pt: 'Você trabalhou em mais de uma empresa ao mesmo tempo, o que exige organização e comunicação assíncrona. Seu portfólio também cita PRs bem descritos, ADRs e templates de PR: são provas concretas.',
-      en: 'You have worked for more than one company at the same time, which demands organization and async communication. Your portfolio also cites well-described PRs, ADRs, and PR templates: concrete proof.',
-    },
   },
   {
     id: 'behavioral-relocation-consultancy',
@@ -304,10 +284,6 @@ Give a real example of when this prevented a problem or sped up a delivery.`,
     flags: {
       pt: '"Quero sair do Brasil" como única razão, ou não saber nada sobre visto e custo de vida.',
       en: '"I want to leave Brazil" as the only reason, or knowing nothing about visas and cost of living.',
-    },
-    anchor: {
-      pt: 'Você trabalhou em domínios muito variados (financeiro, ERP, indústria, mineração, agronegócio, prefeitura) e em mais de uma empresa ao mesmo tempo: é o perfil que uma consultoria procura. Use o modo EN do app para ensaiar.',
-      en: 'You have worked in very varied domains (finance, ERP, industry, mining, agribusiness, a municipality) and for more than one company at once: exactly the profile a consultancy wants. Use the app\'s EN mode to rehearse.',
     },
   },
 ];

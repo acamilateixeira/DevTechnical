@@ -27,10 +27,6 @@ Useful trick: changing a component's \`key\` on purpose forces React to remount 
       pt: '"O Virtual DOM é mais rápido que o DOM." Ele não é mágico: é um mecanismo para calcular o mínimo de mudanças. Também é red flag usar `Math.random()` como key.',
       en: '"The Virtual DOM is faster than the DOM." It is not magic: it is a way to compute the minimal set of changes. Using `Math.random()` as a key is also a red flag.',
     },
-    anchor: {
-      pt: 'Listas de corridas e motoristas no Bora (React Native usa o mesmo reconciliador) mudam em tempo real pelo Supabase Realtime: são o cenário perfeito para explicar por que a key precisa ser o ID do registro.',
-      en: 'Ride and driver lists in Bora (React Native uses the same reconciler) change in real time through Supabase Realtime: the perfect setting to explain why the key must be the record ID.',
-    },
   },
   {
     id: 'react-useeffect-pitfalls',
@@ -115,10 +111,6 @@ In production I usually would not hand-write this: I would use **TanStack Query*
       pt: 'Resolver o loop desligando o lint de dependências, ou usar uma flag `isMounted` sem cancelar a requisição.',
       en: 'Fixing the loop by disabling the dependency lint, or using an `isMounted` flag without actually cancelling the request.',
     },
-    anchor: {
-      pt: 'O GEMP trata exatamente isso no back e no front: o cancelamento do cliente interrompe a busca (context.Context em Go) e a UI diferencia espera, parcial, indisponível e falha de rede. Conecte o AbortController do front ao cancelamento no servidor.',
-      en: 'GEMP handles exactly this on both sides: client cancellation stops the search (context.Context in Go) and the UI distinguishes loading, partial, unavailable, and network failure. Connect the frontend AbortController to server-side cancellation.',
-    },
   },
   {
     id: 'react-performance-memo',
@@ -160,10 +152,6 @@ Actions, from highest to lowest impact:
       pt: '"Coloco useMemo em tudo por garantia." Ou começar a otimizar sem medir.',
       en: '"I wrap everything in useMemo just in case." Or optimizing without measuring first.',
     },
-    anchor: {
-      pt: 'Em vagas de observabilidade (Kibana, Streams) esse é o cenário real: muito dado de log na tela. No Livit você mediu pressão de memória no macOS e ajustou quadros e efeitos: cite como prova de que você mede antes de otimizar.',
-      en: 'In observability roles (Kibana, Streams) this is the real scenario: lots of log data on screen. In Livit you measured macOS memory pressure and adjusted frames and effects: cite it as proof you measure before optimizing.',
-    },
   },
   {
     id: 'react-state-management',
@@ -198,10 +186,6 @@ Redux Toolkit pays off with many cross-cutting updates, a need for devtools/time
     flags: {
       pt: 'Colocar resposta de API num store global e sincronizar à mão. Ou "uso Redux em todo projeto".',
       en: 'Putting API responses in a global store and syncing them by hand. Or "I use Redux on every project".',
-    },
-    anchor: {
-      pt: 'No seu portfólio o idioma vive num composable (`useLanguage`) e no Bora o estado de presença vem do Realtime do Supabase: dois exemplos reais de "estado de cliente" vs "estado de servidor". Se usou Redux/Zustand no trabalho, diga onde; se não, diga que conhece os trade-offs e não invente.',
-      en: 'In your portfolio, language lives in a composable (`useLanguage`) and in Bora presence comes from Supabase Realtime: two real examples of client state vs server state. If you used Redux/Zustand at work, say where; if not, say you know the trade-offs and do not invent experience.',
     },
   },
   {
@@ -262,10 +246,6 @@ To sync across tabs I would listen to the \`storage\` event, or use \`useSyncExt
       pt: 'Ler o localStorage no corpo do componente a cada render, ou ignorar que ele pode lançar exceção.',
       en: 'Reading localStorage in the component body on every render, or ignoring that it can throw.',
     },
-    anchor: {
-      pt: 'Este próprio DevTechnical guarda progresso e rascunhos no localStorage com try/catch. E o seu portfólio lembra a escolha de idioma: mesmo padrão, em Vue (composable ≈ custom hook).',
-      en: 'This very DevTechnical app stores progress and drafts in localStorage with try/catch. Your portfolio also remembers the language choice: same pattern in Vue (a composable ≈ a custom hook).',
-    },
   },
   {
     id: 'next-rendering-strategies',
@@ -303,10 +283,6 @@ Choosing: public, stable page → SSG/ISR; per-user page → SSR/dynamic RSC; hi
       pt: 'Dizer que usou Next.js em produção se não usou. Vagas Node/React costumam pedir Next: honestidade + domínio do conceito vale mais que um "sim" que cai no segundo follow-up.',
       en: 'Claiming production Next.js if you have not used it. Node/React roles often ask for Next: honesty plus a solid grasp of the concepts beats a "yes" that collapses on the second follow-up.',
     },
-    anchor: {
-      pt: 'Seu portfólio e o DevTechnical são SPAs estáticas no GitHub Pages (equivalente a SSG sem framework). Laravel com Blade é SSR clássico, que você usa no trabalho. Diga: "Em produção trabalhei com SSR no Laravel e SPAs em React/Vue; estudei o App Router e entendo quando usar cada estratégia."',
-      en: 'Your portfolio and DevTechnical are static SPAs on GitHub Pages (SSG-like, no framework). Laravel with Blade is classic SSR, which you use at work. Say: "In production I have worked with SSR in Laravel and SPAs in React/Vue; I have studied the App Router and understand when to use each strategy."',
-    },
   },
   {
     id: 'react-accessibility',
@@ -339,10 +315,6 @@ Plus: WCAG AA contrast (4.5:1 for text), visible focus, never relying on color a
     flags: {
       pt: '"Acessibilidade é colocar alt nas imagens." Ou nunca ter navegado no próprio produto só com teclado.',
       en: '"Accessibility means adding alt text to images." Or never having navigated your own product with only a keyboard.',
-    },
-    anchor: {
-      pt: 'Seu portfólio tem link "pular para o conteúdo", rótulos de navegação e de idioma (`skip`, `navLabel`, `language` no copy.ts): mostre isso. O DevTechnical também usa `aria-pressed`, `aria-live` e foco visível.',
-      en: 'Your portfolio has a "skip to content" link plus navigation and language labels (`skip`, `navLabel`, `language` in copy.ts): show it. DevTechnical also uses `aria-pressed`, `aria-live`, and visible focus.',
     },
   },
   {
@@ -410,10 +382,6 @@ Compared with TanStack Query: Apollo updates per **entity** automatically; TanSt
     flags: {
       pt: '"Dou refetch em tudo depois de cada mutation." Funciona, mas mostra que você não entende o cache.',
       en: '"I refetch everything after every mutation." It works, but shows you do not understand the cache.',
-    },
-    anchor: {
-      pt: 'Apollo não está no seu CV. O raciocínio de "estado do servidor vs estado do cliente" e de UI que reflete o estado real você já aplica no GEMP e no Bora. Um front em React + Apollo consumindo uma API GraphQL própria fecharia essa lacuna para vagas que pedem GraphQL.',
-      en: 'Apollo is not on your CV. You already apply the "server state vs client state" reasoning and a UI that reflects real state in GEMP and Bora. A React + Apollo frontend consuming your own GraphQL API would close this gap for roles that ask for GraphQL.',
     },
   },
   {
@@ -493,10 +461,6 @@ Features: \`useActionState\` provides state and pending; the form works without 
       pt: '"A página já exige login, então a action está protegida." Esse é exatamente o erro.',
       en: '"The page already requires login, so the action is protected." That is exactly the mistake.',
     },
-    anchor: {
-      pt: 'Next.js é lacuna no CV. A regra "autorizar no servidor, a partir do usuário autenticado" você aplica no TripFlow (escopo por empresa) e no Bora (políticas no PostgreSQL). Use isso como prova do raciocínio, deixando claro que o Next em si você estudou.',
-      en: 'Next.js is a gap on your CV. You apply the "authorize on the server from the authenticated user" rule in TripFlow (company scoping) and Bora (PostgreSQL policies). Use that as proof of reasoning, while being clear you have studied Next itself.',
-    },
   },
   {
     id: 'mui-theming-performance',
@@ -566,10 +530,6 @@ import Button from '@mui/material/Button';`,
       pt: 'Sobrescrever estilos com `!important` e classes globais em vez de usar o tema.',
       en: 'Overriding styles with `!important` and global classes instead of using the theme.',
     },
-    anchor: {
-      pt: 'Material-UI está no seu portfólio (Front-end: "Material-UI · Chart.js") e no perfil da Proxify, usado com React. Prepare um exemplo concreto de onde usou: que tela, que componentes, o que customizou no tema.',
-      en: 'Material-UI is on your portfolio (Front end: "Material-UI · Chart.js") and your Proxify profile, used with React. Prepare a concrete example of where you used it: which screen, which components, what you customized in the theme.',
-    },
   },
   {
     id: 'rtl-msw-component-test',
@@ -636,10 +596,6 @@ Cover: loading, success, empty, error, and the retry action. Do not test details
       pt: 'Testar `wrapper.state()` ou usar `data-testid` em tudo. Ou mockar o `useEffect`.',
       en: 'Testing `wrapper.state()` or putting `data-testid` on everything. Or mocking `useEffect`.',
     },
-    anchor: {
-      pt: 'Você usou Jest na Sicoob e Vitest + Vue Test Utils no portfólio, com a mesma filosofia (Testing Library existe para Vue também). Os estados testados aqui são os do GEMP (carregando, parcial, indisponível, falha de rede): adicionar esses testes ao GEMP vira evidência direta.',
-      en: 'You used Jest at Sicoob and Vitest + Vue Test Utils in your portfolio, with the same philosophy (Testing Library exists for Vue too). The states tested here are GEMP\'s (loading, partial, unavailable, network failure): adding these tests to GEMP becomes direct evidence.',
-    },
   },
   {
     id: 'react-hooks-catalog',
@@ -702,10 +658,6 @@ Cover: loading, success, empty, error, and the retry action. Do not test details
     flags: {
       pt: 'Usar `useEffect` para tudo, inclusive para copiar props em estado ou reagir a cliques. Ou guardar em `useRef` algo que precisa aparecer na tela.',
       en: 'Using `useEffect` for everything, including copying props into state or reacting to clicks. Or storing in `useRef` something that must appear on screen.',
-    },
-    anchor: {
-      pt: 'Você usa React com TypeScript nas interfaces da Sicoob e do Grupo Mysa, e o equivalente em Vue (ref, computed, watch, composables) no portfólio. Mapear "useState ≈ ref, useMemo ≈ computed, useEffect ≈ watch" mostra domínio do modelo mental, não só da sintaxe.',
-      en: 'You use React with TypeScript for interfaces at Sicoob and Grupo Mysa, and the Vue equivalent (ref, computed, watch, composables) in your portfolio. Mapping "useState ≈ ref, useMemo ≈ computed, useEffect ≈ watch" shows mastery of the mental model, not just syntax.',
     },
   },
   {
@@ -794,10 +746,6 @@ I verify the result in React DevTools with "Highlight updates" and in the Profil
     flags: {
       pt: '`value={{ state, dispatch }}` criado a cada render. Ou um único Context gigante com o estado de toda a aplicação.',
       en: '`value={{ state, dispatch }}` created on every render. Or one giant Context holding the whole app\'s state.',
-    },
-    anchor: {
-      pt: 'Carrinho é seu domínio: e-commerce nacional no Grupo Mysa. Se o front de lá usa algum padrão de estado (Context, Redux, Vuex/Pinia), descreva como é e o que melhoraria. Transições com estado mínimo validado também aparecem no TripFlow (máquina de estados da viagem).',
-      en: 'A cart is your domain: nationwide e-commerce at Grupo Mysa. If the frontend there uses a state pattern (Context, Redux, Vuex/Pinia), describe it and what you would improve. Validated state transitions also show up in TripFlow (the trip state machine).',
     },
   },
   {
@@ -890,10 +838,6 @@ For a log screen's filters I would likely use the **URL** in either case; a stor
       pt: 'Mutar o estado fora do Immer (`state.items.push` num reducer Redux "clássico") ou selecionar o store inteiro com `useFilters()` sem seletor.',
       en: 'Mutating state outside Immer (`state.items.push` in a "classic" Redux reducer) or selecting the whole store with `useFilters()` without a selector.',
     },
-    anchor: {
-      pt: 'Se você usou Redux, Vuex ou Pinia em algum projeto da Sicoob ou do Grupo Mysa, diga qual e para quê. Se não, a resposta honesta é: "uso estado local e de servidor bem separados; conheço Redux Toolkit e Zustand e escolho pelo tamanho do problema". Um exemplo pequeno no GitHub (filtros do PulseOps em Zustand, por exemplo) daria evidência.',
-      en: 'If you used Redux, Vuex, or Pinia on any Sicoob or Grupo Mysa project, say which and for what. If not, the honest answer is: "I keep local and server state clearly separated; I know Redux Toolkit and Zustand and choose by the size of the problem". A small GitHub example (PulseOps filters in Zustand, say) would provide evidence.',
-    },
   },
   {
     id: 'react-derived-state-antipatterns',
@@ -977,10 +921,6 @@ Related: a **controlled component** (the parent owns the value through \`value\`
       pt: '"Uso um useEffect para manter os dois estados em sincronia." Isso é a descrição do problema, não da solução.',
       en: '"I use a useEffect to keep both states in sync." That describes the problem, not the solution.',
     },
-    anchor: {
-      pt: 'No Bora você separou solicitação de atribuição e guardou referências, não cópias, para o solicitante e o trajeto não se perderem quando o motorista muda: é o mesmo princípio de "guardar o ID, derivar o resto", aplicado ao modelo de dados.',
-      en: 'In Bora you separated requests from assignments and kept references, not copies, so the requester and route are never lost when the driver changes: the same "store the ID, derive the rest" principle, applied to the data model.',
-    },
   },
   {
     id: 'react-devtools-debugging',
@@ -1037,10 +977,6 @@ Complementary tools: **Redux DevTools** (actions, state diffs, time travel; also
     flags: {
       pt: 'Sair espalhando `memo`/`useMemo` sem abrir o Profiler. Ou só usar `console.log` dentro do componente para "contar renders".',
       en: 'Sprinkling `memo`/`useMemo` everywhere without opening the Profiler. Or only using `console.log` inside the component to "count renders".',
-    },
-    anchor: {
-      pt: 'Seu hábito de medir antes de otimizar aparece no Livit (pressão de memória do macOS ajustando quadros e efeitos). Antes da entrevista, abra o front do GEMP (React) com o React DevTools e grave um Profiler de verdade: falar do que você viu na sua própria app convence mais que teoria. No portfólio (Vue), o Vue DevTools tem as abas equivalentes de componentes e performance.',
-      en: 'Your habit of measuring before optimizing shows in Livit (macOS memory pressure adjusting frames and effects). Before the interview, open GEMP\'s React frontend with React DevTools and record a real Profiler session: describing what you saw in your own app convinces more than theory. For your Vue portfolio, Vue DevTools has equivalent component and performance tabs.',
     },
   },
 ];
