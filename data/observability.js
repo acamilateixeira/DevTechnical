@@ -35,10 +35,6 @@ Useful frameworks: **RED** for services (Rate, Errors, Duration), **USE** for re
       pt: '"Observabilidade é ter o Grafana com uns gráficos." Ou logs com `console.log("aqui")`.',
       en: '"Observability means having Grafana with a few charts." Or logging `console.log("here")`.',
     },
-    anchor: {
-      pt: 'Seu dia a dia de sustentação em produção e investigação de incidentes (Mysa, Sicoob, Easy Process) é consumo de observabilidade. Elastic Stack/Kibana não aparecem no CV: diga que é um diferencial que você está estudando, e mostre que entende os conceitos. Um projeto seu instrumentado com OpenTelemetry fecharia muito bem essa lacuna.',
-      en: 'Your daily production support and incident investigation (Mysa, Sicoob, Easy Process) is consuming observability. Elastic Stack/Kibana is not on your CV: say it is a nice-to-have you are studying, and show you understand the concepts. One of your projects instrumented with OpenTelemetry would close that gap well.',
-    },
   },
   {
     id: 'obs-slo-alerting',
@@ -73,10 +69,6 @@ Percentiles: p99 shows the tail the average hides. A great p50 with an 8 s p99 m
     flags: {
       pt: 'Querer 100% de disponibilidade. Ou alertar por qualquer erro individual.',
       en: 'Wanting 100% availability. Or alerting on every single error.',
-    },
-    anchor: {
-      pt: 'Seu princípio no portfólio, "consistência antes de velocidade", é o raciocínio do error budget aplicado a sistemas financeiros. Conte um incidente real em produção que você investigou: como soube, como diagnosticou, o que mudou depois.',
-      en: 'Your portfolio principle "consistency before speed" is error-budget reasoning applied to financial systems. Tell a real production incident you investigated: how you found out, how you diagnosed it, what changed afterwards.',
     },
   },
   {
@@ -138,10 +130,6 @@ export function PipelineEditor({ initial }: { initial: Pipeline }) {
     flags: {
       pt: 'Tratar o estado do React Flow como fonte da verdade do negócio. Ou dizer que já usou React Flow se não usou.',
       en: 'Treating React Flow state as the business source of truth. Or claiming React Flow experience you do not have.',
-    },
-    anchor: {
-      pt: 'React Flow não está no seu CV. O diagrama de arquitetura do Livit (TikTok LIVE → Python → painel/overlay → worker Node → extensão) mostra que você pensa em fluxos de eventos. Um mini editor de pipeline com React Flow no GitHub seria a melhor preparação para a Elastic.',
-      en: 'React Flow is not on your CV. Livit\'s architecture diagram (TikTok LIVE → Python → panel/overlay → Node worker → extension) shows you think in event flows. A small React Flow pipeline editor on GitHub would be the best Elastic prep.',
     },
   },
   {
@@ -211,10 +199,6 @@ A **mapping** is the field schema. \`text\` runs through an **analyzer** (tokeni
     flags: {
       pt: 'Usar `match` em campo que deveria ser `keyword` para filtrar. Ou tratar Elasticsearch como banco transacional principal.',
       en: 'Using `match` on a field that should be a `keyword` filter. Or treating Elasticsearch as the primary transactional database.',
-    },
-    anchor: {
-      pt: 'Elastic Stack é o "nice to have" da vaga e não está no seu CV. O PulseOps (sua plataforma de observabilidade planejada) é o lugar perfeito para isso: logs da sua própria API indexados no Elasticsearch com mapping explícito. Até lá, diga que estudou e explique com segurança.',
-      en: 'Elastic Stack is the role\'s nice-to-have and is not on your CV. PulseOps (your planned observability platform) is the perfect place for it: your own API\'s logs indexed in Elasticsearch with an explicit mapping. Until then, say you have studied it and explain it confidently.',
     },
   },
   {
@@ -294,10 +278,6 @@ const logger = pino({
     flags: {
       pt: 'Importar o SDK depois da aplicação (não instrumenta nada). Ou colocar `user.email` em atributo de span.',
       en: 'Importing the SDK after the app (nothing gets instrumented). Or putting `user.email` in a span attribute.',
-    },
-    anchor: {
-      pt: 'Instrumentar o TripFlow ou o GEMP com OpenTelemetry (um trace atravessando API → MySQL → RabbitMQ → consumidor) é o projeto que mais aproxima seu portfólio de uma vaga de observabilidade, e é o coração natural do PulseOps. Até existir, apresente como plano, não como experiência.',
-      en: 'Instrumenting TripFlow or GEMP with OpenTelemetry (one trace crossing API → MySQL → RabbitMQ → consumer) is the project that brings your portfolio closest to an observability role, and it is the natural core of PulseOps. Until it exists, present it as a plan, not experience.',
     },
   },
 ];

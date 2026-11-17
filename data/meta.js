@@ -8,7 +8,7 @@ export const jobs = {
   'php-fintech': { pt: 'Full Stack Pleno · PHP (pagamentos)', en: 'Mid-level Full Stack · PHP (payments)' },
   'desafio-carteira': { pt: 'Desafio técnico · carteira digital', en: 'Take-home · digital wallet' },
   'backend-php-node': { pt: 'Backend Sr · PHP + Node (financeiro)', en: 'Senior Backend · PHP + Node (finance)' },
-  cv: { pt: 'Meu CV / portfólio', en: 'My CV / portfolio' },
+  cv: { pt: 'Experiência e carreira', en: 'Experience & career' },
 };
 
 export const cats = {
@@ -50,7 +50,7 @@ export const ui = {
     reveal: 'Ver resposta modelo', next: 'Próxima pergunta', skip2: 'Pular',
     timerStart: 'Cronômetro 3 min', timerStop: 'Parar',
     answer: 'Resposta modelo', code: 'Código', followup: 'O recrutador insiste…',
-    flags: 'Não diga isso (red flags)', anchor: 'Ancore na sua experiência real',
+    flags: 'Não diga isso (red flags)', example: 'Exemplo',
     rateTitle: 'Como você foi?', got: 'Mandei bem', partial: 'Parcial', miss: 'Travei',
     search: 'Buscar por termo, tecnologia ou palavra…',
     progressTitle: 'Seu progresso', progressEmpty: 'Você ainda não registrou nenhuma nota. Escolha a trilha da sua vaga no Comece aqui e responda a primeira pergunta.', seeLabShort: '▶ Ver no Laboratório', hasStory: 'tem história', hasLab: 'tem lab para rodar', hasMeasure: 'tem guia de como medir', footerRepo: 'Código no GitHub', answered: 'respondidas', reset: 'Zerar progresso',
@@ -80,7 +80,7 @@ export const ui = {
     reveal: 'Show model answer', next: 'Next question', skip2: 'Skip',
     timerStart: '3-min timer', timerStop: 'Stop',
     answer: 'Model answer', code: 'Code', followup: 'The interviewer pushes back…',
-    flags: "Don't say this (red flags)", anchor: 'Anchor it in your real experience',
+    flags: "Don't say this (red flags)", example: 'Example',
     rateTitle: 'How did you do?', got: 'Nailed it', partial: 'Partly', miss: 'Got stuck',
     search: 'Search by term, technology or keyword…',
     progressTitle: 'Your progress', progressEmpty: 'You haven\'t recorded any scores yet. Pick your role\'s path in Start here and answer the first question.', seeLabShort: '▶ See it in the Lab', hasStory: 'has a story', hasLab: 'has a lab to run', hasMeasure: 'has a how-to-measure guide', footerRepo: 'Code on GitHub', answered: 'answered', reset: 'Reset progress',

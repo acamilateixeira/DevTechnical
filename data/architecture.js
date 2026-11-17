@@ -31,10 +31,6 @@ Signs of the right boundary: the service owns its data, can be down without taki
       pt: '"Microsserviços são sempre melhores porque escalam." Ou dizer que "migrou para microsserviços" quando eram só duas APIs separadas compartilhando o mesmo banco.',
       en: '"Microservices are always better because they scale." Or claiming you "migrated to microservices" when it was two APIs sharing one database.',
     },
-    anchor: {
-      pt: 'Sua vivência real é integrar sistemas distintos (ERP, Salesforce, e-commerce, gestão de filiais) e modernizar legado em produção. Isso é arquitetura distribuída de verdade: contratos, falhas de rede, consistência entre sistemas. O GEMP (provedores em paralelo com timeout e resposta parcial) mostra resiliência entre serviços.',
-      en: 'Your real experience is integrating separate systems (ERP, Salesforce, e-commerce, branch management) and modernizing legacy in production. That is real distributed architecture: contracts, network failures, cross-system consistency. GEMP (parallel providers with timeouts and partial responses) shows resilience between services.',
-    },
   },
   {
     id: 'arch-resilience-partial',
@@ -76,10 +72,6 @@ On the frontend, the UI must represent these states: loading, partial, unavailab
       pt: '"Aumento o timeout para 60 segundos." Ou retry infinito.',
       en: '"I raise the timeout to 60 seconds." Or infinite retries.',
     },
-    anchor: {
-      pt: 'Esta pergunta descreve o GEMP: três provedores em paralelo, goroutine com context.Context e prazo de 250 ms, resposta parcial indicando quem falhou, 503 sem ofertas, UI com os quatro estados e testes com race detector no CI. Conte com os números.',
-      en: 'This question describes GEMP: three providers in parallel, goroutines with context.Context and a 250 ms deadline, partial responses naming who failed, 503 with no offers, a UI with all four states, and race-detector tests in CI. Tell it with the numbers.',
-    },
   },
   {
     id: 'arch-system-design-logs',
@@ -120,10 +112,6 @@ Senior points: estimate storage (1M/s × 1 KB × 86,400 s ≈ 86 TB/day raw, bef
     flags: {
       pt: 'Começar desenhando caixas sem perguntar volume e requisitos. Ou ignorar o buffer entre ingestão e indexação.',
       en: 'Drawing boxes without asking about volume and requirements. Or skipping the buffer between ingestion and indexing.',
-    },
-    anchor: {
-      pt: 'O MeterTrail tem a mesma espinha dorsal em miniatura: ingestão idempotente, projeção em lote para analytics, checkpoint e reprocessamento. Use-o para mostrar que você já pensou em ingestão, lote e reprocessamento, deixando claro que é um projeto pessoal.',
-      en: 'MeterTrail has the same backbone in miniature: idempotent ingestion, batch projection to analytics, checkpointing, and replay. Use it to show you have thought about ingestion, batching, and replay, while being clear it is a personal project.',
     },
   },
   {
@@ -171,10 +159,6 @@ With shared tables, safety **cannot depend on remembering the filter**:
     flags: {
       pt: 'Pegar o `tenant_id` do body ou da query string. Ou "o desenvolvedor lembra de filtrar".',
       en: 'Reading `tenant_id` from the body or query string. Or "developers remember to filter".',
-    },
-    anchor: {
-      pt: 'Duas evidências reais: TripFlow tem escopo por empresa e testes de isolamento verificando a fronteira entre clientes; o Bora usa Supabase Auth com políticas no PostgreSQL (RLS) dando acesso conforme o vínculo no órgão, com testes de políticas. Excelente resposta.',
-      en: 'Two real pieces of evidence: TripFlow has company-level scoping and isolation tests on the tenant boundary; Bora uses Supabase Auth with PostgreSQL policies (RLS) scoped by department membership, with policy tests. Excellent answer.',
     },
   },
 ];

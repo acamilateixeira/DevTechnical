@@ -39,10 +39,6 @@ Flaky tests are bugs: quarantine, investigate, and fix them, never "rerun until 
       pt: '"Exijo 100% de cobertura." Ou testar o estado interno do componente em vez do comportamento.',
       en: '"I require 100% coverage." Or testing a component\'s internal state instead of its behavior.',
     },
-    anchor: {
-      pt: 'Evidências reais: PHPUnit e Jest na Sicoob; Vitest + Vue Test Utils no portfólio; testes de políticas e migrações no PostgreSQL no Bora; testes de isolamento entre tenants no TripFlow; race detector do Go no CI do GEMP; demo contra o servidor rodando no CI do MeterTrail. É um portfólio de testes forte: use.',
-      en: 'Real evidence: PHPUnit and Jest at Sicoob; Vitest + Vue Test Utils in your portfolio; PostgreSQL policy and migration tests in Bora; tenant isolation tests in TripFlow; Go race detector in GEMP\'s CI; a demo against the running server in MeterTrail\'s CI. That is a strong testing portfolio: use it.',
-    },
   },
   {
     id: 'test-tdd-code',
@@ -116,10 +112,6 @@ TDD works very well for business rules and bug fixes (first the test that reprod
       pt: 'Escrever todo o código e depois os testes dizendo que é TDD. Ou não perguntar sobre o caso de borda do limite exato.',
       en: 'Writing all the code first and then the tests while calling it TDD. Or not asking about the exact-limit edge case.',
     },
-    anchor: {
-      pt: 'A regra é parecida com a do TripFlow (orçamento do centro de custo na aprovação). Diga se você escreveu esses testes antes ou depois do código: honestidade aqui é sinal de maturidade.',
-      en: 'The rule mirrors TripFlow (cost-center budget on approval). Say whether you wrote those tests before or after the code: honesty here signals maturity.',
-    },
   },
   {
     id: 'cicd-pipeline',
@@ -164,10 +156,6 @@ DORA metrics measure exactly this: deploy frequency, lead time for changes, chan
     flags: {
       pt: '"Não faço deploy na sexta." É compreensível, mas o sênior ataca a causa: deploy arriscado demais.',
       en: '"I do not deploy on Fridays." Understandable, but a senior attacks the cause: deploys that are too risky.',
-    },
-    anchor: {
-      pt: 'GitLab CI/CD e Docker na Sicoob. No portfólio: workflows de CI, deploy no GitHub Pages, validação de PR, revisão por IA e Dependabot. GEMP e MeterTrail rodam testes no GitHub Actions. O próprio DevTechnical tem pipeline de validação + deploy. Fale do que montou, não de teoria.',
-      en: 'GitLab CI/CD and Docker at Sicoob. In your portfolio: CI workflows, GitHub Pages deploys, PR validation, AI review, and Dependabot. GEMP and MeterTrail run tests on GitHub Actions. DevTechnical itself has a validation + deploy pipeline. Talk about what you built, not theory.',
     },
   },
 ];

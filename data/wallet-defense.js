@@ -60,10 +60,6 @@ If the reviewer argues for DECIMAL, I agree it is exact and easier to read in SQ
       { pt: 'Quando você trocaria para DECIMAL(19,4)?', en: 'When would you switch to DECIMAL(19,4)?' },
       { pt: 'O que acontece com um int de 64 bits somando valores muito grandes? Como o Money se protege?', en: 'What happens to a 64-bit int when adding very large values? How does Money protect itself?' },
     ],
-    anchor: {
-      pt: 'No desafio da carteira: `app/ValueObjects/Money.php` e `tests/Unit/ValueObjects/MoneyTest.php`. Abra o teste de imutabilidade e o de saldo negativo + depósito na hora de responder.',
-      en: 'In the wallet take-home: `app/ValueObjects/Money.php` and `tests/Unit/ValueObjects/MoneyTest.php`. Open the immutability test and the negative-balance + deposit test when answering.',
-    },
     flags: {
       pt: '"Uso float com round() no final." Ou não saber que o PHP recebe DECIMAL como string.',
       en: '"I use float and round() at the end." Or not knowing PHP receives DECIMAL as a string.',
@@ -72,6 +68,7 @@ If the reviewer argues for DECIMAL, I agree it is exact and easier to read in SQ
 
   {
     id: 'wallet-ledger-reversal',
+    noGloss: ['react-reconciliation'], // aqui é conciliação financeira, não a do React
     cat: 'payments', type: 'architecture', jobs: ['desafio-carteira', 'php-fintech', 'backend-php-node'],
     tags: ['livro-razão', 'ledger', 'estorno', 'reversal', 'soft delete', 'reconciliação', 'reconciliation'],
     q: {
@@ -116,10 +113,6 @@ That is where the challenge's "negative balance for some reason" comes from: the
       { pt: 'Quem pode pedir o estorno de uma transferência? E o risco de o remetente reverter depois de receber o que comprou?', en: 'Who can request a transfer reversal? What about the sender reversing after receiving what they bought?' },
       { pt: 'Como você garante que uma operação não é revertida duas vezes, mesmo com dois pedidos simultâneos?', en: 'How do you ensure an operation is not reversed twice, even with two simultaneous requests?' },
     ],
-    anchor: {
-      pt: 'No desafio da carteira: plano técnico §5 a §7 (livro-razão, estorno, reconciliação). Até a reversão estar no código, apresente como desenho, não como entregue.',
-      en: 'In the wallet take-home: technical plan §5 to §7 (ledger, reversal, reconciliation). Until reversal is in the code, present it as design, not as delivered.',
-    },
     flags: {
       pt: '"Reverto apagando a transação e recalculando o saldo." Ou corrigir divergência automaticamente sem investigar.',
       en: '"I reverse by deleting the transaction and recalculating the balance." Or auto-fixing mismatches without investigating.',
@@ -188,10 +181,6 @@ The key is also tied to the content (\`request_hash\`): the same key with anothe
       { pt: 'Por que travar as carteiras em ordem de id? O que acontece sem isso numa transferência A→B e outra B→A ao mesmo tempo?', en: 'Why lock wallets in id order? What happens without it with an A→B and a B→A transfer at the same time?' },
       { pt: 'O que o terceiro argumento de DB::transaction($fn, 3) faz?', en: 'What does the third argument of DB::transaction($fn, 3) do?' },
     ],
-    anchor: {
-      pt: 'No desafio da carteira: diagrama da transferência (plano §3.5) e §6. No TripFlow você já usa Idempotency-Key com resposta salva e lock sem segurar a transação durante a chamada externa: é a mesma ideia em outro contexto.',
-      en: 'In the wallet take-home: the transfer diagram (plan §3.5) and §6. In TripFlow you already use an Idempotency-Key with a stored response and a lock that does not hold the transaction during the external call: the same idea in another context.',
-    },
     flags: {
       pt: 'Conferir a chave antes de travar, ou confiar só na conferência sem UNIQUE no banco.',
       en: 'Checking the key before locking, or relying on the check alone without a UNIQUE constraint.',
@@ -200,6 +189,7 @@ The key is also tied to the content (\`request_hash\`): the same key with anothe
 
   {
     id: 'wallet-crash-mid-transfer',
+    noGloss: ['react-reconciliation'], // aqui é conciliação financeira, não a do React
     cat: 'data', type: 'concept', jobs: ['desafio-carteira', 'php-fintech', 'backend-php-node'],
     tags: ['atomicidade', 'atomicity', 'ACID', 'rollback', 'DB::transaction', 'afterCommit', 'teste de falha'],
     q: {
@@ -241,10 +231,6 @@ public function test_falha_no_meio_nao_grava_nada(): void
     follow: [
       { pt: 'E se o COMMIT foi feito mas a resposta HTTP nunca chegou ao navegador? O que a pessoa vê e o que a idempotência resolve?', en: 'What if COMMIT happened but the HTTP response never reached the browser? What does the person see and what does idempotency solve?' },
     ],
-    anchor: {
-      pt: 'No desafio da carteira: o teste de falha no meio é o que prova a resposta. Se ainda não existir, diga que está previsto e mostre o `DB::transaction` da action.',
-      en: "In the wallet take-home: the mid-way failure test is what proves the answer. If it does not exist yet, say it is planned and show the action's `DB::transaction`.",
-    },
     flags: {
       pt: '"Gravo o débito, depois o crédito, e se der erro eu desfaço o débito no catch."',
       en: '"I save the debit, then the credit, and if something fails I undo the debit in the catch."',
@@ -296,10 +282,6 @@ A detail that often comes up: \`SELECT ... FOR UPDATE\` requires SELECT **and** 
     follow: [
       { pt: 'Os testes rodam com qual usuário? Como você prova que o usuário app realmente não consegue editar um lançamento?', en: 'Which user do the tests run as? How do you prove the app user really cannot edit an entry?' },
     ],
-    anchor: {
-      pt: 'No desafio da carteira: `docker/mysql/init/01-databases-and-users.sql` (cria `migrator` e `app`) e `docker/mysql/grants.sql` (permissões do `app`, aplicadas depois das migrações).',
-      en: 'In the wallet take-home: `docker/mysql/init/01-databases-and-users.sql` (creates `migrator` and `app`) and `docker/mysql/grants.sql` (the `app` grants, applied after migrations).',
-    },
     flags: {
       pt: 'Aplicação conectando como root. Ou "ON DELETE CASCADE para não dar erro ao apagar usuário".',
       en: 'The application connecting as root. Or "ON DELETE CASCADE so deleting a user does not fail".',
@@ -367,10 +349,6 @@ An alternative I know: \`$dontReport\` in the Handler. It silences them complete
     follow: [
       { pt: 'Que dados você nunca colocaria no contexto desse log?', en: 'What data would you never put in that log\'s context?' },
     ],
-    anchor: {
-      pt: 'No desafio da carteira: `app/Exceptions/Wallet/WalletException.php`. Mostre o log JSON de um erro de negócio com `make logs`.',
-      en: "In the wallet take-home: `app/Exceptions/Wallet/WalletException.php`. Show a business error's JSON log with `make logs`.",
-    },
     flags: {
       pt: 'try/catch em todo controller devolvendo a mesma mensagem genérica, ou logar erro de negócio como ERROR.',
       en: 'try/catch in every controller returning the same generic message, or logging business errors as ERROR.',
@@ -411,10 +389,6 @@ Rounding it out: mandatory HTTPS with HSTS (the browser never even tries HTTP), 
     follow: [
       { pt: 'Por que regenerar o id da sessão no login?', en: 'Why regenerate the session id on login?' },
     ],
-    anchor: {
-      pt: 'No desafio da carteira: `config/session.php` e `SESSION_SECURE_COOKIE` no `.env.example`. Explique por que fica `false` só no ambiente local.',
-      en: 'In the wallet take-home: `config/session.php` and `SESSION_SECURE_COOKIE` in `.env.example`. Explain why it is `false` only locally.',
-    },
     flags: {
       pt: 'Achar que HttpOnly torna o cookie "seguro" em qualquer cenário.',
       en: 'Believing HttpOnly makes the cookie "secure" in every scenario.',
@@ -466,10 +440,6 @@ I store and compute in UTC and convert **only when displaying**.
     follow: [
       { pt: 'Qual a diferença entre TIMESTAMP e DATETIME no MySQL além da conversão? (limite de 2038)', en: 'What is the difference between TIMESTAMP and DATETIME in MySQL besides conversion? (the 2038 limit)' },
     ],
-    anchor: {
-      pt: "No desafio da carteira: `config/app.php` (`timezone` e `display_timezone`) e `config/database.php` (`'timezone' => '+00:00'` nas duas conexões).",
-      en: "In the wallet take-home: `config/app.php` (`timezone` and `display_timezone`) and `config/database.php` (`'timezone' => '+00:00'` on both connections).",
-    },
     flags: {
       pt: '"Coloco o timezone da aplicação como America/Sao_Paulo e pronto."',
       en: '"I set the application time zone to America/Sao_Paulo and that\'s it."',
@@ -519,10 +489,6 @@ RUN group="$(getent group "\${GID}" | cut -d: -f1)" \\
     follow: [
       { pt: 'O que muda na imagem de produção em relação à de desenvolvimento?', en: 'What changes in the production image compared to the development one?' },
     ],
-    anchor: {
-      pt: 'No desafio da carteira: `docker/php/Dockerfile`, `Makefile` (`HOST_UID`/`HOST_GID`), `.gitattributes` e o job `ambiente-docker` do CI. O TripFlow também roda inteiro em containers: use os dois.',
-      en: "In the wallet take-home: `docker/php/Dockerfile`, `Makefile` (`HOST_UID`/`HOST_GID`), `.gitattributes`, and the CI's `ambiente-docker` job. TripFlow also runs fully in containers: use both.",
-    },
     flags: {
       pt: '"Funciona na minha máquina e o CI passou, então funciona em qualquer lugar."',
       en: '"It works on my machine and CI passed, so it works everywhere."',
@@ -572,10 +538,6 @@ RUN group="$(getent group "\${GID}" | cut -d: -f1)" \\
     follow: [
       { pt: 'Que sinal faria você introduzir repositórios e interfaces?', en: 'What signal would make you introduce repositories and interfaces?' },
     ],
-    anchor: {
-      pt: 'Você trabalha com Laravel no Grupo Mysa: compare com como o time organiza regra de negócio lá. No desafio da carteira, a estrutura está no plano técnico §3.',
-      en: 'You work with Laravel at Grupo Mysa: compare with how the team organizes business rules there. In the wallet take-home, the structure is in the technical plan §3.',
-    },
     flags: {
       pt: 'Dizer que usa "todos os princípios do SOLID" sem conseguir apontar onde. Ou repositório que só repassa chamadas ao Eloquent.',
       en: 'Claiming to use "all SOLID principles" without pointing to where. Or a repository that only forwards calls to Eloquent.',
@@ -609,10 +571,6 @@ RUN group="$(getent group "\${GID}" | cut -d: -f1)" \\
     follow: [
       { pt: 'Com mais uma semana, o que você faria primeiro?', en: 'With one more week, what would you do first?' },
     ],
-    anchor: {
-      pt: 'No desafio da carteira: ADR 0007 (versão e avisos) e ADR 0008 (nuvem). Diga com clareza o que foi feito e o que ficou como plano.',
-      en: 'In the wallet take-home: ADR 0007 (version and advisories) and ADR 0008 (cloud). Say clearly what was done and what stayed as a plan.',
-    },
     flags: {
       pt: 'Esconder o que não fez, ou apresentar um corte como se fosse feito.',
       en: 'Hiding what was not done, or presenting a cut as if it were done.',

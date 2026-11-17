@@ -69,10 +69,6 @@ This gives **at-least-once**: if the relay crashes between publishing and markin
       pt: '"Publico dentro da transação do banco." Ou prometer exactly-once sem idempotência no consumidor.',
       en: '"I publish inside the database transaction." Or promising exactly-once without consumer idempotency.',
     },
-    anchor: {
-      pt: 'Sua melhor resposta do banco: o TripFlow grava estado + evento na outbox na mesma transação, um relay publica no RabbitMQ depois do commit e o consumidor deduplica reentregas pelo ID. Mencione que os ADRs do repo documentam o trade-off. O MeterTrail reforça com projeção + checkpoint e reprocessamento sem contar duas vezes.',
-      en: 'One of your best answers: TripFlow writes state + event to the outbox in one transaction, a relay publishes to RabbitMQ after commit, and the consumer deduplicates redeliveries by ID. Mention the repo ADRs document the trade-off. MeterTrail reinforces it with projection + checkpoint and replay without double counting.',
-    },
   },
   {
     id: 'mq-rabbitmq-concepts',
@@ -115,10 +111,6 @@ This gives **at-least-once**: if the relay crashes between publishing and markin
     flags: {
       pt: 'Auto-ack em processamento que pode falhar. Ou "coloco requeue=true quando dá erro".',
       en: 'Auto-ack on processing that can fail. Or "I set requeue=true on error".',
-    },
-    anchor: {
-      pt: 'RabbitMQ está no TripFlow e listado no seu portfólio em "Filas e mensageria". Abra o repositório antes da entrevista e revise que tipo de exchange, routing keys e política de retry você usou. Responda com o que está lá, não com teoria genérica.',
-      en: 'RabbitMQ is in TripFlow and listed on your portfolio under "Queues & messaging". Open the repo before the interview and review which exchange type, routing keys, and retry policy you used. Answer with what is there, not generic theory.',
     },
   },
 ];

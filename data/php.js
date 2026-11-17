@@ -4,8 +4,8 @@ export default [
     cat: 'php', type: 'lib', jobs: ['cv'],
     tags: ['Laravel', 'service container', 'Eloquent', 'queues', 'N+1', 'middleware'],
     q: {
-      pt: 'Seu CV é forte em Laravel. Explique o ciclo de uma requisição no Laravel, o service container e como você evita problemas de performance com Eloquent.',
-      en: 'Your CV is strong in Laravel. Explain the Laravel request lifecycle, the service container, and how you avoid Eloquent performance problems.',
+      pt: 'Explique o ciclo de uma requisição no Laravel, o service container e como você evita problemas de performance com Eloquent.',
+      en: 'Explain the Laravel request lifecycle, the service container, and how you avoid Eloquent performance problems.',
     },
     code: {
       src: `
@@ -60,18 +60,14 @@ $this->app->bind(PaymentGateway::class, StripeGateway::class);`,
       pt: 'Controllers gordos com toda a regra e queries dentro. Ou não conhecer o N+1 do Eloquent sendo sua stack principal.',
       en: 'Fat controllers holding every rule and query. Or not knowing Eloquent N+1 when it is your main stack.',
     },
-    anchor: {
-      pt: 'Laravel é sua base: Sicoob (2021–2024) e Grupo Mysa (atual), e o TripFlow em Laravel 12 + MySQL + Redis + RabbitMQ. Para vagas Node, use isso como ponte: "os conceitos de container, middleware, filas e ORM são os mesmos; mudei a linguagem, não o modelo mental".',
-      en: 'Laravel is your foundation: Sicoob (2021–2024) and Grupo Mysa (current), plus TripFlow on Laravel 12 + MySQL + Redis + RabbitMQ. For Node roles, use it as a bridge: "container, middleware, queues, and ORM concepts are the same; I changed the language, not the mental model".',
-    },
   },
   {
     id: 'salesforce-governor-limits',
     cat: 'php', type: 'lib', jobs: ['cv'],
     tags: ['Salesforce', 'Apex', 'governor limits', 'bulkification', 'triggers', 'LWC', 'integration'],
     q: {
-      pt: 'Você lista Salesforce no CV. O que são governor limits e como você escreve um trigger Apex que não quebra com carga em massa?',
-      en: 'You list Salesforce on your CV. What are governor limits and how do you write an Apex trigger that does not break under bulk loads?',
+      pt: 'Salesforce: o que são governor limits e como você escreve um trigger Apex que não quebra com carga em massa?',
+      en: 'Salesforce: what are governor limits and how do you write an Apex trigger that does not break under bulk loads?',
     },
     code: {
       src: `
@@ -136,12 +132,8 @@ The parallel with traditional backends: it is the same N+1 problem, but punished
       { pt: 'Como você integrou Salesforce com o ERP? Síncrono ou assíncrono?', en: 'How did you integrate Salesforce with the ERP? Sync or async?' },
     ],
     flags: {
-      pt: 'Não saber o que é bulkificação tendo Apex e Triggers no CV.',
-      en: 'Not knowing bulkification while listing Apex and Triggers on your CV.',
-    },
-    anchor: {
-      pt: 'No Grupo Mysa você desenvolve com Apex, LWC, Triggers, Flows, SOQL e SOSL integrando processos comerciais, ERP e e-commerce na AWS; antes, na Construtora Você, participou da implantação do Salesforce. Tenha uma integração real descrita: origem, destino, gatilho, tratamento de falha.',
-      en: 'At Grupo Mysa you build with Apex, LWC, Triggers, Flows, SOQL, and SOSL, integrating sales processes, ERP, and e-commerce on AWS; earlier, at Construtora Você, you helped roll out Salesforce. Have one real integration ready: source, target, trigger, failure handling.',
+      pt: 'Não saber o que é bulkificação dizendo que trabalha com Apex e triggers.',
+      en: 'Not knowing bulkification while claiming to work with Apex and triggers.',
     },
   },
 ];

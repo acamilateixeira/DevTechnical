@@ -41,10 +41,6 @@ Answering "I would add a cache" or "use Redis" without knowing where the bottlen
     follow: [
       { pt: 'Como você evita que o benchmark engane (cache aquecido, máquina diferente, uma execução só)?', en: 'How do you keep the benchmark honest (warm caches, different machine, a single run)?' },
     ],
-    anchor: {
-      pt: 'Use um caso seu em que você mediu antes e depois (uma query, um N+1, um relatório lento). Se não tiver números guardados, diga como mediria, sem inventar valores.',
-      en: 'Use a case of yours where you measured before and after (a query, an N+1, a slow report). If you have no numbers saved, say how you would measure, without inventing values.',
-    },
     flags: {
       pt: 'Otimizar sem medir, ou trocar a implementação sem provar que a saída é a mesma.',
       en: 'Optimizing without measuring, or swapping the implementation without proving the output is the same.',
@@ -53,6 +49,7 @@ Answering "I would add a cache" or "use Redis" without knowing where the bottlen
 
   {
     id: 'php-streaming-large-files',
+    noGloss: ['react-reconciliation'], // aqui é conciliação financeira, não a do React
     cat: 'php', type: 'code', jobs: ['backend-php-node', 'php-fintech'],
     tags: ['generator', 'yield', 'stream', 'SplFileObject', 'fgetcsv', 'memória', 'memory', 'arquivo grande', 'large file', 'checkpoint'],
     q: {
@@ -124,10 +121,6 @@ foreach (readRows($path) as $line => $row) {
       { pt: 'Por que o checkpoint precisa estar na mesma transação do lote?', en: 'Why must the checkpoint be in the same transaction as the batch?' },
       { pt: 'Um generator pode ser percorrido duas vezes? E se precisar contar as linhas antes?', en: 'Can a generator be iterated twice? What if you need to count rows first?' },
     ],
-    anchor: {
-      pt: 'Se você já importou planilhas, arquivos de ERP ou integrações em lote (Sicoob, ZR System, Grupo Mysa), conte o volume real e como evitou duplicidade. Se nunca passou de arquivos pequenos, apresente como desenho.',
-      en: 'If you have imported spreadsheets, ERP files, or batch integrations (Sicoob, ZR System, Grupo Mysa), tell the real volume and how you avoided duplicates. If you never went past small files, present it as design.',
-    },
     flags: {
       pt: '`file_get_contents` + `json_decode` no arquivo inteiro, ou reprocessar o arquivo do começo sem idempotência.',
       en: '`file_get_contents` + `json_decode` on the whole file, or reprocessing from the start without idempotency.',
@@ -203,10 +196,6 @@ assert($this->position >= 0);                            // invariante interna: 
     follow: [
       { pt: 'Por que `catch (\\Throwable $e) { return null; }` é perigoso?', en: 'Why is `catch (\\Throwable $e) { return null; }` dangerous?' },
     ],
-    anchor: {
-      pt: 'No desafio da carteira: `WalletException` (erro de negócio com código estável) separada de bug. Mostre também onde você confere retorno ou usa exceção nativa com o tipo certo.',
-      en: 'In the wallet take-home: `WalletException` (business error with a stable code) separated from bugs. Also show where you check returns or use a native exception of the right type.',
-    },
     flags: {
       pt: 'Lançar sempre `\\Exception` genérica, mensagem sem contexto, ou engolir a causa.',
       en: 'Always throwing a generic `\\Exception`, a message with no context, or swallowing the cause.',
@@ -256,10 +245,6 @@ assert($this->position >= 0);                            // invariante interna: 
     follow: [
       { pt: 'Qual nível você usa hoje e o que precisaria para subir?', en: 'Which level do you use today and what would it take to raise it?' },
     ],
-    anchor: {
-      pt: 'O TripFlow usa Larastan/PHPStan nível 8, e a carteira usa nível 5: saiba dizer por que cada um e o que impediria subir a carteira (PHP 7.4, tempo, Eloquent mágico).',
-      en: 'TripFlow uses Larastan/PHPStan level 8, and the wallet uses level 5: be ready to say why each, and what blocks raising the wallet (PHP 7.4, time, Eloquent magic).',
-    },
     flags: {
       pt: '"Coloquei nível máximo e ignorei os erros que apareceram."',
       en: '"I set the max level and ignored the errors that showed up."',
@@ -332,10 +317,6 @@ $this->assertStringContainsString('Invalid modifications spec', $stderr);`,
     follow: [
       { pt: 'Como você testaria um comando Artisan da mesma forma?', en: 'How would you test an Artisan command the same way?' },
     ],
-    anchor: {
-      pt: 'Na carteira: o teste do `wallet:reconcile` e os data providers do `MoneyTest`. Se ainda não houver teste do comando, diga como faria com `artisan()` e com processo separado.',
-      en: 'In the wallet: the `wallet:reconcile` test and the `MoneyTest` data providers. If the command test does not exist yet, say how you would do it with `artisan()` and with a separate process.',
-    },
     flags: {
       pt: 'Testar só o caminho feliz com um arquivo de exemplo, ou nunca rodar o executável.',
       en: 'Testing only the happy path with one sample file, or never running the executable.',
@@ -407,10 +388,6 @@ async function safeFetch(rawUrl: string): Promise<Buffer> {
     follow: [
       { pt: 'O que é DNS rebinding e por que validar só o hostname não basta?', en: 'What is DNS rebinding and why is validating only the hostname not enough?' },
     ],
-    anchor: {
-      pt: 'Integrações com sistemas externos (ERP, Salesforce, e-commerce) são a sua vivência: conte como validava o que vinha de fora. SSRF em si, se nunca tratou, apresente como estudo.',
-      en: 'Integrations with external systems (ERP, Salesforce, e-commerce) are your experience: tell how you validated what came in from outside. If you never dealt with SSRF itself, present it as study.',
-    },
     flags: {
       pt: '`fetch(req.body.url)` direto, sem allowlist, timeout nem limite.',
       en: '`fetch(req.body.url)` directly, with no allowlist, timeout, or limit.',
@@ -454,10 +431,6 @@ async function safeFetch(rawUrl: string): Promise<Buffer> {
     follow: [
       { pt: 'Como manter a mesma pessoa com o mesmo nome falso em várias tabelas?', en: 'How do you keep the same person with the same fake name across tables?' },
     ],
-    anchor: {
-      pt: 'Na carteira, o `DemoSeeder` cria dados de demonstração sem ninguém real. Se já precisou de dados de produção para depurar em algum trabalho, conte como foi feito e o que faria diferente.',
-      en: 'In the wallet, the `DemoSeeder` creates demo data with no real people. If you ever needed production data to debug at work, tell how it was done and what you would do differently.',
-    },
     flags: {
       pt: 'Restaurar o dump de produção em homologação "só por um dia".',
       en: 'Restoring the production dump in staging "just for a day".',

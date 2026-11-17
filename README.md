@@ -4,19 +4,19 @@
 
 **Site:** https://acamilateixeira.github.io/DevTechnical/
 
-Um entrevistador técnico em forma de app. Ele faz perguntas técnicas sobre a stack que aparece no meu currículo e no [portfólio](https://acamilateixeira.github.io/camilat/), organizadas por perfil de vaga: Sênior Full Stack (Observabilidade), Sênior Full Stack Node/React, Frontend Sênior em React, consultoria internacional, Full Stack Pleno PHP (pagamentos), Backend Sênior PHP + Node (financeiro) e a defesa de um desafio técnico de carteira digital.
+Um entrevistador técnico em forma de app. Ele faz perguntas técnicas de entrevista para devs back-end e full stack, organizadas por perfil de vaga: Sênior Full Stack (Observabilidade), Sênior Full Stack Node/React, Frontend Sênior em React, consultoria internacional, Full Stack Pleno PHP (pagamentos), Backend Sênior PHP + Node (financeiro) e a defesa de um desafio técnico de carteira digital.
 
 ## Como funciona
 
 O caminho sugerido é **ver funcionando → explicar com suas palavras → responder a pergunta**:
 
 - **Comece aqui**: como é um processo seletivo sênior e como estudar com o app, um tema por vez.
-- **Revisão rápida**: para os dias de entrevista. Escolho a trilha da vaga e vejo, numa página só, cada pergunta com os pontos que a resposta precisa cobrir e o meu exemplo real, sem a resposta longa. Marco "já sei", escondo o que já domino e imprimo ou salvo em PDF.
+- **Revisão rápida**: para os dias de entrevista. Escolho a trilha da vaga e vejo, numa página só, cada pergunta com os pontos que a resposta precisa cobrir e um exemplo simples do dia a dia para lembrar o conceito, sem a resposta longa. Termos técnicos aparecem com a definição curta entre parênteses. Marco "já sei", escondo o que já domino e imprimo ou salvo em PDF.
 - **Laboratório**: 14 exemplos que rodam no navegador, sem instalar nada. Cada um explica o conceito com uma analogia e tem código editável, botão **Rodar**, contadores, uma **linha do tempo** mostrando o que rodou em cada parte do sistema (cliente, API, banco, fila…) e quando, além de uma lista "Experimente mudar". Mais 5 labs de Node.js para rodar no terminal (servidor HTTP, threads, SIGTERM e SQLite reais). Detalhes em [`labs/node/README.md`](labs/node/README.md).
 - **Glossário**: 224 termos técnicos em linguagem simples. Nas respostas e nos labs, a definição curta aparece **entre parênteses** na primeira vez que o termo surge (dá para desligar no botão "( ) definições") e tocar no termo mostra a explicação maior.
 
 - **Entrevista**: uma pergunta por vez, sorteada com prioridade para as que eu ainda não respondi ou em que tirei nota baixa. Respondo em voz alta ou escrevo (o rascunho fica no navegador), com cronômetro opcional de 3 minutos.
-- **Resposta modelo**: explicação completa, código quando a pergunta pede, ferramentas/libs/técnicas para citar, métricas que provam domínio, follow-ups que o recrutador faria, red flags (o que não dizer) e como ancorar a resposta na minha experiência real, sem inventar.
+- **Resposta modelo**: explicação completa, código quando a pergunta pede, ferramentas/libs/técnicas para citar, métricas que provam domínio, follow-ups que o recrutador faria, red flags (o que não dizer) e um exemplo genérico, fácil de entender, que serve para qualquer pessoa.
 - **Nota objetiva**: cada pergunta tem um checklist com os pontos que uma resposta 100% precisa cobrir. Marco só o que eu realmente disse e a nota sai daí: **≥ 80% acerto, 40–79% parcial, < 40% erro**.
 - **Progresso**: nota média, % de acerto/parcial/erro no geral e por tema, tema mais forte e tema para estudar primeiro.
 - **Estudo**: todas as perguntas com busca e filtros por vaga, tema e tipo.
@@ -41,7 +41,7 @@ As trilhas ficam em [`data/paths.js`](data/paths.js) e o validador confere se ca
 
 ## Conteúdo
 
-117 perguntas e 584 pontos de rubrica, todos em português e inglês. O lote 2 cobre as lacunas entre o meu CV e as vagas (GraphQL/Apollo, NestJS, MongoDB, Next.js, Docker/Kubernetes, Elasticsearch, OpenTelemetry), sempre indicando com honestidade o que é estudo e o que é experiência.
+117 perguntas e 584 pontos de rubrica, todos em português e inglês. O lote 2 cobre temas que aparecem muito em vagas sênior (GraphQL/Apollo, NestJS, MongoDB, Next.js, Docker/Kubernetes, Elasticsearch, OpenTelemetry).
 
 | Tema | Exemplos |
 | --- | --- |
@@ -182,6 +182,7 @@ assets/styles.css     # tema claro/escuro, responsivo
 data/meta.js          # vagas, temas, tipos e textos da interface (PT/EN)
 data/<tema>.js        # perguntas por tema
 data/rubrics.js       # checklist, ferramentas e métricas por pergunta
+data/examples.js      # exemplo genérico e curto por pergunta (pt + en)
 data/glossary.js      # 267 termos com definição curta e longa (PT/EN)
 data/php-fintech.js   # perguntas do perfil PHP pleno (pagamentos)
 data/research.js      # perguntas acrescentadas a partir de relatos reais
@@ -215,8 +216,9 @@ node scripts/validate.mjs     # valida o banco de perguntas
 
 ## Adicionar uma pergunta
 
-1. Inclua o objeto no arquivo do tema em `data/` (`id`, `cat`, `type`, `jobs`, `q`, `a`, `follow`, `flags`, `anchor` e, se for o caso, `code`), sempre com `pt` e `en`.
+1. Inclua o objeto no arquivo do tema em `data/` (`id`, `cat`, `type`, `jobs`, `q`, `a`, `follow`, `flags` e, se for o caso, `code`), sempre com `pt` e `en`.
 2. Inclua a rubrica com o mesmo `id` em `data/rubrics.js` (3+ pontos, ferramentas e métricas).
+   Inclua também um exemplo curto e genérico em `data/examples.js` (uma situação do dia a dia, sem citar empresa nem currículo).
 3. Opcional: escreva a história em `data/stories/<id>.pt.md` e `<id>.en.md` no formato acima (descrito no topo de `assets/story.js`) e inclua o id em `data/stories/index.js`. O validador confere o formato e se toda fala é de alguém do elenco.
 4. Rode `node scripts/validate.mjs`. O CI roda a mesma validação em todo PR e publica no GitHub Pages a cada push na `main`.
 
@@ -226,10 +228,10 @@ node scripts/validate.mjs     # valida o banco de perguntas
 
 **Site:** https://acamilateixeira.github.io/DevTechnical/
 
-A technical interviewer, as an app. It asks technical questions about the stack on my CV and [portfolio](https://acamilateixeira.github.io/camilat/), grouped by role profile: Senior Full Stack (Observability), Senior Full Stack Node/React, Senior React Frontend, international consultancy, and mid-level PHP Full Stack (payments).
+A technical interviewer, as an app. It asks technical interview questions for back-end and full stack developers, grouped by role profile: Senior Full Stack (Observability), Senior Full Stack Node/React, Senior React Frontend, international consultancy, and mid-level PHP Full Stack (payments).
 
 - **Interview**: one question at a time, weighted toward questions I have not answered or scored low on, with an optional 3-minute timer and a draft saved in the browser.
-- **Model answer**: full explanation, code where needed, tools/libraries/techniques to mention, metrics that prove mastery, the interviewer's follow-ups, red flags, and how to anchor the answer in my real experience without inventing any.
+- **Model answer**: full explanation, code where needed, tools/libraries/techniques to mention, metrics that prove mastery, the interviewer's follow-ups, red flags, and a generic, easy-to-understand example that works for anyone.
 - **Objective score**: each question has a checklist of points a 100% answer must cover. I tick only what I actually said: **≥ 80% correct, 40–79% partial, < 40% wrong**.
 - **Progress**: average score and correct/partial/wrong percentages, overall and per topic, plus strongest and weakest topic.
 - **Mini videos**: every story plays as an animated video (scenes, the 📋 state panel changing, the interview answer) with browser narration; the 15 PHP path stories also have downloadable MP4s.
@@ -239,9 +241,9 @@ A technical interviewer, as an app. It asks technical questions about the stack 
 - **Stories**: 42 funny dialogue-style stories (every lab plus 28 questions), in Portuguese and English, covering 47 of 92 questions. Each starts with **Who is who** (every character is a piece of code), plays out in chat-style scenes in plain language, with a **📋 State right now** panel closing every scene (output so far, queues, what's left), then a separate moral, technical section, and extras, and ends with the one-paragraph interview answer. They open from the **Stories** tab or from a button on each question and lab.
 - **Study**: every question with search and filters by role, topic, and type.
 - **Start here**: what a senior hiring process looks like and how to study with the app.
-- **Quick review**: for interview days. I pick the role's track and see, on a single page, each question with the points the answer must cover and my real example, without the long answer. I mark "I know this", hide what I already know, and print or save it as PDF.
+- **Quick review**: for interview days. I pick the role's track and see, on a single page, each question with the points the answer must cover and a simple everyday example to remember the concept, without the long answer. Technical terms show their short definition in parentheses. I mark "I know this", hide what I already know, and print or save it as PDF.
 - **Lab**: 14 in-browser examples (editable code, Run button, counters, and a timeline showing what ran in each part of the system and when) plus 5 Node.js labs for the terminal ([`labs/node/README.md`](labs/node/README.md)).
 - **Glossary**: 224 terms in plain language; the short definition appears in parentheses the first time a term shows up (toggle with "( ) definitions").
 - **Is this really asked?**: each question's chip says where it comes from and which company (**✓ reported · an observability company**, **📘 public guide**, or **📋 in the job ad**). The answer lists each source with company, candidate role, date, stage, quote, and link; sources live in [`data/evidence.js`](data/evidence.js). There is also a dedicated set for mid-level PHP roles in payments.
 
-92 questions and 473 rubric points in Portuguese and English, including a second batch on the gaps between my CV and the target roles (GraphQL/Apollo, NestJS, MongoDB, Next.js, Docker/Kubernetes, Elasticsearch, OpenTelemetry). No build step, no dependencies, no backend: progress lives only in the browser's `localStorage`. Run it with any static server and validate the question bank with `node scripts/validate.mjs`.
+92 questions and 473 rubric points in Portuguese and English, including a second batch on topics that show up often in senior roles (GraphQL/Apollo, NestJS, MongoDB, Next.js, Docker/Kubernetes, Elasticsearch, OpenTelemetry). No build step, no dependencies, no backend: progress lives only in the browser's `localStorage`. Run it with any static server and validate the question bank with `node scripts/validate.mjs`.

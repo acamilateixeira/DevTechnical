@@ -46,10 +46,6 @@ Practical consequence: code that keeps scheduling microtasks forever starves ren
       pt: 'Dizer que `setTimeout(..., 0)` executa "imediatamente" ou que JavaScript é "multithread". Também é ruim acertar a saída sem conseguir explicar a regra das duas filas.',
       en: 'Saying `setTimeout(..., 0)` runs "immediately" or that JavaScript is "multithreaded". Getting the output right without explaining the two-queue rule also looks weak.',
     },
-    anchor: {
-      pt: 'No Livit Live Controller você reduziu a frequência de polling do painel em segundo plano e ajustou quadros conforme a pressão de memória: é o mesmo raciocínio de não monopolizar o loop. Para dividir trabalho pesado: `requestIdleCallback`, fatiar com `setTimeout`/`scheduler.yield()` ou mover para um Web Worker.',
-      en: 'In Livit Live Controller you reduced background polling and adapted frame rate to memory pressure: same reasoning about not hogging the loop. To split heavy work: `requestIdleCallback`, chunk with `setTimeout`/`scheduler.yield()`, or move it to a Web Worker.',
-    },
   },
   {
     id: 'ts-unknown-any-never',
@@ -101,10 +97,6 @@ function parse(raw: string): Offer[] {
     flags: {
       pt: '"Uso `any` quando o tipo fica complicado." Ou achar que tipar o retorno de um `fetch` como `User` garante que os dados são um `User`: o TS não valida nada em runtime.',
       en: '"I use `any` when the type gets complicated." Or believing that typing a `fetch` result as `User` guarantees the data is a `User`: TS validates nothing at runtime.',
-    },
-    anchor: {
-      pt: 'O GEMP diferencia espera, resposta parcial, indisponibilidade e falha de rede no front em React/TS: isso é exatamente uma union discriminada com checagem de exaustividade. Use como exemplo concreto.',
-      en: 'GEMP distinguishes loading, partial results, unavailability, and network failure in the React/TS UI: that is exactly a discriminated union with an exhaustiveness check. Use it as your concrete example.',
     },
   },
   {
@@ -163,10 +155,6 @@ The senior principle: **derive types from a single source of truth** (a schema, 
       pt: 'Escrever `function groupBy(items: any[], key: string): any`. Ou responder "nunca precisei de generics, uso as libs".',
       en: 'Writing `function groupBy(items: any[], key: string): any`. Or answering "I never needed generics, I just use libraries".',
     },
-    anchor: {
-      pt: 'Seu portfólio (camilat) tem `types.ts` com tipos bilíngues `{ pt, en }` reaproveitados em experiência e projetos. É um exemplo honesto de modelar uma vez e reusar.',
-      en: 'Your portfolio (camilat) has a `types.ts` with bilingual `{ pt, en }` types reused across experience and projects. It is an honest example of modeling once and reusing.',
-    },
   },
   {
     id: 'js-closures-this',
@@ -218,10 +206,6 @@ About \`this\`: regular functions bind \`this\` by **how they are called**; arro
     flags: {
       pt: 'Desligar a regra `react-hooks/exhaustive-deps` "porque ela reclama demais". Isso é exatamente o que gera stale closures.',
       en: 'Disabling the `react-hooks/exhaustive-deps` rule "because it complains too much". That is exactly what produces stale closures.',
-    },
-    anchor: {
-      pt: 'Busca com debounce é um caso comum em telas de ERP/e-commerce como as do Grupo Mysa. Se você usou, cite a tela e o motivo (reduzir chamadas à API). Se não lembrar de um caso específico, explique o conceito sem inventar.',
-      en: 'Debounced search is common in ERP/e-commerce screens like the ones at Grupo Mysa. If you used it, name the screen and the reason (fewer API calls). If you cannot recall a specific case, explain the concept without inventing one.',
     },
   },
   {
@@ -288,10 +272,6 @@ Even with shared types, frontend and backend **deploy at different times**: the 
     flags: {
       pt: 'Copiar e colar as interfaces entre os dois projetos. Ou achar que tipo compartilhado dispensa versionamento.',
       en: 'Copy-pasting interfaces between the two projects. Or believing shared types remove the need for versioning.',
-    },
-    anchor: {
-      pt: 'GEMP tem back em Go e front em React/TS: lá o contrato atravessa linguagens, o que é o caso de OpenAPI ou validação no front. Na Sicoob e no Grupo Mysa, front em React/TS falando com APIs em Laravel é o mesmo problema. Cite como você evitou (ou sofreu com) quebras de contrato.',
-      en: 'GEMP has a Go backend and a React/TS frontend: the contract crosses languages there, which is the OpenAPI or frontend-validation case. At Sicoob and Grupo Mysa, React/TS frontends talking to Laravel APIs are the same problem. Mention how you avoided (or suffered from) contract breaks.',
     },
   },
 ];

@@ -35,10 +35,6 @@ export default [
       pt: 'Converter story point em horas. Ou "a gente faz hora extra para fechar a sprint".',
       en: 'Converting story points into hours. Or "we work overtime to close the sprint".',
     },
-    anchor: {
-      pt: 'Na Sicoob você atuou em times Scrum com Trello, Planner e GitLab Issue Boards; na ZR System organizou entregas com práticas ágeis; vagas sênior costumam pedir sprints quinzenais com grooming e planning. No Grupo Mysa, sustentação em produção convive com evolução: ótimo exemplo para "trabalho não planejado".',
-      en: 'At Sicoob you worked in Scrum teams with Trello, Planner, and GitLab Issue Boards; at ZR System you organized deliveries with agile practices; senior roles often ask for bi-weekly sprints with grooming and planning. At Grupo Mysa, production support coexists with new work: a great example of "unplanned work".',
-    },
   },
   {
     id: 'behavioral-incident-star',
@@ -73,10 +69,6 @@ What the interviewer is assessing: ownership, calm under pressure, diagnostic re
     flags: {
       pt: 'Culpar outra pessoa ou outro time. Contar uma história sem resultado nem aprendizado. Ou inventar um incidente: o follow-up técnico denuncia na hora.',
       en: 'Blaming another person or team. A story with no result or lesson. Or inventing an incident: the technical follow-up exposes it immediately.',
-    },
-    anchor: {
-      pt: 'Escolha um caso real da sustentação em produção (Grupo Mysa, Sicoob com hotfixes, ou ambientes operacionais críticos da Easy Process com clientes como Vale). Escreva o STAR no campo de resposta aqui do app e treine em voz alta em PT e EN até caber em 2 minutos.',
-      en: 'Pick a real production-support case (Grupo Mysa, Sicoob hotfixes, or Easy Process critical operations with clients like Vale). Write the STAR in this app\'s answer box and rehearse it out loud in PT and EN until it fits in 2 minutes.',
     },
   },
   {
@@ -115,10 +107,6 @@ Tone matters: the conflict is with the idea, not the person.`,
       pt: '"Nunca discordei de ninguém." Ou uma história em que você "venceu" e o outro "estava errado" sem nuance.',
       en: '"I have never disagreed with anyone." Or a story where you "won" and the other person "was wrong" with no nuance.',
     },
-    anchor: {
-      pt: 'Seu portfólio diz que trade-offs viram ADRs e PRs bem descritos, e o TripFlow tem ADRs no repositório. Prepare um caso real (pode ser uma decisão de modernização de legado: refatorar vs reescrever) e conecte ao hábito de documentar decisões.',
-      en: 'Your portfolio says trade-offs become ADRs and well-described PRs, and TripFlow has ADRs in the repo. Prepare a real case (for example a legacy modernization call: refactor vs rewrite) and connect it to your habit of documenting decisions.',
-    },
   },
   {
     id: 'behavioral-ai-tools',
@@ -148,18 +136,14 @@ Tone matters: the conflict is with the idea, not the person.`,
       pt: '"A IA escreve e eu só aceito." Ou o extremo oposto: "não uso, não confio".',
       en: '"The AI writes it and I just accept it." Or the opposite extreme: "I do not use it, I do not trust it".',
     },
-    anchor: {
-      pt: 'Seu portfólio tem um workflow de revisão assistida por IA no GitHub Actions e um CLAUDE.md orientando o assistente: evidência concreta de uso estruturado. Este DevTechnical também foi montado com IA e revisado por você. Conte com naturalidade e mostre o seu critério de revisão.',
-      en: 'Your portfolio has an AI-assisted review workflow in GitHub Actions and a CLAUDE.md guiding the assistant: concrete evidence of structured use. DevTechnical itself was built with AI and reviewed by you. Say it plainly and show your review criteria.',
-    },
   },
   {
     id: 'behavioral-why-senior',
     cat: 'agile', type: 'behavioral', jobs: ['sr-observability', 'sr-node-react', 'frontend', 'cv'],
     tags: ['seniority', 'tell me about yourself', 'pitch', 'gaps', 'experience'],
     q: {
-      pt: 'A vaga pede 5+ anos com TypeScript, React e Node em produção. Sua experiência principal é PHP/Laravel. Por que você é sênior para essa vaga?',
-      en: 'The role asks for 5+ years of production TypeScript, React, and Node. Your main experience is PHP/Laravel. Why are you senior for this role?',
+      pt: 'A vaga pede 5+ anos com TypeScript, React e Node em produção. Sua experiência principal é em outra stack (por exemplo, PHP). Por que você é sênior para essa vaga?',
+      en: 'The role asks for 5+ years of production TypeScript, React, and Node. Your main experience is in another stack (for example, PHP). Why are you senior for this role?',
     },
     a: {
       pt: `Essa é a pergunta mais perigosa, porque testa honestidade e autoconhecimento ao mesmo tempo. Estrutura de resposta:
@@ -188,10 +172,6 @@ Do not inflate years with a technology: in a senior process with live coding, th
     flags: {
       pt: 'Afirmar "5 anos de React/Node em produção" se não for verdade. Ou o contrário: pedir desculpas pela trajetória.',
       en: 'Claiming "5 years of production React/Node" if it is not true. Or the opposite: apologizing for your path.',
-    },
-    anchor: {
-      pt: 'Pitch com evidências reais: ~5 anos em sistemas financeiros, ERP, e-commerce nacional e indústria; React + TypeScript nas interfaces da Sicoob; Node.js no Grupo Mysa e na Sicoob; projetos que tratam os problemas difíceis: TripFlow (concorrência, idempotência, outbox), GEMP (Go + React, resiliência), Bora (React Native em uso real por uma prefeitura), MeterTrail (Rust, reprocessamento). Treine este pitch em PT e EN, em até 90 segundos.',
-      en: 'Pitch with real evidence: ~5 years in financial systems, ERP, nationwide e-commerce, and industry; React + TypeScript interfaces at Sicoob; Node.js at Grupo Mysa and Sicoob; projects tackling hard problems: TripFlow (concurrency, idempotency, outbox), GEMP (Go + React, resilience), Bora (React Native used for real by a municipality), MeterTrail (Rust, replay). Practice this pitch in PT and EN, in 90 seconds or less.',
     },
   },
 ];

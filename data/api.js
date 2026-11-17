@@ -27,10 +27,6 @@ I pick REST for public APIs, system-to-system integrations, webhooks, and simple
       pt: '"GraphQL é mais moderno, então é melhor." Ou não saber que GraphQL perde o cache HTTP.',
       en: '"GraphQL is more modern, so it is better." Or not knowing GraphQL loses HTTP caching.',
     },
-    anchor: {
-      pt: 'Você tem muita experiência com REST em integrações (ERP ↔ Salesforce ↔ e-commerce, Oracle APEX, MuleSoft). GraphQL/Apollo é lacuna no CV: diga que estudou, explique N+1 e DataLoader com segurança e conecte com sua vivência de integrar sistemas com contratos diferentes. Um projeto pequeno com Apollo no GitHub fecharia essa lacuna.',
-      en: 'You have lots of REST experience in integrations (ERP ↔ Salesforce ↔ e-commerce, Oracle APEX, MuleSoft). GraphQL/Apollo is a gap on your CV: say you have studied it, explain N+1 and DataLoader confidently, and connect it to integrating systems with different contracts. A small Apollo project on GitHub would close the gap.',
-    },
   },
   {
     id: 'graphql-n-plus-one',
@@ -91,10 +87,6 @@ Alternatives: a join/lookahead in the parent resolver, or ORM eager loading. Dat
       pt: 'Criar o DataLoader como singleton global. Ou devolver o resultado na ordem do banco, não na ordem dos IDs.',
       en: 'Creating the DataLoader as a global singleton. Or returning results in database order instead of ID order.',
     },
-    anchor: {
-      pt: 'N+1 você conhece do Eloquent: `with()` para eager loading e `preventLazyLoading()` em dev. É a mesma doença, com remédio diferente. Comece por aí e depois mostre o DataLoader.',
-      en: 'You know N+1 from Eloquent: `with()` for eager loading and `preventLazyLoading()` in dev. Same disease, different medicine. Start there, then show DataLoader.',
-    },
   },
   {
     id: 'api-idempotency',
@@ -134,10 +126,6 @@ This ties into **at-least-once** messaging: retries are unavoidable in distribut
       pt: '"Desabilito o botão no front." Isso melhora a UX, mas não protege contra retry de rede, proxy ou cliente de API.',
       en: '"I disable the button on the frontend." That improves UX but does not protect against network, proxy, or API-client retries.',
     },
-    anchor: {
-      pt: 'Esta é a sua pergunta mais forte: o TripFlow reaproveita a resposta salva para a mesma Idempotency-Key e usa lock no Redis na reserva sem segurar a transação durante a chamada ao fornecedor. O MeterTrail devolve 409 para mesmo ID com conteúdo diferente. Conte os dois com detalhe.',
-      en: 'This is your strongest question: TripFlow replays the saved response for the same Idempotency-Key and uses a Redis lock during booking without holding the transaction open during the supplier call. MeterTrail returns 409 for the same ID with different content. Tell both stories in detail.',
-    },
   },
   {
     id: 'api-websockets-scale',
@@ -170,10 +158,6 @@ Other concerns: heartbeats/pings to detect dead connections, reconnection with e
     flags: {
       pt: 'Não saber que múltiplas instâncias precisam de pub/sub entre si. Ou escolher WebSocket para tudo, mesmo quando SSE basta.',
       en: 'Not knowing multiple instances need pub/sub between them. Or choosing WebSocket for everything when SSE would do.',
-    },
-    anchor: {
-      pt: 'O Bora usa Supabase Realtime (WebSocket sobre a replicação do PostgreSQL) para o despacho acompanhar presença e estados; o Livit recebe eventos do TikTok LIVE em tempo real. Diga com clareza que no Bora a infra de WebSocket é gerenciada, e explique o que você faria para escalar uma própria.',
-      en: 'Bora uses Supabase Realtime (WebSocket over PostgreSQL replication) so dispatch can follow presence and status; Livit receives TikTok LIVE events in real time. Be clear that in Bora the WebSocket infrastructure is managed, then explain what you would do to scale your own.',
     },
   },
   {
@@ -217,10 +201,6 @@ Other concerns: heartbeats/pings to detect dead connections, reconnection with e
     flags: {
       pt: '"Só aviso os clientes e mudo." Ou não saber que offset alto degrada.',
       en: '"I just tell clients and change it." Or not knowing high offsets degrade.',
-    },
-    anchor: {
-      pt: 'Modernização de legado no Grupo Mysa e na Sicoob é exatamente evoluir sem quebrar quem já usa. Seu portfólio diz: "entendo a regra que o código antigo protege antes de mudar e entrego em passos pequenos". Use um exemplo real de integração ERP/e-commerce que você evoluiu sem parar a operação.',
-      en: 'Legacy modernization at Grupo Mysa and Sicoob is exactly evolving without breaking existing users. Your portfolio says you understand the rule old code protects before changing it and ship in small steps. Use a real ERP/e-commerce integration you evolved without stopping operations.',
     },
   },
   {
@@ -293,10 +273,6 @@ Production safeguards: depth and complexity limits, persisted queries, introspec
     flags: {
       pt: 'Gerar o schema direto do banco e expor todas as colunas. Ou checar permissão só no front.',
       en: 'Generating the schema straight from the database and exposing every column. Or checking permissions only on the frontend.',
-    },
-    anchor: {
-      pt: 'O modelo de viagens e aprovação é o do TripFlow (REST em Laravel). Mostre que você sabe expor o mesmo domínio em GraphQL mantendo a regra no caso de uso. Se fizer uma camada GraphQL sobre o TripFlow ou um BFF no PulseOps, isso vira evidência real.',
-      en: 'The trips-and-approval model is TripFlow\'s (REST in Laravel). Show you can expose the same domain in GraphQL while keeping the rule in the use case. Building a GraphQL layer over TripFlow or a BFF in PulseOps would turn this into real evidence.',
     },
   },
   {
@@ -378,10 +354,6 @@ Also: per-connection event limits (rate limiting), payload validation for each e
     flags: {
       pt: 'Aceitar `socket.emit("join", roomName)` do cliente sem checar permissão. Ou emitir dentro da transação do banco.',
       en: 'Accepting `socket.emit("join", roomName)` from the client without a permission check. Or emitting inside the database transaction.',
-    },
-    anchor: {
-      pt: 'Conecte com o que você já fez: no Bora o Realtime do Supabase aplica as políticas do PostgreSQL ao que cada usuário recebe (mesma ideia de autorização por canal); no TripFlow os eventos saem depois do commit via outbox. Socket.IO em si é lacuna: diga isso.',
-      en: 'Connect it to what you have done: in Bora, Supabase Realtime applies PostgreSQL policies to what each user receives (same idea as per-channel authorization); in TripFlow events leave after commit via the outbox. Socket.IO itself is a gap: say so.',
     },
   },
 ];

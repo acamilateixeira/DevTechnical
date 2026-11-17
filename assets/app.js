@@ -108,7 +108,7 @@ function route() {
   leave.forEach((fn) => fn()); leave = [];
   // Filtros só fazem sentido nas telas de perguntas.
   $('.filters').hidden = ['lab', 'start', 'glossary', 'stories', 'story', 'measure', 'review'].includes(name);
-  if (name === 'review') { window.scrollTo(0, 0); return renderReview($('#view'), { lang: state.lang, L, questions, jobs }); }
+  if (name === 'review') { window.scrollTo(0, 0); return renderReview($('#view'), { lang: state.lang, gloss: state.gloss, L, questions, jobs }); }
   if (name === 'measure') { if (!arg) window.scrollTo(0, 0); return renderMeasure($('#view'), { lang: state.lang, gloss: state.gloss, L, questions, focus: arg && decodeURIComponent(arg) }); }
   if (name === 'stories') { window.scrollTo(0, 0); return renderStories($('#view'), { lang: state.lang, L, questions, cats }); }
   if (name === 'story') { window.scrollTo(0, 0); setStoryLeave(onLeave); return renderStoryPage($('#view'), decodeURIComponent(arg || ''), { lang: state.lang, L, questions, autoplay: location.hash.split('/')[3] === 'play' }); }
@@ -250,12 +250,12 @@ function revealHtml(q, ann = annotator(q)) {
     ${lab ? `<a class="panel lab-link" href="#/lab/${lab.id}"><strong>${t('seeLab')}</strong><span>${escapeHtml(L(lab.title))}</span></a>` : ''}
     ${reportedHtml(q, ann)}
     ${measureLinks(q)}
+    ${q.example ? `<div class="panel anchor example"><h3>${t('example')}</h3>${md(L(q.example), ann)}</div>` : ''}
     <div class="panel"><h3>${t('answer')}</h3>${md(L(q.a), ann)}</div>
     ${q.code ? `<div class="panel"><h3>${t('code')}</h3>${codeBlocks(q)}</div>` : ''}
     ${toolsHtml(q)}
     ${follow ? `<div class="panel followup"><h3>${t('followup')}</h3><ul>${follow}</ul></div>` : ''}
     ${q.flags ? `<div class="panel flags"><h3>${t('flags')}</h3>${md(L(q.flags), ann)}</div>` : ''}
-    ${q.anchor ? `<div class="panel anchor"><h3>${t('anchor')}</h3>${md(L(q.anchor), ann)}</div>` : ''}
     ${checklistHtml(q, ann)}`;
 }
 

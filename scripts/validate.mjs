@@ -33,7 +33,7 @@ for (const q of questions) {
   if (!Array.isArray(q.jobs) || !q.jobs.length) err(id, 'sem vagas');
   else q.jobs.forEach((j) => { if (!jobs[j]) err(id, `vaga desconhecida "${j}"`); });
 
-  for (const f of ['q', 'a', 'flags', 'anchor']) if (!bilingual(q[f])) err(id, `campo "${f}" precisa de pt e en`);
+  for (const f of ['q', 'a', 'flags', 'example']) if (!bilingual(q[f])) err(id, `campo "${f}" precisa de pt e en`);
   if (!Array.isArray(q.follow) || q.follow.length < 1) err(id, 'precisa de pelo menos um follow-up');
   else q.follow.forEach((f, i) => { if (!bilingual(f)) err(id, `follow[${i}] precisa de pt e en`); });
 

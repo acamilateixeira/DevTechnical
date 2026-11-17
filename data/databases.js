@@ -56,10 +56,6 @@ Caveats: keep transactions short, never call an external API with a transaction 
       pt: 'Resolver com verificação só na aplicação (`if (saldo >= valor)`) sem lock ou condição atômica. Ou "uso Serializable em tudo".',
       en: 'Solving it with an application-only check (`if (balance >= amount)`) without a lock or atomic condition. Or "I use Serializable everywhere".',
     },
-    anchor: {
-      pt: 'É literalmente o TripFlow: você bloqueia a linha do centro de custo no MySQL e confere o orçamento dentro da transação. Some a isso o histórico em sistemas financeiros na Sicoob, onde dado errado custa mais que atraso, como está no seu portfólio.',
-      en: 'This is literally TripFlow: you lock the cost-center row in MySQL and check the budget inside the transaction. Add your financial-systems background at Sicoob, where wrong data costs more than a late delivery, as your portfolio says.',
-    },
   },
   {
     id: 'db-indexes-explain',
@@ -118,10 +114,6 @@ Points that show seniority:
       pt: '"Crio um índice para cada coluna." Ou otimizar sem olhar o plano de execução.',
       en: '"I create one index per column." Or optimizing without looking at the execution plan.',
     },
-    anchor: {
-      pt: 'Seu portfólio lista "modelagem e otimização de consultas" e você trabalhou com MySQL, SQL Server, PostgreSQL e Oracle/PL/SQL. Tenha pronto um caso real de query que você otimizou (o que estava lento, o que viu no plano, o resultado). Se não tiver números exatos, diga a ordem de grandeza honestamente.',
-      en: 'Your portfolio lists "data modeling and query optimization" and you have worked with MySQL, SQL Server, PostgreSQL, and Oracle/PL/SQL. Have a real query-optimization story ready (what was slow, what the plan showed, the outcome). If you lack exact numbers, give an honest order of magnitude.',
-    },
   },
   {
     id: 'db-mongo-vs-sql',
@@ -162,10 +154,6 @@ Mongo has had multi-document transactions since 4.0, but if you need them all th
     flags: {
       pt: '"Mongo é melhor porque não tem schema." O schema existe, só está no código. Também é ruim modelar no Mongo como se fossem tabelas com joins via `$lookup` em tudo.',
       en: '"Mongo is better because it is schemaless." The schema exists; it just lives in code. Modeling Mongo like tables with `$lookup` joins everywhere is also bad.',
-    },
-    anchor: {
-      pt: 'MongoDB não aparece no seu CV: seja direta sobre isso. Sua força em modelagem relacional (MySQL, SQL Server, PostgreSQL, Oracle) é a base para justificar quando NÃO usar documento. O Bora usa JSON no PostgreSQL? Se sim, cite como experiência com dados semiestruturados.',
-      en: 'MongoDB is not on your CV: be upfront about it. Your strength in relational modeling (MySQL, SQL Server, PostgreSQL, Oracle) is the basis for arguing when NOT to use documents. If Bora stores JSON in PostgreSQL, mention it as semi-structured data experience.',
     },
   },
   {
@@ -230,10 +218,6 @@ Other Redis uses: rate limiting, sessions, queues (BullMQ), pub/sub, leaderboard
     flags: {
       pt: '"Cacheio tudo para ficar rápido." Ou confiar num lock do Redis como única garantia de não cobrar duas vezes.',
       en: '"I cache everything to make it fast." Or trusting a Redis lock as the only guarantee against double charging.',
-    },
-    anchor: {
-      pt: 'TripFlow: o lock no Redis coordena chamadas concorrentes de reserva, mas a garantia final está no MySQL e na Idempotency-Key. Isso mostra exatamente a nuance "lock coordena, banco garante". Muito forte para vagas que pedem Redis.',
-      en: 'TripFlow: the Redis lock coordinates concurrent booking calls, but the final guarantee lives in MySQL and the Idempotency-Key. That shows exactly the "lock coordinates, database guarantees" nuance. Very strong for roles that ask for Redis.',
     },
   },
   {
@@ -307,10 +291,6 @@ If this report runs constantly, the alternative is a precomputed aggregate (a pe
       pt: 'Colocar `$lookup` antes do `$match`. Ou não saber que agregação também precisa de índice.',
       en: 'Putting `$lookup` before `$match`. Or not knowing aggregations need indexes too.',
     },
-    anchor: {
-      pt: 'MongoDB é lacuna. A ponte honesta e forte: a mesma lógica de índice composto e de filtrar antes de juntar que você aplica em SQL (MySQL, SQL Server, Oracle, PostgreSQL). Responda primeiro em SQL, que você domina, e depois traduza para o pipeline.',
-      en: 'MongoDB is a gap. The honest, strong bridge: the same composite-index and filter-before-join logic you apply in SQL (MySQL, SQL Server, Oracle, PostgreSQL). Answer in SQL first, which you master, then translate to the pipeline.',
-    },
   },
   {
     id: 'mongo-replication-consistency',
@@ -355,10 +335,6 @@ Changing the shard key later is expensive (recent versions support resharding, b
     flags: {
       pt: 'Dizer que replica set escala escrita. Ou escolher data de criação como shard key.',
       en: 'Saying a replica set scales writes. Or picking creation date as the shard key.',
-    },
-    anchor: {
-      pt: 'Sem experiência com Mongo em produção, apoie-se no que conhece: réplicas e consistência você vê em bancos relacionais gerenciados (AWS/Azure), e a pergunta do tenant grande conversa com o escopo por empresa do TripFlow. Diga claramente que é estudo.',
-      en: 'Without production Mongo experience, lean on what you know: replicas and consistency in managed relational databases (AWS/Azure), and the huge-tenant follow-up connects to TripFlow\'s company scoping. State clearly that this is study.',
     },
   },
 ];

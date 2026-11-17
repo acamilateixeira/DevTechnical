@@ -1,7 +1,9 @@
 // Revisão rápida: uma página por trilha, só com o que falar.
-// Cada pergunta mostra os pontos da rubrica (o que a resposta precisa cobrir) e a âncora
-// na experiência real. Sem a resposta longa: é para revisar em minutos antes da entrevista.
+// Cada pergunta mostra os pontos da rubrica (o que a resposta precisa cobrir) e um exemplo
+// genérico do dia a dia. Sem a resposta longa: é para revisar em minutos antes da entrevista.
+// Termos técnicos ganham a definição curta entre parênteses quando "( ) definições" está ligado.
 import { escapeHtml } from './md.js';
+import { createAnnotator } from './gloss.js';
 import { paths } from '../data/paths.js';
 
 const STORE = 'devtechnical:review';
@@ -10,38 +12,46 @@ const BEHAVIORAL = 'comportamental';
 const TXT = {
   pt: {
     title: 'Revisão rápida',
-    lead: 'Para os dias de entrevista: só a pergunta, os pontos que a resposta precisa ter e o seu exemplo real. Leia em voz alta, marque o que já sabe e volte só no que falta.',
+    lead: 'Para os dias de entrevista: só a pergunta, os pontos que a resposta precisa ter e um exemplo simples para lembrar o conceito. Leia em voz alta, marque o que já sabe e volte só no que falta.',
     track: 'Trilha',
     behavioral: 'Comportamental (todas as vagas)',
     say: 'Fale estes pontos',
-    yours: 'Seu exemplo',
+    example: 'Exemplo',
     known: 'Já sei',
     progress: (k, n) => `${k} de ${n} marcadas como "já sei"`,
     hideKnown: 'Esconder as que já sei',
     print: 'Imprimir / salvar PDF',
     full: 'Resposta completa →',
     reset: 'Desmarcar todas',
-    tip: 'Dica: responda com um exemplo seu primeiro e o conceito depois. Se não souber algo, diga o que faria para descobrir.',
+    tip: 'Dica: diga o conceito em uma frase, dê um exemplo concreto e só depois os detalhes. Se não souber algo, diga o que faria para descobrir.',
   },
   en: {
     title: 'Quick review',
-    lead: 'For interview days: only the question, the points the answer must cover, and your real example. Read it out loud, mark what you know, and come back only to what is missing.',
+    lead: 'For interview days: only the question, the points the answer must cover, and a simple example to remember the concept. Read it out loud, mark what you know, and come back only to what is missing.',
     track: 'Track',
     behavioral: 'Behavioral (every role)',
     say: 'Cover these points',
-    yours: 'Your example',
+    example: 'Example',
     known: 'I know this',
     progress: (k, n) => `${k} of ${n} marked as known`,
     hideKnown: 'Hide the ones I know',
     print: 'Print / save as PDF',
     full: 'Full answer →',
     reset: 'Clear all marks',
-    tip: 'Tip: lead with your own example, then the concept. If you do not know something, say how you would find out.',
+    tip: 'Tip: state the concept in one sentence, give a concrete example, then the details. If you do not know something, say how you would find out.',
   },
 };
 
-/** Texto curto com `código` inline. */
-const inline = (txt) => escapeHtml(txt).replace(/`([^`]+)`/g, '<code>$1</code>');
+/** Texto curto com `código` inline; com anotador, termos do glossário ganham a definição. */
+function inline(txt, ann) {
+  return String(txt).split(/(`[^`]+`)/).map((part) => {
+    if (part.startsWith('`') && part.endsWith('`') && part.length > 1) {
+      const raw = part.slice(1, -1);
+      return ann ? ann.code(raw) : `<code>${escapeHtml(raw)}</code>`;
+    }
+    return ann ? ann.text(part) : escapeHtml(part);
+  }).join('');
+}
 
 function load() {
   try { return { track: '', hide: false, known: {}, ...JSON.parse(localStorage.getItem(STORE) || '{}') }; }
@@ -69,7 +79,7 @@ export function trackQuestions(trackId, questions) {
   return out;
 }
 
-export function renderReview(view, { lang, L, questions, jobs }) {
+export function renderReview(view, { lang, gloss = true, L, questions, jobs }) {
   const T = TXT[lang] || TXT.pt;
   const s = load();
   const featured = Object.keys(paths).filter((id) => paths[id].featured);
@@ -103,13 +113,15 @@ export function renderReview(view, { lang, L, questions, jobs }) {
         <ol class="rv-list" role="list">
           ${shown.map((q) => {
             const n = list.indexOf(q) + 1;
-            const anchor = L(q.anchor);
+            const example = L(q.example);
+            // Um anotador por cartão: cada termo é definido uma vez por pergunta.
+            const ann = createAnnotator(lang, { inline: gloss, skip: q.noGloss });
             return `
             <li class="rv-card ${s.known[q.id] ? 'is-known' : ''}">
               <h3><span class="rv-n">${n}.</span> ${inline(L(q.q))}</h3>
               <p class="rv-label">${T.say}</p>
-              <ul class="rv-points">${(q.points || []).map((p) => `<li>${inline(L(p))}</li>`).join('')}</ul>
-              ${anchor ? `<p class="rv-label">${T.yours}</p><p class="rv-anchor">${inline(anchor)}</p>` : ''}
+              <ul class="rv-points">${(q.points || []).map((p) => `<li>${inline(L(p), ann)}</li>`).join('')}</ul>
+              ${example ? `<p class="rv-label">${T.example}</p><p class="rv-anchor">${inline(example, ann)}</p>` : ''}
               <div class="rv-actions">
                 <label class="rv-check"><input type="checkbox" data-known="${escapeHtml(q.id)}" ${s.known[q.id] ? 'checked' : ''}> ${T.known}</label>
                 <a href="#/q/${encodeURIComponent(q.id)}">${T.full}</a>

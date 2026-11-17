@@ -1,6 +1,6 @@
 # 🎟️ A balada, o crachá e o ingresso
 
-> A Camila quer entrar no sistema e aprovar uma viagem. Na porta tem segurança, e cada um confere uma coisa diferente.
+> A Ana quer entrar no sistema e aprovar uma viagem. Na porta tem segurança, e cada um confere uma coisa diferente.
 
 ## 🎭 Elenco
 - 🪪 **Recepção** · autenticação · confere QUEM você é (login e senha, Google, biometria)
@@ -13,14 +13,14 @@
 - 🧩 **Senha de uso único** · PKCE · protege o fluxo em app de navegador e celular, onde não dá pra guardar segredo
 - 🦹 **Penetra** · o atacante
 
-- 👩 **Camila** · a usuária · quer entrar e aprovar uma viagem
+- 👩 **Ana** · a usuária · quer entrar e aprovar uma viagem
 - 📱 **App de viagens** · um app de terceiros · quer acessar a agenda dela
 ## 🎬 Cena 1 · Quem é e o que pode
-**Camila**: "Oi, sou a Camila, minha senha é…"
-**Recepção**: "Confirmado: você é a Camila." 🪪
-**Camila**: "Então vou aprovar a viagem do centro de custo de Marketing!"
-**Segurança da área VIP**: "Opa, opa. Ser a Camila não te faz gestora de Marketing. Aqui não." 🛂
-= 🪪 Autenticação: ✅ é a Camila
+**Ana**: "Oi, sou a Ana, minha senha é…"
+**Recepção**: "Confirmado: você é a Ana." 🪪
+**Ana**: "Então vou aprovar a viagem do centro de custo de Marketing!"
+**Segurança da área VIP**: "Opa, opa. Ser a Ana não te faz gestora de Marketing. Aqui não." 🛂
+= 🪪 Autenticação: ✅ é a Ana
 = 🛂 Autorização para Marketing: ❌ 403 (ela não é gestora dali)
 
 ## 🎬 Cena 2 · Pulseirinha ou ingresso?
@@ -41,7 +41,7 @@
 **Senha de uso único**: "E como você é um app de navegador e não sabe guardar segredo, eu protejo a troca do código." 🧩
 = 🔑 Fluxo: Authorization Code + PKCE
 = 📱 O app recebeu: token só com o escopo de agenda
-= 🔒 A senha da Camila: nunca passou pelo app ✅
+= 🔒 A senha da Ana: nunca passou pelo app ✅
 
 ## 💻 Traduzindo pro código
 ```http
